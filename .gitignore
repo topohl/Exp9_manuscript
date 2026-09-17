@@ -3,3 +3,7 @@ tests/testthat/_problems/
 
 # rendered export bundles are regenerated, not tracked
 export/*/
+
+# imported, regenerable render workspace; the manifest under
+# provenance/source_manifests/ is what the suite verifies against
+/results/

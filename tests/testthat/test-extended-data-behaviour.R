@@ -6,9 +6,17 @@
 # bundle they claim to come from, this repository still computes nothing, and the
 # panels still say only what the upstream contract permits.
 
+
+# The frozen manifests record the pRoteomics prefix
+# manuscript/figure1_bridge_mmmsociability/. The bundle still mirrors that
+# internal layout; only the prefix moved to source_data/MMMSociability/.
+bridge_resolve <- function(recorded) {
+  file.path(testthat::test_path("..", ".."), "source_data", "MMMSociability",
+            sub("^manuscript/figure1_bridge_mmmsociability/", "", recorded))
+}
 ed_bridge_path <- function(...) {
   source(testthat::test_path("..", "..", "R", "paths.R"))
-  repo_path("manuscript", "figure1_bridge_mmmsociability", ...)
+  repo_path("source_data", "MMMSociability", ...)
 }
 
 testthat::test_that("imported behavioural contracts match the recorded import hashes", {
@@ -16,7 +24,7 @@ testthat::test_that("imported behavioural contracts match the recorded import ha
   testthat::skip_if_not_installed("digest")
 
   manifest <- utils::read.csv(
-    repo_path("manuscript", "figure1_bridge_import_manifest.csv"),
+    repo_path("provenance", "source_manifests", "figure1_bridge_import_manifest.csv"),
     stringsAsFactors = FALSE
   )
   rows <- manifest[basename(manifest$imported_file) %in% c(
@@ -26,7 +34,7 @@ testthat::test_that("imported behavioural contracts match the recorded import ha
 
   testthat::expect_identical(nrow(rows), 2L)
   for (i in seq_len(nrow(rows))) {
-    p <- repo_path(rows$imported_file[[i]])
+    p <- bridge_resolve(rows$imported_file[[i]])
     testthat::expect_true(file.exists(p))
     testthat::expect_identical(as.numeric(file.size(p)), as.numeric(rows$bytes[[i]]))
     testthat::expect_identical(
@@ -111,7 +119,7 @@ testthat::test_that("the Extended Data contract declares the panels the renderer
     for (panel in fig$panels) {
       testthat::expect_identical(as.character(panel$producer_script),
                                  "figures/extended_data_behaviour_panels.R")
-      testthat::expect_true(file.exists(repo_path(as.character(panel$primary_source))))
+      testthat::expect_true(file.exists(bridge_resolve(as.character(panel$primary_source))))
     }
   }
 })

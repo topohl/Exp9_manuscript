@@ -107,9 +107,9 @@ testthat::test_that("the three manuscript exemplars are exact and resolve in can
 })
 
 testthat::test_that("the adjudication record is present and internally consistent", {
-  inv <- repo_rel("manuscript", "figure_generation_inventory.csv")
-  mat <- repo_rel("manuscript", "figure_claim_support_matrix.csv")
-  blk <- repo_rel("manuscript", "figure_promotion_blockers.csv")
+  inv <- repo_rel("provenance", "publication_registry", "figure_generation_inventory.csv")
+  mat <- repo_rel("provenance", "claims", "figure_claim_support_matrix.csv")
+  blk <- repo_rel("provenance", "claims", "figure_promotion_blockers.csv")
   for (f in c(inv, mat, blk)) testthat::expect_true(file.exists(f))
 
   m <- utils::read.csv(mat, stringsAsFactors = FALSE)

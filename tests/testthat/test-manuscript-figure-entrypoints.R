@@ -109,13 +109,19 @@ testthat::test_that("SVG assembly is self-contained and preserves panel letters"
   testthat::expect_false(grepl(a, text, fixed = TRUE))
 })
 
-testthat::test_that("entry points are registered as downstream-only manuscript steps", {
+testthat::test_that("the figure entry points live here and fit no models", {
   source(testthat::test_path("..", "..", "R", "paths.R"))
-  testthat::skip_if_not_installed("yaml")
-  registry <- yaml::read_yaml(repo_path("pipeline.yml"))
-  entries <- unlist(lapply(registry$stages, function(stage) {
-    vapply(stage$scripts %||% list(), function(x) as.character(x$script), character(1))
-  }), use.names = FALSE)
-  testthat::expect_true("figures/figure_02.R" %in% entries)
-  testthat::expect_true("figures/figure_03.R" %in% entries)
+  # Was: registered as downstream-only steps in the pRoteomics registry. That
+  # registration was removed in Phase 6C and pRoteomics now asserts no
+  # renderer is registered. What matters here is that the entry points exist
+  # in the repository that owns them and remain assembly-only; the inference
+  # ban itself is enforced across the whole layer by
+  # tests/testthat/test-no-analysis-in-manuscript.R.
+  for (s in c("figures/figure_02.R", "figures/figure_03.R")) {
+    testthat::expect_true(file.exists(repo_path(s)), label = s)
+    code <- readLines(repo_path(s), warn = FALSE)
+    code <- sub("#.*$", "", code)
+    testthat::expect_false(any(grepl("(^|[^A-Za-z0-9._])(lm|glm|p[.]adjust|fgsea)[[:space:]]*\\(",
+                                     code, perl = TRUE)), label = s)
+  }
 })

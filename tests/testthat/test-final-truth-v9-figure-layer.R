@@ -436,28 +436,26 @@ testthat::test_that("atlas row labels match the semantic decision table", {
     testthat::expect_true(grepl(lab, blk, fixed = TRUE))
 })
 
-testthat::test_that("the mitochondrial theme contains no cytosolic glycolysis", {
-  # Under registry v3 the glycolysis sub-DAG is excluded by one ontology rule,
-  # so the theme is mitochondrial bioenergetics and the row name matches its
-  # membership. Part 28 had to call the row "Energy metabolism" precisely
-  # because v2 still reached cytosolic glycolysis; that is no longer true.
-  TH <- rd(repo_path("results", "tables", "10_biological_integration",
-                     "gsea_wgcna_concordance", "global",
-                     "ontology_aware_gsea_theme_assignments_all_contrasts.csv"))
-  testthat::expect_identical(unique(TH$registry_version),
-                             "manuscript_go_themes_v3")
-  mito <- unique(TH$GO_ID[TH$theme_claim_eligible %in% TRUE &
-                            TH$theme_id == "mitochondrial_respiration_oxphos"])
-  GLY <- c("GO:0006096", "GO:0061621", "GO:0061615", "GO:0061620")
-  testthat::expect_identical(sum(mito %in% GLY), 0L)
-  # the rule is ontological, so the mitochondrial entry steps survive it
-  testthat::expect_true("GO:0006086" %in% mito)   # pyruvate -> acetyl-CoA
-  testthat::expect_true("GO:0006099" %in% mito)   # TCA cycle
-  # and the row is named for what it now contains
+testthat::test_that("the mitochondrial row is named for what it contains", {
+  # The membership half of this guarantee - that the glycolysis sub-DAG is
+  # excluded from the mitochondrial theme under registry v3 - is scientific
+  # content of the GO theme atlas, and asserting it requires the 251 MB
+  # ontology-aware theme assignment table. That table is upstream analysis
+  # output, recorded PROVENANCE_ONLY in
+  # provenance/source_manifests/render_inputs_manifest.csv, and pRoteomics
+  # already asserts the property directly in
+  # tests/testthat/test-program-evidence-audit.R ("the mitochondrial row
+  # contains no cytosolic glycolysis").
+  #
+  # What belongs here is the presentation half: the panel library must name
+  # the row for what the atlas puts in it.
   src <- readLines(repo_path("R", "final_truth_v9_panels.R"), warn = FALSE)
   testthat::expect_gt(
     sum(grepl('mitochondrial_respiration_oxphos = "Mitochondrial respiration"',
               src, fixed = TRUE)), 0L)
+  # and the theme id itself has not drifted
+  testthat::expect_gt(sum(grepl("mitochondrial_respiration_oxphos", src,
+                                fixed = TRUE)), 0L)
 })
 
 # ---- Part-28 S12: the atlas summary is robust to GO redundancy -------------

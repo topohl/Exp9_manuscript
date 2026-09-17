@@ -2,77 +2,67 @@
 
 # Publication integrity suite for Exp9_manuscript.
 #
-# Two sets of tests live under tests/testthat/, and only one of them gates.
+# Every test file in tests/testthat/ gates. There is no excluded set.
 #
-# GATING. Written or verified for this repository. These must pass.
+# Phase 6C imported sixteen renderer tests that could not run here, because
+# they addressed the pRoteomics results tree. Phase 6D closed that gap rather
+# than working around it:
 #
-#   test-publication-integrity.R        bundles verify against their manifests;
-#                                       the registry is coherent (10 canonical,
-#                                       2 withheld); all 10 canonical assembled
-#                                       artefacts hash to the frozen values;
-#                                       prose figure references resolve
-#   test-no-analysis-in-manuscript.R    no model fitting, no inference, no live
-#                                       cross-repository path
-#   test-manuscript-figure3-utils.R     panel helper behaviour, self-contained
-#   test-story-v5-figure-layer.R        panel layer behaviour, self-contained
+#   * the panel libraries' own dependencies were completed - spatial grammar
+#     moved here because nothing in pRoteomics used it, and nine genuinely
+#     shared libraries were vendored byte-identical under R/vendor/ with a
+#     manifest, all verified to contain zero inference calls;
+#   * the render inputs the contracts declare were imported into this
+#     repository's own gitignored results/ workspace at the paths the
+#     contracts name, so no renderer and almost no test had to be rewritten;
+#   * repo_path() learned the single-argument form repo_path("R/x.R"), so
+#     callers that iterate repo-relative file lists resolve through the domain
+#     layout like everyone else;
+#   * assertions that were about the pRoteomics tree were removed with named
+#     replacement coverage there, and assertions about scientific content were
+#     delegated to the repository that owns it.
 #
-# PENDING REPOINT. Imported byte-identical from pRoteomics in Phase 6C. They
-# assert against the live analysis results tree - results/figures/manuscript/,
-# results/tables/manuscript_candidates/, config/*.yml, pipeline.yml - which
-# this repository deliberately cannot see, because a live cross-repository
-# dependency is exactly what the split removed. They are retained rather than
-# deleted, and must be repointed onto source_data/pRoteomics/ in Phase 6D.
-# Their status is recorded in the migration classification audit in the
-# pRoteomics repository.
+# The workspace is rebuilt by:
+#   PROTEOMICS_ROOT=/path/to/proteomics Rscript tools/import_render_inputs.R
 #
-# Running them now reports failures that mean "this test has not been
-# repointed yet", not "the publication state is wrong". Conflating the two is
-# how a suite stops being believed, so they do not gate.
-#
-# Run everything, including the pending set:
-#   Rscript tests/testthat.R --all
+# That tool is the only thing in this repository that ever touches a sibling
+# path, it is run by hand, and what the suite verifies against afterwards is
+# the tracked manifest in provenance/source_manifests/.
 
 library(testthat)
 
-GATING <- c(
-  "test-publication-integrity.R",
-  "test-no-analysis-in-manuscript.R",
-  "test-manuscript-figure3-utils.R",
-  "test-story-v5-figure-layer.R",
-  "test-immunostaining-figure-registration.R"
-)
-
 args <- commandArgs(trailingOnly = TRUE)
-all_files <- sort(list.files("tests/testthat", pattern = "^test-.*[.]R$"))
-run <- if ("--all" %in% args) all_files else GATING
-pending <- setdiff(all_files, GATING)
+files <- sort(list.files("tests/testthat", pattern = "^test-.*[.]R$"))
 
 cat("Exp9_manuscript publication integrity suite\n")
 cat("===========================================\n")
-cat("gating tests :", length(GATING), "\n")
-cat("pending repoint:", length(pending), "(not gating)\n\n")
+cat("test files:", length(files), " (no excluded set)\n\n")
 
 rows <- list()
-for (f in run) {
+for (f in files) {
   r <- tryCatch(
     as.data.frame(test_file(file.path("tests/testthat", f),
                             reporter = "silent", package = NULL)),
     error = function(e) data.frame(test = NA, passed = 0, failed = 0,
                                    error = TRUE, skipped = 0))
-  rows[[f]] <- data.frame(file = f, pass = sum(r$passed),
-                          fail = sum(r$failed), err = sum(r$error))
-  cat(sprintf("%-40s pass=%-4d fail=%-3d err=%-3d\n", f,
-              sum(r$passed), sum(r$failed), sum(r$error)))
+  rows[[f]] <- data.frame(file = f, pass = sum(r$passed), fail = sum(r$failed),
+                          err = sum(r$error), skip = sum(r$skipped))
+  cat(sprintf("%-44s pass=%-5d fail=%-3d err=%-3d skip=%-3d\n", f,
+              sum(r$passed), sum(r$failed), sum(r$error), sum(r$skipped)))
 }
 d <- do.call(rbind, rows)
 
 cat("\n")
-cat("files:", nrow(d), " pass:", sum(d$pass),
-    " fail:", sum(d$fail), " err:", sum(d$err), "\n")
+cat("files  :", nrow(d), "\n")
+cat("passed :", sum(d$pass), "\n")
+cat("failed :", sum(d$fail), "\n")
+cat("errors :", sum(d$err), "\n")
+cat("skipped:", sum(d$skip), "\n")
 
-if (!("--all" %in% args) && length(pending)) {
-  cat("\npending repoint (Phase 6D):\n")
-  writeLines(paste0("  ", pending))
+if (sum(d$skip) > 0L) {
+  cat("\nfiles reporting skips:\n")
+  s <- d[d$skip > 0L, ]
+  for (i in seq_len(nrow(s))) cat(sprintf("  %-44s %d\n", s$file[i], s$skip[i]))
 }
 
 if (sum(d$fail) == 0L && sum(d$err) == 0L) {
@@ -80,4 +70,8 @@ if (sum(d$fail) == 0L && sum(d$err) == 0L) {
   quit(status = 0L)
 }
 cat("\nRESULT: FAIL\n")
+b <- d[d$fail > 0L | d$err > 0L, ]
+for (i in seq_len(nrow(b))) {
+  cat(sprintf("  %-44s fail=%d err=%d\n", b$file[i], b$fail[i], b$err[i]))
+}
 quit(status = 1L)
