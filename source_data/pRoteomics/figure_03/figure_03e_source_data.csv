@@ -1,0 +1,2 @@
+program,term_id,dataset,compartment_label,spatial_unit_label,NES,FDR,RES_CON_NES,SUS_CON_NES,SUS_RES_NES,shared_NES_strip_limit,column_role
+mRNA processing,GO:0006397,neuron_soma,Soma,CA2,2.12576029806184,1.9295e-7,-1.1701417664705,1.62006870035815,2.12576029806184,2.76084780974384,carries the shared column header for this program; the protein panel directly below shows the leading-edge proteins of the same program and repeats no context

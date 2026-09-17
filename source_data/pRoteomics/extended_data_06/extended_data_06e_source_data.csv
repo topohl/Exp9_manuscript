@@ -1,0 +1,2 @@
+program,term_id,dataset,NES,FDR,RES_CON_NES,SUS_CON_NES,SUS_RES_NES,shared_NES_strip_limit,shared_scale_note
+oxidative phosphorylation,GO:0006119,microglia,-2.11097705826318,5.75222270996947e-5,-1.77511626585622,-2.76084780974384,-2.11097705826318,2.76084780974384,"the three-contrast NES strip uses ONE symmetric colour limit shared by Figure 3 d/e/f and ED6 c/d/e, so the same colour means the same NES in every strip in the family"

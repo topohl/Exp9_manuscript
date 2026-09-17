@@ -1,0 +1,2 @@
+program,term_id,dataset,compartment_label,spatial_unit_label,NES,FDR,RES_CON_NES,SUS_CON_NES,SUS_RES_NES,shared_NES_strip_limit,column_role
+synaptic signalling,GO:0099536,neuron_neuropil,Neuropil,CA3 SR,-1.71924782386866,4.12222222222222e-8,1.34236438036007,-1.7162165957115,-1.71924782386866,2.76084780974384,carries the shared column header for this program; the protein panel directly below shows the leading-edge proteins of the same program and repeats no context

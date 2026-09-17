@@ -1,0 +1,2 @@
+program,term_id,dataset,NES,FDR,RES_CON_NES,SUS_CON_NES,SUS_RES_NES,shared_NES_strip_limit,shared_scale_note
+mRNA processing,GO:0006397,neuron_soma,2.12576029806184,1.9295e-7,-1.1701417664705,1.62006870035815,2.12576029806184,2.76084780974384,"the three-contrast NES strip uses ONE symmetric colour limit shared by Figure 3 d/e/f and ED6 c/d/e, so the same colour means the same NES in every strip in the family"
