@@ -1,5 +1,11 @@
 # Manuscript figure entry points
 
+**New here? Read [FIGURE_INDEX.md](FIGURE_INDEX.md) first.** This directory
+holds every figure generation the manuscript has passed through, and all of
+them still run, so the file list alone does not say which is current. The index
+names, per figure, the entry point to run and the canonical renderer that
+produced the panels, and marks the remaining 36 files as superseded.
+
 This directory is the explicit manuscript layer for Figures 2 and 3. The
 scientific pipeline remains organized by analysis stage; these entry points
 select and validate the exact downstream products promoted into the manuscript.
