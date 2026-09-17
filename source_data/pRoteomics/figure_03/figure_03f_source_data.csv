@@ -1,0 +1,2 @@
+program,term_id,dataset,compartment_label,spatial_unit_label,NES,FDR,RES_CON_NES,SUS_CON_NES,SUS_RES_NES,shared_NES_strip_limit,column_role
+oxidative phosphorylation,GO:0006119,microglia,Microglia ROI,CA1,-2.11097705826318,5.75222270996947e-5,-1.77511626585622,-2.76084780974384,-2.11097705826318,2.76084780974384,carries the shared column header for this program; the protein panel directly below shows the leading-edge proteins of the same program and repeats no context

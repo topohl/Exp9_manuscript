@@ -1,0 +1,4 @@
+dataset,p,floor,n_edges,lab,reading
+neuron_neuropil,0.5785714285714286,0.00357142857142857,45,Neuropil,an informative null: the enumeration had resolution to 0.0036 and found no whole-network group difference. The axis is log10 because on a linear axis the attainable floor and the 0.05 rule both collapse onto the y axis
+neuron_soma,0.8035714285714286,0.00357142857142857,6,Soma,an informative null: the enumeration had resolution to 0.0036 and found no whole-network group difference. The axis is log10 because on a linear axis the attainable floor and the 0.05 rule both collapse onto the y axis
+microglia,0.7357142857142858,0.00357142857142857,6,Microglia-enriched ROI,an informative null: the enumeration had resolution to 0.0036 and found no whole-network group difference. The axis is log10 because on a linear axis the attainable floor and the 0.05 rule both collapse onto the y axis
