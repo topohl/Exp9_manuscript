@@ -58,8 +58,11 @@ if (!file.exists(p_manifest)) {
   cat("  source commit(s)   :", paste(unique(m$source_commit), collapse = ", "), "\n")
   cat("  contract version(s):", paste(unique(m$contract_version), collapse = ", "), "\n")
 
-  ## exported_file is recorded relative to the producing repository root.
-  local_path <- file.path(p_root, sub("^results/publication_source_data/", "",
+  ## exported_file is recorded relative to the producing repository root, at
+  ## its declared export boundary. Phase 6F moved that boundary from
+  ## results/publication_source_data/ to exports/publication_source_data/;
+  ## both prefixes are stripped so a manifest from either era resolves.
+  local_path <- file.path(p_root, sub("^(exports|results)/publication_source_data/", "",
                                       m$exported_file))
   present <- file.exists(local_path)
   cat("  files present      :", sum(present), "/", nrow(m), "\n")
@@ -79,7 +82,7 @@ if (!file.exists(p_manifest)) {
 
   ## Nothing may sit in the bundle that the manifest does not cover.
   on_disk <- setdiff(list.files(p_root, recursive = TRUE), "manifest.csv")
-  covered <- sub("^results/publication_source_data/", "", m$exported_file)
+  covered <- sub("^(exports|results)/publication_source_data/", "", m$exported_file)
   orphan <- setdiff(on_disk, covered)
   cat("  uncovered files    :", length(orphan), "\n")
   if (length(orphan)) {
