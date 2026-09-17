@@ -7,3 +7,7 @@ export/*/
 # imported, regenerable render workspace; the manifest under
 # provenance/source_manifests/ is what the suite verifies against
 /results/
+
+# R graphics device byproduct of running the suite
+Rplots.pdf
+**/Rplots.pdf
