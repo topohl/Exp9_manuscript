@@ -62,6 +62,32 @@ historical generation names (`final_truth_v9`, `spatial_v6`, `ED1_FINAL_V9`,
 | `extended_data_04` | WITHHELD - scope and unsupported spatial labels; identity reserved |
 | `extended_data_07` | WITHHELD - unused and archivable; identity reserved |
 
+## What this repository owns
+
+Everything from the frozen source-data bundle onward:
+
+| Step | Entry point |
+| --- | --- |
+| panel libraries | `R/panels/` |
+| figure assembly and validation | `figures/figure_01.R`, `figure_02.R`, `figure_03.R` |
+| journal naming, layout, submission bundle | `tools/package_journal_figures.R` |
+| bundle verification | `tools/verify_source_bundles.R` |
+| render-input import (one-off, by hand) | `tools/import_render_inputs.R` |
+
+Phase 6D moved journal figure packaging here from pRoteomics. That repository
+now stops at the canonical publication source-data bundle, its manifest and a
+publication-readiness audit of its own figure outputs.
+
+`R/vendor/` holds nine libraries that pRoteomics and this repository both need
+for reading canonical tables and for presentation grammar. They are vendored
+byte-identical with `R/vendor/manifest.csv` recording source commit and
+sha256, and every one contains zero inference calls. Vendoring rather than
+reaching across repositories is what makes the runtime dependency count zero.
+
+`results/` is a gitignored, regenerable render workspace imported by
+`tools/import_render_inputs.R`; the tracked manifest under
+`provenance/source_manifests/` is what the suite verifies against.
+
 ## Verifying the imports
 
 ```sh

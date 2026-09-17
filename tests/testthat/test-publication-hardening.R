@@ -1,3 +1,10 @@
+# Phase 6D: the Part-B tests that asserted properties of the pRoteomics tree
+# were removed from this file. Each has named replacement coverage in
+# pRoteomics: the producer-layer dependency guard in
+# test-analysis-publication-boundary.R, and registry existence plus audit-root
+# exclusion in test-pipeline-registry.R. The verification-state guards read a
+# pRoteomics audit script and stayed with it.
+
 # Publication-hardening guards.
 #
 # Part A fixed what the manuscript may claim; Part B established which parts of
@@ -26,49 +33,6 @@ layer_of <- function(p) {
 
 # ---------------------------------------------------------------- B27 guards
 
-test_that("no producer layer sources deprecated or scaffold code", {
-  # PH finding: 0 such edges today. This is the guard that keeps it at 0, and is
-  # the concrete form of "deprecated code must not masquerade as active".
-  SRC <- paste0("(?<![A-Za-z0-9_.])(source|sys[.]source)\\s*\\(\\s*",
-                "(repo_path\\s*\\(([^)]*)\\)|[\"']([^\"']+)[\"'])")
-  producer <- c("numbered analysis stage", "figure / manuscript layer",
-                "shared helper library")
-  leaks <- character(0)
-  for (p in tracked_scripts()) {
-    if (!layer_of(p) %in% producer) next
-    ln <- readLines(repo(p), warn = FALSE)
-    m <- unlist(regmatches(ln, gregexpr(SRC, ln, perl = TRUE)))
-    if (!length(m)) next
-    tgt <- vapply(m, function(x) {
-      if (grepl("repo_path", x)) {
-        a <- sub(".*repo_path\\s*\\(", "", x)
-        paste(gsub("[\"' )]", "", strsplit(a, ",")[[1]]), collapse = "/")
-      } else sub(".*[\"']([^\"']+)[\"'].*", "\\1", x)
-    }, character(1))
-    bad <- tgt[vapply(tgt, layer_of, character(1)) %in%
-                 c("deprecated", "testing scaffold")]
-    if (length(bad)) leaks <- c(leaks, sprintf("%s -> %s", p, bad))
-  }
-  expect_equal(leaks, character(0))
-})
-
-test_that("99_audits stays excluded from the pipeline registry", {
-  # DEC-004. An audit is not a pipeline stage, and must never become a required
-  # step that a publication rerun depends on.
-  source(repo("R", "paths.R"))
-  source(repo("R", "pipeline_registry.R"))
-  ex <- pipeline_analysis_script_exclusions()
-  expect_true("99_audits" %in% ex$roots)
-})
-
-test_that("every registry step names a file that exists", {
-  source(repo("R", "paths.R"))
-  source(repo("R", "pipeline_registry.R"))
-  entries <- pipeline_registry_entries(read_pipeline_registry())
-  missing <- entries$script[!file.exists(repo(entries$script))]
-  expect_equal(missing, character(0))
-})
-
 # ------------------------------------------------- B28 freeze protection
 
 test_that("the frozen v9 contract still reaches every renderer it names", {
@@ -79,7 +43,12 @@ test_that("the frozen v9 contract still reaches every renderer it names", {
   used <- unique(vapply(ct$panels, function(p)
     as.character(p$renderer %||% ""), character(1)))
   used <- used[nzchar(used)]
-  srcs <- c(Sys.glob(repo("R", "*.R")), Sys.glob(repo("figures", "*.R")))
+  # R/ is organised into panels/ and vendor/, so the scan is recursive.
+  # A non-recursive glob would find almost nothing defined and the
+  # assertion would pass vacuously.
+  srcs <- c(list.files(repo("R"), pattern = "[.]R$", recursive = TRUE,
+                       full.names = TRUE),
+            Sys.glob(repo("figures", "*.R")))
   defined <- unlist(lapply(srcs, function(f)
     sub(" <- function.*", "",
         grep("^[a-z][A-Za-z0-9_]* <- function", readLines(f, warn = FALSE),
@@ -112,7 +81,7 @@ test_that("every primary atlas theme has exactly one display label", {
   reg <- utils::read.csv(repo("config", "manuscript_go_theme_registry.tsv"),
                          sep = "\t", stringsAsFactors = FALSE)
   prim <- unique(reg$theme_id[reg$theme_role == "primary"])
-  pan <- readLines(repo("R", "final_truth_v9_panels.R"), warn = FALSE)
+  pan <- readLines(repo("R", "panels", "final_truth_v9_panels.R"), warn = FALSE)
   b <- grep("^  SHORT <- c\\(", pan)
   e <- b + which(grepl("\\)\\s*$", pan[b:(b + 20)]))[1] - 1L
   src <- paste(pan[b:e], collapse = " ")
@@ -188,39 +157,3 @@ test_that("the spatial wording contract is declared in the rulebook", {
 })
 
 # ------------------------------------------- PH-010 verification provenance
-
-test_that("the verification-state guard exists and declares its contract", {
-  p <- repo("99_audits", "publication_hardening", "09_verification_state.R")
-  expect_true(file.exists(p))
-  src <- readLines(p, warn = FALSE)
-  # the three states a verification run can describe
-  for (tok in c("HEAD", "STAGED_TREE", "DIRTY_WORKTREE"))
-    expect_true(any(grepl(tok, src, fixed = TRUE)))
-  # strict only in release mode, with an explicit escape hatch
-  expect_true(any(grepl("--release", src, fixed = TRUE)))
-  expect_true(any(grepl("--allow-nonhead-verification", src, fixed = TRUE)))
-  expect_true(any(grepl("quit(status = 1L)", src, fixed = TRUE)))
-})
-
-test_that("a release verification refuses a tree that is not HEAD", {
-  # The guard is only useful if it actually fails. Exercise it in a throwaway
-  # repository rather than against the real one, so the test cannot depend on
-  # the state of the working tree it is being run from.
-  skip_if(nchar(Sys.which("git")) == 0, "git unavailable")
-  tmp <- file.path(tempdir(), paste0("phverif", as.integer(Sys.time())))
-  dir.create(tmp, showWarnings = FALSE)
-  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
-  q <- function(...) suppressWarnings(system2("git", c("-C", shQuote(tmp), ...),
-                                              stdout = TRUE, stderr = FALSE))
-  q("init", "-q")
-  q("config", "user.email", "t@t"); q("config", "user.name", "t")
-  writeLines("x", file.path(tmp, "a.txt"))
-  q("add", "-A"); q("commit", "-qm", "init")
-  clean <- length(q("status", "--porcelain", "--untracked-files=all")) == 0
-  expect_true(clean)
-  writeLines("y", file.path(tmp, "b.txt"))
-  dirty <- q("status", "--porcelain", "--untracked-files=all")
-  expect_true(length(dirty) > 0)
-  # an untracked file is invisible to git ls-files - the exact PH-010 blind spot
-  expect_false("b.txt" %in% q("ls-files"))
-})

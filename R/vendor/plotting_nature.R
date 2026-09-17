@@ -1,0 +1,263 @@
+# Compact plotting helpers for manuscript-scale enrichment figures.
+
+NATURE_DIMENSIONS_MM <- c(
+  single_column = 89,
+  double_column = 183,
+  maximum_height = 170
+)
+
+NATURE_TEXT_SIZES_PT <- c(
+  manuscript_body = 6.25,
+  secondary = 5.25,
+  panel_letter = 8
+)
+
+# Opt-in typography for the final Figure 2/3 manuscript panels.  Kept
+# separate from the established compact defaults above so existing figures
+# retain their current appearance unless they explicitly request this preset.
+NATURE_MANUSCRIPT_TEXT_SIZES_PT <- c(
+  normal = 7,
+  dense = 6.5,
+  axis_title = 7.5,
+  panel_letter = 9,
+  title = 8
+)
+
+NATURE_SEMANTIC_PALETTES <- list(
+  group = c(CON = "#3E3C6F", RES = "#C6C3BB", SUS = "#E63A48"),
+  dataset = c(microglia = "#A8D5CF", neuropil = "#2F6F62", soma = "#7F7F7F"),
+  signed = c(low = "#3B6FA5", mid = "#F7F7F7", high = "#C45A52"),
+  support = c("#F2F0F7", "#CBC9E2", "#9E9AC8", "#756BB1", "#54278F"),
+  jaccard = c("#F7FBFF", "#C6DBEF", "#9ECAE1", "#6BAED6", "#2171B5")
+)
+
+nature_dimensions_mm <- function() {
+  NATURE_DIMENSIONS_MM
+}
+
+nature_text_sizes_pt <- function() {
+  NATURE_TEXT_SIZES_PT
+}
+
+nature_manuscript_text_sizes_pt <- function() {
+  NATURE_MANUSCRIPT_TEXT_SIZES_PT
+}
+
+nature_palette <- function(role = c("group", "dataset", "signed", "support", "jaccard")) {
+  role <- match.arg(role)
+  NATURE_SEMANTIC_PALETTES[[role]]
+}
+
+nature_anatomical_island_palette <- function() {
+  c(
+    "Microglia-enriched ROI::CA1" = "#B9E1DC",
+    "Microglia-enriched ROI::CA2" = "#8FCBC4",
+    "Microglia-enriched ROI::CA3" = "#69B3AA",
+    "Microglia-enriched ROI::DG" = "#4E958B",
+    "Neuropil::CA1-SLM" = "#5B9085",
+    "Neuropil::CA1-SO" = "#477F74",
+    "Neuropil::CA1-SR" = "#356F64",
+    "Neuropil::CA2-SLM" = "#6C9B92",
+    "Neuropil::CA2-SO" = "#4B8378",
+    "Neuropil::CA2-SR" = "#31685E",
+    "Neuropil::CA3-SO" = "#296058",
+    "Neuropil::CA3-SR" = "#23534D",
+    "Neuropil::DG-MO" = "#7EAAA2",
+    "Neuropil::DG-PO" = "#588A80",
+    "Soma::CA1-SP" = "#626262",
+    "Soma::CA2-SP" = "#7F7F7F",
+    "Soma::CA3-SP" = "#9A9A9A",
+    "Soma::DG-SP" = "#B3B3B3"
+  )
+}
+
+mm_to_in <- function(mm) {
+  as.numeric(mm) / 25.4
+}
+
+theme_nature_base <- function(base_size = 7, base_family = "Arial") {
+  ggplot2::theme_classic(base_size = base_size, base_family = base_family) +
+    ggplot2::theme(
+      line = ggplot2::element_line(linewidth = 0.25),
+      axis.line = ggplot2::element_line(linewidth = 0.25, colour = "black"),
+      axis.ticks = ggplot2::element_line(linewidth = 0.25, colour = "black"),
+      axis.ticks.length = grid::unit(1.2, "mm"),
+      axis.text = ggplot2::element_text(colour = "black"),
+      axis.title = ggplot2::element_text(colour = "black"),
+      strip.background = ggplot2::element_blank(),
+      strip.text = ggplot2::element_text(face = "bold", colour = "black", margin = ggplot2::margin(b = 2)),
+      legend.title = ggplot2::element_text(size = ggplot2::rel(0.9)),
+      legend.text = ggplot2::element_text(size = ggplot2::rel(0.85)),
+      legend.key.size = grid::unit(3.0, "mm"),
+      legend.spacing.y = grid::unit(0.5, "mm"),
+      legend.box.spacing = grid::unit(1.0, "mm"),
+      plot.title = ggplot2::element_text(face = "bold", hjust = 0),
+      plot.subtitle = ggplot2::element_text(hjust = 0),
+      panel.spacing = grid::unit(1.0, "mm")
+    )
+}
+
+theme_nature_heatmap <- function(base_size = 7, base_family = "Arial") {
+  theme_nature_base(base_size = base_size, base_family = base_family) +
+    ggplot2::theme(
+      axis.line = ggplot2::element_blank(),
+      axis.ticks = ggplot2::element_blank(),
+      panel.grid = ggplot2::element_blank(),
+      axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, vjust = 1),
+      legend.position = "right"
+    )
+}
+
+theme_nature_dotplot <- function(base_size = 7, base_family = "Arial") {
+  theme_nature_base(base_size = base_size, base_family = base_family) +
+    ggplot2::theme(
+      panel.grid.major.x = ggplot2::element_line(colour = "grey90", linewidth = 0.2),
+      panel.grid.major.y = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank(),
+      axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, vjust = 1),
+      legend.position = "right"
+    )
+}
+
+theme_nature_manuscript_panel <- function(base_size = NATURE_TEXT_SIZES_PT[["manuscript_body"]],
+                                          base_family = "Arial",
+                                          axes = TRUE,
+                                          publication_legible = FALSE) {
+  axis_line <- if (isTRUE(axes)) {
+    ggplot2::element_line(linewidth = 0.25, colour = "black")
+  } else {
+    ggplot2::element_blank()
+  }
+  axis_ticks <- if (isTRUE(axes)) {
+    ggplot2::element_line(linewidth = 0.25, colour = "black")
+  } else {
+    ggplot2::element_blank()
+  }
+  manuscript_axis_text <- if (isTRUE(publication_legible)) {
+    ggplot2::element_text(size = base_size, colour = "#202020")
+  } else {
+    ggplot2::element_text(colour = "#202020")
+  }
+  manuscript_axis_title <- if (isTRUE(publication_legible)) {
+    ggplot2::element_text(size = base_size, colour = "#202020")
+  } else {
+    ggplot2::element_text(colour = "#202020")
+  }
+  ggplot2::theme_classic(base_size = base_size, base_family = base_family) +
+    ggplot2::theme(
+      text = ggplot2::element_text(family = base_family, colour = "#202020"),
+      line = ggplot2::element_line(linewidth = 0.25, colour = "black"),
+      axis.line = axis_line,
+      axis.ticks = axis_ticks,
+      axis.ticks.length = grid::unit(1.0, "mm"),
+      axis.text = manuscript_axis_text,
+      axis.title = manuscript_axis_title,
+      panel.grid = ggplot2::element_blank(),
+      strip.background = ggplot2::element_blank(),
+      strip.text = ggplot2::element_text(
+        face = "plain", colour = "#202020",
+        margin = ggplot2::margin(0.8, 1.2, 0.8, 1.2)
+      ),
+      panel.spacing = grid::unit(0.8, "mm"),
+      legend.title = ggplot2::element_text(size = if (isTRUE(publication_legible)) base_size else ggplot2::rel(0.92)),
+      legend.text = ggplot2::element_text(size = if (isTRUE(publication_legible)) base_size else ggplot2::rel(0.86)),
+      legend.key.height = grid::unit(2.4, "mm"),
+      legend.key.width = grid::unit(2.8, "mm"),
+      legend.spacing.x = grid::unit(0.6, "mm"),
+      legend.spacing.y = grid::unit(0.2, "mm"),
+      legend.box.spacing = grid::unit(0.5, "mm"),
+      legend.margin = ggplot2::margin(0, 0, 0, 0),
+      plot.title = ggplot2::element_blank(),
+      plot.subtitle = ggplot2::element_blank(),
+      plot.caption = ggplot2::element_blank(),
+      plot.tag = ggplot2::element_blank(),
+      plot.margin = ggplot2::margin(1.5, 1.5, 1.5, 1.5)
+    )
+}
+
+save_nature_svg <- function(plot, filename, width_mm, height_mm) {
+  dir.create(dirname(filename), recursive = TRUE, showWarnings = FALSE)
+  device <- if (requireNamespace("svglite", quietly = TRUE)) svglite::svglite else "svg"
+  ggplot2::ggsave(
+    filename = filename,
+    plot = plot,
+    width = mm_to_in(width_mm),
+    height = mm_to_in(height_mm),
+    units = "in",
+    device = device,
+    limitsize = FALSE
+  )
+  if (!requireNamespace("svglite", quietly = TRUE)) {
+    pdf_file <- sub("\\.svg$", ".pdf", filename)
+    ggplot2::ggsave(
+      filename = pdf_file,
+      plot = plot,
+      width = mm_to_in(width_mm),
+      height = mm_to_in(height_mm),
+      units = "in",
+      device = grDevices::pdf,
+      limitsize = FALSE
+    )
+  }
+  invisible(filename)
+}
+
+clean_program_label <- function(x) {
+  x <- as.character(x)
+  recode <- c(
+    RNA_RNP_processing = "RNA/RNP processing",
+    Ribosome_Translation = "Ribosome/translation",
+    Translation_Ribosome = "Ribosome/translation",
+    Mitochondria_OXPHOS_Metabolism = "Mitochondria/OXPHOS/metabolism",
+    Mitochondria_OXPHOS = "Mitochondria/OXPHOS/metabolism",
+    Proteostasis_Ubiquitin_Folding = "Proteostasis/ubiquitin/protein folding",
+    Proteostasis_Lysosome = "Proteostasis/ubiquitin/protein folding",
+    Synapse_Vesicle_Organization = "Synapse/vesicle organization",
+    Synapse_Plasticity = "Synapse/vesicle organization",
+    Cytoskeleton_Motility = "Cytoskeleton/motility",
+    Cytoskeleton_Transport = "Cytoskeleton/motility",
+    Development_Patterning = "Development/patterning",
+    HPA_Glucocorticoid_Response = "HPA/glucocorticoid response",
+    Neuroimmune_Complement_Phagosome = "Neuroimmune/complement/phagosome",
+    ECM_Vascular_Barrier = "ECM/vascular barrier",
+    Oxidative_Redox_Stress = "Oxidative/redox stress",
+    Lipid_Myelin_Membrane = "Lipid/myelin/membrane",
+    Autophagy_Lysosome = "Autophagy/lysosome",
+    Immune_Microglia = "Immune/microglia",
+    Other = "Other"
+  )
+  out <- unname(recode[x])
+  out[is.na(out)] <- gsub("_", " ", x[is.na(out)])
+  out
+}
+
+clean_spatial_unit_label <- function(x) {
+  x <- as.character(x)
+  x <- gsub("_", " ", x)
+  x <- gsub("\\bso\\b", "SO", x, ignore.case = TRUE)
+  x <- gsub("\\bsr\\b", "SR", x, ignore.case = TRUE)
+  x <- gsub("\\bslm\\b", "SLM", x, ignore.case = TRUE)
+  x <- gsub("\\bsp\\b", "SP", x, ignore.case = TRUE)
+  x <- gsub("\\bmo\\b", "MO", x, ignore.case = TRUE)
+  x <- gsub("\\bpo\\b", "PO", x, ignore.case = TRUE)
+  x <- gsub("\\bsg\\b", "SG", x, ignore.case = TRUE)
+  x <- gsub("\\bgranule\\b", "granule", x, ignore.case = TRUE)
+  x
+}
+
+clean_comparison_label <- function(x) {
+  x <- as.character(x)
+  x <- gsub("_vs_", " vs ", x, fixed = TRUE)
+  x <- gsub("_", " ", x, fixed = TRUE)
+  x
+}
+
+anatomical_spatial_unit_levels <- function(units) {
+  units <- unique(as.character(units))
+  preferred <- c(
+    as.vector(outer(c("CA1", "CA2", "CA3"), c("so", "sr", "slm", "sp"), paste, sep = "_")),
+    "DG_mo", "DG_po", "DG_sg", "DG_granule",
+    "CA1", "CA2", "CA3", "DG"
+  )
+  c(preferred[preferred %in% units], sort(setdiff(units, preferred)))
+}

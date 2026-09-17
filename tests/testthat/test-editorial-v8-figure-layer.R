@@ -183,16 +183,17 @@ testthat::test_that("the cairo page rounds UP to the next whole point", {
   }
 })
 
-testthat::test_that("every v8 script is registered in the pipeline", {
-  y <- yaml::read_yaml(repo_path("pipeline.yml"))
-  ids <- vapply(y$stages$manuscript_candidates$scripts,
-                function(z) as.character(z$script), character(1))
+testthat::test_that("every v8 script is present in the renderer layer", {
+  # Was: registered in the pRoteomics manuscript_candidates stage. Phase 6C
+  # deleted that stage, deliberately, and pRoteomics now asserts the inverse
+  # in tests/testthat/test-analysis-publication-boundary.R: no figure renderer
+  # may be registered there at all. The guarantee that survives here is that
+  # the layer is complete in the repository that owns it.
   for (s in c("figures/editorial_v8_figure_02.R",
               "figures/editorial_v8_figure_03.R",
               "figures/editorial_v8_extended_data.R",
               "figures/editorial_v8_vector_audit.R",
               "figures/editorial_v8_previews.R")) {
-    testthat::expect_true(s %in% ids, label = s)
     testthat::expect_true(file.exists(repo_path(s)), label = s)
   }
 })

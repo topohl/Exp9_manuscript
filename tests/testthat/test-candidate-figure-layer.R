@@ -1,4 +1,5 @@
 source(testthat::test_path("..", "..", "R", "paths.R"))
+source(testthat::test_path("..", "..", "R", "frozen_inputs.R"))
 source(repo_path("R", "candidate_figure_utils.R"))
 
 rd <- function(p) utils::read.csv(p, stringsAsFactors = FALSE, check.names = FALSE)
@@ -126,7 +127,7 @@ testthat::test_that("the GSEA panels use canonical ranked-GSEA output", {
                          fixed = TRUE)
   testthat::expect_true(any(grepl("manuscript_go_theme_registry.tsv",
                                   as.character(unlist(p$input_dependencies)), fixed = TRUE)))
-  testthat::expect_true(have(repo_path(as.character(p$primary_source))))
+  testthat::expect_true(frozen_input_present(repo_path(as.character(p$primary_source))))
 
   sd <- file.path(cf_output_paths("03")$source_data, "3x_gsea_atlas_susres_source_data.csv")
   testthat::skip_if_not(have(sd), "candidate figure 3 not built")

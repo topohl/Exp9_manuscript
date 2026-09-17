@@ -8,12 +8,12 @@
 # the panels may not carry the columns that would let them overreach.
 
 repo <- function(...) file.path(testthat::test_path("..", ".."), ...)
-SD <- repo("manuscript", "figure1_bridge_mmmsociability", "source_data")
+SD <- repo("source_data", "MMMSociability", "source_data")
 PANELS <- repo("results", "figures", "manuscript", "figure_01_panels")
 FIG <- repo("results", "figures", "manuscript", "figure_01")
 RENDERER <- repo("figures", "figure_01_panels.R")
 ENTRY <- repo("figures", "figure_01.R")
-LEGEND <- repo("manuscript", "figure1_legend.md")
+LEGEND <- repo("manuscript", "legends", "figure1_legend.md")
 rd <- function(p) utils::read.csv(p, stringsAsFactors = FALSE)
 have_src <- dir.exists(SD) && file.exists(file.path(SD, "figure1_panel_statistics.csv"))
 
@@ -237,7 +237,7 @@ test_that("Figure 1 uses the same group palette as Figures 2 and 3", {
   # Figures 2 and 3 actually render with, and it is byte-identical to
   # MMM_GROUP_COLOURS upstream. config/manuscript_palette.yml declares a
   # different set that no numbered figure uses; Figure 1 previously obeyed it.
-  source(repo("R", "plotting_nature.R"))
+  source(repo("R", "vendor", "plotting_nature.R"))
   expect_equal(unname(NATURE_SEMANTIC_PALETTES$group[c("CON", "RES", "SUS")]),
                c("#3E3C6F", "#C6C3BB", "#E63A48"))
   src <- readLines(RENDERER, warn = FALSE)

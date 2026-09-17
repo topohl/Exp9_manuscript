@@ -289,8 +289,12 @@ testthat::test_that("no spatial_v6 renderer creates new inference", {
 })
 
 testthat::test_that("spatial_v6 writes only under manuscript_candidates/spatial_v6", {
+  # spatial_v6_baseline_profile.R returned to pRoteomics in Phase 6D: it
+  # computes a phenotype-blind CON baseline table, which is analysis, not
+  # rendering. The isolation assertion covers the five renderers that
+  # remain in this repository.
   for (f in c("spatial_v6_figure_02.R", "spatial_v6_figure_03.R",
-              "spatial_v6_extended_data.R", "spatial_v6_baseline_profile.R",
+              "spatial_v6_extended_data.R",
               "spatial_v6_fingerprint_selection.R",
               "spatial_v6_story_coverage_audit.R")) {
     src <- code_of(repo_path("figures", f))

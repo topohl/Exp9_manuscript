@@ -84,7 +84,7 @@ testthat::test_that("PB-01: the DAP track and the atlas share column geometry by
   testthat::expect_identical(
     as.character(byid[["v9_atlas"]]$shares_column_geometry_with), "v9_dap_track")
 
-  code <- paste(readLines(repo_rel("R", "final_truth_v9_panels.R"), warn = FALSE),
+  code <- paste(readLines(repo_rel("R", "panels", "final_truth_v9_panels.R"), warn = FALSE),
                 collapse = "\n")
   testthat::expect_true(grepl("shares_column_geometry_with", code, fixed = TRUE))
 

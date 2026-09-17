@@ -105,12 +105,25 @@ r_library_path <- function(name, root = repo_root()) {
 
 repo_path <- function(...) {
   parts <- list(...)
+
+  # Two-argument form: repo_path("R", "module_stats.R").
   if (length(parts) == 2L &&
       identical(as.character(parts[[1]]), "R") &&
       length(parts[[2]]) == 1L &&
       grepl("[.]R$", as.character(parts[[2]]))) {
     return(r_library_path(as.character(parts[[2]])))
   }
+
+  # Single-argument form: repo_path("R/module_stats.R"). Callers that iterate
+  # a list of repo-relative file paths use this, and it has to resolve the
+  # same way or the domain layout leaks back into every such caller.
+  if (length(parts) == 1L && length(parts[[1]]) == 1L) {
+    one <- as.character(parts[[1]])
+    if (grepl("^R/[A-Za-z0-9_]+[.]R$", one)) {
+      return(r_library_path(sub("^R/", "", one)))
+    }
+  }
+
   file.path(repo_root(), ...)
 }
 

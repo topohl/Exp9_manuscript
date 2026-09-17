@@ -10,6 +10,7 @@
 repo_rel <- function(...) file.path(testthat::test_path("..", ".."), ...)
 pub_contract <- function() {
   source(testthat::test_path("..", "..", "R", "paths.R"))
+source(testthat::test_path("..", "..", "R", "frozen_inputs.R"))
   yaml::read_yaml(repo_rel("figures", "figure_contract.yml"))
 }
 
@@ -44,7 +45,7 @@ testthat::test_that("no panel id is reused across publications", {
 })
 
 testthat::test_that("the registry matches the contract and records the withheld figures", {
-  reg <- repo_rel("manuscript", "canonical_publication_registry.csv")
+  reg <- repo_rel("provenance", "publication_registry", "canonical_publication_registry.csv")
   testthat::skip_if_not(file.exists(reg), "registry not generated")
   r <- utils::read.csv(reg, stringsAsFactors = FALSE)
 
@@ -62,7 +63,7 @@ testthat::test_that("the registry matches the contract and records the withheld 
 })
 
 testthat::test_that("the Extended Data promotion audit adjudicates all nine identities", {
-  aud <- repo_rel("manuscript", "extended_data_promotion_audit.csv")
+  aud <- repo_rel("provenance", "claims", "extended_data_promotion_audit.csv")
   testthat::skip_if_not(file.exists(aud), "promotion audit not generated")
   a <- utils::read.csv(aud, stringsAsFactors = FALSE)
 
@@ -89,14 +90,14 @@ testthat::test_that("the promoted Extended Data figures resolve to real assets",
     for (p in f$panels) {
       testthat::expect_true(file.exists(repo_path(as.character(p$figure_source))),
                             info = paste("missing panel asset:", p$id))
-      testthat::expect_true(file.exists(repo_path(as.character(p$primary_source))),
+      testthat::expect_true(frozen_input_present(repo_path(as.character(p$primary_source))),
                             info = paste("missing source data:", p$id))
     }
   }
 })
 
 testthat::test_that("the pre-restructure freeze manifest is complete", {
-  man <- repo_rel("manuscript", "prerestructure_freeze_manifest.csv")
+  man <- repo_rel("provenance", "source_manifests", "prerestructure_freeze_manifest.csv")
   testthat::skip_if_not(file.exists(man), "freeze manifest not generated")
   m <- utils::read.csv(man, stringsAsFactors = FALSE)
 
@@ -112,7 +113,7 @@ testthat::test_that("the pre-restructure freeze manifest is complete", {
                         label = paste("objects of class", cls))
   }
   # Every canonical publication must be represented.
-  reg <- repo_rel("manuscript", "canonical_publication_registry.csv")
+  reg <- repo_rel("provenance", "publication_registry", "canonical_publication_registry.csv")
   testthat::skip_if_not(file.exists(reg), "registry not generated")
   r <- utils::read.csv(reg, stringsAsFactors = FALSE)
   canon <- r$publication_id[r$status == "CANONICAL"]
@@ -178,7 +179,7 @@ testthat::test_that("no artefact still points Figure 2h at a withdrawn panel", {
 })
 
 testthat::test_that("every manuscript reference resolves and every canonical figure is cited", {
-  aud <- repo_rel("manuscript", "figure_panel_reference_audit.csv")
+  aud <- repo_rel("provenance", "claims", "figure_panel_reference_audit.csv")
   testthat::skip_if_not(file.exists(aud), "reference audit not generated")
   a <- utils::read.csv(aud, stringsAsFactors = FALSE)
 

@@ -9,9 +9,17 @@
 
 repo <- function(...) file.path(testthat::test_path("..", ".."), ...)
 MS <- repo("manuscript")
-BRIDGE <- file.path(MS, "figure1_bridge_mmmsociability")
+BRIDGE <- repo("source_data", "MMMSociability")
 DRAFT <- file.path(MS, "manuscript_draft.md")
 rd <- function(p) utils::read.csv(p, stringsAsFactors = FALSE)
+
+# The frozen manifests record the pRoteomics prefix
+# manuscript/figure1_bridge_mmmsociability/. The bundle still mirrors that
+# internal layout; only the prefix moved to source_data/MMMSociability/.
+bridge_resolve <- function(recorded) {
+  file.path(testthat::test_path("..", ".."), "source_data", "MMMSociability",
+            sub("^manuscript/figure1_bridge_mmmsociability/", "", recorded))
+}
 
 # The five Figure 1 contracts, plus the two tables the behavioural Extended Data
 # figure renders. All seven come from the same upstream freeze and are pinned by
@@ -46,11 +54,11 @@ test_that("the bridge is a byte-exact mirror of exactly the frozen bundle", {
   expect_equal(list.files(BRIDGE, pattern = "[.][Rr]$", recursive = TRUE),
                character(0))
 
-  man <- rd(file.path(MS, "figure1_bridge_import_manifest.csv"))
+  man <- rd(repo("provenance", "source_manifests", "figure1_bridge_import_manifest.csv"))
   expect_equal(nrow(man), length(BUNDLE_FILES))
   skip_if_not(requireNamespace("digest", quietly = TRUE), "digest unavailable")
   for (i in seq_len(nrow(man))) {
-    p <- repo(man$imported_file[i])
+    p <- bridge_resolve(man$imported_file[i])
     expect_true(file.exists(p))
     expect_equal(file.size(p), man$bytes[i])
     expect_equal(digest::digest(p, algo = "sha256", file = TRUE),
@@ -60,7 +68,7 @@ test_that("the bridge is a byte-exact mirror of exactly the frozen bundle", {
 
 test_that("the bridge records the full upstream provenance chain", {
   skip_if_not(dir.exists(BRIDGE), "figure 1 bridge not imported")
-  p <- rd(file.path(MS, "figure1_bridge_provenance.csv"))
+  p <- rd(repo("provenance", "claims", "figure1_bridge_provenance.csv"))
   val <- function(k) p$value[match(k, p$element)]
   expect_equal(val("source_repository"), "topohl/MMMSociability")
   # The commits the import is pinned to. These are full 40-character shas and
@@ -115,7 +123,7 @@ test_that("line-ending normalisation is disabled for the bridge", {
   # so the recorded SHA-256 would not reproduce and the integrity guard above
   # would fail for a reason that has nothing to do with the evidence.
   ga <- readLines(repo(".gitattributes"), warn = FALSE)
-  expect_true(any(grepl("figure1_bridge_mmmsociability/\\*\\*\\s+-text", ga)))
+  expect_true(any(grepl("source_data/\\*\\*\\s+-text", ga)))
 })
 
 # ------------------------------------------------ manuscript prose obligations
@@ -304,7 +312,7 @@ test_that("the repeated-CV spread is not described as a confidence interval", {
 
 test_that("every Figure 1 claim resolves to a real frozen bundle row", {
   skip_if_not(dir.exists(BRIDGE), "figure 1 bridge not imported")
-  cp <- rd(file.path(MS, "results_claim_provenance.csv"))
+  cp <- rd(repo("provenance", "claims", "results_claim_provenance.csv"))
   f1 <- cp[grepl("^C1-", cp$claim_id), , drop = FALSE]
   expect_gt(nrow(f1), 0)
   expect_equal(anyDuplicated(f1$claim_id), 0L)
@@ -325,17 +333,17 @@ test_that("every Figure 1 claim resolves to a real frozen bundle row", {
 
 test_that("superseded Phase-2B assertions are marked, not silently left true", {
   skip_if_not(dir.exists(BRIDGE), "figure 1 bridge not imported")
-  m <- rd(file.path(MS, "methods_statement_provenance.csv"))
+  m <- rd(repo("provenance", "claims", "methods_statement_provenance.csv"))
   for (id in c("M-16", "M-17", "M-18"))
     expect_true(grepl("SUPERSEDED", m$verified[m$methods_id == id]),
                 info = paste(id, "still asserts the pre-bridge state"))
   # the contracts that declared Figure 1 unresolved must no longer say so
-  bp <- rd(file.path(MS, "behavior_prediction_contract.csv"))
+  bp <- rd(repo("provenance", "claims", "behavior_prediction_contract.csv"))
   expect_false(any(grepl("NO PREDICTION ANALYSIS EXISTS", bp$value)))
-  os <- rd(file.path(MS, "outcome_score_contract.csv"))
+  os <- rd(repo("provenance", "claims", "outcome_score_contract.csv"))
   expect_false(any(grepl("\\[UNRESOLVED\\]", os$value)))
   # every point of disagreement is recorded rather than quietly resolved
-  fc <- rd(file.path(MS, "figure1_bridge_conflicts.csv"))
+  fc <- rd(repo("provenance", "claims", "figure1_bridge_conflicts.csv"))
   expect_gt(nrow(fc), 0)
   expect_true(all(nzchar(fc$authority_applied)))
   expect_true(all(nzchar(fc$resolution_in_manuscript)))
