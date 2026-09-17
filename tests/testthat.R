@@ -38,7 +38,8 @@ GATING <- c(
   "test-publication-integrity.R",
   "test-no-analysis-in-manuscript.R",
   "test-manuscript-figure3-utils.R",
-  "test-story-v5-figure-layer.R"
+  "test-story-v5-figure-layer.R",
+  "test-immunostaining-figure-registration.R"
 )
 
 args <- commandArgs(trailingOnly = TRUE)
