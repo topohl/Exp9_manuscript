@@ -1,0 +1,5 @@
+# testthat scratch output from interactive runs
+tests/testthat/_problems/
+
+# rendered export bundles are regenerated, not tracked
+export/*/
