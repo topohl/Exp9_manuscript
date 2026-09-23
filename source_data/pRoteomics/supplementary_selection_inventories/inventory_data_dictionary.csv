@@ -1,0 +1,73 @@
+table_file,column,definition
+pathway_enrichment_inventory.csv,dataset,"Acquisition compartment: neuron_neuropil, neuron_soma or microglia."
+pathway_enrichment_inventory.csv,compartment,Reader-facing label for dataset.
+pathway_enrichment_inventory.csv,spatial_unit,Prespecified hippocampal spatial unit. Neuropil is region x layer; soma and the microglia-enriched ROI are region-level only.
+pathway_enrichment_inventory.csv,contrast,"Stress-group contrast. The biological replicate is the animal, n = 3 per group."
+pathway_enrichment_inventory.csv,GO_ID,Gene Ontology biological-process identifier.
+pathway_enrichment_inventory.csv,GO_description,GO term name as stored in the enrichment result.
+pathway_enrichment_inventory.csv,NES,"Normalised enrichment score, copied unchanged from the stored GSEA result."
+pathway_enrichment_inventory.csv,raw_p,"Permutation p-value, floored at eps = 1e-10 by the upstream method."
+pathway_enrichment_inventory.csv,BH_FDR,"Benjamini-Hochberg FDR within the GSEA family for that dataset, spatial unit and contrast."
+pathway_enrichment_inventory.csv,fdr_supported,TRUE when BH_FDR < 0.05. Absence of support is not absence of effect at n = 3 per group.
+pathway_enrichment_inventory.csv,theme_id,Registry identifier of the atlas theme this term is assigned to. Semicolon-separated when a term legitimately sits in two themes.
+pathway_enrichment_inventory.csv,manuscript_theme,Reader-facing theme label.
+pathway_enrichment_inventory.csv,theme_role,"primary for the seven atlas rows, qc_review for the two excluded technical themes."
+pathway_enrichment_inventory.csv,theme_claim_eligible,TRUE when the term belongs to one of the seven claim-eligible atlas rows drawn in Figure 3b.
+pathway_enrichment_inventory.csv,assignment_status,"single_theme, multi_theme, qc_review or unclassified."
+pathway_enrichment_inventory.csv,contributes_to_figure_3b_cell,"TRUE when this term contributes to a drawn Figure 3b cell: claim-eligible AND in the SUS - RES contrast the panel draws. The cell value is the median NES of its contributing terms. Use theme_claim_eligible for the contrast-independent denominator (12,598 occurrences); this column is the 4,199 that reach the panel."
+pathway_enrichment_inventory.csv,is_figure_3_exemplar_term,TRUE for the three GO terms shown as exemplar curves in Figure 3 d/e/f.
+pathway_enrichment_inventory_fdr_supported.csv,dataset,"Acquisition compartment: neuron_neuropil, neuron_soma or microglia."
+pathway_enrichment_inventory_fdr_supported.csv,compartment,Reader-facing label for dataset.
+pathway_enrichment_inventory_fdr_supported.csv,spatial_unit,Prespecified hippocampal spatial unit. Neuropil is region x layer; soma and the microglia-enriched ROI are region-level only.
+pathway_enrichment_inventory_fdr_supported.csv,contrast,"Stress-group contrast. The biological replicate is the animal, n = 3 per group."
+pathway_enrichment_inventory_fdr_supported.csv,GO_ID,Gene Ontology biological-process identifier.
+pathway_enrichment_inventory_fdr_supported.csv,GO_description,GO term name as stored in the enrichment result.
+pathway_enrichment_inventory_fdr_supported.csv,NES,"Normalised enrichment score, copied unchanged from the stored GSEA result."
+pathway_enrichment_inventory_fdr_supported.csv,raw_p,"Permutation p-value, floored at eps = 1e-10 by the upstream method."
+pathway_enrichment_inventory_fdr_supported.csv,BH_FDR,"Benjamini-Hochberg FDR within the GSEA family for that dataset, spatial unit and contrast."
+pathway_enrichment_inventory_fdr_supported.csv,fdr_supported,TRUE when BH_FDR < 0.05. Absence of support is not absence of effect at n = 3 per group.
+pathway_enrichment_inventory_fdr_supported.csv,theme_id,Registry identifier of the atlas theme this term is assigned to. Semicolon-separated when a term legitimately sits in two themes.
+pathway_enrichment_inventory_fdr_supported.csv,manuscript_theme,Reader-facing theme label.
+pathway_enrichment_inventory_fdr_supported.csv,theme_role,"primary for the seven atlas rows, qc_review for the two excluded technical themes."
+pathway_enrichment_inventory_fdr_supported.csv,theme_claim_eligible,TRUE when the term belongs to one of the seven claim-eligible atlas rows drawn in Figure 3b.
+pathway_enrichment_inventory_fdr_supported.csv,assignment_status,"single_theme, multi_theme, qc_review or unclassified."
+pathway_enrichment_inventory_fdr_supported.csv,contributes_to_figure_3b_cell,"TRUE when this term contributes to a drawn Figure 3b cell: claim-eligible AND in the SUS - RES contrast the panel draws. The cell value is the median NES of its contributing terms. Use theme_claim_eligible for the contrast-independent denominator (12,598 occurrences); this column is the 4,199 that reach the panel."
+pathway_enrichment_inventory_fdr_supported.csv,is_figure_3_exemplar_term,TRUE for the three GO terms shown as exemplar curves in Figure 3 d/e/f.
+leading_edge_protein_inventory.csv,dataset,"Acquisition compartment: neuron_neuropil, neuron_soma or microglia."
+leading_edge_protein_inventory.csv,compartment,Reader-facing label for dataset.
+leading_edge_protein_inventory.csv,spatial_unit,Prespecified hippocampal spatial unit. Neuropil is region x layer; soma and the microglia-enriched ROI are region-level only.
+leading_edge_protein_inventory.csv,contrast,"Stress-group contrast. The biological replicate is the animal, n = 3 per group."
+leading_edge_protein_inventory.csv,GO_ID,Gene Ontology biological-process identifier.
+leading_edge_protein_inventory.csv,GO_description,GO term name as stored in the enrichment result.
+leading_edge_protein_inventory.csv,NES,"Normalised enrichment score, copied unchanged from the stored GSEA result."
+leading_edge_protein_inventory.csv,BH_FDR,"Benjamini-Hochberg FDR within the GSEA family for that dataset, spatial unit and contrast."
+leading_edge_protein_inventory.csv,theme_id,Registry identifier of the atlas theme this term is assigned to. Semicolon-separated when a term legitimately sits in two themes.
+leading_edge_protein_inventory.csv,manuscript_theme,Reader-facing theme label.
+leading_edge_protein_inventory.csv,theme_claim_eligible,TRUE when the term belongs to one of the seven claim-eligible atlas rows drawn in Figure 3b.
+leading_edge_protein_inventory.csv,gene,Official mouse gene symbol of a leading-edge member of that enrichment.
+leading_edge_protein_inventory.csv,leading_edge_size_of_term,"Number of leading-edge genes in that term, spatial unit and contrast. Figure 3 g/h/i display seven proteins from this universe; this inventory records membership and universe size but does not preserve the original per-protein GSEA rank statistic or ranked-list order."
+leading_edge_protein_inventory.csv,is_figure_3_exemplar_term,TRUE for the three GO terms shown as exemplar curves in Figure 3 d/e/f.
+leading_edge_protein_recurrence.csv,contrast,"Stress-group contrast. The biological replicate is the animal, n = 3 per group."
+leading_edge_protein_recurrence.csv,gene,Official mouse gene symbol of a leading-edge member of that enrichment.
+leading_edge_protein_recurrence.csv,n_supported_go_terms,"Number of distinct claim-eligible FDR-supported GO terms whose leading edge contains this gene, within the contrast."
+leading_edge_protein_recurrence.csv,n_spatial_contexts,Number of distinct dataset x spatial_unit combinations in which that holds.
+leading_edge_protein_recurrence.csv,n_compartments,Number of distinct compartments in which that holds.
+leading_edge_protein_recurrence.csv,spatial_contexts,"The spatial contexts themselves, as dataset:spatial_unit."
+leading_edge_protein_recurrence.csv,themes,The atlas themes involved.
+leading_edge_protein_recurrence.csv,basis,The term set the counts were taken over.
+leading_edge_protein_recurrence.csv,recurrence_class,"RECURRENT_CORE requires >= 3 supported GO terms AND >= 3 spatial contexts, the rule written in docs/ATLAS_PROGRAM_SELECTION_AND_NAMING_RULES.md. SINGLE_APPEARANCE is one term in one context; INTERMEDIATE is everything between; NOT_IN_A_CLAIM_ELIGIBLE_THEME means the gene's supported terms all fall outside the seven atlas rows. The source document names the three classes and fixes only the RECURRENT_CORE boundary; the other two boundaries are this table's stated reading."
+leading_edge_protein_recurrence.csv,n_supported_go_terms_any_theme,The same count taken over all supported terms regardless of theme.
+leading_edge_protein_recurrence.csv,n_spatial_contexts_any_theme,The same context count taken over all supported terms regardless of theme.
+display_selection_disclosure.csv,panel,Manuscript figure panel.
+display_selection_disclosure.csv,displayed,What that panel shows.
+display_selection_disclosure.csv,n_displayed,How many items are drawn.
+display_selection_disclosure.csv,selection_rule,"The rule that chose them, stated so it could be re-executed."
+display_selection_disclosure.csv,selected_from,The set the rule chose from.
+display_selection_disclosure.csv,universe_size,How large that set is.
+display_selection_disclosure.csv,rule_used_the_displayed_result,Whether the rule looked at the quantity the panel displays. This is the question a reader is entitled to ask and the reason this table exists.
+display_selection_disclosure.csv,caveat,The standing interpretive limit on that panel.
+display_selection_disclosure.csv,complete_inventory_released_as,Where the complete set is released.
+ALL,standing_caveat_leading_edge,"Leading-edge membership is not individual protein significance. No protein in these tables is individually FDR-supported by the differential-abundance analysis; BH_FDR is the FDR of the ENRICHMENT, not of the protein. Never describe these as validated, significant, key or driver proteins."
+ALL,standing_caveat_theme_level,No theme-level p-value or FDR exists. Atlas themes are descriptive aggregations of canonical GO terms and carry no multiple-testing family of their own.
+ALL,standing_caveat_absence,"Absence of FDR support is not absence of effect. At three animals per group write 'did not survive correction', never 'no difference' or 'unchanged'."
+ALL,standing_caveat_eps_floor,"GSEA p-values are floored at eps = 1e-10. A term at the floor has a true p the method does not resolve, so its FDR bounds the evidence rather than measuring it."
