@@ -8,6 +8,22 @@ source(testthat::test_path("..", "..", "R", "paths.R"))
 # repository's canonical results tree that had no registered writer at all.
 # The bundle now lives at exports/publication_source_data/ and that is the
 # declared interface.
+#
+# What this directory is, and is not. source_data/ holds FROZEN PUBLICATION
+# RELEASES: byte-exact copies of an export the producing repository has already
+# manifested and hash-recorded, imported once per release and tracked in
+# ordinary Git so the manuscript contains the exact bytes it cites. It is not a
+# workspace for regenerated working outputs. That distinction is what makes
+# tracking them affordable: a frozen release is imported once, whereas
+# repeatedly recommitted analysis outputs would accumulate in history forever.
+# Regenerable material belongs in the gitignored results/ tree, imported by
+# tools/import_render_inputs.R.
+#
+# Phase 6I.1 added the supplementary_selection_inventories identity, whose two
+# largest artifacts are ~44 MiB and ~37 MiB. That was a deliberate one-time
+# decision for a frozen release, not a precedent for routine large-output
+# churn, and the third test below is what holds the line: every row must carry
+# the provenance of a manifested release.
 
 BOUNDARY <- "exports/publication_source_data/"
 
@@ -70,4 +86,32 @@ testthat::test_that("the render-input bridge is a closed historical record", {
     c("IMPORTED", "IMPORTED_DIRECTORY", "PROVENANCE_ONLY")))
   # the three over the size ceiling are recorded by hash rather than copied
   testthat::expect_identical(sum(d$disposition == "PROVENANCE_ONLY"), 3L)
+})
+
+testthat::test_that("every imported row carries frozen-release provenance", {
+  # Section 9 of the Phase 6I.1 brief: an import must originate from a frozen,
+  # manifest-backed release, not from an ad-hoc copy. A row without a
+  # source_commit cannot be traced back to the revision that produced its
+  # bytes, which is exactly the property that makes tracking a large release
+  # in Git defensible.
+  mf <- repo_path("source_data", "pRoteomics", "manifest.csv")
+  testthat::skip_if_not(file.exists(mf), "bundle manifest absent")
+  d <- utils::read.csv(mf, stringsAsFactors = FALSE)
+
+  for (col in c("source_commit", "contract_version", "source_repo")) {
+    testthat::expect_true(col %in% names(d), info = col)
+    testthat::expect_identical(sum(!nzchar(trimws(as.character(d[[col]])))), 0L,
+      info = paste("rows with an empty", col))
+  }
+  # a commit-shaped provenance anchor, not a placeholder
+  testthat::expect_true(all(grepl("^[0-9a-f]{7,40}$", d$source_commit)),
+    info = "source_commit is not a commit sha")
+
+  # and nothing may sit in the bundle that the manifest does not cover, so a
+  # stray copied file cannot masquerade as released data
+  bundle <- repo_path("source_data", "pRoteomics")
+  on_disk <- setdiff(list.files(bundle, recursive = TRUE), "manifest.csv")
+  covered <- sub(BOUNDARY, "", d$exported_file, fixed = TRUE)
+  testthat::expect_identical(setdiff(on_disk, covered), character(0),
+    info = "bundle files not covered by the manifest")
 })
