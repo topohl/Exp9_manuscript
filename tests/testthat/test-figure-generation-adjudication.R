@@ -97,8 +97,18 @@ testthat::test_that("the three manuscript exemplars are exact and resolve in can
                           info = paste("exemplar missing a contrast:", ex$go[i]))
   }
 
-  # The exemplar registry itself must not drift. It is prespecified, not chosen
-  # from the data, and the manuscript commits to exactly these three.
+  # The exemplar registry itself must not drift: the manuscript commits to
+  # exactly these three, and this pins them.
+  #
+  # What this does NOT establish is that they were prespecified, and an earlier
+  # version of this comment claimed exactly that. They were not. They are an
+  # editorial choice of one FDR-supported program per compartment, made after
+  # the phenotype contrasts were known, recorded with that provenance in
+  # f3_program_example_selection.csv
+  # (selected_after_seeing_phenotype_direction = TRUE) and explained in the
+  # proteomics repository's docs/FIGURE_SELECTION_RULES.md. A drift-lock is not
+  # a prespecification, and "prespecified" is the one word a reviewer will
+  # test.
   src <- repo_rel("R", "spatial_v6_figure3_panels.R")
   testthat::skip_if_not(file.exists(src), "exemplar definition not present")
   code <- paste(readLines(src, warn = FALSE), collapse = "\n")
