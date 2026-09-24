@@ -5,33 +5,33 @@ Discussion are drafted. Results §4 is closed rather than pending. The Abstract 
 to be written last, once the rest is settled; the title and the front-matter
 sections a journal asks for at submission are the remaining placeholders.
 
-The Methods TODO register in `manuscript/methods_todo.csv` is closed. Two details
+The Methods TODO register in `provenance/claims/methods_todo.csv` is closed. Two details
 are deliberately left open in place, because neither is recorded anywhere in this
 repository and neither may be filled from convention: the mass-spectrometry
 acquisition and search settings, and the cage-change schedule of the stress
 paradigm. Both must come from the experimental record.
 
 Discussion statements carry a row in
-`manuscript/discussion_statement_provenance.csv`, labelled RESULT,
+`provenance/claims/discussion_statement_provenance.csv`, labelled RESULT,
 INTERPRETATION, LIMITATION or LITERATURE_CONTEXT so that an interpretation is
 never recorded as a measured result; each resolves back to an existing Figure 1–3
 claim rather than creating a duplicate one. Literature claims that this study
-does not itself support are listed in `manuscript/citation_needs.csv` rather than
+does not itself support are listed in `manuscript/citations/citation_needs.csv` rather than
 given invented citations.
 
 Every quantitative statement in the drafted sections carries a row in
-`manuscript/results_statement_provenance.csv`; every claim carries a row in
-`manuscript/results_claim_provenance.csv`. Literature citations are verified
-against PubMed and recorded in `manuscript/citation_needs.csv`; none is invented.
+`provenance/claims/results_statement_provenance.csv`; every claim carries a row in
+`provenance/claims/results_claim_provenance.csv`. Literature citations are verified
+against PubMed and recorded in `manuscript/citations/citation_needs.csv`; none is invented.
 
 Results §1 and the behavioural Methods are quoted from a frozen evidence bundle
 imported from the upstream behavioural repository and mirrored byte-identically
-in `manuscript/figure1_bridge_mmmsociability/`. No behavioural statistic is
+in `source_data/MMMSociability/`. No behavioural statistic is
 computed in this repository. Provenance is in
-`manuscript/figure1_bridge_provenance.csv` and
-`manuscript/figure1_bridge_import_manifest.csv`; every point at which the bundle,
+`provenance/claims/figure1_bridge_provenance.csv` and
+`provenance/source_manifests/figure1_bridge_import_manifest.csv`; every point at which the bundle,
 the upstream code or an older statement here disagreed is recorded in
-`manuscript/figure1_bridge_conflicts.csv`.
+`provenance/claims/figure1_bridge_conflicts.csv`.
 
 ---
 
@@ -41,7 +41,7 @@ the upstream code or an older statement here disagreed is recorded in
 proteomics in adolescent social-instability stress**
 
 _Selected from four candidates; the three rejected ones, and why, are recorded in
-`manuscript/title_selection.csv`. The title is deliberately study-descriptive
+`manuscript/front_matter/title_selection.csv`. The title is deliberately study-descriptive
 rather than result-first: the Discussion states that this work yields three
 separate findings about one cohort and that no evidence joins the behavioural
 result to the proteomic one, so any title with a verb between the two halves
@@ -59,18 +59,19 @@ for an intercept-only baseline; P = 1/1001 by full-refit outcome permutation;
 n = 111), using a model fixed before fitting. The window closed before any
 outcome component was measured, so the classification did not yet exist.
 Separately, laser-capture microdissection with data-independent-acquisition mass
-spectrometry across 18 hippocampal spatial units in nine animals resolved
-molecular organisation that was reproducible between the two hemispheres of one
-animal and recovered all ten a-priori expected pairings with published subregion
+spectrometry across 18 hippocampal spatial units in nine animals (n = 3 per
+group) resolved molecular organisation that was reproducible between the two
+hemispheres of the same animal and recovered all ten a-priori expected pairings
+with published subregion
 signatures. Against that anatomy, later resilient and susceptible outcomes
 differed sparsely in individual proteins — 37 reached FDR support, 12 of the 18
-units contained none, and 15 were not excluded by a prespecified missingness
-audit — but showed coordinated differences in molecular programs, including in
+units contained none, and 15 were evaluable and not excluded by a prespecified
+missingness audit — but showed coordinated differences in molecular programs, including in
 units where no individual protein reached support. These are separate findings
 about one cohort: no evidence joined the behavioural result to the proteomic one.
 
 _243 words, which fits a 250-word limit. Every quantity above is resolved to the
-Results statement it is quoted from in `manuscript/abstract_provenance.csv`. A
+Results statement it is quoted from in `manuscript/front_matter/abstract_provenance.csv`. A
 journal with a 150-word limit will need the two measurement sentences compressed;
 the cut must not be made by dropping the qualifiers, which are what hold the
 claims inside what the data support._
@@ -155,15 +156,15 @@ outcomes are represented within it.
 
 ## 1. Early spontaneous home-cage activity predicts later composite stress outcome
 
-Adolescent social instability produces outcomes that differ markedly between
-individuals, and the question that motivates this work is whether that later
+Adolescent social instability is followed by outcomes that differ markedly
+between individuals, and the question that motivates this work is whether that later
 divergence is foreshadowed by behaviour recorded before the divergence exists. We
 therefore separated the measurement timeline into a single early observation
 window and a set of later outcome measures, with no overlap between them.
 Radio-frequency identification tracking of undisturbed home-cage activity began at
 postnatal day 25, in the first active phase following the first cage change, and
 covered a fixed 12-h window from 18:30 to 06:30 in 10-min bins (72 slots;
-Fig. 1b, Extended Data Fig. 5a). Every component of the later outcome — novel-object recognition,
+Fig. 1a, Extended Data Fig. 5a). Every component of the later outcome — novel-object recognition,
 sucrose preference, weight deviation, delta corticosterone, adrenal weight and
 spleen weight — was collected after this window had closed, as were the composite
 score derived from those components and the resilient/susceptible labels derived
@@ -180,7 +181,7 @@ standard deviation below the same-sex control mean, and resilient otherwise;
 control animals were never relabelled. Because these six measures define the
 composite and the composite defines the classification, differences between the
 resulting groups in those same measures are guaranteed by construction, and we do
-not present them as independent confirmation of the phenotype (Fig. 1a).
+not present them as independent confirmation of the phenotype (Fig. 1b).
 
 Within this design, mean movement over the early window was negatively associated
 with later CombZ (Spearman ρ = −0.39, 95% CI [−0.55, −0.21], q = 6.9 × 10⁻⁵;
@@ -254,7 +255,8 @@ acquisition, respectively (Fig. 2a,b). Only the neuropil was sampled at region �
 layer resolution; the neuronal-soma and microglia-enriched compartments were
 sampled at region level, and are treated as region-level throughout. After
 filtering, the three analysis matrices comprised 5,054, 5,538 and 5,229 protein
-groups, with 4,242 protein groups detected in all three compartments. Throughout,
+groups, and 4,242 protein groups cleared the joint shared-core detection filter
+in every compartment. Throughout,
 the biological replicate is the animal (n = 3 per group); acquisitions are
 repeated measurements within animals and are never treated as independent
 replicates. [Methods: MT-01, MT-02]
@@ -291,7 +293,8 @@ discriminating factor: dentate-gyrus layer contrasts reproduced as well as the
 better regional contrasts (r = 0.81), and CA1 stratum lacunosum-moleculare (r =
 0.74) sat at the inventory median. The two lowest values in the inventory were
 both CA1 laminar — stratum oriens (r = 0.38) and stratum radiatum (r = 0.49) —
-followed by the four microglia-enriched regional contrasts (r = 0.50–0.76). We
+and the four microglia-enriched regional contrasts span the range immediately
+above them (r = 0.50–0.76), overlapping two non-microglia contrasts. We
 therefore interpret CA1 stratum oriens and stratum radiatum distinctions, and
 microglia-enriched regional distinctions, more conservatively than neuronal-soma
 and dentate-gyrus contrasts, and this asymmetry is left visible rather than
@@ -326,10 +329,10 @@ stratum oriens and stratum radiatum the least reproducible distinctions measured
 
 ## 3. Later resilient and susceptible outcomes are associated with sparse protein-level and coordinated, spatially resolved molecular-program differences
 
-We next asked how later resilient and susceptible outcomes are represented in
-this spatially resolved proteome. At the level of individual proteins, the answer
-is that they are represented sparsely. Across all 18 spatial units, 37 proteins
-reached FDR support for the susceptible-versus-resilient contrast, and 12 of the
+At the level of individual proteins, later resilient and susceptible outcomes are
+represented sparsely in this proteome. Across all 18 spatial units, 37 proteins
+reached FDR support for the susceptible-versus-resilient contrast (n = 3 animals
+per group), and 12 of the
 18 units contained none at all (Fig. 3a). Twenty-eight of the 37 were in a single
 neuropil unit, CA2 stratum lacunosum-moleculare.
 
@@ -340,13 +343,18 @@ neuropil units (6.2–24.8% across acquisitions) and that missingness was itself
 unequal between groups. Because
 per-sample median centring is sensitive to differential missingness, this
 produced a systematic normalisation displacement between groups (−0.146 in
-susceptible relative to resilient animals), and across acquisitions the
-displacement tracked missingness almost exactly (Pearson r = 0.93). Applying the
+susceptible relative to resilient animals). Across the 18 CA2-SLM acquisitions
+— nine animals, two hemispheres each — missingness predicted the inflated
+per-sample median almost exactly (Pearson r = 0.93), and the displacement that
+centring then introduced tracked missingness equally closely in the opposite
+direction (r = −0.99). Applying the
 prespecified robustness criteria, 6 of the 28 CA2-SLM proteins qualified; the 9
 FDR-supported proteins outside CA2-SLM were never exposed to this artefact and
 enter unchanged, giving 15 robustness-qualified proteins in total (Fig. 3a,
-Extended Data Fig. 3). "Robustness-qualified" therefore means not excluded by the
-CA2-SLM missingness audit, not passed an additional test. [Methods: MT-05]
+Extended Data Fig. 3). Of the 22 that did not qualify, 10 were excluded by the
+audit and 12 were non-evaluable for want of observed data, so
+"robustness-qualified" means evaluable and not excluded by the CA2-SLM
+missingness audit, rather than having passed an additional test. [Methods: MT-05]
 
 Coordinated differences at the level of molecular programs are detectable,
 including in units where no individual protein reaches FDR support. To
@@ -381,7 +389,8 @@ resilient-versus-control arm (FDR 0.19). An mRNA-processing program in CA2
 neuronal soma (GO:0006397) showed the same asymmetry in the opposite direction
 (NES +2.13, FDR 1.9 × 10⁻⁷ and NES +1.62, FDR 0.028; resilient-versus-control
 FDR 0.78). Both are therefore susceptibility-associated. By contrast, a reduced
-oxidative-phosphorylation program in the CA1 microglia-enriched ROI (GO:0006119)
+oxidative-phosphorylation program in the CA1 microglia-enriched ROI (GO:0006119 —
+an enriched measurement context, not purified cells)
 was supported in all three contrasts in the same direction (NES −2.11, −2.76 and
 −1.78; FDR 5.8 × 10⁻⁵, 1.5 × 10⁻⁸ and 3.1 × 10⁻³) and is better described as a
 graded, stress-associated direction than as an outcome-specific one. These three
@@ -410,8 +419,11 @@ At the network level, no whole-network group difference was detectable at three
 animals per group (exact permutation P = 0.58, 0.80 and 0.74 for the three
 compartments, against an attainable floor of 0.004), and among the eight neuropil
 spatial-unit pairs tested against behavioural readouts no edge–behaviour
-association survived correction (0 of 48 tests; smallest BH-adjusted P = 0.43;
-Extended Data Fig. 8);
+association survived correction (0 of 48 tests, each computed across the same
+nine animals; smallest BH-adjusted P = 0.43 within outcome, 0.67 across the full
+family; Extended Data Fig. 8). With nine animals a single correlation has very
+low power, so this is a limited-power negative result rather than evidence of
+absence, and
 the neuronal-soma and microglia-enriched compartments were not tested in that
 analysis. Selected leading-edge proteins are
 shown to expose which proteins carry each enrichment signal (Fig. 3g–i); none of
@@ -696,8 +708,8 @@ proteome produced no supported result, and we have not written one.
 
 ## Conclusion
 
-Adolescent social instability stress produces heterogeneous later outcomes that
-are prospectively foreshadowed by spontaneous behaviour recorded early in the
+Adolescent social instability stress is followed by heterogeneous later outcomes
+that are prospectively foreshadowed by spontaneous behaviour recorded early in the
 paradigm, and that are accompanied, at the terminal molecular level, by
 coordinated hippocampal proteomic differences resolved across several anatomical
 contexts. Both halves of that statement are associations rather than mechanisms:
@@ -712,7 +724,7 @@ robust and which are not.
 # Methods
 
 Every parameter below traces to a row of
-`manuscript/methods_statement_provenance.csv`. Items that could not be recovered
+`provenance/claims/methods_statement_provenance.csv`. Items that could not be recovered
 from this repository are marked `[METHOD DETAIL UNRESOLVED]` rather than filled
 in from convention.
 
@@ -728,10 +740,10 @@ treated as independent replicates. [M-15]
 
 The behavioural analysis was performed in a separate repository and is not
 reproduced here. Every behavioural quantity reported in this work is quoted from
-a frozen evidence bundle imported into `manuscript/figure1_bridge_mmmsociability/`
+a frozen evidence bundle imported into `source_data/MMMSociability/`
 and recorded, with per-file hashes, in
-`manuscript/figure1_bridge_import_manifest.csv` and
-`manuscript/figure1_bridge_provenance.csv`. No behavioural statistic was
+`provenance/source_manifests/figure1_bridge_import_manifest.csv` and
+`provenance/claims/figure1_bridge_provenance.csv`. No behavioural statistic was
 recomputed in this repository and no behavioural analysis code was copied into
 it. The bundle derives from analysis commit `4b0f90f`, was frozen at commit
 `53bc7e9`, and is byte-identical to the state at the verified source head
@@ -859,7 +871,9 @@ precision (maximum absolute deviation 4.4 × 10⁻¹⁶). [M-28]
 
 Laser-capture microdissection followed by data-independent-acquisition mass
 spectrometry yielded 323 spatial acquisitions (180 neuropil, 71 neuronal soma, 72
-microglia-enriched ROI). Ten neuropil units carry region × layer resolution; the
+microglia-enriched ROI) from nine animals, three per group; acquisitions are
+repeated measurements within animals and are never an inferential unit. Ten
+neuropil units carry region × layer resolution; the
 neuronal-soma and microglia-enriched compartments are region-level only, giving
 18 spatial units in total. Spectra were searched with DIA-NN; the per-run search
 report supplies the identification and quantification summaries used for quality
@@ -1061,12 +1075,12 @@ than sampling them and so use no seed. [M-31]
 
 # Data availability
 
-_[PLACEHOLDER — PRIDE accession pending; see `docs/PRIDE_EXPORT.md`.]_
+_[PLACEHOLDER — PRIDE accession pending; see `docs/PRIDE_EXPORT.md` in the analysis repository.]_
 
 # Code availability
 
 _[PLACEHOLDER — repository reference and the canonical entrypoints listed in
-`docs/CANONICAL_ANALYSIS_ENTRYPOINTS.md`.]_
+`docs/CANONICAL_ANALYSIS_ENTRYPOINTS.md` in the analysis repository.]_
 
 # Author contributions
 
@@ -1079,7 +1093,7 @@ _[PLACEHOLDER]_
 # References
 
 Verified against PubMed. Each entry records the manuscript claim it supports in
-`manuscript/citation_needs.csv`, together with the species the evidence comes
+`manuscript/citations/citation_needs.csv`, together with the species the evidence comes
 from, so a claim can never rest on a reference from the wrong organism.
 
 Bains, R. S., Wells, S., Sillito, R. R., Armstrong, J. D., Cater, H. L., Banks, G.,
