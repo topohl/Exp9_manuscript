@@ -1,9 +1,9 @@
 # Extended Data Figure 9 legend
 
 Draft legend. Every number below is a cell of
-`manuscript/figure1_bridge_mmmsociability/behavior_prediction_model_ladder.csv`
+`source_data/MMMSociability/behavior_prediction_model_ladder.csv`
 or
-`manuscript/figure1_bridge_mmmsociability/behavior_sex_effect_contract.csv`,
+`source_data/MMMSociability/behavior_sex_effect_contract.csv`,
 both frozen upstream in `topohl/MMMSociability` at commit `53bc7e9` and imported
 byte-identically with SHA-256. All statistics were computed in the upstream
 behavioural repository; nothing on this figure is calculated in the proteomics

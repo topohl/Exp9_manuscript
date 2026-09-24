@@ -1,7 +1,7 @@
 # Figure 1 legend
 
 Draft legend. Every number below is recoverable from
-`manuscript/figure1_bridge_mmmsociability/source_data/figure1_panel_statistics.csv`,
+`source_data/MMMSociability/source_data/figure1_panel_statistics.csv`,
 which is the contract for what this figure may state. All statistics were
 computed in the upstream behavioural repository and frozen; nothing on this
 figure is calculated in the proteomics repository.
@@ -83,7 +83,7 @@ information could have reached the predictor.
 
 | Constraint | Applied |
 |---|---|
-| prediction target is continuous `CombZ` | stated in (d) and (e) |
+| prediction target is continuous `CombZ` | stated in (d) |
 | never "predicts susceptibility" or "predicts resilience" | absent |
 | never "movement-only" | the model is named the movement-mean model |
 | never "independent" or "external" validation | stated as internal in the closing paragraph |
@@ -92,4 +92,4 @@ information could have reached the predictor.
 | RMSSD not promoted to equal status | absent from the figure entirely |
 | 72 slots is the design expectation | (a) gives design and realised coverage separately |
 | classification components not shown as validation | stated explicitly in (b) |
-| repeated-CV range is not a confidence interval | stated explicitly in (e) |
+| repeated-CV range is not a confidence interval | stated explicitly in (d) |
