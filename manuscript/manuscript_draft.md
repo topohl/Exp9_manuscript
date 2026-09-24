@@ -193,7 +193,7 @@ resilient-like outcome, corresponding to a greater later stress burden. The
 short-timescale variability of the same signal, movement RMSSD, was associated in
 the same direction but more weakly (ρ = −0.23, q = 0.026). A third prespecified
 feature, the lag-one autocorrelation of binned activity entropy, did not reach
-FDR support (ρ = −0.18, q = 0.067, with a bootstrap interval including zero;
+FDR support (ρ = −0.17, q = 0.067, with a bootstrap interval including zero;
 both secondary features are shown in Extended Data Fig. 9a) and is not
 interpreted further.
 
