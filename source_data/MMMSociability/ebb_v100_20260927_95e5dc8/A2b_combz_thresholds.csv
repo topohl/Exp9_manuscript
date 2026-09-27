@@ -1,0 +1,3 @@
+Sex,n_control,control_mean_combz,control_population_sd_combz,susceptibility_threshold,sd_convention,classification_rule_id
+Female,12,-5.07696866679809e-16,0.316628591979766,-0.316628591979766,"population SD (n divisor), matching Excel STDEVPA",sus_if_combz_below_within_sex_control_mean_minus_1_population_sd
+Male,12,0.0110339446152672,0.447675642785046,-0.436641698169779,"population SD (n divisor), matching Excel STDEVPA",sus_if_combz_below_within_sex_control_mean_minus_1_population_sd

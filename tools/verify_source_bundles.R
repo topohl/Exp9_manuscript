@@ -128,6 +128,37 @@ if (!file.exists(b_manifest)) {
   }
 }
 
+## --------------------------------------------- MMMSociability canonical behaviour bundle
+cat("\nMMMSociability canonical behaviour bundle (Stage 16b)\n")
+pin_path <- repo_path("config", "behaviour_bundle.yml")
+bb_manifest <- repo_path("provenance", "source_manifests", "behaviour_bundle_manifest.csv")
+if (!file.exists(pin_path)) {
+  note_fail("no behaviour bundle is pinned:", pin_path)
+} else {
+  pin <- yaml::read_yaml(pin_path)
+  bd <- repo_path("source_data", "MMMSociability", pin$bundle_id)
+  cat("  pinned bundle      :", pin$bundle_id, "(config", pin$config_version, substr(pin$config_sha256, 1, 12), ")\n")
+  own <- file.path(bd, "00_manifest.csv")
+  if (!file.exists(own)) {
+    note_fail("pinned bundle is not imported:", bd)
+  } else {
+    if (!identical(sha(own), pin$manifest_sha256)) note_fail("00_manifest.csv differs from the pinned manifest hash")
+    m <- utils::read.csv(own, stringsAsFactors = FALSE)
+    act <- vapply(file.path(bd, m$file), sha, character(1), USE.NAMES = FALSE)
+    ok <- !is.na(act) & act == m$sha256
+    cat("  hash-verified      :", sum(ok), "/", nrow(m), "\n")
+    if (any(!ok)) note_fail(sum(!ok), "bundle file(s) are not byte-exact:", paste(head(m$file[!ok], 10), collapse = ", "))
+    extra <- setdiff(list.files(bd), c(m$file, "00_manifest.csv"))
+    if (length(extra)) note_fail("unlisted file(s) in the bundle copy:", paste(extra, collapse = ", "))
+    if (!file.exists(bb_manifest)) note_fail("behaviour bundle import manifest is missing:", bb_manifest) else {
+      im <- utils::read.csv(bb_manifest, stringsAsFactors = FALSE)
+      im <- im[im$bundle_id == pin$bundle_id, , drop = FALSE]
+      if (!setequal(im$file, list.files(bd)) || any(im$sha256 != vapply(file.path(bd, im$file), sha, character(1), USE.NAMES = FALSE)))
+        note_fail("the import manifest does not match the pinned copy")
+    }
+  }
+}
+
 cat("\n")
 if (problems == 0L) {
   cat("RESULT: PASS - every imported bundle matches its manifest.\n")

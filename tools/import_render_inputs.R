@@ -60,6 +60,11 @@ for (cf in c("figures/figure_contract.yml",
   p <- repo_path(cf)
   if (!file.exists(p)) next
   y <- yaml::read_yaml(p)
+  ## Figures whose analysis is owned by MMMSociability are rendered here from the
+  ## pinned behaviour bundle (tools/import_behaviour_bundle.R). Their panels are
+  ## never imported from pRoteomics, so this tool cannot overwrite them.
+  if (!is.null(y$figures))
+    y$figures <- Filter(function(f) !identical(f$analysis_repository, "topohl/MMMSociability") || is.null(f$behaviour_bundle_id), y$figures)
   walk <- function(x) {
     if (!is.list(x)) return(invisible(NULL))
     for (nm in names(x)) {

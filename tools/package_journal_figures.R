@@ -67,8 +67,13 @@ cat("mode               :", if (dry_run) "dry-run" else "write", "\n\n")
 rows <- list(); missing <- character(0); mismatched <- character(0)
 for (i in seq_len(nrow(canon))) {
   pid <- canon$publication_id[i]
-  svg <- repo_path("source_data", "pRoteomics", pid, "assembled",
-                   paste0(pid, ".svg"))
+  ## Identities backed by the pinned MMMSociability behaviour bundle are packaged
+  ## from their promoted, manuscript-owned render (tools/promote_manuscript_render.R)
+  ## and the bundle copy; every other identity keeps the pRoteomics route.
+  bundle_backed <- identical(canon$originating_analysis[i], "topohl/MMMSociability") &&
+    grepl("^source_data/MMMSociability/ebb_", canon$canonical_source_data[i])
+  svg <- if (bundle_backed) repo_path(canon$rendered_artifact[i]) else
+    repo_path("source_data", "pRoteomics", pid, "assembled", paste0(pid, ".svg"))
   if (!file.exists(svg)) { missing <- c(missing, pid); next }
 
   got <- sha(svg)
@@ -87,7 +92,7 @@ for (i in seq_len(nrow(canon))) {
   }
 
   ## source data for the identity travels with the figure
-  sd_src <- repo_path("source_data", "pRoteomics", pid)
+  sd_src <- if (bundle_backed) repo_path(canon$canonical_source_data[i]) else repo_path("source_data", "pRoteomics", pid)
   sd_files <- setdiff(list.files(sd_src, pattern = "[.]csv$"), character(0))
   if (!dry_run && length(sd_files)) {
     dir_create(file.path(BUNDLE, "source_data", jn))

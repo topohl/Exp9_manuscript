@@ -42,7 +42,10 @@ test_that("the bridge is a byte-exact mirror of exactly the frozen bundle", {
   # source_data/ subdirectory is the one permitted addition: it is the frozen
   # Figure 1 panel source data, itself a byte-exact upstream mirror, and it is
   # pinned to its own expected contents below rather than waved through.
-  expect_setequal(list.files(BRIDGE), c(BUNDLE_FILES, "source_data"))
+  # Pinned canonical behaviour bundles (ebb_v*, MMMSociability Stage 16b) are the
+  # second permitted addition; each is hash-verified by test-behaviour-bundle-import.R.
+  here <- list.files(BRIDGE)
+  expect_setequal(here[!grepl("^ebb_v[0-9]+_[0-9]{8}_[0-9a-f]{7}$", here)], c(BUNDLE_FILES, "source_data"))
   expect_true(dir.exists(file.path(BRIDGE, "source_data")))
   expect_setequal(
     list.files(file.path(BRIDGE, "source_data")),

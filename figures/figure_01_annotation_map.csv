@@ -1,0 +1,46 @@
+key,panel,table,column,filters,format,meaning
+a_n_cc1_animals,1a,A0_design_timeline,n_animals,step=2,%d,RFID-tracked animals in the first active phase after CC1
+a_n_windows,1a,A0_design_timeline,n_windows,step=4,%d,animal-windows across CC1-CC4
+a_n_combz,1a,A0_design_timeline,n_animals,step=7,%d,animals with CombZ
+b_thr_female,1b,A2b_combz_thresholds,susceptibility_threshold,Sex=Female,%.3f,female susceptibility threshold
+b_thr_male,1b,A2b_combz_thresholds,susceptibility_threshold,Sex=Male,%.3f,male susceptibility threshold
+c_cr_rs_f,1c,C2_estimates,estimate,source=stage29;construct=crossing_rate;estimand=RS_by_sex_CC1;sex=Female,%.1f,crossing rate RES-SUS females CC1 (crossings/h)
+c_cr_rs_f_lo,1c,C2_estimates,ci_low,source=stage29;construct=crossing_rate;estimand=RS_by_sex_CC1;sex=Female,%.1f,95% CI lower
+c_cr_rs_f_hi,1c,C2_estimates,ci_high,source=stage29;construct=crossing_rate;estimand=RS_by_sex_CC1;sex=Female,%.1f,95% CI upper
+c_cr_rs_m,1c,C2_estimates,estimate,source=stage29;construct=crossing_rate;estimand=RS_by_sex_CC1;sex=Male,%.1f,crossing rate RES-SUS males CC1 (crossings/h)
+c_cr_rs_m_lo,1c,C2_estimates,ci_low,source=stage29;construct=crossing_rate;estimand=RS_by_sex_CC1;sex=Male,%.1f,95% CI lower
+c_cr_rs_m_hi,1c,C2_estimates,ci_high,source=stage29;construct=crossing_rate;estimand=RS_by_sex_CC1;sex=Male,%.1f,95% CI upper
+c_cr_q1,1c,C2_estimates,estimate,source=stage29;construct=crossing_rate;estimand=Q1;sex=NA,%.1f,crossing rate sex difference in RES-SUS (Q1)
+c_cr_q1_lo,1c,C2_estimates,ci_low,source=stage29;construct=crossing_rate;estimand=Q1;sex=NA,%.1f,95% CI lower
+c_cr_q1_hi,1c,C2_estimates,ci_high,source=stage29;construct=crossing_rate;estimand=Q1;sex=NA,%.1f,95% CI upper
+c_cr_q1_holm,1c,E_multiplicity,p_adjusted,family_id=P-CC1;member=Q1|crossing_rate,%.2g,P-CC1 Holm-adjusted p
+c_sz_rs_f,1c,C2_estimates,estimate,source=stage29;construct=shared_zone_use;estimand=RS_by_sex_CC1;sex=Female,%.3f,shared zone use RES-SUS females CC1
+c_sz_rs_f_lo,1c,C2_estimates,ci_low,source=stage29;construct=shared_zone_use;estimand=RS_by_sex_CC1;sex=Female,%.3f,95% CI lower
+c_sz_rs_f_hi,1c,C2_estimates,ci_high,source=stage29;construct=shared_zone_use;estimand=RS_by_sex_CC1;sex=Female,%.3f,95% CI upper
+c_sz_rs_m,1c,C2_estimates,estimate,source=stage29;construct=shared_zone_use;estimand=RS_by_sex_CC1;sex=Male,%.3f,shared zone use RES-SUS males CC1
+c_sz_rs_m_lo,1c,C2_estimates,ci_low,source=stage29;construct=shared_zone_use;estimand=RS_by_sex_CC1;sex=Male,%.3f,95% CI lower
+c_sz_rs_m_hi,1c,C2_estimates,ci_high,source=stage29;construct=shared_zone_use;estimand=RS_by_sex_CC1;sex=Male,%.3f,95% CI upper
+c_sz_q1,1c,C2_estimates,estimate,source=stage29;construct=shared_zone_use;estimand=Q1;sex=NA,%.3f,shared zone use sex difference in RES-SUS (Q1)
+c_sz_q1_lo,1c,C2_estimates,ci_low,source=stage29;construct=shared_zone_use;estimand=Q1;sex=NA,%.3f,95% CI lower
+c_sz_q1_hi,1c,C2_estimates,ci_high,source=stage29;construct=shared_zone_use;estimand=Q1;sex=NA,%.3f,95% CI upper
+c_sz_q1_holm,1c,E_multiplicity,p_adjusted,family_id=P-CC1;member=Q1|shared_zone_use,%.2g,P-CC1 Holm-adjusted p
+d_cr_q2b_f,1d,C3_joint_tests,F,model_id=TR_POOLED|crossing_rate;estimand=Q2b,%.2f,crossing rate Q2b joint KR F
+d_cr_q2b_df1,1d,C3_joint_tests,df1,model_id=TR_POOLED|crossing_rate;estimand=Q2b,%d,numerator df
+d_cr_q2b_df2,1d,C3_joint_tests,df2,model_id=TR_POOLED|crossing_rate;estimand=Q2b,%.0f,KR denominator df
+d_cr_q2b_holm,1d,E_multiplicity,p_adjusted,family_id=P-TR;member=Q2b|crossing_rate,%.2g,P-TR Holm-adjusted p
+d_sz_q2b_f,1d,C3_joint_tests,F,model_id=TR_POOLED|shared_zone_use;estimand=Q2b,%.2f,shared zone use Q2b joint KR F
+d_sz_q2b_df1,1d,C3_joint_tests,df1,model_id=TR_POOLED|shared_zone_use;estimand=Q2b,%d,numerator df
+d_sz_q2b_df2,1d,C3_joint_tests,df2,model_id=TR_POOLED|shared_zone_use;estimand=Q2b,%.0f,KR denominator df
+d_sz_q2b_holm,1d,E_multiplicity,p_adjusted,family_id=P-TR;member=Q2b|shared_zone_use,%.2g,P-TR Holm-adjusted p
+e_rho,1e,C2_estimates,estimate,source=stage09;construct=Movement_mean;estimand=spearman_rho_vs_CombZ,%.2f,Spearman rho early crossing rate vs later CombZ
+e_rho_lo,1e,C2_estimates,ci_low,source=stage09;construct=Movement_mean;estimand=spearman_rho_vs_CombZ,%.2f,bootstrap 95% CI lower
+e_rho_hi,1e,C2_estimates,ci_high,source=stage09;construct=Movement_mean;estimand=spearman_rho_vs_CombZ,%.2f,bootstrap 95% CI upper
+e_q,1e,E_multiplicity,p_adjusted,family_id=PR1;member=spearman|Movement_mean,%.2e,PR1 BH q
+e_n,1e,C2_estimates,n,source=stage09;construct=Movement_mean;estimand=spearman_rho_vs_CombZ,%d,animals
+f_loao,1f,C2_estimates,estimate,source=stage09;construct=movement_mean;estimand=LOAO_R2,%.3f,LOAO R2 movement-mean model
+f_base,1f,C2_estimates,estimate,source=stage09;construct=mean_only;estimand=LOAO_R2,%.3f,intercept-only baseline LOAO R2
+f_rcv,1f,C2_estimates,estimate,source=stage09;construct=movement_mean;estimand=repeated_CV_mean_R2,%.3f,repeated grouped five-fold mean R2
+f_rcv_lo,1f,C2_estimates,ci_low,source=stage09;construct=movement_mean;estimand=repeated_CV_mean_R2,%.3f,2.5th percentile across repeats
+f_rcv_hi,1f,C2_estimates,ci_high,source=stage09;construct=movement_mean;estimand=repeated_CV_mean_R2,%.3f,97.5th percentile across repeats
+f_perm_p,1f,E_multiplicity,p_adjusted,family_id=PR2;member=permutation|movement_mean,%.2g,PR2 Holm-adjusted permutation p
+f_nperm,1f,A3_permutation_draws,n_permutations,permutation_id=0;model_id=movement_mean,%d,permutation draws
