@@ -1,0 +1,39 @@
+key,value
+bundle_id,s30b_v10_20260929_5394f2f
+status,FROZEN
+generated_at,2026-09-29T16:52:41+0200
+generator,Analysis/30b_stage30_figure_bundle.R
+mmm_git_commit,5394f2f3fb6c58d0e1f337bb22c33fdac2203365
+mmm_branch,refactor/rfid-four-domain-characterization
+mmm_code_clean,TRUE
+run_mode,REAL
+mmm_code_sha256,Analysis/30b_stage30_figure_bundle.R=1f85faa5cff7e200689bafb99552a52cf92a8c9c5458f0932833dc0d32fe90a7; Functions/stage30_figure_bundle.R=db396fcd456e11e33908ecbb04233d9c4acaec960373d515cdcfba2a8fd0c05c; Functions/stage30_screen.R=9fcc95820a4fd782697c41411a6e7c5ed752a6913c8fbfbf3117ab7bf891dbe1; Analysis/_pipeline_setup.R=dc9b8e921b071010fe7ef6f482dec064a47127554ceeb923c58e98e20612df83; Functions/behavioral_dynamics_helpers.R=01927040a40d00bca6fc088c8a521e0c9e8e0bf5eab9cf1a7d3c8f73c1752c32; Functions/project_paths.R=2796a83cfa15cd974c9138840ed77229d1750cda905a869e7cf5e985cc66b72a
+stage30_run_dir,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/pipeline/30_exploratory_screen/v1.0_be71e2f
+stage30_run_commit,be71e2f07bfefeeb13c1e1f82cbc62cff2e052dc
+stage30_run_mode,REAL_EXPLORATORY_POST_HOC_CONTEXT
+stage30_status_counts,OK=48
+stage30_classification_counts,C=41; B=4; D=1; A=2
+stage30_registry_sha256,5c252bf699bc0f517c5508854d710bbaa014d4b6fe98d128eb0071bde89dd05e
+stage30_output_manifest_sha256,77f271ad022f8fec9680f09e0f29540ce0c02189cd68143749100c9eac9d68d2
+stage29_bundle_id,ebb_v101_20260929_b2ce507
+stage29_bundle_manifest_sha256,ec59aa337fc63511de4aa2bf3e1ee1f4b34b84d6d671565f74e0bb3939f7226c
+stage29_bundle_dir,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/behavior_bundle/ebb_v101_20260929_b2ce507
+stage29_output_dir,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/pipeline/29_canonical_behavior_releases/v101_dv2_b2ce507
+labels_sus_sha256,dea3804b71b479f84900f946e5494b204ed0e8801498da459a6fc781beb9f391
+labels_con_sha256,eddd2ee9c3a182f98211b4cbba689e2bb5f72985aeb178f72b25b7d25db1b75d
+combz_table_sha256,1f6a2a69c6b0781b8de8da50ecdadf309b62bbc9c82106c0fa91d18119a7de54
+inactivity_reference_sha256,a533b239852fbe46c8a4ff776754984f4fe1f29c0c4277082487c1546f7acf8a
+gate_values_sha256,ae80b7e12beb2c4e6beb1570f8f45bd047937f88fcb1b8a207fe023b4efa46ef
+group_rule,"CON if on con_animals.csv, else SUS if on sus_animals.csv, else RES (the Stage 30 driver rule, s30sc_labels_from_lists)"
+scientific_recomputation,"none; copies of frozen values; descriptive summaries (counts, medians, quartiles, centroid means) and unit rescaling of stored estimates only"
+descriptive_computations,"S0/S0b/S4 standardized_ci_low/high: stored ci_low/ci_high rescaled with the stored standardization_rule (CONT: x standardizer_sd; CAT: / standardizer_sd); the rescaled stored estimate reproduces the stored standardized_estimate within 1e-12 || S1c: n, median, q25/q75 (R quantile type 7), min, max of light_phase_crossing_rate and posinact40_light by Sex x Group and over all 87 SIS animals at CC1; n_ge_0.99 = count of posinact40_light >= 0.99 || S2b: n_windows and n_animals counted in x4_01 (X = 40, per phase); rho and ICC are copies (registry rounded; w1_04 full precision) || S3b: n, median, q25/q75 (type 7) of PRE60, POST60, dcookie60 by Sex and pooled (77) and of dcookie60 by Sex x Group; n_increased = count of dcookie60 > 0; the all_97_registry_qc row is copied from the registry || S3d: x_mean, y_mean = arithmetic means of dcookie60 and CombZ over the model's animals (the sex-resolved centroid); x_min, x_max; y_at_x = y_mean + slope * (x - x_mean) with the frozen slope || S4: ordinal layout keys (row_order, col_order) only"
+quantile_type,R stats::quantile type 7
+standardized_ci_rule,CONT: ci x standardizer_sd (SD_x); CAT: ci / standardizer_sd (SD_y); L: none
+cookie_line_derivation,batch-averaged (n-weighted) fitted line of the registered CombZ ~ Batch + x (OLS normal equations: passes through the sex-resolved centroid with the frozen slope); no model refitted
+value_precision,doubles written as the shortest decimal (15-17 significant digits) that reads back to the identical double; every CSV re-read and compared
+label_sources,S5_display_labels.csv label_source / unit_source; block / question / sex column labels: DESIGN 2026-09-29 section 2 (S4)
+tables,S0_master_hypotheses (48 rows); S0b_pool_estimates (16 rows); S0c_l_components (84 rows); S0d_sensitivities (128 rows); S0e_lobo (534 rows); S1_light_animals_cc1 (87 rows); S1b_light_estimates (4 rows); S1c_light_descriptives (10 rows); S2_rate_inactivity_windows (444 rows); S2b_rate_inactivity_relationship (2 rows); S3_cookie_animals (77 rows); S3b_cookie_descriptives (14 rows); S3c_cookie_estimates (8 rows); S3d_cookie_cont_lines (2 rows); S4_screen_matrix (48 rows); S5_display_labels (15 rows)
+pre_write_gates_passed,56 of 56
+gate_results,"H3_gate_results.csv (this bundle, listed in 00_manifest): the 56 pre-write gates; the complete gate table (pre-write, post-write and registration gates; the post-write gates run before the registry row is appended) is logs/s30b_v10_20260929_5394f2f_gate_results.csv beside BUNDLE_REGISTRY.csv, outside the bundle"
+r_version,R version 4.5.1 (2025-06-13 ucrt)
+packages,data.table 1.18.2.1; jsonlite 2.0.0; digest 0.6.39
