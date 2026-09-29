@@ -9,10 +9,14 @@
 #       CONT (S4 rows 1-6)   standardized slope, CombZ per SD of the metric;
 #       CAT  (S4 rows 7-9)   standardized RES - SUS difference, in SD of the metric;
 #       L    (S4 rows 10-16) joint F of CombZ x cage change, on a 0-to-max scale
-#                            with a thin reference line at F = 1;
+#                            with a thin solid reference line at F = 1 (labelled once,
+#                            unlike the dashed zero lines of the forests above it);
 #   - CONT/CAT cells: the stored standardized estimate and standardized CI
 #     (S4 standardized_estimate / standardized_ci_low / standardized_ci_high, the
-#     bundle's rescaling of the frozen CI with the stored rule), zero line;
+#     bundle's rescaling of the frozen CI with the stored rule: the SD of the metric's
+#     within-batch residuals, in each sex, and over both sexes for Female - male), zero line;
+#   - the Female - male column draws the white diamond of BH_FOREST (int_*), never a
+#     fill-coded circle;
 #   - in every cell the stored raw p and local BH q (S0_master_hypotheses p_raw /
 #     q_local_bh, one annotation key per test id and quantity), 6 pt;
 #   - the registered class letter A-D (S4 classification) as small grey text at
@@ -47,7 +51,10 @@ S30_SCREEN_DF1_KEY <- "scr_l_df1"      # the numerator df of every L joint F (su
 S30_SCREEN_TEXT_MM <- c(stacked = 16.5, inline = 27, compact = 21)
 S30_SCREEN_PAD_MM <- c(text_left = 1.2, class_right = 2.2, label_right = 2.2, axis_title_down = 1.2)
 # Axis title of each block, drawn in the label column beside the block's x-axes (7 pt, right-aligned).
-S30_SCREEN_AXIS_TITLE <- c(CONT = "CombZ per SD of the metric", CAT = "RES \u2212 SUS, SD of the metric", L = "joint F")
+# The SD is each column's own standardizer (S0 standardization_rule): the within-batch residual SD.
+S30_SCREEN_AXIS_TITLE <- c(CONT = "CombZ per within-batch SD", CAT = "RES \u2212 SUS, within-batch SD", L = "joint F")
+# The L reference line: thin and solid (the forests' zero lines are dashed), labelled once.
+S30_SCREEN_L_REF <- list(linewidth = 0.3, colour = RULE, label = "F = 1")
 
 #' Annotation key of one test's printed p ("p") or local BH q ("q").
 s30_screen_key <- function(id, what = c("p", "q")) {
@@ -102,15 +109,18 @@ s30_screen_strip <- function(width_mm, left, face = "plain", heads = list()) {
 #'             "stacked" "p = ..." over "q = ..." (default: two lines, like the row labels);
 #'             "inline"  "p = ...; q = ..." on one line (needs a wider box);
 #'             "compact" "... | ..." under a "p | q" column head;
-#' `label_mm`  width of the row-label column (mm).
+#' `label_mm`  width of the row-label column (mm);
+#' `top_margin_pt`  the top margin: 11.5 pt leaves room for a panel letter; the letterless
+#'             Supplementary page passes a small one.
 #' Returns bh_panel(patchwork, w_mm, h_mm).
 s30_panel_screen <- function(s30, an, w_mm = S30_SCREEN_BOX[["w"]], h_mm = S30_SCREEN_BOX[["h"]],
-                             pq_style = c("stacked", "inline", "compact"), label_mm = 45) {
+                             pq_style = c("stacked", "inline", "compact"), label_mm = 45, top_margin_pt = 11.5) {
   pq_style <- match.arg(pq_style)
   # Legibility floor of the layout: the two-line row labels need a row pitch of about 5.2 mm
-  # (h >= 123 mm; about 42.5 mm of the height is titles, headers and axes), and the
-  # three-line subtitle is about 157 mm wide at 6 pt.
-  if (h_mm < 123) stop("s30_panel_screen: the box must be at least 123 mm high for legible two-line rows.", call. = FALSE)
+  # (h >= 123 mm with the letter margin; about 37 mm of the height is titles, headers and axes),
+  # and the two-line subtitle is about 150 mm wide at 6 pt.
+  if (h_mm < 123 - (11.5 - top_margin_pt) * 25.4 / 72)
+    stop("s30_panel_screen: the box is too low for legible two-line rows.", call. = FALSE)
   if (w_mm < 160) stop("s30_panel_screen: the box must be at least 160 mm wide (subtitle width).", call. = FALSE)
   fa <- an$fa
   S4 <- s30(S30_SCREEN_TABLE)
@@ -174,12 +184,13 @@ s30_panel_screen <- function(s30, an, w_mm = S30_SCREEN_BOX[["w"]], h_mm = S30_S
     d$y <- -match(d$row_order, rows)
     ylim <- c(-n - EXPAND, -1 + EXPAND)
 
-    # header strip: block name over the labels; column name, "class" (and "p | q") over each cell
+    # header strip: block name over the labels; column name over each cell, "class" over the
+    # last column's class letters only (and "p | q" over each cell in the compact style)
     grid_row <- grid_row + 1L
     heights <- c(heights, if (grid_row == 1L) 3.6 else 5.6); height_units <- c(height_units, "mm")
     add(s30_screen_strip(label_mm, paste0(b, " \u00b7 ", d$question_label[1])), grid_row, 1L)
     for (s in 1:3) {
-      heads <- list(list(x = cell_mm - PAD[["class_right"]], label = "class", hjust = 1))
+      heads <- if (s == 3L) list(list(x = cell_mm - PAD[["class_right"]], label = "class", hjust = 1)) else list()
       if (pq_style == "compact") heads <- c(heads, list(list(x = forest_mm + PAD[["text_left"]], label = "p | q", hjust = 0)))
       add(s30_screen_strip(cell_mm, COL_LAB[s], face = "italic", heads), grid_row, 2L * s, 2L * s + 1L)
     }
@@ -215,14 +226,19 @@ s30_panel_screen <- function(s30, an, w_mm = S30_SCREEN_BOX[["w"]], h_mm = S30_S
     }
     for (s in 1:3) {
       ds <- d[d$col_order == s, , drop = FALSE]
-      fill <- if (s == 3L) "white" else INK                  # interaction column open, within-sex filled
+      # within-sex columns: INK circles; the Female - male column: the white diamond
+      mark <- function(mapping) if (s == 3L) bh_forest_int_point(mapping) else bh_forest_point(mapping, fill = INK)
       pf <- ggplot(ds, aes(y = y))
       if (b == "L") {
-        pf <- pf + bh_forest_zero(1) + bh_forest_point(aes(x = .data[["F"]]), fill = fill)   # the column, never FALSE
+        pf <- pf + geom_vline(xintercept = 1, linewidth = S30_SCREEN_L_REF$linewidth, colour = S30_SCREEN_L_REF$colour) +
+          mark(aes(x = .data[["F"]]))                                                  # the column, never FALSE
+        if (s == 1L)
+          pf <- pf + annotate("text", x = 1, y = ylim[2], label = S30_SCREEN_L_REF$label, hjust = -0.15, vjust = 1,
+                              size = NOTE_PT / .pt, colour = MUTED)
       } else {
         pf <- pf + bh_forest_zero(0) +
           bh_forest_ci(aes(x = standardized_ci_low, xend = standardized_ci_high, yend = y)) +
-          bh_forest_point(aes(x = standardized_estimate), fill = fill)
+          mark(aes(x = standardized_estimate))
       }
       pf <- pf +
         scale_x_continuous(limits = xlim, breaks = x_breaks, labels = s30_screen_ticks, expand = x_expand) +
@@ -242,12 +258,13 @@ s30_panel_screen <- function(s30, an, w_mm = S30_SCREEN_BOX[["w"]], h_mm = S30_S
     }
   }
 
+  # Two lines: the tier, population and class; the standardizer and the L statistic. The rest
+  # (the families and their m, what p and q are) is in the row labels and the legend.
   sub_txt <- paste0(
-    "Stage 30 exploratory (local BH q); SIS animals, CON not modelled. Point and CI, standardized: ",
-    "CONT, CombZ per SD of the metric; CAT, RES \u2212 SUS in SD of the metric.\n",
-    sprintf("L: joint F(%s, df) of CombZ \u00d7 cage change, dashed line at F = 1. ", fa(S30_SCREEN_DF1_KEY)),
-    "Each cell: raw p and local BH q within the test's family (grey after each row label, with its m tests);\n",
-    "grey letter: the class A\u2013D as registered.")
+    "Stage 30 exploratory: raw p and local BH q per cell (family and m after each row label); ",
+    "SIS animals, CON not modelled; grey letter: registered class A\u2013D\n",
+    "SD: within-batch residual SD of the metric in each sex (Female \u2212 male: both sexes); ",
+    sprintf("L: joint F(%s, df) of CombZ \u00d7 cage change (Female \u2212 male: its sex difference)", fa(S30_SCREEN_DF1_KEY)))
   pw <- patchwork::wrap_plots(plots, design = do.call(c, areas)) +
     patchwork::plot_layout(widths = grid::unit(widths, "null"), heights = grid::unit(heights, height_units)) +
     patchwork::plot_annotation(
@@ -255,6 +272,6 @@ s30_panel_screen <- function(s30, an, w_mm = S30_SCREEN_BOX[["w"]], h_mm = S30_S
       subtitle = sub_txt,
       theme = theme(plot.title = element_text(size = BASE_PT, colour = INK, hjust = 0, face = "plain", margin = margin(b = 0.5)),
                     plot.subtitle = element_text(size = NOTE_PT, colour = "grey25", lineheight = 1.05, margin = margin(b = 2)),
-                    plot.margin = margin(11.5, 3, 3, 3)))
+                    plot.margin = margin(top_margin_pt, 3, 3, 3)))
   bh_panel(pw, w_mm, h_mm)
 }

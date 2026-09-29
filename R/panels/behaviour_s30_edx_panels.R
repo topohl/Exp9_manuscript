@@ -19,7 +19,8 @@
 #           the candidate keys, so the option panels resolve through the candidate map and
 #           figure_01_annotation_map.csv is left untouched.
 # Map panel ids: trajectory_rate / trajectory_occupancy / trajectory_secondary (ED X a/b/c) and
-# f1o<1|2>_<design|combz|cc1|association|prediction> (option panels a-e).
+# f1o<1|2>_<design|combz|cc1|association|prediction> (option 1 panels a-e; option 2 panels
+# a, b, c, e, f, its d being the compact light-phase panel).
 #
 # Plotted values: the stored TR_BY_SEX per-group model means +/- 95% CI (ebb C2), the stored
 # CON descriptive means (ebb B2), and for the option panels exactly the Figure 1 marks.
@@ -28,17 +29,22 @@
 # R/panels/behaviour_figure1_panels.R sourced first.
 
 # ---------------------------------------------------------------- boxes (w x h, mm)
-# ED X (CANDIDATE_SPEC C7): a/b either as two 85.5 x 58 panels (a = position-change rate,
-# b = shared occupancy; recommended) or as one 173 x 58 panel ("ab"); c is 173 x 58.
-EDX_BOX <- list(a = c(85.5, 58), b = c(85.5, 58), ab = c(173, 58), c = c(173, 58))
-# Figure 1 options (CANDIDATE_SPEC C1/C2). Option 2's panel f (36 x 62) is the compact
-# light-phase panel s30_panel_light_compact (R/panels/behaviour_s30_light_panels.R).
+# ED X (CANDIDATE_SPEC C7): a/b either as two 85.5 x 53 panels (a = position-change rate,
+# b = shared occupancy; recommended) or as one 173 x 53 panel ("ab"); c is 173 x 53. The compact
+# header (no patchwork outer margin) gives them the plot height the spec's 58 mm gave before.
+EDX_BOX <- list(a = c(85.5, 53), b = c(85.5, 53), ab = c(173, 53), c = c(173, 53))
+# Figure 1 options (figures/figure_behaviour_v101_s30_contract.yml). Option 2 letters its panels
+# in reading order: its compact light-phase panel d (35 x 62, s30_panel_light_compact in
+# R/panels/behaviour_s30_light_panels.R) sits in row 2, so association and prediction are e and f.
 F1OPT_BOX <- list(
-  figure_01_option1 = list(a = c(173, 32), b = c(58, 62), c = c(113, 62), d = c(66, 62), e = c(105, 62)),
-  figure_01_option2 = list(a = c(173, 32), b = c(50, 62), c = c(88, 62), d = c(66, 62), e = c(105, 62)))
+  figure_01_option1 = list(a = c(173, 29), b = c(58, 62), c = c(113, 62), d = c(66, 65), e = c(105, 65)),
+  figure_01_option2 = list(a = c(173, 29), b = c(50, 62), c = c(84, 62), e = c(66, 65), f = c(105, 65)))
 # Option panel letter -> the Figure 1 panel whose builder draws it.
-F1OPT_SOURCE_PANEL <- c(a = "1a", b = "1b", c = "1c", d = "1e", e = "1f")
+F1OPT_SOURCE_PANEL <- list(figure_01_option1 = c(a = "1a", b = "1b", c = "1c", d = "1e", e = "1f"),
+                           figure_01_option2 = c(a = "1a", b = "1b", c = "1c", e = "1e", f = "1f"))
 F1OPT_KEY_PREFIX <- c(figure_01_option1 = "f1o1_", figure_01_option2 = "f1o2_")
+# Candidate-only panel title of the association panel (Figure 1e has none).
+F1OPT_ASSOCIATION_TITLE <- "Early position-change rate vs later CombZ"
 
 # ---------------------------------------------------------------- annotation keys and labels
 EDX_TRAJECTORY_KEYS <- c(crossing_rate = "edx_a_cr", shared_zone_use = "edx_b_sz",
@@ -51,8 +57,9 @@ EDX_SECONDARY <- c("occupancy_dispersion", "fragmentation")
 # Each caption has a with-CON and a without-CON form; the builders pick by show_con.
 EDX_CAPTION_PRIMARY <- c(con = "Active phase after each cage change: sex-stratified model estimates ± 95% CI; CON descriptive means (grey, dashed)",
                          no_con = "Active phase after each cage change: sex-stratified model estimates ± 95% CI (SIS; CON not shown)")
-EDX_CAPTION_SPLIT <- c(con = "sex-stratified model estimates ± 95% CI; CON descriptive means (grey, dashed)",
-                       no_con = "sex-stratified model estimates ± 95% CI (SIS; CON not shown)")
+# The split a/b captions name their tier, as c does (85.5-mm boxes: the shortest full wording).
+EDX_CAPTION_SPLIT <- c(con = "Stage 29 primary: sex-stratified estimates ± 95% CI; CON descriptive (grey, dashed)",
+                       no_con = "Stage 29 primary: sex-stratified estimates ± 95% CI (SIS; CON not shown)")
 EDX_CAPTION_SECONDARY <- c(con = "Stage 29 secondary constructs, active phase after each cage change: sex-stratified model estimates ± 95% CI; CON descriptive means (grey, dashed)",
                            no_con = "Stage 29 secondary constructs, active phase after each cage change: sex-stratified model estimates ± 95% CI (SIS; CON not shown)")
 edx_caption <- function(captions, show_con) unname(captions[[if (isTRUE(show_con)) "con" else "no_con"]])
@@ -87,13 +94,20 @@ edx_annotation_prefixed <- function(an, prefix) {
 #' jitter_seed  explicit seeds, list(b = <one>, c = <two, one per construct>), so the output
 #'              does not depend on build or print order.
 #' minus_ticks  U+2212 in negative tick labels (CANDIDATE_SPEC A); Figure 1 itself keeps "-".
-#' Returns list(a, b, c, d, e) of bh_panel objects. Option 2 adds panel f from
-#' s30_panel_light_compact (not built here).
+#' typography   "candidate" (default): CANDIDATE_SPEC A typography (en-dash ranges, U+2212 in
+#'              the e-notation exponent, "RES − SUS" / "Female − male" labels); "figure1" keeps
+#'              Figure 1's own strings.
+#' compact_header  TRUE (default): c, the prediction panel and nothing else lose the patchwork
+#'              outer margin, so their titles sit under the letter as b's and d's do.
+#' Returns the five Figure 1 panels as bh_panel objects, named by the option's letters:
+#' option 1 list(a, b, c, d, e); option 2 list(a, b, c, e, f), its compact light-phase panel d
+#' coming from s30_panel_light_compact (not built here).
 #' Option 2 differs from option 1 only in the narrower b and c boxes, and in two typographic
 #' adjustments those boxes need: the b subtitle breaks onto two lines, and c aligns its
 #' construct titles and contrast captions to the plot edge (text_position = "plot").
 f1opt_panels <- function(tab, an, option = c("figure_01_option1", "figure_01_option2"),
                          jitter_seed = list(b = 1L, c = c(2L, 2L)), minus_ticks = TRUE,
+                         typography = "candidate", compact_header = TRUE,
                          key_prefix = F1OPT_KEY_PREFIX[[option]], box = F1OPT_BOX[[option]]) {
   option <- match.arg(option)
   force(key_prefix); force(box)
@@ -101,14 +115,18 @@ f1opt_panels <- function(tab, an, option = c("figure_01_option1", "figure_01_opt
     stop("f1opt_panels: pass explicit jitter seeds list(b = , c = c(, )).", call. = FALSE)
   pre <- edx_annotation_prefixed(an, key_prefix)
   narrow <- identical(option, "figure_01_option2")
-  list(
-    a = f1_panel_design(tab, pre, box$a[1], box$a[2]),
-    b = f1_panel_combz(tab, pre, box$b[1], box$b[2], jitter_seed = jitter_seed$b,
-                       subtitle = if (narrow) F1OPT_COMBZ_SUBTITLE_NARROW else F1_COMBZ_SUBTITLE, minus_ticks = minus_ticks),
-    c = f1_panel_cc1(tab, pre, box$c[1], box$c[2], jitter_seed = jitter_seed$c,
-                     text_position = if (narrow) "plot" else "panel"),
-    d = f1_panel_association(tab, pre, box$d[1], box$d[2], minus_ticks = minus_ticks),
-    e = f1_panel_prediction(tab, pre, box$e[1], box$e[2], minus_ticks = minus_ticks))
+  let <- names(F1OPT_SOURCE_PANEL[[option]])
+  out <- list(
+    f1_panel_design(tab, pre, box$a[1], box$a[2], typography = typography),
+    f1_panel_combz(tab, pre, box$b[1], box$b[2], jitter_seed = jitter_seed$b,
+                   subtitle = if (narrow) F1OPT_COMBZ_SUBTITLE_NARROW else F1_COMBZ_SUBTITLE, minus_ticks = minus_ticks),
+    f1_panel_cc1(tab, pre, box$c[1], box$c[2], jitter_seed = jitter_seed$c,
+                 text_position = if (narrow) "plot" else "panel", typography = typography, compact_header = compact_header),
+    f1_panel_association(tab, pre, box[[let[4]]][1], box[[let[4]]][2], minus_ticks = minus_ticks,
+                         typography = typography, title = F1OPT_ASSOCIATION_TITLE),
+    f1_panel_prediction(tab, pre, box[[let[5]]][1], box[[let[5]]][2], minus_ticks = minus_ticks,
+                        typography = typography, compact_header = compact_header))
+  stats::setNames(out, let)
 }
 
 # ---------------------------------------------------------------- ED X a/b: primary constructs
@@ -121,7 +139,7 @@ edx_panel_primary_trajectory <- function(tab, an, construct = c("crossing_rate",
                                          caption = edx_caption(EDX_CAPTION_SPLIT, show_con)) {
   construct <- match.arg(construct)
   f1_panel_trajectory(tab, an, w_mm, h_mm, constructs = construct, keys = EDX_TRAJECTORY_KEYS[construct],
-                      family = "P-TR", title = NULL, caption = caption, show_con = show_con)
+                      family = "P-TR", title = NULL, caption = caption, show_con = show_con, compact_header = TRUE)
 }
 
 #' ED X a/b as one panel (173 x 58): both primary constructs side by side (Figure 1d at the ED
@@ -130,7 +148,7 @@ edx_panel_primary_trajectory <- function(tab, an, construct = c("crossing_rate",
 edx_panel_primary_trajectories <- function(tab, an, w_mm = EDX_BOX$ab[1], h_mm = EDX_BOX$ab[2], show_con = TRUE,
                                            title = NULL, caption = edx_caption(EDX_CAPTION_PRIMARY, show_con)) {
   f1_panel_trajectory(tab, an, w_mm, h_mm, constructs = EDX_PRIMARY, keys = EDX_TRAJECTORY_KEYS[EDX_PRIMARY],
-                      family = "P-TR", title = title, caption = caption, show_con = show_con)
+                      family = "P-TR", title = title, caption = caption, show_con = show_con, compact_header = TRUE)
 }
 
 # ---------------------------------------------------------------- ED X c: secondary constructs
@@ -142,5 +160,5 @@ edx_panel_primary_trajectories <- function(tab, an, w_mm = EDX_BOX$ab[1], h_mm =
 edx_panel_secondary_trajectories <- function(tab, an, w_mm = EDX_BOX$c[1], h_mm = EDX_BOX$c[2], show_con = TRUE,
                                              title = NULL, caption = edx_caption(EDX_CAPTION_SECONDARY, show_con)) {
   f1_panel_trajectory(tab, an, w_mm, h_mm, constructs = EDX_SECONDARY, keys = EDX_TRAJECTORY_KEYS[EDX_SECONDARY],
-                      family = "S-TR-ORG", title = title, caption = caption, show_con = show_con)
+                      family = "S-TR-ORG", title = title, caption = caption, show_con = show_con, compact_header = TRUE)
 }

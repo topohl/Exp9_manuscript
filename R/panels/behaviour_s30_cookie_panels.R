@@ -48,11 +48,17 @@ S30CK_WINDOW_S5 <- c(PRE60 = "[16:00, 17:00)", POST60 = "[17:00, 18:00)")
 # Units. The inverse hour is plotmath, as in Figure 1 (Arial has no superscript minus).
 S30CK_RATE_Y <- expression(textstyle(atop(displaystyle("RFID position-change rate"),
                                           displaystyle("(position changes h"^-1 * ")"))))
-# Two lines of similar length, for the short y axis of panel b's animals.
-S30CK_DELTA_2 <- expression(textstyle(atop(displaystyle("Δ position changes"),
-                                           displaystyle("h"^-1 ~ "(POST − PRE)"))))
+# Two lines, quantity then unit, for the short y axis of panel b's animals.
+S30CK_DELTA_2 <- expression(textstyle(atop(displaystyle("Δ rate (POST − PRE)"),
+                                           displaystyle("(position changes h"^-1 * ")"))))
 S30CK_DELTA_1 <- expression("Δ position changes h"^-1 ~ "(POST − PRE)")
-S30CK_SLOPE_UNIT <- expression("slope: CombZ per position change h"^-1)
+# The contrast strip of panel b is in RES - SUS units of the response, labelled as the light strips.
+S30CK_RS_X <- expression("RES − SUS (Δ position changes h"^-1 * ")")
+# Panel a and c share one footer: a one-line x title and two 6-pt caption lines, so their facet
+# strips and x axes line up in the row. The slope unit (CombZ per position change per hour, the
+# y unit per x unit) is stated in the legend: a plotmath caption would draw its superscript at 4.2 pt.
+S30CK_COMBZ_CAPTION <- "line: frozen slope through the centroid\nFemale − male difference in slope: p = %s"
+S30CK_PREPOST_CAPTION <- "one grey line per SIS animal;\nopen point and bar: median and IQR (descriptive)"
 
 # ---------------------------------------------------------------- helpers
 s30ck_stop <- function(...) stop(..., call. = FALSE)
@@ -75,7 +81,8 @@ s30ck_theme <- function() {
 }
 
 #' The stored estimate strip: rows Female / Male / Female - male (top to bottom), the
-#' ED forest marks, and at the right of each row the printed text of that row.
+#' ED forest marks (Female - male: the white diamond), and at the right of each row the
+#' printed text of that row.
 #' `keys` are the annotation keys of the three estimates (each with _lo/_hi);
 #' `row_text` is the printed text per row (already resolved through the map).
 s30ck_strip <- function(an, keys, row_text, xlab) {
@@ -88,7 +95,7 @@ s30ck_strip <- function(an, keys, row_text, xlab) {
     bh_forest_zero() +
     bh_forest_ci(aes(x = lo, xend = hi, y = y, yend = y)) +
     bh_forest_point(aes(x = estimate, y = y), data = est[est$within, , drop = FALSE], fill = INK) +
-    bh_forest_point(aes(x = estimate, y = y), data = est[!est$within, , drop = FALSE], fill = "white") +
+    bh_forest_int_point(aes(x = estimate, y = y), data = est[!est$within, , drop = FALSE]) +
     scale_y_continuous(limits = c(0.5, 3.5), expand = c(0, 0), breaks = est$y, labels = est$label) +
     scale_x_continuous(labels = s30ck_ticks, expand = expansion(mult = 0.06)) +
     labs(x = xlab, y = NULL) +
@@ -108,9 +115,11 @@ s30ck_strip <- function(an, keys, row_text, xlab) {
 
 # =============================================================== a: PRE60 -> POST60
 #' Home-cage cookie response: PRE60 -> POST60 per animal, by sex.
-#' Lines: S3 PRE60/POST60, one per animal (group-blind). Black point and bar: the stored
+#' Lines: S3 PRE60/POST60, one per animal (group-blind). Open point and bar: the stored
 #' S3b median and quartiles (q25-q75) of each window within sex, drawn just outside the
-#' animals' line ends. Subtitle: S3b n_increased / n of the pooled 77 SIS animals.
+#' animals' line ends; a white point on a bar without whiskers, so the descriptive summary
+#' does not take the mark of a model estimate +/- CI (Figure 1c: black point, whiskered bar).
+#' Subtitle: S3b n_increased / n of the pooled 77 SIS animals.
 #' Keys: ckpp_n_increased, ckpp_n.
 s30_panel_cookie_prepost <- function(tab, an, w_mm = S30_COOKIE_BOX$prepost[1], h_mm = S30_COOKIE_BOX$prepost[2]) {
   fa <- an$fa
@@ -136,19 +145,21 @@ s30_panel_cookie_prepost <- function(tab, an, w_mm = S30_COOKIE_BOX$prepost[1], 
   md$x <- match(md$measure, win) + c(-0.16, 0.16)[match(md$measure, win)]
 
   # Presented at the start of POST60 (the registered window checked against S5 above).
-  sub_txt <- sprintf("presented at %s on EPM+1; n increased = %s/%s", sub("–.*$", "", S30CK_WINDOW[["POST60"]]),
+  sub_txt <- sprintf("second presentation, %s on EPM+1; %s/%s increased", sub("–.*$", "", S30CK_WINDOW[["POST60"]]),
                      fa("ckpp_n_increased"), fa("ckpp_n"))
   p <- ggplot(long, aes(x, rate)) +
     geom_line(aes(group = AnimalNum), linewidth = 0.2, alpha = 0.35, colour = "grey30") +
-    geom_errorbar(data = md, aes(x = x, ymin = q25, ymax = q75), inherit.aes = FALSE,
-                  width = 0.07, linewidth = 0.4, colour = "black") +
-    geom_point(data = md, aes(x = x, y = median), inherit.aes = FALSE, size = 1.2, colour = "black") +
+    geom_linerange(data = md, aes(x = x, ymin = q25, ymax = q75), inherit.aes = FALSE,
+                   linewidth = 0.4, colour = "black") +
+    geom_point(data = md, aes(x = x, y = median), inherit.aes = FALSE, shape = 21, size = 1.3, stroke = 0.4,
+               colour = "black", fill = "white") +
     facet_wrap(~ Sex, nrow = 1) +
     scale_x_continuous(breaks = 1:2, labels = c("PRE", "POST"), limits = c(0.72, 2.28), expand = c(0, 0)) +
     scale_y_continuous(limits = c(0, NA), expand = expansion(mult = c(0.02, 0.04)), labels = s30ck_ticks) +
-    labs(x = sprintf("PRE %s, POST %s", S30CK_WINDOW[["PRE60"]], S30CK_WINDOW[["POST60"]]),
+    # phantom("(h^-1)"): the vertical text extent of panel c's plotmath x title, so the x axes line up
+    labs(x = bquote(.(sprintf("PRE %s, POST %s", S30CK_WINDOW[["PRE60"]], S30CK_WINDOW[["POST60"]])) * phantom("(h"^-1 * ")")),
          y = S30CK_RATE_Y, title = "Home-cage cookie response", subtitle = sub_txt,
-         caption = "one grey line per SIS animal;\nblack point and bar: median and IQR") +
+         caption = S30CK_PREPOST_CAPTION) +
     s30ck_theme()
   bh_panel(p, w_mm, h_mm)
 }
@@ -173,26 +184,24 @@ s30_panel_cookie_rs <- function(tab, an, w_mm = S30_COOKIE_BOX$rs[1], h_mm = S30
                size = 0.7, stroke = 0.18, alpha = 0.55, colour = "grey20") +
     scale_fill_manual(values = GROUP_COL[c("RES", "SUS")]) +
     scale_shape_manual(values = GROUP_SHAPE[c("RES", "SUS")]) +
-    guides(fill = guide_legend(override.aes = list(size = 1.3, alpha = 1))) +
+    guides(fill = guide_legend(override.aes = list(size = 1.3, alpha = 0.9, stroke = 0.25))) +
     scale_x_continuous(breaks = 1:2, labels = S30CK_SEX, limits = c(0.6, 2.4), expand = c(0, 0)) +
     scale_y_continuous(limits = c(0, NA), expand = expansion(mult = c(0.02, 0.05)), labels = s30ck_ticks) +
     labs(x = NULL, y = S30CK_DELTA_2, title = "Response by later group",
-         subtitle = "registered exploratory test; RES − SUS") +
+         subtitle = "registered exploratory test; SIS, CON not modelled") +
     s30ck_theme() +
-    # The group key sits inside the empty top-left corner (above the female animals), which
-    # leaves the strip below the height its two-line rows need.
-    theme(legend.position = "inside", legend.position.inside = c(0.01, 1), legend.justification.inside = c(0, 1),
-          legend.direction = "horizontal", legend.background = element_blank(), legend.box.margin = margin(0, 0, 0, 0),
+    # The house legend (Figure 1, B1/B2): above the plot, left-justified, no title.
+    theme(legend.position = "top", legend.justification = "left", legend.box.spacing = unit(1, "pt"),
           plot.margin = margin(11.5, 3, 1.5, 3))
 
   keys <- c("ckrs_f", "ckrs_m", "ckrs_int")
   row_text <- vapply(keys, function(k) sprintf("%s\np = %s; q = %s", an$ci(k), fa(paste0(k, "_p")), fa(paste0(k, "_q"))), "")
-  st <- s30ck_strip(an, keys, row_text, S30CK_DELTA_1)
+  st <- s30ck_strip(an, keys, row_text, S30CK_RS_X)
 
   # free(): the animals' y axis and the strip's row labels do not share one left gutter.
   design <- c(patchwork::area(1, 1, 1, 2), patchwork::area(2, 1), patchwork::area(2, 2))
   p <- patchwork::wrap_plots(patchwork::free(top), st$forest, st$text, design = design,
-                             heights = c(1.65, 1), widths = c(1, 0.76)) +
+                             heights = c(2, 1), widths = c(1, 0.76)) +
     patchwork::plot_annotation(theme = theme(plot.margin = margin(0, 0, 0, 0)))
   bh_panel(p, w_mm, h_mm)
 }
@@ -201,7 +210,9 @@ s30_panel_cookie_rs <- function(tab, an, w_mm = S30_COOKIE_BOX$rs[1], h_mm = S30
 #' Response vs later CombZ: S3 animals (x = dcookie60, y = CombZ; neutral fill, no group
 #' colour), by sex, with the stored S3d segment (x_min, y_at_x_min) -> (x_max, y_at_x_max):
 #' the frozen COOKIE-CONT slope through the sex's centroid. Per facet the printed slope and
-#' CI (S3c); caption the Female - male slope-difference p (COOKIE-CONT-DC60-INT).
+#' CI (S3c); caption what the line is and the Female - male slope-difference p
+#' (COOKIE-CONT-DC60-INT). Header and footer as panel a (one-line subtitle, one-line x title,
+#' two caption lines), so the two facetted panels line up.
 #' Keys: ckcz_{f,m}{,_lo,_hi}, ckcz_int_p.
 s30_panel_cookie_combz <- function(tab, an, w_mm = S30_COOKIE_BOX$combz[1], h_mm = S30_COOKIE_BOX$combz[2]) {
   fa <- an$fa
@@ -230,17 +241,8 @@ s30_panel_cookie_combz <- function(tab, an, w_mm = S30_COOKIE_BOX$combz[1], h_mm
     scale_x_continuous(limits = c(0, NA), expand = expansion(mult = c(0.03, 0.05)), labels = s30ck_ticks) +
     scale_y_continuous(expand = expansion(mult = c(0.05, 0.30)), labels = s30ck_ticks) +
     labs(x = S30CK_DELTA_1, y = "Later CombZ", title = "Response vs later CombZ",
-         subtitle = "registered exploratory linear model;\nline = frozen slope through the centroid",
-         caption = S30CK_SLOPE_UNIT) +
-    s30ck_theme() +
-    theme(plot.margin = margin(11.5, 3, 0, 3))
-  # Two caption lines, the first with the plotmath unit: the plot's own caption carries the
-  # slope unit, the patchwork caption the interaction p, both left-aligned 3 pt from the edge.
-  p <- patchwork::wrap_plots(p) +
-    patchwork::plot_annotation(
-      caption = sprintf("Female − male difference in slope: p = %s", fa("ckcz_int_p")),
-      theme = theme(plot.margin = margin(0, 3, 3, 3), plot.caption.position = "plot",
-                    plot.caption = element_text(family = "sans", size = NOTE_PT, colour = INK, hjust = 0,
-                                                margin = margin(t = 0.5))))
+         subtitle = "registered exploratory linear model",
+         caption = sprintf(S30CK_COMBZ_CAPTION, fa("ckcz_int_p"))) +
+    s30ck_theme()
   bh_panel(p, w_mm, h_mm)
 }
