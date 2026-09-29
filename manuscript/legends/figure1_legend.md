@@ -85,4 +85,4 @@ sex-moderation estimate whose interval includes zero indicates imprecision, not
 equivalence. The primary families (P-CC1, P-TR) were fixed, with every model,
 contrast and robustness rule, in configuration v1.0.0, hashed before any
 resilient-versus-susceptible model was fitted; configuration v1.0.1, under which
-this figure was rendered, leaves that analysis unchanged.
+this figure was rendered, leaves that specification unchanged.
