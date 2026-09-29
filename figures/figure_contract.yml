@@ -10,11 +10,11 @@ figures:
     manuscript_role: primary_behavioural_figure
     is_numbered_manuscript_figure: true
     analysis_repository: topohl/MMMSociability
-    analysis_frozen_at: 95e5dc80b2ec823c8fb791923e15811b5c9e34de
-    behaviour_bundle_id: ebb_v100_20260927_95e5dc8
-    behaviour_config_version: "1.0.0"
-    behaviour_config_sha256: 33d22430b0e6d3a45a28bea8546a185c523aedf72055ddf5ae208cff51f8950e
-    source_data_frozen_in: source_data/MMMSociability/ebb_v100_20260927_95e5dc8
+    analysis_frozen_at: b2ce5072ccbfd94e203fa7efa614dcc11e623337
+    behaviour_bundle_id: ebb_v101_20260929_b2ce507
+    behaviour_config_version: "1.0.1"
+    behaviour_config_sha256: 236a1b0827ee5bee9f5a42691f976c8279479e93b67ac9208a590e884ce8eaf7
+    source_data_frozen_in: source_data/MMMSociability/ebb_v101_20260929_b2ce507
     rendering_repository_computes_statistics: false
     visual_lineage: >-
       Descends from the original behaviour main figure, whose closest surviving
@@ -40,9 +40,9 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01a.svg
-        primary_source: source_data/MMMSociability/ebb_v100_20260927_95e5dc8/A0_design_timeline.csv
+        primary_source: source_data/MMMSociability/ebb_v101_20260929_b2ce507/A0_design_timeline.csv
         input_dependencies:
-          - source_data/MMMSociability/ebb_v100_20260927_95e5dc8/A0_design_timeline.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/A0_design_timeline.csv
         required_columns: [step, event, timing, role, detail, n_animals, n_windows]
         expected_rows: 8
         scientific_contract: design_schematic_temporal_precedence
@@ -60,10 +60,10 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01b.svg
-        primary_source: source_data/MMMSociability/ebb_v100_20260927_95e5dc8/A4_combz_animals.csv
+        primary_source: source_data/MMMSociability/ebb_v101_20260929_b2ce507/A4_combz_animals.csv
         input_dependencies:
-          - source_data/MMMSociability/ebb_v100_20260927_95e5dc8/A4_combz_animals.csv
-          - source_data/MMMSociability/ebb_v100_20260927_95e5dc8/A2b_combz_thresholds.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/A4_combz_animals.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/A2b_combz_thresholds.csv
         required_columns: [AnimalNum, Sex, Batch, Group, CombZ, rfid_tracked]
         expected_rows: 117
         scientific_contract: phenotype_definition_not_independent_validation
@@ -81,11 +81,11 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01c.svg
-        primary_source: source_data/MMMSociability/ebb_v100_20260927_95e5dc8/A1_animal_cc1.csv
+        primary_source: source_data/MMMSociability/ebb_v101_20260929_b2ce507/A1_animal_cc1.csv
         input_dependencies:
-          - source_data/MMMSociability/ebb_v100_20260927_95e5dc8/A1_animal_cc1.csv
-          - source_data/MMMSociability/ebb_v100_20260927_95e5dc8/C2_estimates.csv
-          - source_data/MMMSociability/ebb_v100_20260927_95e5dc8/E_multiplicity.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/A1_animal_cc1.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/C2_estimates.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/E_multiplicity.csv
         required_columns: [AnimalNum, Sex, Batch, Group, CC, crossing_rate, shared_zone_use]
         expected_rows: 111
         scientific_contract: sis_only_res_sus_characterisation_cc1_primary_family_P-CC1
@@ -104,13 +104,13 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01d.svg
-        primary_source: source_data/MMMSociability/ebb_v100_20260927_95e5dc8/B1_animal_longitudinal.csv
+        primary_source: source_data/MMMSociability/ebb_v101_20260929_b2ce507/B1_animal_longitudinal.csv
         input_dependencies:
-          - source_data/MMMSociability/ebb_v100_20260927_95e5dc8/B1_animal_longitudinal.csv
-          - source_data/MMMSociability/ebb_v100_20260927_95e5dc8/B2_descriptive_summaries.csv
-          - source_data/MMMSociability/ebb_v100_20260927_95e5dc8/C2_estimates.csv
-          - source_data/MMMSociability/ebb_v100_20260927_95e5dc8/C3_joint_tests.csv
-          - source_data/MMMSociability/ebb_v100_20260927_95e5dc8/E_multiplicity.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/B1_animal_longitudinal.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/B2_descriptive_summaries.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/C2_estimates.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/C3_joint_tests.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/E_multiplicity.csv
         required_columns: [AnimalNum, Sex, Batch, Group, CC, crossing_rate, shared_zone_use]
         expected_rows: 444
         scientific_contract: sis_only_res_sus_trajectory_primary_family_P-TR_Q2b
@@ -129,11 +129,11 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01e.svg
-        primary_source: source_data/MMMSociability/ebb_v100_20260927_95e5dc8/A2_prediction_animals.csv
+        primary_source: source_data/MMMSociability/ebb_v101_20260929_b2ce507/A2_prediction_animals.csv
         input_dependencies:
-          - source_data/MMMSociability/ebb_v100_20260927_95e5dc8/A2_prediction_animals.csv
-          - source_data/MMMSociability/ebb_v100_20260927_95e5dc8/C2_estimates.csv
-          - source_data/MMMSociability/ebb_v100_20260927_95e5dc8/E_multiplicity.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/A2_prediction_animals.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/C2_estimates.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/E_multiplicity.csv
         required_columns: [AnimalNum, Group, Sex, observed_CombZ, heldout_prediction, Movement_mean, crossing_rate_equiv_per_h]
         expected_rows: 111
         scientific_contract: primary_association_spearman_no_model_fitted
@@ -153,12 +153,12 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01f.svg
-        primary_source: source_data/MMMSociability/ebb_v100_20260927_95e5dc8/A3_permutation_draws.csv
+        primary_source: source_data/MMMSociability/ebb_v101_20260929_b2ce507/A3_permutation_draws.csv
         input_dependencies:
-          - source_data/MMMSociability/ebb_v100_20260927_95e5dc8/A2_prediction_animals.csv
-          - source_data/MMMSociability/ebb_v100_20260927_95e5dc8/A3_permutation_draws.csv
-          - source_data/MMMSociability/ebb_v100_20260927_95e5dc8/C2_estimates.csv
-          - source_data/MMMSociability/ebb_v100_20260927_95e5dc8/E_multiplicity.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/A2_prediction_animals.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/A3_permutation_draws.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/C2_estimates.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/E_multiplicity.csv
         required_columns: [permutation_id, model_id, performance_value, is_observed, n_permutations]
         scientific_contract: held_out_prediction_continuous_target_internal_validation
         model: movement_mean; sole predictor Movement_mean; uses_group FALSE
