@@ -186,9 +186,14 @@ test_that("every annotation key resolves to exactly one stored cell", {
   declared <- unique(unlist(lapply(all_panels(), function(s)
     c(s$annotation_panels, s$annotation_panels_plotted, s$annotation_panels_legend))))
   expect_setequal(unique(m$panel), declared)
-  # a legend-only map panel is never also declared printed (its keys are not on the SVG)
-  legend_only <- unique(unlist(lapply(all_panels(), function(s) s$annotation_panels_legend)))
-  expect_equal(intersect(legend_only, unique(unlist(lapply(all_panels(), function(s) s$annotation_panels)))), character(0))
+  # a panel's legend map panels are never also printed by that panel (their keys are not on its
+  # SVG); another panel may print them (option 2 d's legend quotes the light panel's CIs)
+  for (s in all_panels())
+    expect_length(intersect(unlist(s$annotation_panels_legend), unlist(s$annotation_panels)), 0L)
+  # a map panel that no contract panel prints or plots is legend-only: its keys are quoted, not drawn
+  drawn <- unique(unlist(lapply(all_panels(), function(s) c(s$annotation_panels, s$annotation_panels_plotted))))
+  legend_only <- setdiff(unique(unlist(lapply(all_panels(), function(s) s$annotation_panels_legend))), drawn)
+  expect_true(all(c("light_legend", "cookie_text") %in% legend_only))
   # the option-panel keys are copies of the canonical Figure 1 keys (same cell, same format)
   canon <- rd(CANON_MAP_PATH)
   opt <- m[grepl("^f1o[12]_", m$key), , drop = FALSE]
@@ -236,11 +241,19 @@ test_that("every number printed on a panel is a resolved annotation value, and e
     # forward: each value the panel declares as printed is on it
     missing <- setdiff(V, tokens)
     expect_equal(missing, character(0), info = paste(where, "does not print", paste(missing, collapse = ", ")))
+    sd <- rd(file.path(repo("results", "source_data", "manuscript_candidates", GEN, s$candidate),
+                       sprintf("%s_%s_source_data.csv", s$candidate, s$id)))
+    # the source data record each printed key as drawn: its src_printed is the resolved value and
+    # occurs verbatim in the panel's SVG text
+    pr <- sd[sd$src_block == "annotation key" & sd$src_role == "printed", , drop = FALSE]
+    expect_setequal(pr$src_key, m$key[m$panel %in% unlist(s$annotation_panels)])
+    expect_equal(pr$src_printed, unname(value[pr$src_key]), info = where)
+    svg_txt <- paste(nodes$text, collapse = "\n")
+    verbatim <- vapply(pr$src_printed, function(v) grepl(v, svg_txt, fixed = TRUE), logical(1))
+    expect_true(all(verbatim), info = paste(where, "src_printed not in the SVG text:", paste(pr$src_printed[!verbatim], collapse = ", ")))
     # the numbers its draft legend quotes are in its source data, as resolved, and not on the panel
     lp <- unlist(s$annotation_panels_legend)
     if (length(lp)) {
-      sd <- rd(file.path(repo("results", "source_data", "manuscript_candidates", GEN, s$candidate),
-                         sprintf("%s_%s_source_data.csv", s$candidate, s$id)))
       want <- m$key[m$panel %in% lp]
       got <- sd[sd$src_block == "annotation key" & sd$src_role == "legend", , drop = FALSE]
       expect_setequal(got$src_key, want)

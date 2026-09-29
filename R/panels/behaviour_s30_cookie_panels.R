@@ -36,6 +36,11 @@
 
 # CANDIDATE_SPEC B5 boxes, w x h in mm.
 S30_COOKIE_BOX <- list(prepost = c(58, 62), rs = c(60, 62), combz = c(59, 62))
+# Panel b: relative heights of the animal panel and the contrast strip, and relative widths of
+# the strip's forest and its text column (the text column holds "-5.62 [-15.7, 4.49]" at three
+# significant digits with 1 mm to spare).
+S30_COOKIE_RS_HEIGHTS <- c(2.4, 1)
+S30_COOKIE_RS_WIDTHS <- c(1, 0.82)
 
 S30CK_SEX <- c("Female", "Male")
 S30CK_OFF <- c(RES = -0.14, SUS = 0.14)          # Figure 1c grammar: group offsets within sex
@@ -103,8 +108,9 @@ s30ck_strip <- function(an, keys, row_text, xlab) {
     theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(),
           plot.margin = margin(1, 0, 3, 3))
   txt <- ggplot(est) +
+    # tight leading within a row's two lines, so each pair reads as one row
     geom_text(aes(x = 0, y = y, label = text), hjust = 0, vjust = 0.5, size = NOTE_PT / .pt,
-              colour = INK, lineheight = 0.95) +
+              colour = INK, lineheight = 0.9) +
     scale_x_continuous(limits = c(0, 1), expand = c(0, 0)) +
     scale_y_continuous(limits = c(0.5, 3.5), expand = c(0, 0)) +
     coord_cartesian(clip = "off") +
@@ -190,9 +196,10 @@ s30_panel_cookie_rs <- function(tab, an, w_mm = S30_COOKIE_BOX$rs[1], h_mm = S30
     labs(x = NULL, y = S30CK_DELTA_2, title = "Response by later group",
          subtitle = "registered exploratory test; SIS, CON not modelled") +
     s30ck_theme() +
-    # The house legend (Figure 1, B1/B2): above the plot, left-justified, no title.
-    theme(legend.position = "top", legend.justification = "left", legend.box.spacing = unit(1, "pt"),
-          plot.margin = margin(11.5, 3, 1.5, 3))
+    # The house legend (Figure 1, B1/B2): above the plot, left-justified, no title; placed
+    # against the plot edge (legend.location), so the key sits under the flush-left title.
+    theme(legend.position = "top", legend.justification = "left", legend.location = "plot",
+          legend.box.spacing = unit(1, "pt"), plot.margin = margin(11.5, 3, 1.5, 3))
 
   keys <- c("ckrs_f", "ckrs_m", "ckrs_int")
   row_text <- vapply(keys, function(k) sprintf("%s\np = %s; q = %s", an$ci(k), fa(paste0(k, "_p")), fa(paste0(k, "_q"))), "")
@@ -200,8 +207,9 @@ s30_panel_cookie_rs <- function(tab, an, w_mm = S30_COOKIE_BOX$rs[1], h_mm = S30
 
   # free(): the animals' y axis and the strip's row labels do not share one left gutter.
   design <- c(patchwork::area(1, 1, 1, 2), patchwork::area(2, 1), patchwork::area(2, 2))
+  # heights: the animal panel is longer than its two-line y title (S30_COOKIE_RS_HEIGHTS)
   p <- patchwork::wrap_plots(patchwork::free(top), st$forest, st$text, design = design,
-                             heights = c(2, 1), widths = c(1, 0.76)) +
+                             heights = S30_COOKIE_RS_HEIGHTS, widths = S30_COOKIE_RS_WIDTHS) +
     patchwork::plot_annotation(theme = theme(plot.margin = margin(0, 0, 0, 0)))
   bh_panel(p, w_mm, h_mm)
 }

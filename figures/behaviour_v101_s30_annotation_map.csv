@@ -115,6 +115,17 @@ li_n_animals,light_inactivity,s30b,S1c_light_descriptives,n,scope=overall_87;mea
 li_family_m,light_inactivity,s30b,S1b_light_estimates,family_m,estimand_key=RS_F,%d,size m of the local BH family of the light-phase inactivity tests (SLEEP-CAT) in the Stage 30 tier label
 li_rs_f_qglob,light_legend,s30b,S0_master_hypotheses,q_global_bh_descriptive,id=SLEEP-CAT-IA40L-F,%#.2g,legend only: descriptive BH q of SLEEP-CAT-IA40L-F over all 48 screened tests (not a decision value; the local q is printed)
 li_int_qglob,light_legend,s30b,S0_master_hypotheses,q_global_bh_descriptive,id=SLEEP-CAT-IA40L-INT,%#.2g,legend only: descriptive BH q of SLEEP-CAT-IA40L-INT over all 48 screened tests (not a decision value; the local q is printed)
+li_rs_f_movadj,light_legend,s30b,S1b_light_estimates,movadj_estimate,estimand_key=RS_F,%.4f,legend and Results text only: registered Movement-adjusted sensitivity of SLEEP-CAT-IA40L-F (same-window position-change rate as covariate): RES - SUS in females (fraction)
+li_rs_f_movadj_lo,light_legend,s30b,S1b_light_estimates,movadj_ci_low,estimand_key=RS_F,%.4f,legend and Results text only: 95% CI lower of the Movement-adjusted female estimate
+li_rs_f_movadj_hi,light_legend,s30b,S1b_light_estimates,movadj_ci_high,estimand_key=RS_F,%.4f,legend and Results text only: 95% CI upper of the Movement-adjusted female estimate
+li_n_f,light_legend,s30b,S1b_light_estimates,n,estimand_key=RS_F,%d,legend and Results text only: SIS females in the light-phase inactivity model (SLEEP-CAT-IA40L-F)
+li_n_m,light_legend,s30b,S1b_light_estimates,n,estimand_key=RS_M,%d,legend and Results text only: SIS males in the light-phase inactivity model (SLEEP-CAT-IA40L-M)
+li_n_cages_f,light_legend,s30b,S1b_light_estimates,n_cages,estimand_key=RS_F,%d,legend and Results text only: cages (cage epochs at CC1) of the female light-phase inactivity model
+li_n_cages_m,light_legend,s30b,S1b_light_estimates,n_cages,estimand_key=RS_M,%d,legend and Results text only: cages (cage epochs at CC1) of the male light-phase inactivity model
+li_n_f_res,light_legend,s30b,S1c_light_descriptives,n,scope=sex_group;Sex=Female;Group=RES;measure=posinact40_light,%d,legend only: RES females at CC1 with a light-phase inactivity fraction (descriptive count)
+li_n_f_sus,light_legend,s30b,S1c_light_descriptives,n,scope=sex_group;Sex=Female;Group=SUS;measure=posinact40_light,%d,legend only: SUS females at CC1 with a light-phase inactivity fraction (descriptive count)
+li_n_m_res,light_legend,s30b,S1c_light_descriptives,n,scope=sex_group;Sex=Male;Group=RES;measure=posinact40_light,%d,legend only: RES males at CC1 with a light-phase inactivity fraction (descriptive count)
+li_n_m_sus,light_legend,s30b,S1c_light_descriptives,n,scope=sex_group;Sex=Male;Group=SUS;measure=posinact40_light,%d,legend only: SUS males at CC1 with a light-phase inactivity fraction (descriptive count)
 lc_ia_rs_f_q,light_compact,s30b,S1b_light_estimates,q_local_bh,estimand_key=RS_F,%#.2g,compact light-phase panel: local BH q of RES - SUS inactivity in females (SLEEP-CAT; m = 6)
 lc_ia_rs_m_q,light_compact,s30b,S1b_light_estimates,q_local_bh,estimand_key=RS_M,%#.2g,compact light-phase panel: local BH q of RES - SUS inactivity in males (SLEEP-CAT; m = 6)
 lc_ia_int_q,light_compact,s30b,S1b_light_estimates,q_local_bh,estimand_key=INT_FM,%#.2g,compact light-phase panel: local BH q of the female - male difference in RES - SUS inactivity (SLEEP-CAT; m = 6)
@@ -125,19 +136,19 @@ ld_n_animals,light_dependence,s30b,S2b_rate_inactivity_relationship,n_animals,ph
 ld_icc,light_dependence,s30b,S2b_rate_inactivity_relationship,icc_rounded,phase=light,%.2f,light phase: residual reliability (ICC1 by Batch x CC) of inactivity after a spline on the position-change rate (registry group_blind_qc; descriptive)
 ckpp_n_increased,cookie_prepost,s30b,S3b_cookie_descriptives,n_increased,scope=pooled_77;measure=dcookie60,%d,SIS animals (B2-B6) whose RFID position-change rate was higher in POST60 than in PRE60 on EPM+1 (dcookie60 > 0; descriptive count)
 ckpp_n,cookie_prepost,s30b,S3b_cookie_descriptives,n,scope=pooled_77;measure=dcookie60,%d,SIS animals (B2-B6) with a home-cage cookie response (second presentation; EPM+1)
-ckrs_f,cookie_rs,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CAT-DC60-F,%.1f,home-cage cookie response (dcookie60): RES - SUS in females (position changes/h; COOKIE-CAT; registered exploratory test)
-ckrs_f_lo,cookie_rs,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CAT-DC60-F,%.1f,95% CI lower
-ckrs_f_hi,cookie_rs,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CAT-DC60-F,%.1f,95% CI upper
+ckrs_f,cookie_rs,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CAT-DC60-F,%#.3g,home-cage cookie response (dcookie60): RES - SUS in females (position changes/h; COOKIE-CAT; registered exploratory test)
+ckrs_f_lo,cookie_rs,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CAT-DC60-F,%#.3g,95% CI lower
+ckrs_f_hi,cookie_rs,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CAT-DC60-F,%#.3g,95% CI upper
 ckrs_f_p,cookie_rs,s30b,S3c_cookie_estimates,p_raw,id=COOKIE-CAT-DC60-F,%.2f,raw p (Kenward-Roger t)
 ckrs_f_q,cookie_rs,s30b,S3c_cookie_estimates,q_local_bh,id=COOKIE-CAT-DC60-F,%.2f,local BH q within family COOKIE-CAT (m = 3)
-ckrs_m,cookie_rs,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CAT-DC60-M,%.1f,home-cage cookie response (dcookie60): RES - SUS in males (position changes/h; COOKIE-CAT; registered exploratory test)
-ckrs_m_lo,cookie_rs,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CAT-DC60-M,%.1f,95% CI lower
-ckrs_m_hi,cookie_rs,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CAT-DC60-M,%.1f,95% CI upper
+ckrs_m,cookie_rs,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CAT-DC60-M,%#.3g,home-cage cookie response (dcookie60): RES - SUS in males (position changes/h; COOKIE-CAT; registered exploratory test)
+ckrs_m_lo,cookie_rs,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CAT-DC60-M,%#.3g,95% CI lower
+ckrs_m_hi,cookie_rs,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CAT-DC60-M,%#.3g,95% CI upper
 ckrs_m_p,cookie_rs,s30b,S3c_cookie_estimates,p_raw,id=COOKIE-CAT-DC60-M,%.2f,raw p (Kenward-Roger t)
 ckrs_m_q,cookie_rs,s30b,S3c_cookie_estimates,q_local_bh,id=COOKIE-CAT-DC60-M,%.2f,local BH q within family COOKIE-CAT (m = 3)
-ckrs_int,cookie_rs,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CAT-DC60-INT,%.1f,home-cage cookie response (dcookie60): female - male difference in RES - SUS (g_RS:sex_c; position changes/h; COOKIE-CAT; registered exploratory test)
-ckrs_int_lo,cookie_rs,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CAT-DC60-INT,%.1f,95% CI lower
-ckrs_int_hi,cookie_rs,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CAT-DC60-INT,%.1f,95% CI upper
+ckrs_int,cookie_rs,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CAT-DC60-INT,%#.3g,home-cage cookie response (dcookie60): female - male difference in RES - SUS (g_RS:sex_c; position changes/h; COOKIE-CAT; registered exploratory test)
+ckrs_int_lo,cookie_rs,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CAT-DC60-INT,%#.3g,95% CI lower
+ckrs_int_hi,cookie_rs,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CAT-DC60-INT,%#.3g,95% CI upper
 ckrs_int_p,cookie_rs,s30b,S3c_cookie_estimates,p_raw,id=COOKIE-CAT-DC60-INT,%.2f,raw p (Kenward-Roger t)
 ckrs_int_q,cookie_rs,s30b,S3c_cookie_estimates,q_local_bh,id=COOKIE-CAT-DC60-INT,%.2f,local BH q within family COOKIE-CAT (m = 3)
 ckcz_f,cookie_combz,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CONT-DC60-F,%#.3g,frozen slope of later CombZ on the home-cage cookie response in females (CombZ per position change/h; COOKIE-CONT; registered exploratory test); equals S3d slope (Female)
@@ -147,6 +158,21 @@ ckcz_m,cookie_combz,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CONT-DC60-M,%#.
 ckcz_m_lo,cookie_combz,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CONT-DC60-M,%#.3g,95% CI lower (Satterthwaite CR2)
 ckcz_m_hi,cookie_combz,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CONT-DC60-M,%#.3g,95% CI upper (Satterthwaite CR2)
 ckcz_int_p,cookie_combz,s30b,S3c_cookie_estimates,p_raw,id=COOKIE-CONT-DC60-INT,%.2f,raw p of the female - male difference in slope (x:sex_c; COOKIE-CONT; Satterthwaite CR2)
+ckt_pre60_median,cookie_text,s30b,S3b_cookie_descriptives,median,scope=pooled_77;measure=PRE60,%g,legend and Results text only: median RFID position-change rate in PRE60 over the 77 SIS animals (descriptive; position changes/h)
+ckt_pre60_q25,cookie_text,s30b,S3b_cookie_descriptives,q25,scope=pooled_77;measure=PRE60,%g,legend and Results text only: lower quartile of the PRE60 rate (descriptive)
+ckt_pre60_q75,cookie_text,s30b,S3b_cookie_descriptives,q75,scope=pooled_77;measure=PRE60,%g,legend and Results text only: upper quartile of the PRE60 rate (descriptive)
+ckt_post60_median,cookie_text,s30b,S3b_cookie_descriptives,median,scope=pooled_77;measure=POST60,%g,legend and Results text only: median RFID position-change rate in POST60 over the 77 SIS animals (descriptive; position changes/h)
+ckt_post60_q25,cookie_text,s30b,S3b_cookie_descriptives,q25,scope=pooled_77;measure=POST60,%g,legend and Results text only: lower quartile of the POST60 rate (descriptive)
+ckt_post60_q75,cookie_text,s30b,S3b_cookie_descriptives,q75,scope=pooled_77;measure=POST60,%g,legend and Results text only: upper quartile of the POST60 rate (descriptive)
+ckt_n_f,cookie_text,s30b,S3b_cookie_descriptives,n,scope=sex;Sex=Female;measure=dcookie60,%d,legend and Results text only: SIS females with a home-cage cookie response (descriptive count)
+ckt_n_m,cookie_text,s30b,S3b_cookie_descriptives,n,scope=sex;Sex=Male;measure=dcookie60,%d,legend and Results text only: SIS males with a home-cage cookie response (descriptive count)
+ckt_n_f_res,cookie_text,s30b,S3b_cookie_descriptives,n,scope=sex_group;Sex=Female;Group=RES;measure=dcookie60,%d,legend only: RES females with a home-cage cookie response (descriptive count)
+ckt_n_f_sus,cookie_text,s30b,S3b_cookie_descriptives,n,scope=sex_group;Sex=Female;Group=SUS;measure=dcookie60,%d,legend only: SUS females with a home-cage cookie response (descriptive count)
+ckt_n_m_res,cookie_text,s30b,S3b_cookie_descriptives,n,scope=sex_group;Sex=Male;Group=RES;measure=dcookie60,%d,legend only: RES males with a home-cage cookie response (descriptive count)
+ckt_n_m_sus,cookie_text,s30b,S3b_cookie_descriptives,n,scope=sex_group;Sex=Male;Group=SUS;measure=dcookie60,%d,legend only: SUS males with a home-cage cookie response (descriptive count)
+ckt_n_cages_f,cookie_text,s30b,S3c_cookie_estimates,n_cages,id=COOKIE-CAT-DC60-F,%d,legend and Results text only: cages of the female COOKIE-CAT model
+ckt_n_cages_m,cookie_text,s30b,S3c_cookie_estimates,n_cages,id=COOKIE-CAT-DC60-M,%d,legend and Results text only: cages of the male COOKIE-CAT model
+ckt_n_batches_m,cookie_text,s30b,S3c_cookie_estimates,n_batches,id=COOKIE-CAT-DC60-M,%d,legend and Results text only: batches of the male COOKIE-CAT model (quoted as a word: two batches)
 scr_n_tests,screen_matrix,s30b,S0_master_hypotheses,row_order,id=COOKIE-CAT-DC60-INT,%d,number of registered Stage 30 discovery tests in the title: row_order of the last S0 row (S0 row_order runs 1..48 over the 48 rows; the builder checks it equals the rows of S4)
 scr_l_df1,screen_matrix,s30b,S0_master_hypotheses,df1,id=SCREEN-L-PCR-F,%d,numerator df of the L joint F in the subtitle (the builder checks every L row has this df1)
 scr_m_screen_cont,screen_matrix,s30b,S0_master_hypotheses,family_m,id=SCREEN-CONT-OCC-F,%d,family size m of SCREEN-CONT (row suffix; the builder checks every row of the family has this m)

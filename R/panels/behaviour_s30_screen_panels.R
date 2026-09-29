@@ -33,7 +33,8 @@
 # registered labels (CC1, CC1-CC4, >=40 s, EPM+1).
 #
 # Layout. Each block is a header strip (block name; column names) over a content
-# row of seven plots: row labels | (forest, p/q text) x 3. Horizontal positions
+# row of seven plots: row labels | (forest, p/q text) x 3, with an empty 2.5-mm gap
+# column after the Female and Male cells. Horizontal positions
 # inside the label, text and header plots are in mm (their x-scale is 0..width mm
 # with no expansion), so padding is exact at any box width.
 #
@@ -50,6 +51,13 @@ S30_SCREEN_DF1_KEY <- "scr_l_df1"      # the numerator df of every L joint F (su
 # Width (mm) of the p/q text column of one cell, by print style; the class letter sits at its right.
 S30_SCREEN_TEXT_MM <- c(stacked = 16.5, inline = 27, compact = 21)
 S30_SCREEN_PAD_MM <- c(text_left = 1.2, class_right = 2.2, label_right = 2.2, axis_title_down = 1.2)
+# Gap (mm) after the Female and Male cells, so each class letter sits nearer its own p/q text than
+# the next column's forest.
+S30_SCREEN_COL_GAP_MM <- 2.5
+# Header strips: height of the first and of the later block headers (mm), and the space between
+# the header baseline and the strip bottom (mm), which keeps the header off the block's first row.
+S30_SCREEN_HEADER_MM <- c(first = 4.3, later = 6.3)
+S30_SCREEN_HEADER_BASELINE_MM <- c(first = 1.06, later = 1.26)
 # Axis title of each block, drawn in the label column beside the block's x-axes (7 pt, right-aligned).
 # The SD is each column's own standardizer (S0 standardization_rule): the within-batch residual SD.
 S30_SCREEN_AXIS_TITLE <- c(CONT = "CombZ per within-batch SD", CAT = "RES \u2212 SUS, within-batch SD", L = "joint F")
@@ -89,12 +97,13 @@ s30_screen_void <- function(data, width_mm, ylim) {
     theme_void(base_family = "sans") + theme(plot.margin = margin(0, 0, 0, 0))
 }
 
-#' A header strip: `left` text at x = 0 and optional grey 6-pt heads, all on the strip's bottom line.
-s30_screen_strip <- function(width_mm, left, face = "plain", heads = list()) {
-  p <- s30_screen_void(NULL, width_mm, c(0, 1)) +
-    annotate("text", x = 0, y = 0.1, label = left, hjust = 0, vjust = 0, size = BASE_PT / .pt, colour = INK, fontface = face)
+#' A header strip `height_mm` high: `left` text at x = 0 and optional grey 6-pt heads, all on one
+#' baseline `baseline_mm` above the strip's bottom edge.
+s30_screen_strip <- function(width_mm, left, face = "plain", heads = list(), height_mm = 1, baseline_mm = 0.1) {
+  p <- s30_screen_void(NULL, width_mm, c(0, height_mm)) +
+    annotate("text", x = 0, y = baseline_mm, label = left, hjust = 0, vjust = 0, size = BASE_PT / .pt, colour = INK, fontface = face)
   for (h in heads)
-    p <- p + annotate("text", x = h$x, y = 0.1, label = h$label, hjust = h$hjust, vjust = 0, size = NOTE_PT / .pt, colour = MUTED)
+    p <- p + annotate("text", x = h$x, y = baseline_mm, label = h$label, hjust = h$hjust, vjust = 0, size = NOTE_PT / .pt, colour = MUTED)
   p
 }
 
@@ -161,14 +170,17 @@ s30_panel_screen <- function(s30, an, w_mm = S30_SCREEN_BOX[["w"]], h_mm = S30_S
                   inline = paste0("p = ", p_txt, "; q = ", q_txt),
                   compact = paste0(p_txt, " | ", q_txt))
 
-  # ---- widths (mm): row labels | (forest, p/q text) x 3
+  # ---- widths (mm): row labels | forest, p/q text, gap | forest, p/q text, gap | forest, p/q text
   text_mm <- S30_SCREEN_TEXT_MM[[pq_style]]
   PAD <- S30_SCREEN_PAD_MM
+  gap_mm <- S30_SCREEN_COL_GAP_MM
   inner_w <- w_mm - 2 * 3 * 25.4 / 72                       # plot.margin 3 pt left and right
-  forest_mm <- (inner_w - label_mm - 3 * text_mm) / 3
+  forest_mm <- (inner_w - label_mm - 3 * text_mm - 2 * gap_mm) / 3
   if (forest_mm < 16) stop("s30_panel_screen: the box is too narrow for ", pq_style, " cells (forest ",
                            format(round(forest_mm, 1)), " mm).", call. = FALSE)
-  widths <- c(label_mm, rep(c(forest_mm, text_mm), 3))
+  widths <- c(label_mm, forest_mm, text_mm, gap_mm, forest_mm, text_mm, gap_mm, forest_mm, text_mm)
+  col_forest <- function(s) 3L * s - 1L                      # grid columns of cell s: forest, then text
+  col_text <- function(s) 3L * s
   cell_mm <- forest_mm + text_mm
 
   EXPAND <- 0.42                                             # row units above the first and below the last row
@@ -187,12 +199,16 @@ s30_panel_screen <- function(s30, an, w_mm = S30_SCREEN_BOX[["w"]], h_mm = S30_S
     # header strip: block name over the labels; column name over each cell, "class" over the
     # last column's class letters only (and "p | q" over each cell in the compact style)
     grid_row <- grid_row + 1L
-    heights <- c(heights, if (grid_row == 1L) 3.6 else 5.6); height_units <- c(height_units, "mm")
-    add(s30_screen_strip(label_mm, paste0(b, " \u00b7 ", d$question_label[1])), grid_row, 1L)
+    hk <- if (grid_row == 1L) "first" else "later"
+    head_mm <- S30_SCREEN_HEADER_MM[[hk]]; base_mm <- S30_SCREEN_HEADER_BASELINE_MM[[hk]]
+    heights <- c(heights, head_mm); height_units <- c(height_units, "mm")
+    add(s30_screen_strip(label_mm, paste0(b, " \u00b7 ", d$question_label[1]), height_mm = head_mm, baseline_mm = base_mm),
+        grid_row, 1L)
     for (s in 1:3) {
       heads <- if (s == 3L) list(list(x = cell_mm - PAD[["class_right"]], label = "class", hjust = 1)) else list()
       if (pq_style == "compact") heads <- c(heads, list(list(x = forest_mm + PAD[["text_left"]], label = "p | q", hjust = 0)))
-      add(s30_screen_strip(cell_mm, COL_LAB[s], face = "italic", heads), grid_row, 2L * s, 2L * s + 1L)
+      add(s30_screen_strip(cell_mm, COL_LAB[s], face = "italic", heads, height_mm = head_mm, baseline_mm = base_mm),
+          grid_row, col_forest(s), col_text(s))
     }
 
     # content row
@@ -232,8 +248,9 @@ s30_panel_screen <- function(s30, an, w_mm = S30_SCREEN_BOX[["w"]], h_mm = S30_S
       if (b == "L") {
         pf <- pf + geom_vline(xintercept = 1, linewidth = S30_SCREEN_L_REF$linewidth, colour = S30_SCREEN_L_REF$colour) +
           mark(aes(x = .data[["F"]]))                                                  # the column, never FALSE
+        # labelled once, at the foot of the line (clear of the column header and the first row)
         if (s == 1L)
-          pf <- pf + annotate("text", x = 1, y = ylim[2], label = S30_SCREEN_L_REF$label, hjust = -0.15, vjust = 1,
+          pf <- pf + annotate("text", x = 1, y = ylim[1], label = S30_SCREEN_L_REF$label, hjust = -0.15, vjust = -0.35,
                               size = NOTE_PT / .pt, colour = MUTED)
       } else {
         pf <- pf + bh_forest_zero(0) +
@@ -247,14 +264,14 @@ s30_panel_screen <- function(s30, an, w_mm = S30_SCREEN_BOX[["w"]], h_mm = S30_S
         theme_f1() +
         theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), axis.text.y = element_blank(),
               axis.title = element_blank(), plot.margin = margin(0, 0, 0, 0))
-      add(pf, grid_row, 2L * s)
+      add(pf, grid_row, col_forest(s))
 
       pt <- s30_screen_void(ds, text_mm, ylim) +
         geom_text(aes(x = PAD[["text_left"]], y = y, label = pq), hjust = 0, vjust = 0.5, lineheight = 1,
                   size = NOTE_PT / .pt, colour = INK) +
         geom_text(aes(x = text_mm - PAD[["class_right"]], y = y, label = classification), hjust = 1, vjust = 0.5,
                   size = NOTE_PT / .pt, colour = MUTED)
-      add(pt, grid_row, 2L * s + 1L)
+      add(pt, grid_row, col_text(s))
     }
   }
 

@@ -67,6 +67,9 @@ S30_ROW_SHORT <- c(F = "F", M = "M", INT = "F − M")
 # outweigh the primary panel beside it.
 S30_FOREST_COMPACT <- utils::modifyList(BH_FOREST, list(point_size = 1.4, point_stroke = 0.25, ci_linewidth = 0.5,
                                                         int_size = 1.25, int_stroke = 0.25))
+# B3 rate-strip axis: a tick per unit, the -1 tick unlabelled (presentational breaks only).
+S30_COMPACT_RATE_BREAKS <- c(-2, -1, 0, 1)
+S30_COMPACT_RATE_LABELS <- c("−2", "", "0", "1")
 
 # The per-hour unit as plotmath (Arial has no superscript-minus glyph), as in Figure 1.
 S30_RS_RATE_X <- expression("RES − SUS (position changes h"^-1 * ")")
@@ -78,6 +81,11 @@ S30_DEP_Y <- "sustained positional inactivity\n(≥40 s), fraction"
 
 # Height of the collected-legend row of B2 (mm), under the overall title.
 S30_PHASE_LEGEND_MM <- 3.2
+# B2: the fixed gutter between the two halves (mm), and the left indent of the collected legend
+# (pt). The guide area starts at the first animal panel, one y-axis gutter right of the titles; the
+# negative indent moves the key back under the flush-left overall title.
+S30_PHASE_GUTTER_MM <- 4
+S30_PHASE_LEGEND_INDENT_PT <- -18.7
 # Relative heights of the animal panel and the strip panel (B1 and B2 alike, so the two
 # halves of B2 and a standalone B1 share one geometry), and their absolute form for B1:
 # panel heights as fractions of the box height, so every B1 box of one height has one panel
@@ -153,11 +161,12 @@ s30_light_rows <- function(an, measure, q_keys = NULL, row_labels = S30_ROW_LABE
 
 #' A horizontal estimate strip (ED forest marks): zero line, CI segment, point (INK circle within
 #' sex, white diamond for Female - male), row labels at left, `rows$text` printed at right as the
-#' secondary axis labels (NULL/empty: nothing at right). `marks` the forest marks (BH_FOREST, or
-#' S30_FOREST_COMPACT); `plot_margin` the plot margin.
+#' secondary axis labels (NULL/empty: nothing at right). `x_breaks` / `x_labels` the x breaks and
+#' their labels (a function of the breaks, or one string per break; "" leaves a tick unlabelled);
+#' `marks` the forest marks (BH_FOREST, or S30_FOREST_COMPACT); `plot_margin` the plot margin.
 s30_light_strip <- function(rows, x_title, right_text = rows$text, title = NULL, subtitle = NULL,
                             row_text_size = BODY_PT, right_text_size = NOTE_PT, x_breaks = waiver(),
-                            marks = BH_FOREST, plot_margin = margin(2, 3, 2, 3)) {
+                            x_labels = s30_tick_labels, marks = BH_FOREST, plot_margin = margin(2, 3, 2, 3)) {
   sex_rows <- rows[rows$row != "INT", , drop = FALSE]
   int_rows <- rows[rows$row == "INT", , drop = FALSE]
   has_right <- !is.null(right_text) && any(nzchar(right_text))
@@ -173,7 +182,7 @@ s30_light_strip <- function(rows, x_title, right_text = rows$text, title = NULL,
     bh_forest_point(aes(x = estimate), data = sex_rows, fill = INK, marks = marks) +
     bh_forest_int_point(aes(x = estimate), data = int_rows, marks = marks) +
     y_scale +
-    scale_x_continuous(breaks = x_breaks, labels = s30_tick_labels, expand = expansion(mult = 0.06)) +
+    scale_x_continuous(breaks = x_breaks, labels = x_labels, expand = expansion(mult = 0.06)) +
     expand_limits(x = 0) +
     labs(x = x_title, y = NULL, title = title, subtitle = subtitle) +
     theme_f1() +
@@ -286,16 +295,19 @@ s30_panel_light_phase <- function(tabs, an, w_mm = S30_LIGHT_BOX$phase[1], h_mm 
     legend_mm <- S30_PHASE_LEGEND_MM + pad_pt * 25.4 / 72
     heights <- if (is.null(panel_h_mm)) grid::unit(c(legend_mm, S30_LIGHT_HEIGHTS), c("mm", "null", "null"))
                else grid::unit(c(legend_mm, panel_h_mm, 1), c("mm", "mm", "null"))
-    design <- c(patchwork::area(1, 1, 1, 2), patchwork::area(2, 1), patchwork::area(2, 2),
-                patchwork::area(3, 1), patchwork::area(3, 2))
+    # Three columns: rate | a fixed gutter | inactivity, so the rate strip's right-hand CI text
+    # and the inactivity strip's row labels, which share baselines, do not read as one line.
+    design <- c(patchwork::area(1, 1, 1, 3), patchwork::area(2, 1), patchwork::area(2, 3),
+                patchwork::area(3, 1), patchwork::area(3, 3))
     patchwork::wrap_plots(patchwork::guide_area() + theme(plot.margin = margin(0, 0, 0, 0)), rate$top, inact$top,
                           patchwork::free(rate$strip, side = "lr"), patchwork::free(inact$strip, side = "lr"),
-                          design = design, widths = c(1, 1), heights = heights, guides = "collect") +
+                          design = design, widths = grid::unit(c(1, S30_PHASE_GUTTER_MM, 1), c("null", "mm", "null")),
+                          heights = heights, guides = "collect") +
       patchwork::plot_annotation(title = "Light phase after CC1 (SIS; CON not modelled)",
                                  theme = theme(plot.title = element_text(size = BASE_PT, colour = INK, margin = margin(b = 1)),
                                                plot.margin = margin(top_margin_pt, 0, 0, 0))) &
       theme(legend.position = "top", legend.justification = "left", legend.box.spacing = unit(0, "pt"),
-            legend.box.margin = margin(0, 0, 0, 3))
+            legend.box.margin = margin(0, 0, 0, S30_PHASE_LEGEND_INDENT_PT))
   }
   # Aligned mode: the legend row absorbs the difference, so the title stays under the letter.
   p <- if (is.null(panel_top_mm)) build(0) else s30_align_panel_top(build, panel_top_mm, w_mm, h_mm, "s30_panel_light_phase")
@@ -319,11 +331,15 @@ s30_panel_light_compact <- function(an, w_mm = S30_LIGHT_BOX$compact[1], h_mm = 
   strip_theme <- theme(plot.title = element_text(size = BODY_PT, colour = INK, margin = margin(b = 0.5)),
                        plot.subtitle = element_text(size = NOTE_PT, colour = "grey25", lineheight = 1.0, margin = margin(b = 1)),
                        plot.title.position = "plot")
-  # About three breaks: at the 35-mm box ggplot's default five rate ticks (-3 to 1) touch; the
-  # inactivity strip keeps 0 and 0.005 (its data run -0.0048 to 0.0090; the zero line marks 0).
+  # Rate ticks every unit, labelled at -2, 0 and 1 (at the 35-mm box five labels -3 to 1 touch), so
+  # the positive male estimate has a labelled tick on its side; the inactivity strip keeps 0 and
+  # 0.005 (its data run -0.0048 to 0.0090; the zero line marks 0). The rate unit is a 6-pt grey
+  # note, as the inactivity unit in its subtitle, so neither unit outweighs the strip labels.
   s_rate <- s30_light_strip(rate, F1_UNIT_PER_H, right_text = NULL, title = "position-change rate",
                             subtitle = "Stage 29 secondary estimate;\nnot tested",
-                            x_breaks = scales::breaks_pretty(n = 3), marks = S30_FOREST_COMPACT) + strip_theme
+                            x_breaks = S30_COMPACT_RATE_BREAKS, x_labels = S30_COMPACT_RATE_LABELS,
+                            marks = S30_FOREST_COMPACT) + strip_theme +
+    theme(axis.title.x = element_text(size = NOTE_PT, colour = "grey25", margin = margin(t = 1)))
   s_inact <- s30_light_strip(inact, NULL, right_text = inact$q_text,
                              title = "positional inactivity (≥40 s)",
                              subtitle = paste0("fraction of light phase;\n", s30_tier_s30(an, "lc_family_m", sep = "\n")),
@@ -365,7 +381,10 @@ s30_panel_light_dependence <- function(tabs, an, w_mm = S30_LIGHT_BOX$dependence
             plot.caption.position = "plot", plot.title.position = "plot",
             plot.margin = margin(top_margin_pt, 3, 3, 3))
     if (is.null(panel_h_mm)) return(p)
-    patchwork::wrap_plots(p, patchwork::plot_spacer(), ncol = 1, heights = grid::unit(c(panel_h_mm, 1), c("mm", "null"))) +
+    # The spacer has no margin: with the default 5.5-pt plot margin patchwork would widen the
+    # plot's 3-pt side margins to 5.5 pt, insetting the whole panel.
+    patchwork::wrap_plots(p, patchwork::plot_spacer() + theme(plot.margin = margin(0, 0, 0, 0)), ncol = 1,
+                          heights = grid::unit(c(panel_h_mm, 1), c("mm", "null"))) +
       patchwork::plot_annotation(theme = theme(plot.margin = margin(0, 0, 0, 0)))
   }
   p <- if (is.null(panel_top_mm)) build(0) else s30_align_panel_top(build, panel_top_mm, w_mm, h_mm, "s30_panel_light_dependence")
