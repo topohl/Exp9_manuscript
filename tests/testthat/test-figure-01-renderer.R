@@ -13,6 +13,9 @@ source(repo("R", "behaviour_bundle.R"))
 PANELS <- repo("results", "figures", "manuscript", "figure_01_panels")
 FIG <- repo("results", "figures", "manuscript", "figure_01")
 RENDERER <- repo("figures", "figure_01_panels.R")
+# The renderer is a thin caller; its house style, annotation resolver and panel
+# builders live in the behaviour panel libraries R/panels/behaviour_*.R.
+BEHAVIOUR_LIBS <- sort(list.files(repo("R", "panels"), pattern = "^behaviour_.*[.][Rr]$", full.names = TRUE))
 ENTRY <- repo("figures", "figure_01.R")
 AMAP_PATH <- repo("figures", "figure_01_annotation_map.csv")
 LEGEND <- repo("manuscript", "legends", "figure1_legend.md")
@@ -144,7 +147,8 @@ test_that("the figure contract registers the six bundle-backed panels", {
 test_that("Figure 1 uses the same group palette as Figures 2 and 3", {
   source(repo("R", "vendor", "plotting_nature.R"))
   expect_equal(unname(NATURE_SEMANTIC_PALETTES$group[c("CON", "RES", "SUS")]), c("#3E3C6F", "#C6C3BB", "#E63A48"))
-  code <- code_of(RENDERER)
+  # GROUP_COL is defined in R/panels/behaviour_figure_style.R, which the renderer sources.
+  code <- unlist(lapply(c(RENDERER, BEHAVIOUR_LIBS), code_of))
   expect_true(any(grepl("NATURE_SEMANTIC_PALETTES$group", code, fixed = TRUE)))
   skip_if_not(dir.exists(PANELS), "figure 1 panels not rendered")
   ink <- paste(readLines(file.path(PANELS, "figure_01f.svg"), warn = FALSE), collapse = "")
