@@ -35,15 +35,22 @@ resolve <- function(r) {
 }
 
 test_that("the renderer reads only the pinned bundle and computes nothing", {
-  code <- code_of(RENDERER)
+  # The renderer and every behaviour panel library it (or a behaviour candidate)
+  # sources: R/panels/behaviour_*.R, whatever files that glob holds.
+  expect_true(all(c("behaviour_figure_style.R", "behaviour_figure1_panels.R") %in% basename(BEHAVIOUR_LIBS)))
   FORBIDDEN <- c("analysis_ready", "data/raw", "data/processed", "figure1_bridge_mmmsociability",
                  "canonical/later_outcome_combz", "S:/", "read_excel")
-  for (f in FORBIDDEN)
-    expect_equal(grep(f, code, value = TRUE, fixed = TRUE), character(0), info = paste("renderer reaches outside the bundle:", f))
   STATS <- c("\\blm\\(", "\\bglm\\(", "\\blmer\\(", "cor\\.test\\(", "\\bcor\\(", "p\\.adjust\\(", "\\bboot\\(", "replicate\\(",
              "geom_smooth\\(", "stat_smooth\\(", "stat_summary\\(", "\\bt\\.test\\(", "wilcox\\.test\\(", "\\bmean\\(", "\\bquantile\\(")
-  for (f in STATS)
-    expect_equal(grep(f, code, value = TRUE), character(0), info = paste("renderer computes a statistic:", f))
+  for (src in c(RENDERER, BEHAVIOUR_LIBS)) {
+    code <- code_of(src)
+    for (f in FORBIDDEN)
+      expect_equal(grep(f, code, value = TRUE, fixed = TRUE), character(0),
+                   info = paste(basename(src), "reaches outside the bundle:", f))
+    for (f in STATS)
+      expect_equal(grep(f, code, value = TRUE), character(0), info = paste(basename(src), "computes a statistic:", f))
+  }
+  code <- code_of(RENDERER)
   expect_true(any(grepl("behaviour_bundle_verify(PIN)", code, fixed = TRUE)))
   expect_true(any(grepl("bundle_cell", code, fixed = TRUE)))
 })
