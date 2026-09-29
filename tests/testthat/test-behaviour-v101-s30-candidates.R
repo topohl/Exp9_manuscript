@@ -48,7 +48,10 @@ filters_of <- function(s) {
 resolve <- function(r) {
   v <- do.call(bundle_cell, c(list(bundle_table(r$bundle, r$table), r$column), filters_of(r$filters)))
   if (grepl("%d", r$format, fixed = TRUE)) v <- as.integer(round(v))
-  sub("^-", "\u2212", sprintf(r$format, v))
+  out <- sub("^-", "\u2212", sprintf(r$format, v))
+  # the candidate typography writes an e-notation exponent with U+2212 and no leading zeros
+  if (grepl("e$", r$format)) out <- sub("e-0*([0-9])", "e\u2212\\1", out)
+  out
 }
 all_panels <- function() unlist(lapply(KEYS, function(k) lapply(CT$candidates[[k]]$panels, function(s) c(s, list(candidate = k)))), recursive = FALSE)
 
@@ -71,7 +74,7 @@ LABEL_WORDS <- c(
   "\u2265 ?40 s",              # the registered inactivity bout length
   "EPM\\+1",                   # the registered test day
   "\\b1[678]:00\\b",           # the registered cookie windows (the builder checks them against S5)
-  "\\(18:30-06:30\\)",         # the registered active phase (Figure 1a caption)
+  "\\(18:30\u201306:30\\)",    # the registered active phase (Figure 1a caption, en dash)
   "95% CI",                    # interval label
   "\\b5-fold\\b",              # the registered cross-validation design (Figure 1f text)
   "F = 1\\b")                  # the L reference line of the screen (always an axis break)
@@ -178,9 +181,14 @@ test_that("every annotation key resolves to exactly one stored cell", {
   expect_identical(names(m), c("key", "panel", "bundle", "table", "column", "filters", "format", "meaning"))
   expect_equal(anyDuplicated(m$key), 0L)
   expect_true(all(m$bundle %in% c("ebb", "s30b")))
-  # every map panel is printed or plotted by some contract panel, and every declared map panel exists
-  declared <- unique(unlist(lapply(all_panels(), function(s) c(s$annotation_panels, s$annotation_panels_plotted))))
+  # every map panel is printed, plotted or quoted in a legend by some contract panel, and every
+  # declared map panel exists
+  declared <- unique(unlist(lapply(all_panels(), function(s)
+    c(s$annotation_panels, s$annotation_panels_plotted, s$annotation_panels_legend))))
   expect_setequal(unique(m$panel), declared)
+  # a legend-only map panel is never also declared printed (its keys are not on the SVG)
+  legend_only <- unique(unlist(lapply(all_panels(), function(s) s$annotation_panels_legend)))
+  expect_equal(intersect(legend_only, unique(unlist(lapply(all_panels(), function(s) s$annotation_panels)))), character(0))
   # the option-panel keys are copies of the canonical Figure 1 keys (same cell, same format)
   canon <- rd(CANON_MAP_PATH)
   opt <- m[grepl("^f1o[12]_", m$key), , drop = FALSE]
@@ -228,6 +236,16 @@ test_that("every number printed on a panel is a resolved annotation value, and e
     # forward: each value the panel declares as printed is on it
     missing <- setdiff(V, tokens)
     expect_equal(missing, character(0), info = paste(where, "does not print", paste(missing, collapse = ", ")))
+    # the numbers its draft legend quotes are in its source data, as resolved, and not on the panel
+    lp <- unlist(s$annotation_panels_legend)
+    if (length(lp)) {
+      sd <- rd(file.path(repo("results", "source_data", "manuscript_candidates", GEN, s$candidate),
+                         sprintf("%s_%s_source_data.csv", s$candidate, s$id)))
+      want <- m$key[m$panel %in% lp]
+      got <- sd[sd$src_block == "annotation key" & sd$src_role == "legend", , drop = FALSE]
+      expect_setequal(got$src_key, want)
+      expect_equal(got$src_printed[match(want, got$src_key)], unname(value[want]), info = where)
+    }
   }
 })
 

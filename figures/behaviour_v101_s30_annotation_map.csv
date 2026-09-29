@@ -112,9 +112,13 @@ li_int_hi,light_inactivity,s30b,S1b_light_estimates,ci_high,estimand_key=INT_FM,
 li_int_q,light_inactivity,s30b,S1b_light_estimates,q_local_bh,estimand_key=INT_FM,%#.2g,local BH q within family SLEEP-CAT (m = 6)
 li_n_ge099,light_inactivity,s30b,S1c_light_descriptives,n_ge_0.99,scope=overall_87;measure=posinact40_light,%d,SIS animals at CC1 whose light-phase inactivity fraction is >= 0.99 (descriptive count; the in-panel axis note)
 li_n_animals,light_inactivity,s30b,S1c_light_descriptives,n,scope=overall_87;measure=posinact40_light,%d,SIS animals at CC1 with a light-phase inactivity fraction (descriptive count; the in-panel axis note)
+li_family_m,light_inactivity,s30b,S1b_light_estimates,family_m,estimand_key=RS_F,%d,size m of the local BH family of the light-phase inactivity tests (SLEEP-CAT) in the Stage 30 tier label
+li_rs_f_qglob,light_legend,s30b,S0_master_hypotheses,q_global_bh_descriptive,id=SLEEP-CAT-IA40L-F,%#.2g,legend only: descriptive BH q of SLEEP-CAT-IA40L-F over all 48 screened tests (not a decision value; the local q is printed)
+li_int_qglob,light_legend,s30b,S0_master_hypotheses,q_global_bh_descriptive,id=SLEEP-CAT-IA40L-INT,%#.2g,legend only: descriptive BH q of SLEEP-CAT-IA40L-INT over all 48 screened tests (not a decision value; the local q is printed)
 lc_ia_rs_f_q,light_compact,s30b,S1b_light_estimates,q_local_bh,estimand_key=RS_F,%#.2g,compact light-phase panel: local BH q of RES - SUS inactivity in females (SLEEP-CAT; m = 6)
 lc_ia_rs_m_q,light_compact,s30b,S1b_light_estimates,q_local_bh,estimand_key=RS_M,%#.2g,compact light-phase panel: local BH q of RES - SUS inactivity in males (SLEEP-CAT; m = 6)
 lc_ia_int_q,light_compact,s30b,S1b_light_estimates,q_local_bh,estimand_key=INT_FM,%#.2g,compact light-phase panel: local BH q of the female - male difference in RES - SUS inactivity (SLEEP-CAT; m = 6)
+lc_family_m,light_compact,s30b,S1b_light_estimates,family_m,estimand_key=RS_F,%d,compact light-phase panel: size m of the local BH family of the inactivity tests (SLEEP-CAT) in the Stage 30 tier label
 ld_rho,light_dependence,s30b,S2b_rate_inactivity_relationship,rho_rounded,phase=light,%.2f,light phase: Spearman rho of inactivity (>=40 s) with the position-change rate after Batch x cage-change centring (registry group_blind_qc; descriptive; not a test)
 ld_n_windows,light_dependence,s30b,S2b_rate_inactivity_relationship,n_windows,phase=light,%d,light-phase animal-windows in the relationship (all 111 RFID animals x CC1-CC4)
 ld_n_animals,light_dependence,s30b,S2b_rate_inactivity_relationship,n_animals,phase=light,%d,RFID animals in the relationship
@@ -136,12 +140,12 @@ ckrs_int_lo,cookie_rs,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CAT-DC60-INT,%.
 ckrs_int_hi,cookie_rs,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CAT-DC60-INT,%.1f,95% CI upper
 ckrs_int_p,cookie_rs,s30b,S3c_cookie_estimates,p_raw,id=COOKIE-CAT-DC60-INT,%.2f,raw p (Kenward-Roger t)
 ckrs_int_q,cookie_rs,s30b,S3c_cookie_estimates,q_local_bh,id=COOKIE-CAT-DC60-INT,%.2f,local BH q within family COOKIE-CAT (m = 3)
-ckcz_f,cookie_combz,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CONT-DC60-F,%.4f,frozen slope of later CombZ on the home-cage cookie response in females (CombZ per position change/h; COOKIE-CONT; registered exploratory test); equals S3d slope (Female)
-ckcz_f_lo,cookie_combz,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CONT-DC60-F,%.4f,95% CI lower (Satterthwaite CR2)
-ckcz_f_hi,cookie_combz,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CONT-DC60-F,%.4f,95% CI upper (Satterthwaite CR2)
-ckcz_m,cookie_combz,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CONT-DC60-M,%.4f,frozen slope of later CombZ on the home-cage cookie response in males (CombZ per position change/h; COOKIE-CONT; registered exploratory test); equals S3d slope (Male)
-ckcz_m_lo,cookie_combz,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CONT-DC60-M,%.4f,95% CI lower (Satterthwaite CR2)
-ckcz_m_hi,cookie_combz,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CONT-DC60-M,%.4f,95% CI upper (Satterthwaite CR2)
+ckcz_f,cookie_combz,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CONT-DC60-F,%#.3g,frozen slope of later CombZ on the home-cage cookie response in females (CombZ per position change/h; COOKIE-CONT; registered exploratory test); equals S3d slope (Female)
+ckcz_f_lo,cookie_combz,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CONT-DC60-F,%#.3g,95% CI lower (Satterthwaite CR2)
+ckcz_f_hi,cookie_combz,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CONT-DC60-F,%#.3g,95% CI upper (Satterthwaite CR2)
+ckcz_m,cookie_combz,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CONT-DC60-M,%#.3g,frozen slope of later CombZ on the home-cage cookie response in males (CombZ per position change/h; COOKIE-CONT; registered exploratory test); equals S3d slope (Male)
+ckcz_m_lo,cookie_combz,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CONT-DC60-M,%#.3g,95% CI lower (Satterthwaite CR2)
+ckcz_m_hi,cookie_combz,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CONT-DC60-M,%#.3g,95% CI upper (Satterthwaite CR2)
 ckcz_int_p,cookie_combz,s30b,S3c_cookie_estimates,p_raw,id=COOKIE-CONT-DC60-INT,%.2f,raw p of the female - male difference in slope (x:sex_c; COOKIE-CONT; Satterthwaite CR2)
 scr_n_tests,screen_matrix,s30b,S0_master_hypotheses,row_order,id=COOKIE-CAT-DC60-INT,%d,number of registered Stage 30 discovery tests in the title: row_order of the last S0 row (S0 row_order runs 1..48 over the 48 rows; the builder checks it equals the rows of S4)
 scr_l_df1,screen_matrix,s30b,S0_master_hypotheses,df1,id=SCREEN-L-PCR-F,%d,numerator df of the L joint F in the subtitle (the builder checks every L row has this df1)

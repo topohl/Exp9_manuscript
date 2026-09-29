@@ -25,7 +25,9 @@
 #      resolved only keys of the annotation panels the contract declares;
 #   4. writes the panel's source data: the rows and mapped columns of every plotted layer,
 #      as passed to the plot (unjittered), the annotation keys it resolved with their stored
-#      and printed values, and the stored bundle rows behind those keys (row filtering only);
+#      and printed values and their role (printed on the panel, plotted only, or quoted by the
+#      draft legend: contract annotation_panels_legend, resolved here and not drawn), and the
+#      stored bundle rows behind those keys (row filtering only);
 #   5. assembles the candidate (manuscript_figure_assemble_svg, absolute layout, 8-pt letters)
 #      and rasterises it (manuscript_figure_raster_companions: PNG and raster PDF at 300 dpi,
 #      from a copy of the assembled page with the panels inlined, see inline_for_raster());
@@ -104,30 +106,38 @@ seeds <- function(s, n) {
   as.integer(v)
 }
 prefixed <- function(an, s) edx_annotation_prefixed(an, arg(s, "key_prefix"))
+typo <- function(s) arg(s, "typography", "figure1")
+top_pt <- function(s) as.numeric(arg(s, "top_margin_pt", 11.5))
+num_or_null <- function(s, name) if (is.null(s$args[[name]])) NULL else as.numeric(s$args[[name]])
 BUILDERS <- list(
-  f1_panel_design = function(s, an) f1_panel_design(TABS$ebb, prefixed(an, s), s$w, s$h),
+  f1_panel_design = function(s, an) f1_panel_design(TABS$ebb, prefixed(an, s), s$w, s$h, typography = typo(s)),
   f1_panel_combz = function(s, an) f1_panel_combz(TABS$ebb, prefixed(an, s), s$w, s$h, jitter_seed = seeds(s, 1L),
     subtitle = if (isTRUE(arg(s, "subtitle_line_break"))) F1OPT_COMBZ_SUBTITLE_NARROW else F1_COMBZ_SUBTITLE,
     minus_ticks = isTRUE(arg(s, "minus_ticks"))),
   f1_panel_cc1 = function(s, an) f1_panel_cc1(TABS$ebb, prefixed(an, s), s$w, s$h, jitter_seed = seeds(s, 2L),
-    text_position = arg(s, "text_position", "panel")),
+    text_position = arg(s, "text_position", "panel"), typography = typo(s), compact_header = isTRUE(arg(s, "compact_header"))),
   f1_panel_association = function(s, an) f1_panel_association(TABS$ebb, prefixed(an, s), s$w, s$h,
-    minus_ticks = isTRUE(arg(s, "minus_ticks"))),
+    minus_ticks = isTRUE(arg(s, "minus_ticks")), typography = typo(s),
+    title = if (isTRUE(arg(s, "candidate_title"))) F1OPT_ASSOCIATION_TITLE else NULL),
   f1_panel_prediction = function(s, an) f1_panel_prediction(TABS$ebb, prefixed(an, s), s$w, s$h,
-    minus_ticks = isTRUE(arg(s, "minus_ticks"))),
+    minus_ticks = isTRUE(arg(s, "minus_ticks")), typography = typo(s), compact_header = isTRUE(arg(s, "compact_header"))),
   edx_panel_primary_trajectory = function(s, an) edx_panel_primary_trajectory(TABS$ebb, an, arg(s, "construct"), s$w, s$h,
     show_con = isTRUE(arg(s, "show_con", TRUE))),
   edx_panel_secondary_trajectories = function(s, an) edx_panel_secondary_trajectories(TABS$ebb, an, s$w, s$h,
     show_con = isTRUE(arg(s, "show_con", TRUE))),
   s30_panel_light_measure = function(s, an) s30_panel_light_measure(arg(s, "measure"), TABS, an, s$w, s$h,
     jitter_seed = seeds(s, 1L), standalone = isTRUE(arg(s, "standalone", TRUE))),
-  s30_panel_light_phase = function(s, an) s30_panel_light_phase(TABS, an, s$w, s$h, jitter_seed = seeds(s, 1L)),
-  s30_panel_light_compact = function(s, an) s30_panel_light_compact(an, s$w, s$h, q_rows = as.character(unlist(arg(s, "q_rows")))),
-  s30_panel_light_dependence = function(s, an) s30_panel_light_dependence(TABS, an, s$w, s$h),
+  s30_panel_light_phase = function(s, an) s30_panel_light_phase(TABS, an, s$w, s$h, jitter_seed = seeds(s, 1L),
+    top_margin_pt = top_pt(s), panel_top_mm = num_or_null(s, "panel_top_mm"), panel_h_mm = num_or_null(s, "panel_h_mm")),
+  s30_panel_light_compact = function(s, an) s30_panel_light_compact(an, s$w, s$h, q_rows = as.character(unlist(arg(s, "q_rows"))),
+    top_margin_pt = top_pt(s)),
+  s30_panel_light_dependence = function(s, an) s30_panel_light_dependence(TABS, an, s$w, s$h, top_margin_pt = top_pt(s),
+    panel_top_mm = num_or_null(s, "panel_top_mm"), panel_h_mm = num_or_null(s, "panel_h_mm")),
   s30_panel_cookie_prepost = function(s, an) s30_panel_cookie_prepost(TABS$s30b, an, s$w, s$h),
   s30_panel_cookie_rs = function(s, an) s30_panel_cookie_rs(TABS$s30b, an, s$w, s$h, jitter_seed = seeds(s, 1L)),
   s30_panel_cookie_combz = function(s, an) s30_panel_cookie_combz(TABS$s30b, an, s$w, s$h),
-  s30_panel_screen = function(s, an) s30_panel_screen(TABS$s30b, an, s$w, s$h, pq_style = arg(s, "pq_style", "stacked")))
+  s30_panel_screen = function(s, an) s30_panel_screen(TABS$s30b, an, s$w, s$h, pq_style = arg(s, "pq_style", "stacked"),
+    top_margin_pt = top_pt(s)))
 
 # ---------------------------------------------------------------- plot introspection
 # The leaf ggplots of a panel (patchwork parts in order; a plain ggplot is its own leaf).
@@ -217,13 +227,18 @@ axis_labels <- function(panel_plot) {
   out[nzchar(out)]
 }
 
-# The annotation rows a panel resolved, with the stored and the printed value.
-annotation_block <- function(an, keys) {
+# The annotation rows a panel resolved, with the stored and the printed value. src_role says where
+# the value appears: "printed" on the panel (its map panel is one the contract declares printed;
+# the value-for-value test checks the SVG), "legend" in the panel's draft legend only, or
+# "plotted_only" (a key used only to place a mark: src_printed is left empty, as nothing prints it).
+annotation_block <- function(an, keys, printed_panels, legend_panels) {
   if (!length(keys)) return(NULL)
   r <- MAP[match(keys, MAP$key), c("key", "panel", "bundle", "table", "column", "filters", "format")]
   names(r) <- paste0("src_", c("key", "annotation_panel", "bundle", "table", "column", "filters", "format"))
+  r$src_role <- ifelse(r$src_annotation_panel %in% printed_panels, "printed",
+                       ifelse(r$src_annotation_panel %in% legend_panels, "legend", "plotted_only"))
   r$src_stored_value <- vapply(keys, function(k) as.character(an$ann(k)), "")
-  r$src_printed <- vapply(keys, an$fa, "")
+  r$src_printed <- ifelse(r$src_role == "plotted_only", "", vapply(keys, an$fa, ""))
   cbind(data.frame(src_block = "annotation key", stringsAsFactors = FALSE), r, row.names = NULL)
 }
 
@@ -326,21 +341,28 @@ for (key in names(CONTRACT$candidates)) {
       stop(key, "/", s$id, ": the builder's box differs from the contract box.", call. = FALSE)
     svg <- bh_save_svg(panel, file.path(dirs$panels, sprintf("%s_%s.svg", key, s$id)))
 
+    # the numbers the panel's draft legend quotes: resolved here (not drawn), so they reach the
+    # source data with their stored cells, and their tables count as the panel's inputs
+    printed_panels <- unlist(s$annotation_panels)
+    legend_panels <- unlist(s$annotation_panels_legend)
+    builder_keys <- an$resolved()
+    for (k in MAP$key[MAP$panel %in% legend_panels]) an$fa(k)
+
     # the contract declares exactly what the panel read and printed
     read <- sort(READS$tables)
     if (!setequal(read, unlist(s$inputs)))
       stop(key, "/", s$id, ": the builder read ", paste(read, collapse = ", "), " but the contract declares ",
            paste(unlist(s$inputs), collapse = ", "), call. = FALSE)
     keys <- an$resolved()
-    printed_panels <- unlist(s$annotation_panels)
     allowed <- MAP$key[MAP$panel %in% c(printed_panels, unlist(s$annotation_panels_plotted))]
-    if (length(setdiff(keys, allowed)))
-      stop(key, "/", s$id, ": resolved keys outside its annotation panels: ", paste(setdiff(keys, allowed), collapse = ", "), call. = FALSE)
-    unresolved <- setdiff(MAP$key[MAP$panel %in% printed_panels], keys)
+    if (length(setdiff(builder_keys, allowed)))
+      stop(key, "/", s$id, ": resolved keys outside its annotation panels: ", paste(setdiff(builder_keys, allowed), collapse = ", "), call. = FALSE)
+    unresolved <- setdiff(MAP$key[MAP$panel %in% printed_panels], builder_keys)
     if (length(unresolved))
       stop(key, "/", s$id, ": declared keys the builder never resolved: ", paste(unresolved, collapse = ", "), call. = FALSE)
 
-    sd_path <- write_csv_utf8(bind_fill(c(layer_blocks(panel$plot), list(annotation_block(an, keys)), bundle_row_blocks(keys))),
+    sd_path <- write_csv_utf8(bind_fill(c(layer_blocks(panel$plot), list(annotation_block(an, keys, printed_panels, legend_panels)),
+                                          bundle_row_blocks(keys))),
                               file.path(dirs$source_data, sprintf("%s_%s_source_data.csv", key, s$id)))
     ticks <- axis_labels(panel$plot)
     note_output(key, "panel_svg", svg)
@@ -359,6 +381,7 @@ for (key in names(CONTRACT$candidates)) {
       inputs = paste(read, collapse = ";"),
       annotation_panels = paste(printed_panels, collapse = ";"),
       annotation_panels_plotted = paste(unlist(s$annotation_panels_plotted), collapse = ";"),
+      annotation_panels_legend = paste(legend_panels, collapse = ";"),
       annotation_keys = paste(keys, collapse = ";"),
       axis_tick_labels = paste(ticks, collapse = "|"),
       panel_svg = rel(svg), panel_svg_bytes = file.size(svg), panel_svg_sha256 = sha(svg),
