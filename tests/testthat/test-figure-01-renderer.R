@@ -41,7 +41,9 @@ test_that("the renderer reads only the pinned bundle and computes nothing", {
   FORBIDDEN <- c("analysis_ready", "data/raw", "data/processed", "figure1_bridge_mmmsociability",
                  "canonical/later_outcome_combz", "S:/", "read_excel")
   STATS <- c("\\blm\\(", "\\bglm\\(", "\\blmer\\(", "cor\\.test\\(", "\\bcor\\(", "p\\.adjust\\(", "\\bboot\\(", "replicate\\(",
-             "geom_smooth\\(", "stat_smooth\\(", "stat_summary\\(", "\\bt\\.test\\(", "wilcox\\.test\\(", "\\bmean\\(", "\\bquantile\\(")
+             "geom_smooth\\(", "stat_smooth\\(", "stat_summary\\(", "\\bt\\.test\\(", "wilcox\\.test\\(", "\\bmean\\(", "\\bquantile\\(",
+             "\\bmedian\\(", "\\bsd\\(", "\\bvar\\(", "\\bpredict\\(", "\\bfitted\\(", "\\bcoef\\(", "\\bresiduals\\(",
+             "\\bdensity\\(", "\\becdf\\(")
   for (src in c(RENDERER, BEHAVIOUR_LIBS)) {
     code <- code_of(src)
     for (f in FORBIDDEN)
