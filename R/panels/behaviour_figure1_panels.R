@@ -18,6 +18,22 @@
 # caller that builds or prints panels in another order should pass an explicit
 # `jitter_seed` (the default NA keeps the Figure 1 behaviour).
 #
+# Candidate reuse (generation behaviour_v101_s30). The builders also serve the
+# Figure 1 option-1/2 candidates and Extended Data X, through optional arguments
+# whose defaults reproduce the Figure 1 renderer byte for byte:
+#   f1_panel_combz(subtitle, minus_ticks)            a subtitle with a line break for
+#                                                    narrow boxes; U+2212 tick labels;
+#   f1_panel_cc1(text_position)                      "plot" aligns titles and captions
+#                                                    to the plot edge in narrow boxes;
+#   f1_panel_trajectory(constructs, keys, family,    one or more constructs (incl. the
+#                       title, caption, show_con)    secondary occupancy_dispersion and
+#                                                    fragmentation), their annotation-key
+#                                                    stems, the Holm family printed,
+#                                                    the overall title/caption, CON on/off;
+#   f1_panel_association(minus_ticks), f1_panel_prediction(minus_ticks).
+# They change layout and typography only: every printed number still comes
+# from an$fa() / an$ci() / an$ann().
+#
 # Requires: R/behaviour_bundle.R and R/panels/behaviour_figure_style.R sourced first.
 
 # Figure 1 contract boxes (figures/figure_contract.yml, absolute layout), w x h in mm.
@@ -28,9 +44,30 @@ F1_BOX <- list(a = c(173, 36), b = c(58, 66), c = c(113, 66), d = c(173, 62), e 
 # The inverse hour is plotmath (as the R-squared superscript of panel f): Arial has no
 # superscript-minus glyph, so a Unicode "h^-1" would fall back to another font.
 F1_UNIT_PER_H <- expression("position changes h"^-1)
-F1_CONSTRUCT_TITLE <- c(crossing_rate = "RFID position-change rate", shared_zone_use = "Shared RFID-position occupancy")
+F1_CONSTRUCT_TITLE <- c(crossing_rate = "RFID position-change rate", shared_zone_use = "Shared RFID-position occupancy",
+                        # Stage 29 secondary constructs (ebb I_analysis_config.json metrics/*/label, unit):
+                        occupancy_dispersion = "Occupancy dispersion", fragmentation = "Fragmentation")
 # The occupancy unit is on two lines: on one line it is longer than the plot height of panels c and d.
-F1_CONSTRUCT_Y <- list(crossing_rate = F1_UNIT_PER_H, shared_zone_use = "fraction of co-assigned\ndyadic time")
+# Secondary units: occupancy dispersion is the Shannon entropy (bits) of the share of window
+# occupancy time across the RFID positions; fragmentation is the proportion of position-change
+# bouts that contain exactly one position change.
+F1_CONSTRUCT_Y <- list(crossing_rate = F1_UNIT_PER_H, shared_zone_use = "fraction of co-assigned\ndyadic time",
+                       occupancy_dispersion = "entropy across RFID\npositions (bits)",
+                       fragmentation = "proportion of bouts with\none position change")
+
+# Figure 1d: the annotation-key stem of each construct (keys <stem>_q2b_{df1,df2,f,holm}),
+# the overall title, and the panel b subtitle.
+F1_TRAJECTORY_KEYS <- c(crossing_rate = "d_cr", shared_zone_use = "d_sz")
+F1_TRAJECTORY_TITLE <- "Active phase after each cage change: sex-stratified model estimates ± 95% CI (CON descriptive means, grey)"
+F1_COMBZ_SUBTITLE <- "dashed threshold defines RES/SUS; not a test"
+
+#' Tick labels exactly as ggplot2's default continuous formatter writes them, but with the
+#' typographic minus U+2212 (bh_minus). Opt-in (minus_ticks = TRUE); Figure 1 keeps the default.
+f1_minus_labels <- function(x) {
+  out <- bh_minus(format(x, trim = TRUE, justify = "left"))
+  out[is.na(x)] <- NA
+  out
+}
 # Two lines (one would be wider than panel e). textstyle(atop(displaystyle(.), displaystyle(.)))
 # keeps both lines full size with text-style (closer) line spacing.
 F1_EARLY_RATE_X <- expression(textstyle(atop(displaystyle("Early RFID position-change rate after CC1"),
@@ -93,7 +130,8 @@ f1_panel_design <- function(tab, an, w_mm = F1_BOX$a[1], h_mm = F1_BOX$a[2]) {
 
 # =============================================================== panel b
 # The threshold defines the groups; the separation is by construction, so no brackets and no stars.
-f1_panel_combz <- function(tab, an, w_mm = F1_BOX$b[1], h_mm = F1_BOX$b[2], jitter_seed = NA) {
+f1_panel_combz <- function(tab, an, w_mm = F1_BOX$b[1], h_mm = F1_BOX$b[2], jitter_seed = NA,
+                           subtitle = F1_COMBZ_SUBTITLE, minus_ticks = FALSE) {
   fa <- an$fa
   cls <- tab("A4_combz_animals")
   thr <- tab("A2b_combz_thresholds")
@@ -112,15 +150,18 @@ f1_panel_combz <- function(tab, an, w_mm = F1_BOX$b[1], h_mm = F1_BOX$b[2], jitt
     facet_wrap(~ Sex, nrow = 1) +
     scale_fill_manual(values = GROUP_COL, guide = "none") + scale_shape_manual(values = GROUP_SHAPE, guide = "none") +
     scale_x_discrete(expand = expansion(add = c(0.45, 0.45))) +
+    (if (isTRUE(minus_ticks)) scale_y_continuous(labels = f1_minus_labels) else NULL) +
     labs(x = NULL, y = "Later CombZ", title = "Later composite outcome",
-         subtitle = "dashed threshold defines RES/SUS; not a test") +
+         subtitle = subtitle) +
     theme_f1()
   bh_panel(pb, w_mm, h_mm)
 }
 
 # =============================================================== panel c
 # Groups sit at fixed offsets within each sex; the model mean and CI are drawn just right of their own group.
-f1_panel_cc1_one <- function(A1, C2, an, k, key, jitter_seed = NA) {
+# text_position "plot" aligns the construct title and the contrast caption to the plot's left
+# edge instead of the panel's (for narrow boxes, where the panel-aligned text overruns the half).
+f1_panel_cc1_one <- function(A1, C2, an, k, key, jitter_seed = NA, text_position = "panel") {
   fa <- an$fa; ci <- an$ci
   OFF <- c(CON = -0.28, RES = 0, SUS = 0.28)
   C_TITLE <- F1_CONSTRUCT_TITLE
@@ -135,7 +176,7 @@ f1_panel_cc1_one <- function(A1, C2, an, k, key, jitter_seed = NA) {
   cap <- sprintf("RES−SUS, F: %s\nRES−SUS, M: %s\nsex difference: %s\nP-CC1 Holm p = %s",
                  ci(paste0("c_", key, "_rs_f")), ci(paste0("c_", key, "_rs_m")), ci(paste0("c_", key, "_q1")), fa(paste0("c_", key, "_q1_holm")))
   set.seed(2)  # jitter is presentational only
-  ggplot(pts, aes(x, y)) +
+  p <- ggplot(pts, aes(x, y)) +
     geom_point(aes(fill = Group, shape = Group, colour = Group == "CON"), position = position_jitter(width = 0.06, height = 0, seed = jitter_seed),
                size = 0.8, stroke = 0.18, alpha = 0.8) +
     geom_errorbar(data = mm, aes(x = x, ymin = ci_low, ymax = ci_high), inherit.aes = FALSE, width = 0.07, linewidth = 0.4, colour = "black") +
@@ -146,13 +187,18 @@ f1_panel_cc1_one <- function(A1, C2, an, k, key, jitter_seed = NA) {
     scale_x_continuous(breaks = 1:2, labels = c("Female", "Male"), limits = c(0.6, 2.5)) +
     labs(x = NULL, y = C_Y[[k]], title = C_TITLE[[k]], caption = cap) +
     theme_f1()
+  if (identical(text_position, "plot"))
+    p <- p + theme(plot.title.position = "plot", plot.caption.position = "plot")
+  else if (!identical(text_position, "panel"))
+    stop("f1_panel_cc1: text_position must be \"panel\" or \"plot\".", call. = FALSE)
+  p
 }
 
-f1_panel_cc1 <- function(tab, an, w_mm = F1_BOX$c[1], h_mm = F1_BOX$c[2], jitter_seed = c(NA, NA)) {
+f1_panel_cc1 <- function(tab, an, w_mm = F1_BOX$c[1], h_mm = F1_BOX$c[2], jitter_seed = c(NA, NA), text_position = "panel") {
   A1 <- tab("A1_animal_cc1")
   C2 <- tab("C2_estimates")
-  pc <- patchwork::wrap_plots(f1_panel_cc1_one(A1, C2, an, "crossing_rate", "cr", jitter_seed[1]),
-                              f1_panel_cc1_one(A1, C2, an, "shared_zone_use", "sz", jitter_seed[length(jitter_seed)]),
+  pc <- patchwork::wrap_plots(f1_panel_cc1_one(A1, C2, an, "crossing_rate", "cr", jitter_seed[1], text_position),
+                              f1_panel_cc1_one(A1, C2, an, "shared_zone_use", "sz", jitter_seed[length(jitter_seed)], text_position),
                               nrow = 1, guides = "collect") +
     patchwork::plot_annotation(title = "First active phase after CC1 (SIS; CON hollow grey, not modelled)",
                                theme = theme(plot.title = element_text(size = BASE_PT, colour = INK))) &
@@ -161,21 +207,33 @@ f1_panel_cc1 <- function(tab, an, w_mm = F1_BOX$c[1], h_mm = F1_BOX$c[2], jitter
 }
 
 # =============================================================== panel d
-f1_panel_trajectory_one <- function(C2, B2, an, k, key) {
+# One construct: the stored TR_BY_SEX per-group model means +/- 95% CI (C2), CON's stored
+# descriptive means (B2; show_con = FALSE drops them), and the construct's Q2b joint test (C3)
+# with its Holm p in `family` (E_multiplicity) as subtitle. `key` is the annotation-key stem:
+# the keys <key>_q2b_df1, _q2b_df2, _q2b_f and _q2b_holm must be declared in the resolver's map.
+f1_panel_trajectory_one <- function(C2, B2, an, k, key, family = "P-TR", show_con = TRUE) {
   fa <- an$fa
   C_TITLE <- F1_CONSTRUCT_TITLE
   C_Y <- F1_CONSTRUCT_Y
+  if (!k %in% names(C_TITLE) || !k %in% names(C_Y)) stop("f1_panel_trajectory: no display labels for construct ", k, call. = FALSE)
   mm <- f1_model_means(C2, "^mean_(RES|SUS)_TR_CC[1-4]$", k)
   if (nrow(mm) != 16L) stop("panel d: expected 16 model means for ", k, call. = FALSE)
+  if (!all(grepl("^TR_BY_SEX\\|", mm$model_id))) stop("panel d: model means for ", k, " are not all from TR_BY_SEX fits", call. = FALSE)
   mm$Sex <- factor(mm$sex, levels = c("Female", "Male")); mm$Group <- factor(mm$Group, levels = GROUP_LEV)
-  con <- B2[B2$construct == k & B2$Group == "CON", c("CC", "Sex", "mean")]
-  con$CC <- as.integer(sub("CC", "", con$CC)); con$Sex <- factor(con$Sex, levels = c("Female", "Male"))
-  sub_txt <- sprintf("Q2b F(%s, %s) = %s, P-TR Holm p = %s", fa(paste0("d_", key, "_q2b_df1")), fa(paste0("d_", key, "_q2b_df2")),
-                     fa(paste0("d_", key, "_q2b_f")), fa(paste0("d_", key, "_q2b_holm")))
+  con_layers <- NULL
+  if (isTRUE(show_con)) {
+    con <- B2[B2$construct == k & B2$Group == "CON", c("CC", "Sex", "mean")]
+    if (nrow(con) != 8L) stop("panel d: expected 8 CON descriptive means for ", k, call. = FALSE)
+    con$CC <- as.integer(sub("CC", "", con$CC)); con$Sex <- factor(con$Sex, levels = c("Female", "Male"))
+    con_layers <- list(
+      geom_line(data = con, aes(CC, mean, group = 1), inherit.aes = FALSE, colour = CON_GREY, linetype = "22", linewidth = 0.4),
+      geom_point(data = con, aes(CC, mean), inherit.aes = FALSE, colour = CON_GREY, fill = "white", shape = 21, size = 1.1, stroke = 0.35))
+  }
+  sub_txt <- sprintf("Q2b F(%s, %s) = %s, %s Holm p = %s", fa(paste0(key, "_q2b_df1")), fa(paste0(key, "_q2b_df2")),
+                     fa(paste0(key, "_q2b_f")), family, fa(paste0(key, "_q2b_holm")))
   pd <- position_dodge(width = 0.3)
   ggplot(mm, aes(CC, estimate, colour = Group, group = Group)) +
-    geom_line(data = con, aes(CC, mean, group = 1), inherit.aes = FALSE, colour = CON_GREY, linetype = "22", linewidth = 0.4) +
-    geom_point(data = con, aes(CC, mean), inherit.aes = FALSE, colour = CON_GREY, fill = "white", shape = 21, size = 1.1, stroke = 0.35) +
+    con_layers +
     geom_errorbar(aes(ymin = ci_low, ymax = ci_high), width = 0.15, linewidth = 0.35, position = pd) +
     geom_line(linewidth = 0.45, position = pd) +
     geom_point(aes(shape = Group, fill = Group), size = 1.2, stroke = 0.25, colour = "grey15", position = pd) +
@@ -187,26 +245,49 @@ f1_panel_trajectory_one <- function(C2, B2, an, k, key) {
     theme_f1()
 }
 
-f1_panel_trajectory <- function(tab, an, w_mm = F1_BOX$d[1], h_mm = F1_BOX$d[2]) {
+#' CC1-CC4 trajectories, one sub-plot per construct, side by side with one collected legend.
+#'
+#' constructs  legacy construct identifiers, drawn left to right (any of names(F1_CONSTRUCT_TITLE));
+#' keys        named character vector, construct -> annotation-key stem (see f1_panel_trajectory_one);
+#'             defaults to the Figure 1d stems, so secondary constructs must be given explicitly;
+#' family      the Holm family printed after the Q2b test: one value, or one per construct
+#'             ("P-TR" for the primary constructs, "S-TR-ORG" for the secondary ones);
+#' title       overall title (NULL: none); caption  overall caption (NULL: none);
+#' show_con    draw CON's stored descriptive means in grey (Figure 1d: TRUE).
+#' The defaults draw Figure 1d exactly.
+f1_panel_trajectory <- function(tab, an, w_mm = F1_BOX$d[1], h_mm = F1_BOX$d[2],
+                                constructs = c("crossing_rate", "shared_zone_use"),
+                                keys = F1_TRAJECTORY_KEYS[constructs], family = "P-TR",
+                                title = F1_TRAJECTORY_TITLE, caption = NULL, show_con = TRUE) {
   C2 <- tab("C2_estimates")
   B2 <- tab("B2_descriptive_summaries")
-  pd <- patchwork::wrap_plots(f1_panel_trajectory_one(C2, B2, an, "crossing_rate", "cr"),
-                              f1_panel_trajectory_one(C2, B2, an, "shared_zone_use", "sz"), nrow = 1, guides = "collect") +
-    patchwork::plot_annotation(title = "Active phase after each cage change: sex-stratified model estimates ± 95% CI (CON descriptive means, grey)",
-                               theme = theme(plot.title = element_text(size = BASE_PT, colour = INK))) &
+  if (!length(constructs) || anyDuplicated(constructs)) stop("f1_panel_trajectory: give one or more distinct constructs.", call. = FALSE)
+  keys <- keys[constructs]
+  if (anyNA(keys) || any(!nzchar(keys))) stop("f1_panel_trajectory: no annotation-key stem for ", paste(constructs[is.na(keys) | !nzchar(keys)], collapse = ", "), call. = FALSE)
+  if (!length(family) %in% c(1L, length(constructs))) stop("f1_panel_trajectory: family must have length 1 or one per construct.", call. = FALSE)
+  family <- rep_len(family, length(constructs))
+  parts <- lapply(seq_along(constructs), function(i)
+    f1_panel_trajectory_one(C2, B2, an, constructs[[i]], keys[[i]], family = family[[i]], show_con = show_con))
+  ann <- list(title = title, theme = theme(plot.title = element_text(size = BASE_PT, colour = INK)))
+  if (!is.null(caption))
+    ann <- list(title = title, caption = caption,
+                theme = theme(plot.title = element_text(size = BASE_PT, colour = INK),
+                              plot.caption = element_text(size = NOTE_PT, colour = INK, hjust = 0, lineheight = 1.05, margin = margin(t = 1.5))))
+  pd <- patchwork::wrap_plots(parts, nrow = 1, guides = "collect") +
+    do.call(patchwork::plot_annotation, ann) &
     theme(legend.position = "top")
   bh_panel(pd, w_mm, h_mm)
 }
 
 # =============================================================== panel e
-f1_panel_association <- function(tab, an, w_mm = F1_BOX$e[1], h_mm = F1_BOX$e[2]) {
+f1_panel_association <- function(tab, an, w_mm = F1_BOX$e[1], h_mm = F1_BOX$e[2], minus_ticks = FALSE) {
   fa <- an$fa
   A2 <- tab("A2_prediction_animals")
   e_lab <- sprintf("Spearman ρ = %s\n95%% CI [%s, %s]\nBH q = %s, n = %s", fa("e_rho"), fa("e_rho_lo"), fa("e_rho_hi"), fa("e_q"), fa("e_n"))
   pe <- ggplot(A2, aes(crossing_rate_equiv_per_h, observed_CombZ)) +
     geom_point(size = 1.05, stroke = 0.2, alpha = 0.9, shape = 21, colour = "grey20", fill = "#6E8B99") +
     annotate("text", x = Inf, y = Inf, label = e_lab, hjust = 1.04, vjust = 1.15, size = NOTE_PT / .pt, colour = INK, lineheight = 1.08) +
-    scale_y_continuous(expand = expansion(mult = c(0.05, 0.22))) +
+    scale_y_continuous(expand = expansion(mult = c(0.05, 0.22)), labels = if (isTRUE(minus_ticks)) f1_minus_labels else waiver()) +
     labs(x = F1_EARLY_RATE_X, y = "Later CombZ",
          subtitle = "one point per animal; rank correlation; not split by sex") +
     theme_f1()
@@ -214,7 +295,8 @@ f1_panel_association <- function(tab, an, w_mm = F1_BOX$e[1], h_mm = F1_BOX$e[2]
 }
 
 # =============================================================== panel f
-f1_panel_prediction <- function(tab, an, w_mm = F1_BOX$f[1], h_mm = F1_BOX$f[2]) {
+f1_panel_prediction <- function(tab, an, w_mm = F1_BOX$f[1], h_mm = F1_BOX$f[2], minus_ticks = FALSE) {
+  minus_ticks <- isTRUE(minus_ticks)
   fa <- an$fa
   A2 <- tab("A2_prediction_animals")
   A2$Group <- factor(A2$Group, levels = GROUP_LEV); A2$Sex <- factor(A2$Sex, levels = c("Female", "Male"))
@@ -224,6 +306,7 @@ f1_panel_prediction <- function(tab, an, w_mm = F1_BOX$f[1], h_mm = F1_BOX$f[2])
     geom_abline(slope = 1, intercept = 0, linetype = "22", linewidth = 0.35, colour = "grey62") +
     geom_point(aes(fill = Group, shape = Sex), size = 0.95, stroke = 0.22, colour = "grey20", alpha = 0.86) +
     scale_fill_manual(values = GROUP_COL) + scale_shape_manual(values = SEX_SHAPE) +
+    (if (minus_ticks) list(scale_x_continuous(labels = f1_minus_labels), scale_y_continuous(labels = f1_minus_labels)) else NULL) +
     coord_equal(xlim = lim, ylim = lim) +
     annotate("text", x = -Inf, y = Inf, label = f_lab, hjust = -0.06, vjust = 1.2, size = NOTE_PT / .pt, colour = INK, lineheight = 1.08) +
     guides(fill = guide_legend(order = 1, override.aes = list(shape = 21, size = 1.5, alpha = 1)),
@@ -242,6 +325,7 @@ f1_panel_prediction <- function(tab, an, w_mm = F1_BOX$f[1], h_mm = F1_BOX$f[2])
                              fa("f_loao"), fa("f_perm_p"), fa("f_rcv"), fa("f_rcv_lo"), fa("f_rcv_hi")),
              size = NOTE_PT / .pt, colour = INK, lineheight = 1.08) +
     scale_y_continuous(expand = expansion(mult = c(0, 0.22))) +
+    (if (minus_ticks) scale_x_continuous(labels = f1_minus_labels) else NULL) +
     labs(x = expression("null R"^2 ~ "(permuted outcomes)"), y = sprintf("Permutations (n = %s)", fa("f_nperm"))) +
     theme_f1()
   pf <- patchwork::wrap_plots(pf_scatter, pf_null, nrow = 1, widths = c(0.6, 1))
