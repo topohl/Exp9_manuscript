@@ -29,8 +29,9 @@
 #                      annotation keys (the entry script stops if the builder reads others)
 #   annotation_panels  map panels whose keys this panel prints (value-for-value tested)
 #   annotation_panels_plotted  map panels whose keys it resolves only to place marks
-#   annotation_panels_legend   map panels whose keys the panel's draft legend quotes; the entry
-#                      script resolves them into the panel's source data (they are not drawn)
+#   annotation_panels_legend   map panels whose keys the panel's draft legend or the draft Results
+#                      text quotes; the entry script resolves them into the panel's source data
+#                      with src_role "legend" (they are not drawn on this panel)
 #   x, y, w, h         the absolute box in mm; the panel SVG is authored at w x h (scale 1)
 #
 # Layout arguments shared by several builders:
@@ -42,6 +43,8 @@
 #                      ranges, U+2212 exponent, "RES − SUS" / "Female − male" labels); the
 #                      canonical Figure 1 keeps its own strings
 #   compact_header     no patchwork outer margin, so the title sits under the letter
+#   title_position: plot   titles start at the plot edge (one anchor per row or page)
+#   scatter_width      relative width of the prediction scatter (Figure 1f: 0.6)
 #
 # Boxes follow CANDIDATE_SPEC C; departures are recorded under `layout_notes`.
 
@@ -98,7 +101,9 @@ candidates:
       visual centre: a 173 x 29 @5,5 (a had 2.2 mm of empty band above its bracket labels);
       row 2 at y = 36 (b 58 @5, c 113 @65, both 62 high); row 3 at y = 100, 65 high
       (d 66 @5, e 105 @73). c, d and e use the candidate typography and headers of the
-      reused Figure 1 builders (typography, compact_header, the association title).
+      reused Figure 1 builders (typography, compact_header, the association title). In e the
+      scatter and the permutation histogram take equal widths (scatter_width 1; Figure 1f 0.6),
+      so the scatter is about 43 mm square and its x axis lines up with the histogram's.
     panels:
       - id: a
         letter: a
@@ -152,7 +157,7 @@ candidates:
         letter: e
         builder: f1_panel_prediction
         description: Held-out prediction of later CombZ and its permutation null (Stage 09 registered prediction)
-        args: {key_prefix: f1o1_, minus_ticks: true, typography: candidate, compact_header: true}
+        args: {key_prefix: f1o1_, minus_ticks: true, typography: candidate, compact_header: true, scatter_width: 1}
         jitter_seed: null
         inputs: [ebb/A2_prediction_animals, ebb/A3_permutation_draws, ebb/C2_estimates, ebb/E_multiplicity]
         annotation_panels: [f1o1_prediction]
@@ -177,6 +182,11 @@ candidates:
       c 88 + f 36 + two 2-mm gaps = 178 mm from x = 5) would end at the page edge, so c is
       narrowed by 4 mm (the permitted adjustment) and the compact panel by 1 mm: b 50 @5, c 84
       @57, d 35 @143. Rows as option 1: a 173 x 29, row 2 at y = 36, row 3 at y = 100, 65 high.
+      Row 2 has one title anchor: b (title_position plot), c (text_position plot) and d all start
+      their titles at the plot edge, under the letter; row 3 keeps the panel anchor of option 1.
+      f takes the equal-width scatter of option 1 e. d's draft legend quotes the stored CIs, the
+      inactivity saturation counts, the Movement-adjusted female estimate and the dependence
+      descriptors (annotation_panels_legend).
     panels:
       - id: a
         letter: a
@@ -194,7 +204,7 @@ candidates:
         letter: b
         builder: f1_panel_combz
         description: Later CombZ and the RES/SUS definition (narrow box; the subtitle breaks after the semicolon)
-        args: {key_prefix: f1o2_, minus_ticks: true, subtitle_line_break: true}
+        args: {key_prefix: f1o2_, minus_ticks: true, subtitle_line_break: true, title_position: plot}
         jitter_seed: 1
         inputs: [ebb/A4_combz_animals, ebb/A2b_combz_thresholds]
         annotation_panels: [f1o2_combz]
@@ -224,10 +234,10 @@ candidates:
           printed for the F, M and F - M rows)
         args: {q_rows: ["F", "M", "INT"]}
         jitter_seed: null
-        inputs: [ebb/C2_estimates, s30b/S1b_light_estimates, s30b/S0_master_hypotheses]
+        inputs: [ebb/C2_estimates, s30b/S1b_light_estimates, s30b/S1c_light_descriptives, s30b/S0_master_hypotheses, s30b/S2b_rate_inactivity_relationship]
         annotation_panels: [light_compact]
         annotation_panels_plotted: [light_rate, light_inactivity]
-        annotation_panels_legend: [light_legend]
+        annotation_panels_legend: [light_legend, light_rate, light_inactivity, light_dependence]
         x: 143
         "y": 36
         w: 35
@@ -248,7 +258,7 @@ candidates:
         letter: f
         builder: f1_panel_prediction
         description: Held-out prediction of later CombZ and its permutation null (Stage 09)
-        args: {key_prefix: f1o2_, minus_ticks: true, typography: candidate, compact_header: true}
+        args: {key_prefix: f1o2_, minus_ticks: true, typography: candidate, compact_header: true, scatter_width: 1}
         jitter_seed: null
         inputs: [ebb/A2_prediction_animals, ebb/A3_permutation_draws, ebb/C2_estimates, ebb/E_multiplicity]
         annotation_panels: [f1o2_prediction]
@@ -268,6 +278,9 @@ candidates:
     layout_mode: absolute
     layout_notes: >-
       A letterless page: the panel takes a 3-pt top margin instead of the 11.5-pt letter margin.
+      The two halves are separated by a fixed 4-mm gutter column, so the rate strip's CI text and
+      the inactivity strip's row labels on the same baselines do not read as one line; the shared
+      legend starts under the flush-left overall title.
     panels:
       - id: main
         letter: ""
@@ -325,12 +338,15 @@ candidates:
     promotion_status: not_promoted
     intended_role: Extended Data panel-row candidate
     width_mm: 183
-    height_mm: 72
+    height_mm: 76
     layout_mode: absolute
     layout_notes: >-
       CANDIDATE_SPEC B5 boxes (58 + 60 + 59 mm plus two 2-mm gaps = 181 mm) leave 1-mm page
       margins. The row keeps the 5-mm margins of every other page: a 56 @5, b 58 @63,
-      c 55 @123 (each within the "about" sizes of B5).
+      c 55 @123 (each within the "about" sizes of B5). The boxes are 66 mm high (B5: about 62),
+      so b's animal panel is longer than its two-line y title; a and c share one frame. a
+      declares the numbers the draft legend and Results text quote for the whole page (map
+      panel cookie_text: the pooled PRE/POST medians and IQRs, the group counts, cages, batches).
     panels:
       - id: a
         letter: a
@@ -338,12 +354,13 @@ candidates:
         description: PRE60 to POST60 RFID position-change rate per SIS animal by sex, with the stored median and IQR per window and sex (s30b S3, S3b)
         args: {}
         jitter_seed: null
-        inputs: [s30b/S3_cookie_animals, s30b/S3b_cookie_descriptives, s30b/S5_display_labels]
+        inputs: [s30b/S3_cookie_animals, s30b/S3b_cookie_descriptives, s30b/S5_display_labels, s30b/S3c_cookie_estimates]
         annotation_panels: [cookie_prepost]
+        annotation_panels_legend: [cookie_text]
         x: 5
         "y": 5
         w: 56
-        h: 62
+        h: 66
       - id: b
         letter: b
         builder: s30_panel_cookie_rs
@@ -355,7 +372,7 @@ candidates:
         x: 63
         "y": 5
         w: 58
-        h: 62
+        h: 66
       - id: c
         letter: c
         builder: s30_panel_cookie_combz
@@ -367,7 +384,7 @@ candidates:
         x: 123
         "y": 5
         w: 55
-        h: 62
+        h: 66
 
   # ------------------------------------------------------------------ 6
   screen_summary:
@@ -376,12 +393,14 @@ candidates:
     promotion_status: not_promoted
     intended_role: Supplementary Figure candidate
     width_mm: 183
-    height_mm: 133
+    height_mm: 135
     layout_mode: absolute
     layout_notes: >-
       A letterless page: the panel takes a 3-pt top margin instead of the 11.5-pt letter margin,
-      and its subtitle is two lines, so the box is 173 x 123 (CANDIDATE_SPEC B6: about 128) at the
-      same row pitch.
+      and its subtitle is two lines, so the box is 173 x 125 (CANDIDATE_SPEC B6: about 128) at the
+      same row pitch; the 2 mm over the first layout pay for 2 pt of space under each block header.
+      A 2.5-mm gap follows the Female and Male cells (the forests give 1.7 mm each), so each
+      class letter sits nearer its own p/q text than the next column's forest.
     panels:
       - id: main
         letter: ""
@@ -398,7 +417,7 @@ candidates:
         x: 5
         "y": 5
         w: 173
-        h: 123
+        h: 125
 
   # ------------------------------------------------------------------ 7
   ed_behaviour_longitudinal_light:
@@ -407,16 +426,18 @@ candidates:
     promotion_status: not_promoted
     intended_role: Extended Data figure candidate (ED X)
     width_mm: 183
-    height_mm: 200
+    height_mm: 202
     layout_mode: absolute
     layout_notes: >-
-      a/b are the two 85.5-mm panels of CANDIDATE_SPEC C7 and c its 173-mm panel, all 53 mm high:
-      their compact header (no patchwork outer margin) keeps the plot height the spec's 58 mm
-      gave. Row 3 takes the freed height: d is B2, the light-phase panel itself (122 x 80, one
-      legend, one SIS line, equal halves; the legend refers to "d, left / right"), and e is B4
-      (49 x 80). d and e share one panel frame (panel_top_mm, panel_h_mm), so the dependence
-      scatter reads across on the same inactivity axis as d's right half. Letters a-e.
-      Height 5 + 53 + 2 + 53 + 2 + 80 + 5 = 200 mm.
+      a/b are the two 85.5-mm panels of CANDIDATE_SPEC C7 and c its 173-mm panel, all 54 mm high:
+      their compact header (no patchwork outer margin above the title; 3 pt kept under the
+      caption) keeps the plot height the spec's 58 mm gave. One title anchor on the page: a-c
+      start their titles and legends at the plot edge under the letter, as d and e do. Row 3
+      takes the freed height: d is B2, the light-phase panel itself (122 x 80, one legend, one
+      SIS line, equal halves with a 4-mm gutter; the legend refers to "d, left / right"), and e
+      is B4 (49 x 80). d and e share one panel frame (panel_top_mm, panel_h_mm), so the
+      dependence scatter reads across on the same inactivity axis as d's right half. Letters
+      a-e. Height 5 + 54 + 2 + 54 + 2 + 80 + 5 = 202 mm.
     panels:
       - id: a
         letter: a
@@ -429,7 +450,7 @@ candidates:
         x: 5
         "y": 5
         w: 85.5
-        h: 53
+        h: 54
       - id: b
         letter: b
         builder: edx_panel_primary_trajectory
@@ -441,7 +462,7 @@ candidates:
         x: 92.5
         "y": 5
         w: 85.5
-        h: 53
+        h: 54
       - id: c
         letter: c
         builder: edx_panel_secondary_trajectories
@@ -451,9 +472,9 @@ candidates:
         inputs: [ebb/C2_estimates, ebb/B2_descriptive_summaries, ebb/C3_joint_tests, ebb/E_multiplicity]
         annotation_panels: [trajectory_secondary]
         x: 5
-        "y": 60
+        "y": 61
         w: 173
-        h: 53
+        h: 54
       - id: d
         letter: d
         builder: s30_panel_light_phase
@@ -468,7 +489,7 @@ candidates:
         annotation_panels: [light_rate, light_inactivity]
         annotation_panels_legend: [light_legend]
         x: 5
-        "y": 115
+        "y": 117
         w: 122
         h: 80
       - id: e
@@ -480,7 +501,7 @@ candidates:
         inputs: [s30b/S2_rate_inactivity_windows, s30b/S2b_rate_inactivity_relationship]
         annotation_panels: [light_dependence]
         x: 129
-        "y": 115
+        "y": 117
         w: 49
         h: 80
 
@@ -491,7 +512,7 @@ candidates:
     promotion_status: not_promoted
     intended_role: Extended Data figure candidate (ED Y); the same content as cookie_ed on its own ED page
     width_mm: 183
-    height_mm: 72
+    height_mm: 76
     layout_mode: absolute
     layout_notes: Same panels, boxes and seeds as cookie_ed (see its layout_notes).
     panels:
@@ -501,12 +522,13 @@ candidates:
         description: PRE60 to POST60 RFID position-change rate per SIS animal by sex, with the stored median and IQR per window and sex (s30b S3, S3b)
         args: {}
         jitter_seed: null
-        inputs: [s30b/S3_cookie_animals, s30b/S3b_cookie_descriptives, s30b/S5_display_labels]
+        inputs: [s30b/S3_cookie_animals, s30b/S3b_cookie_descriptives, s30b/S5_display_labels, s30b/S3c_cookie_estimates]
         annotation_panels: [cookie_prepost]
+        annotation_panels_legend: [cookie_text]
         x: 5
         "y": 5
         w: 56
-        h: 62
+        h: 66
       - id: b
         letter: b
         builder: s30_panel_cookie_rs
@@ -518,7 +540,7 @@ candidates:
         x: 63
         "y": 5
         w: 58
-        h: 62
+        h: 66
       - id: c
         letter: c
         builder: s30_panel_cookie_combz
@@ -530,4 +552,4 @@ candidates:
         x: 123
         "y": 5
         w: 55
-        h: 62
+        h: 66

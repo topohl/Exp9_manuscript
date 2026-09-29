@@ -113,14 +113,15 @@ BUILDERS <- list(
   f1_panel_design = function(s, an) f1_panel_design(TABS$ebb, prefixed(an, s), s$w, s$h, typography = typo(s)),
   f1_panel_combz = function(s, an) f1_panel_combz(TABS$ebb, prefixed(an, s), s$w, s$h, jitter_seed = seeds(s, 1L),
     subtitle = if (isTRUE(arg(s, "subtitle_line_break"))) F1OPT_COMBZ_SUBTITLE_NARROW else F1_COMBZ_SUBTITLE,
-    minus_ticks = isTRUE(arg(s, "minus_ticks"))),
+    minus_ticks = isTRUE(arg(s, "minus_ticks")), title_position = arg(s, "title_position", "panel")),
   f1_panel_cc1 = function(s, an) f1_panel_cc1(TABS$ebb, prefixed(an, s), s$w, s$h, jitter_seed = seeds(s, 2L),
     text_position = arg(s, "text_position", "panel"), typography = typo(s), compact_header = isTRUE(arg(s, "compact_header"))),
   f1_panel_association = function(s, an) f1_panel_association(TABS$ebb, prefixed(an, s), s$w, s$h,
     minus_ticks = isTRUE(arg(s, "minus_ticks")), typography = typo(s),
     title = if (isTRUE(arg(s, "candidate_title"))) F1OPT_ASSOCIATION_TITLE else NULL),
   f1_panel_prediction = function(s, an) f1_panel_prediction(TABS$ebb, prefixed(an, s), s$w, s$h,
-    minus_ticks = isTRUE(arg(s, "minus_ticks")), typography = typo(s), compact_header = isTRUE(arg(s, "compact_header"))),
+    minus_ticks = isTRUE(arg(s, "minus_ticks")), typography = typo(s), compact_header = isTRUE(arg(s, "compact_header")),
+    scatter_width = as.numeric(arg(s, "scatter_width", 0.6))),
   edx_panel_primary_trajectory = function(s, an) edx_panel_primary_trajectory(TABS$ebb, an, arg(s, "construct"), s$w, s$h,
     show_con = isTRUE(arg(s, "show_con", TRUE))),
   edx_panel_secondary_trajectories = function(s, an) edx_panel_secondary_trajectories(TABS$ebb, an, s$w, s$h,
@@ -229,16 +230,22 @@ axis_labels <- function(panel_plot) {
 
 # The annotation rows a panel resolved, with the stored and the printed value. src_role says where
 # the value appears: "printed" on the panel (its map panel is one the contract declares printed;
-# the value-for-value test checks the SVG), "legend" in the panel's draft legend only, or
+# the value-for-value test checks the SVG), "legend" quoted by the draft legend or Results text only, or
 # "plotted_only" (a key used only to place a mark: src_printed is left empty, as nothing prints it).
-annotation_block <- function(an, keys, printed_panels, legend_panels) {
+# src_printed is the string as drawn: under the candidate typography the reused Figure 1 builders
+# write an e-notation value (map format "%.<n>e") with U+2212 in the exponent and no leading
+# exponent zeros (bh_sci_minus), so a printed key of such a panel is recorded in that form.
+annotation_block <- function(an, keys, printed_panels, legend_panels, typography = "figure1") {
   if (!length(keys)) return(NULL)
   r <- MAP[match(keys, MAP$key), c("key", "panel", "bundle", "table", "column", "filters", "format")]
   names(r) <- paste0("src_", c("key", "annotation_panel", "bundle", "table", "column", "filters", "format"))
   r$src_role <- ifelse(r$src_annotation_panel %in% printed_panels, "printed",
                        ifelse(r$src_annotation_panel %in% legend_panels, "legend", "plotted_only"))
   r$src_stored_value <- vapply(keys, function(k) as.character(an$ann(k)), "")
-  r$src_printed <- ifelse(r$src_role == "plotted_only", "", vapply(keys, an$fa, ""))
+  printed <- vapply(keys, an$fa, "")
+  drawn <- r$src_role == "printed" & identical(typography, "candidate") & grepl("e$", r$src_format)
+  printed[drawn] <- bh_sci_minus(printed[drawn])
+  r$src_printed <- ifelse(r$src_role == "plotted_only", "", printed)
   cbind(data.frame(src_block = "annotation key", stringsAsFactors = FALSE), r, row.names = NULL)
 }
 
@@ -361,7 +368,7 @@ for (key in names(CONTRACT$candidates)) {
     if (length(unresolved))
       stop(key, "/", s$id, ": declared keys the builder never resolved: ", paste(unresolved, collapse = ", "), call. = FALSE)
 
-    sd_path <- write_csv_utf8(bind_fill(c(layer_blocks(panel$plot), list(annotation_block(an, keys, printed_panels, legend_panels)),
+    sd_path <- write_csv_utf8(bind_fill(c(layer_blocks(panel$plot), list(annotation_block(an, keys, printed_panels, legend_panels, typo(s))),
                                           bundle_row_blocks(keys))),
                               file.path(dirs$source_data, sprintf("%s_%s_source_data.csv", key, s$id)))
     ticks <- axis_labels(panel$plot)

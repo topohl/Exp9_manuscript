@@ -45,6 +45,9 @@ F1OPT_SOURCE_PANEL <- list(figure_01_option1 = c(a = "1a", b = "1b", c = "1c", d
 F1OPT_KEY_PREFIX <- c(figure_01_option1 = "f1o1_", figure_01_option2 = "f1o2_")
 # Candidate-only panel title of the association panel (Figure 1e has none).
 F1OPT_ASSOCIATION_TITLE <- "Early position-change rate vs later CombZ"
+# The prediction scatter and its permutation histogram take equal widths in the options (Figure 1f:
+# 0.6 to 1), so the scatter is as tall as the histogram and the two x axes line up.
+F1OPT_SCATTER_WIDTH <- 1
 
 # ---------------------------------------------------------------- annotation keys and labels
 EDX_TRAJECTORY_KEYS <- c(crossing_rate = "edx_a_cr", shared_zone_use = "edx_b_sz",
@@ -60,9 +63,14 @@ EDX_CAPTION_PRIMARY <- c(con = "Active phase after each cage change: sex-stratif
 # The split a/b captions name their tier, as c does (85.5-mm boxes: the shortest full wording).
 EDX_CAPTION_SPLIT <- c(con = "Stage 29 primary: sex-stratified estimates ± 95% CI; CON descriptive (grey, dashed)",
                        no_con = "Stage 29 primary: sex-stratified estimates ± 95% CI (SIS; CON not shown)")
-EDX_CAPTION_SECONDARY <- c(con = "Stage 29 secondary constructs, active phase after each cage change: sex-stratified model estimates ± 95% CI; CON descriptive means (grey, dashed)",
-                           no_con = "Stage 29 secondary constructs, active phase after each cage change: sex-stratified model estimates ± 95% CI (SIS; CON not shown)")
+# c in the a/b wording (the window, the active phase after each cage change, is stated once in
+# the ED X legend for a-c).
+EDX_CAPTION_SECONDARY <- c(con = "Stage 29 secondary: sex-stratified estimates ± 95% CI; CON descriptive (grey, dashed)",
+                           no_con = "Stage 29 secondary: sex-stratified estimates ± 95% CI (SIS; CON not shown)")
 edx_caption <- function(captions, show_con) unname(captions[[if (isTRUE(show_con)) "con" else "no_con"]])
+# One title anchor on the ED X page: a-c start their titles and legend at the plot edge, under the
+# panel letter, as d (B2) and e (B4) do.
+EDX_TITLE_POSITION <- "plot"
 # The Figure 1d-style overall titles, for callers that prefer a title over the caption.
 EDX_TITLE_PRIMARY <- "Primary constructs, active phase after each cage change: sex-stratified model estimates ± 95% CI (CON descriptive means, grey)"
 EDX_TITLE_SECONDARY <- "Secondary constructs, active phase after each cage change: sex-stratified model estimates ± 95% CI (CON descriptive means, grey)"
@@ -102,9 +110,10 @@ edx_annotation_prefixed <- function(an, prefix) {
 #' Returns the five Figure 1 panels as bh_panel objects, named by the option's letters:
 #' option 1 list(a, b, c, d, e); option 2 list(a, b, c, e, f), its compact light-phase panel d
 #' coming from s30_panel_light_compact (not built here).
-#' Option 2 differs from option 1 only in the narrower b and c boxes, and in two typographic
-#' adjustments those boxes need: the b subtitle breaks onto two lines, and c aligns its
-#' construct titles and contrast captions to the plot edge (text_position = "plot").
+#' Option 2 differs from option 1 only in the narrower b and c boxes, and in the typographic
+#' adjustments those boxes need: the b subtitle breaks onto two lines, and b and c align their
+#' titles (and c its contrast captions) to the plot edge (title_position / text_position = "plot"),
+#' as the compact panel d beside them does.
 f1opt_panels <- function(tab, an, option = c("figure_01_option1", "figure_01_option2"),
                          jitter_seed = list(b = 1L, c = c(2L, 2L)), minus_ticks = TRUE,
                          typography = "candidate", compact_header = TRUE,
@@ -119,13 +128,14 @@ f1opt_panels <- function(tab, an, option = c("figure_01_option1", "figure_01_opt
   out <- list(
     f1_panel_design(tab, pre, box$a[1], box$a[2], typography = typography),
     f1_panel_combz(tab, pre, box$b[1], box$b[2], jitter_seed = jitter_seed$b,
-                   subtitle = if (narrow) F1OPT_COMBZ_SUBTITLE_NARROW else F1_COMBZ_SUBTITLE, minus_ticks = minus_ticks),
+                   subtitle = if (narrow) F1OPT_COMBZ_SUBTITLE_NARROW else F1_COMBZ_SUBTITLE, minus_ticks = minus_ticks,
+                   title_position = if (narrow) "plot" else "panel"),
     f1_panel_cc1(tab, pre, box$c[1], box$c[2], jitter_seed = jitter_seed$c,
                  text_position = if (narrow) "plot" else "panel", typography = typography, compact_header = compact_header),
     f1_panel_association(tab, pre, box[[let[4]]][1], box[[let[4]]][2], minus_ticks = minus_ticks,
                          typography = typography, title = F1OPT_ASSOCIATION_TITLE),
     f1_panel_prediction(tab, pre, box[[let[5]]][1], box[[let[5]]][2], minus_ticks = minus_ticks,
-                        typography = typography, compact_header = compact_header))
+                        typography = typography, compact_header = compact_header, scatter_width = F1OPT_SCATTER_WIDTH))
   stats::setNames(out, let)
 }
 
@@ -139,7 +149,8 @@ edx_panel_primary_trajectory <- function(tab, an, construct = c("crossing_rate",
                                          caption = edx_caption(EDX_CAPTION_SPLIT, show_con)) {
   construct <- match.arg(construct)
   f1_panel_trajectory(tab, an, w_mm, h_mm, constructs = construct, keys = EDX_TRAJECTORY_KEYS[construct],
-                      family = "P-TR", title = NULL, caption = caption, show_con = show_con, compact_header = TRUE)
+                      family = "P-TR", title = NULL, caption = caption, show_con = show_con, compact_header = TRUE,
+                      title_position = EDX_TITLE_POSITION)
 }
 
 #' ED X a/b as one panel (173 x 58): both primary constructs side by side (Figure 1d at the ED
@@ -148,7 +159,8 @@ edx_panel_primary_trajectory <- function(tab, an, construct = c("crossing_rate",
 edx_panel_primary_trajectories <- function(tab, an, w_mm = EDX_BOX$ab[1], h_mm = EDX_BOX$ab[2], show_con = TRUE,
                                            title = NULL, caption = edx_caption(EDX_CAPTION_PRIMARY, show_con)) {
   f1_panel_trajectory(tab, an, w_mm, h_mm, constructs = EDX_PRIMARY, keys = EDX_TRAJECTORY_KEYS[EDX_PRIMARY],
-                      family = "P-TR", title = title, caption = caption, show_con = show_con, compact_header = TRUE)
+                      family = "P-TR", title = title, caption = caption, show_con = show_con, compact_header = TRUE,
+                      title_position = EDX_TITLE_POSITION)
 }
 
 # ---------------------------------------------------------------- ED X c: secondary constructs
@@ -160,5 +172,6 @@ edx_panel_primary_trajectories <- function(tab, an, w_mm = EDX_BOX$ab[1], h_mm =
 edx_panel_secondary_trajectories <- function(tab, an, w_mm = EDX_BOX$c[1], h_mm = EDX_BOX$c[2], show_con = TRUE,
                                              title = NULL, caption = edx_caption(EDX_CAPTION_SECONDARY, show_con)) {
   f1_panel_trajectory(tab, an, w_mm, h_mm, constructs = EDX_SECONDARY, keys = EDX_TRAJECTORY_KEYS[EDX_SECONDARY],
-                      family = "S-TR-ORG", title = title, caption = caption, show_con = show_con, compact_header = TRUE)
+                      family = "S-TR-ORG", title = title, caption = caption, show_con = show_con, compact_header = TRUE,
+                      title_position = EDX_TITLE_POSITION)
 }

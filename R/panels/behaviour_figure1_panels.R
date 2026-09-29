@@ -39,7 +39,11 @@
 #   compact_header = TRUE (cc1, trajectory, prediction)
 #                                                    no patchwork outer margin (the 5.5-pt
 #                                                    default), so the title sits under the
-#                                                    panel letter at the Figure 1 top margin;
+#                                                    panel letter at the Figure 1 top margin
+#                                                    (trajectory: 3 pt kept under the caption);
+#   title_position = "plot" (combz, trajectory)      titles (and the trajectory legend) start
+#                                                    at the plot edge, under the panel letter;
+#   f1_panel_prediction(scatter_width)               the scatter's relative width (Figure 1f 0.6);
 #   f1_panel_association(title)                      an optional panel title.
 # They change layout and typography only: every printed number still comes
 # from an$fa() / an$ci() / an$ann().
@@ -151,7 +155,9 @@ f1_panel_design <- function(tab, an, w_mm = F1_BOX$a[1], h_mm = F1_BOX$a[2], typ
 # =============================================================== panel b
 # The threshold defines the groups; the separation is by construction, so no brackets and no stars.
 f1_panel_combz <- function(tab, an, w_mm = F1_BOX$b[1], h_mm = F1_BOX$b[2], jitter_seed = NA,
-                           subtitle = F1_COMBZ_SUBTITLE, minus_ticks = FALSE) {
+                           subtitle = F1_COMBZ_SUBTITLE, minus_ticks = FALSE, title_position = "panel") {
+  if (!identical(title_position, "panel") && !identical(title_position, "plot"))
+    stop("f1_panel_combz: title_position must be \"panel\" or \"plot\".", call. = FALSE)
   fa <- an$fa
   cls <- tab("A4_combz_animals")
   thr <- tab("A2b_combz_thresholds")
@@ -174,6 +180,7 @@ f1_panel_combz <- function(tab, an, w_mm = F1_BOX$b[1], h_mm = F1_BOX$b[2], jitt
     labs(x = NULL, y = "Later CombZ", title = "Later composite outcome",
          subtitle = subtitle) +
     theme_f1()
+  if (identical(title_position, "plot")) pb <- pb + theme(plot.title.position = "plot")
   bh_panel(pb, w_mm, h_mm)
 }
 
@@ -283,14 +290,21 @@ f1_panel_trajectory_one <- function(C2, B2, an, k, key, family = "P-TR", show_co
 #'             ("P-TR" for the primary constructs, "S-TR-ORG" for the secondary ones);
 #' title       overall title (NULL: none); caption  overall caption (NULL: none);
 #' show_con    draw CON's stored descriptive means in grey (Figure 1d: TRUE);
-#' compact_header  TRUE: no patchwork outer margin (the 5.5-pt default) and 1 pt between the
-#'             collected legend and the plots, so the first title sits at the Figure 1 top
-#'             margin under the panel letter (Figure 1d: FALSE).
+#' compact_header  TRUE: no patchwork outer margin at the top and sides (the 5.5-pt default)
+#'             and 1 pt between the collected legend and the plots, so the first title sits at
+#'             the Figure 1 top margin under the panel letter; the bottom keeps 3 pt under the
+#'             caption, as every other panel's plot margin (Figure 1d: FALSE).
+#' title_position  "panel" (Figure 1d) or "plot": the construct titles and subtitles start at
+#'             the plot edge, and the one group legend (drawn by the first construct plot) is
+#'             placed against the plot, not the panel, so both sit under the panel letter.
 #' The defaults draw Figure 1d exactly.
 f1_panel_trajectory <- function(tab, an, w_mm = F1_BOX$d[1], h_mm = F1_BOX$d[2],
                                 constructs = c("crossing_rate", "shared_zone_use"),
                                 keys = F1_TRAJECTORY_KEYS[constructs], family = "P-TR",
-                                title = F1_TRAJECTORY_TITLE, caption = NULL, show_con = TRUE, compact_header = FALSE) {
+                                title = F1_TRAJECTORY_TITLE, caption = NULL, show_con = TRUE, compact_header = FALSE,
+                                title_position = "panel") {
+  if (!identical(title_position, "panel") && !identical(title_position, "plot"))
+    stop("f1_panel_trajectory: title_position must be \"panel\" or \"plot\".", call. = FALSE)
   C2 <- tab("C2_estimates")
   B2 <- tab("B2_descriptive_summaries")
   if (!length(constructs) || anyDuplicated(constructs)) stop("f1_panel_trajectory: give one or more distinct constructs.", call. = FALSE)
@@ -305,12 +319,22 @@ f1_panel_trajectory <- function(tab, an, w_mm = F1_BOX$d[1], h_mm = F1_BOX$d[2],
     ann <- list(title = title, caption = caption,
                 theme = theme(plot.title = element_text(size = BASE_PT, colour = INK),
                               plot.caption = element_text(size = NOTE_PT, colour = INK, hjust = 0, lineheight = 1.05, margin = margin(t = 1.5))))
-  pd <- patchwork::wrap_plots(parts, nrow = 1, guides = "collect") +
-    do.call(patchwork::plot_annotation, ann) &
-    theme(legend.position = "top")
+  pd <- if (identical(title_position, "panel")) {
+    patchwork::wrap_plots(parts, nrow = 1, guides = "collect") +
+      do.call(patchwork::plot_annotation, ann) &
+      theme(legend.position = "top")
+  } else {
+    # patchwork attaches collected guides over the panel columns only, so the legend stays with
+    # the first construct plot, where ggplot2 places it against the plot edge (legend.location)
+    # under its plot-anchored title; the other construct plots, with the same marks, draw none.
+    parts[[1]] <- parts[[1]] + theme(plot.title.position = "plot", legend.position = "top", legend.location = "plot")
+    parts[-1] <- lapply(parts[-1], function(p) p + theme(plot.title.position = "plot", legend.position = "none"))
+    patchwork::wrap_plots(parts, nrow = 1, guides = "keep") +
+      do.call(patchwork::plot_annotation, ann)
+  }
   if (isTRUE(compact_header))
     pd <- (pd & theme(legend.box.spacing = unit(1, "pt"))) +
-      patchwork::plot_annotation(theme = theme(plot.margin = margin(0, 0, 0, 0), legend.justification = "left"))
+      patchwork::plot_annotation(theme = theme(plot.margin = margin(0, 0, 3, 0), legend.justification = "left"))
   bh_panel(pd, w_mm, h_mm)
 }
 
@@ -334,8 +358,13 @@ f1_panel_association <- function(tab, an, w_mm = F1_BOX$e[1], h_mm = F1_BOX$e[2]
 }
 
 # =============================================================== panel f
+#' scatter_width  relative width of the observed-vs-predicted scatter against the permutation
+#'                histogram (1); Figure 1f: 0.6. At 1 the square scatter is as tall as the histogram,
+#'                so their x axes line up.
 f1_panel_prediction <- function(tab, an, w_mm = F1_BOX$f[1], h_mm = F1_BOX$f[2], minus_ticks = FALSE,
-                                typography = "figure1", compact_header = FALSE) {
+                                typography = "figure1", compact_header = FALSE, scatter_width = 0.6) {
+  if (!is.numeric(scatter_width) || length(scatter_width) != 1L || !(scatter_width > 0))
+    stop("f1_panel_prediction: scatter_width must be one positive number.", call. = FALSE)
   cand <- f1_candidate_typography(typography)
   minus_ticks <- isTRUE(minus_ticks)
   fa <- an$fa
@@ -370,7 +399,7 @@ f1_panel_prediction <- function(tab, an, w_mm = F1_BOX$f[1], h_mm = F1_BOX$f[2],
     (if (minus_ticks) scale_x_continuous(labels = f1_minus_labels) else NULL) +
     labs(x = expression("null R"^2 ~ "(permuted outcomes)"), y = sprintf("Permutations (n = %s)", fa("f_nperm"))) +
     theme_f1()
-  pf <- patchwork::wrap_plots(pf_scatter, pf_null, nrow = 1, widths = c(0.6, 1))
+  pf <- patchwork::wrap_plots(pf_scatter, pf_null, nrow = 1, widths = c(scatter_width, 1))
   if (isTRUE(compact_header)) pf <- pf + patchwork::plot_annotation(theme = theme(plot.margin = margin(0, 0, 0, 0)))
   bh_panel(pf, w_mm, h_mm)
 }
