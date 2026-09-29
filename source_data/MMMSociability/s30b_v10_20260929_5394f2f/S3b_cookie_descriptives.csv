@@ -1,0 +1,15 @@
+scope,Sex,Group,measure,n,median,q25,q75,n_increased,source
+sex,Female,all,PRE60,46,2.5,2,8,,computed here (descriptive; quantile type 7) over S3_cookie_animals
+sex,Female,all,POST60,46,17.5,8.5,39,,computed here (descriptive; quantile type 7) over S3_cookie_animals
+sex,Female,all,dcookie60,46,13,6,29.75,46,computed here (descriptive; quantile type 7) over S3_cookie_animals
+sex,Male,all,PRE60,31,3,0,7,,computed here (descriptive; quantile type 7) over S3_cookie_animals
+sex,Male,all,POST60,31,38,28,51.5,,computed here (descriptive; quantile type 7) over S3_cookie_animals
+sex,Male,all,dcookie60,31,36,24,47,31,computed here (descriptive; quantile type 7) over S3_cookie_animals
+pooled_77,all,all,PRE60,77,3,0,8,,computed here (descriptive; quantile type 7) over S3_cookie_animals
+pooled_77,all,all,POST60,77,28,12,46,,computed here (descriptive; quantile type 7) over S3_cookie_animals
+pooled_77,all,all,dcookie60,77,26,8,42,77,computed here (descriptive; quantile type 7) over S3_cookie_animals
+sex_group,Female,RES,dcookie60,28,12.5,5.5,29.75,28,computed here (descriptive; quantile type 7) over S3_cookie_animals
+sex_group,Female,SUS,dcookie60,18,14,8,29.5,18,computed here (descriptive; quantile type 7) over S3_cookie_animals
+sex_group,Male,RES,dcookie60,21,34,18,48,21,computed here (descriptive; quantile type 7) over S3_cookie_animals
+sex_group,Male,SUS,dcookie60,10,37.5,27,45,10,computed here (descriptive; quantile type 7) over S3_cookie_animals
+all_97_registry_qc,all,all (incl. CON),dcookie60,97,18,6,37,94,copied: registry measures.cookie_response_60.group_blind_qc (not computed here)

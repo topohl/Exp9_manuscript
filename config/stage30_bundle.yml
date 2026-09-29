@@ -1,0 +1,12 @@
+bundle_id: s30b_v10_20260929_5394f2f
+manifest_sha256: 8930d8bf5ee93ace00f9d187377803f664036f858df4c7ae8d6b8f8804a3f87d
+registry_status: FROZEN
+mmm_git_commit: 5394f2f3fb6c58d0e1f337bb22c33fdac2203365
+stage30_run_commit: be71e2f07bfefeeb13c1e1f82cbc62cff2e052dc
+stage30_registry_sha256: 5c252bf699bc0f517c5508854d710bbaa014d4b6fe98d128eb0071bde89dd05e
+stage29_bundle_id: ebb_v101_20260929_b2ce507
+stage29_bundle_manifest_sha256: ec59aa337fc63511de4aa2bf3e1ee1f4b34b84d6d671565f74e0bb3939f7226c
+created_at: 2026-09-29T16:52:41+0200
+producer: topohl/MMMSociability Analysis/30b_stage30_figure_bundle.R
+imported_at: 2026-09-29T16:57:26+0200
+importer: tools/import_stage30_bundle.R
