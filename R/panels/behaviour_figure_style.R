@@ -11,9 +11,10 @@
 #   INK / MUTED / RULE / GREEN_* / NEUTRAL_BOX                    inks
 #   BASE_PT / BODY_PT / NOTE_PT                                   type sizes (pt)
 #   theme_f1()                                                    the Figure 1 theme
-#   BH_FOREST, bh_forest_zero(), bh_forest_ci(), bh_forest_point()
+#   BH_FOREST, bh_forest_zero(), bh_forest_ci(), bh_forest_point(), bh_forest_int_point()
 #                                                                 forest marks of the behaviour ED renderer
-#   bh_minus()                                                    typographic minus (U+2212)
+#                                                                 (interaction rows: white diamond)
+#   bh_minus(), bh_sci_minus()                                    typographic minus (U+2212)
 #   bh_annotation()                                               multi-bundle annotation-map resolver
 #   bh_panel(), bh_save_svg()                                     panel box and SVG device
 
@@ -60,30 +61,42 @@ theme_f1 <- function(base = BASE_PT) {
 # renderer (figures/extended_data_behaviour_panels.R): point shape 21 size 1.9
 # stroke 0.3; interval linewidth 0.7 in MUTED with round ends; zero reference
 # dashed "22", linewidth 0.3, RULE.
+# Interaction rows (the Female - male difference) take their own shape, a white
+# diamond (23), so that no fill state reads as a significance code: Figures 2
+# and 3 draw FDR-supported points filled and the others open (white).
 BH_FOREST <- list(
   point_shape = 21L, point_size = 1.9, point_stroke = 0.3, point_colour = "grey20", point_fill = "white",
   ci_linewidth = 0.7, ci_colour = MUTED, ci_lineend = "round",
-  zero_linetype = "22", zero_linewidth = 0.3, zero_colour = RULE)
+  zero_linetype = "22", zero_linewidth = 0.3, zero_colour = RULE,
+  int_shape = 23L, int_size = 1.7, int_stroke = 0.3, int_fill = "white")
 
-bh_forest_zero <- function(xintercept = 0, horizontal = FALSE) {
+bh_forest_zero <- function(xintercept = 0, horizontal = FALSE, marks = BH_FOREST) {
   if (horizontal)
-    return(geom_hline(yintercept = xintercept, linetype = BH_FOREST$zero_linetype,
-                      linewidth = BH_FOREST$zero_linewidth, colour = BH_FOREST$zero_colour))
-  geom_vline(xintercept = xintercept, linetype = BH_FOREST$zero_linetype,
-             linewidth = BH_FOREST$zero_linewidth, colour = BH_FOREST$zero_colour)
+    return(geom_hline(yintercept = xintercept, linetype = marks$zero_linetype,
+                      linewidth = marks$zero_linewidth, colour = marks$zero_colour))
+  geom_vline(xintercept = xintercept, linetype = marks$zero_linetype,
+             linewidth = marks$zero_linewidth, colour = marks$zero_colour)
 }
-bh_forest_ci <- function(mapping, ...) {
-  geom_segment(mapping, linewidth = BH_FOREST$ci_linewidth, colour = BH_FOREST$ci_colour,
-               lineend = BH_FOREST$ci_lineend, ...)
+bh_forest_ci <- function(mapping, ..., marks = BH_FOREST) {
+  geom_segment(mapping, linewidth = marks$ci_linewidth, colour = marks$ci_colour,
+               lineend = marks$ci_lineend, ...)
 }
-bh_forest_point <- function(mapping, fill = BH_FOREST$point_fill, ...) {
-  geom_point(mapping, shape = BH_FOREST$point_shape, size = BH_FOREST$point_size,
-             stroke = BH_FOREST$point_stroke, colour = BH_FOREST$point_colour, fill = fill, ...)
+bh_forest_point <- function(mapping, fill = BH_FOREST$point_fill, ..., marks = BH_FOREST) {
+  geom_point(mapping, shape = marks$point_shape, size = marks$point_size,
+             stroke = marks$point_stroke, colour = marks$point_colour, fill = fill, ...)
+}
+#' The interaction-row mark (Female - male): a white diamond, never a fill-coded circle.
+bh_forest_int_point <- function(mapping, ..., marks = BH_FOREST) {
+  geom_point(mapping, shape = marks$int_shape, size = marks$int_size,
+             stroke = marks$int_stroke, colour = marks$point_colour, fill = marks$int_fill, ...)
 }
 
 # ---------------------------------------------------------------- typography
 #' Replace a leading hyphen-minus with the typographic minus sign U+2212.
 bh_minus <- function(x) sub("^-", "−", x)
+#' The typographic minus in the exponent of an e-notation string, without its leading
+#' zeros ("2.61e-05" -> "2.61e−5"). String handling only; opt-in (candidate typography).
+bh_sci_minus <- function(x) sub("e-0*([0-9])", "e−\\1", x)
 
 # ---------------------------------------------------------------- annotation map
 #' Resolver for an annotation map: every printed number is one stored cell.
