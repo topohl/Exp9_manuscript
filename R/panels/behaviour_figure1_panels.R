@@ -23,9 +23,18 @@
 # Figure 1 contract boxes (figures/figure_contract.yml, absolute layout), w x h in mm.
 F1_BOX <- list(a = c(173, 36), b = c(58, 66), c = c(113, 66), d = c(173, 62), e = c(66, 58), f = c(105, 58))
 
-# Display labels for the two Stage 29 primary constructs (legacy identifiers as names).
-F1_CONSTRUCT_TITLE <- c(crossing_rate = "Antenna-crossing rate", shared_zone_use = "Shared antenna-zone use")
-F1_CONSTRUCT_Y <- c(crossing_rate = "crossings per hour", shared_zone_use = "fraction of dyadic time")
+# Display labels for the two Stage 29 primary constructs (legacy identifiers as names),
+# in the v1.0.1 terminology of the bundle's configuration (metrics/*/display_name, unit).
+# The inverse hour is plotmath (as the R-squared superscript of panel f): Arial has no
+# superscript-minus glyph, so a Unicode "h^-1" would fall back to another font.
+F1_UNIT_PER_H <- expression("position changes h"^-1)
+F1_CONSTRUCT_TITLE <- c(crossing_rate = "RFID position-change rate", shared_zone_use = "Shared RFID-position occupancy")
+# The occupancy unit is on two lines: on one line it is longer than the plot height of panels c and d.
+F1_CONSTRUCT_Y <- list(crossing_rate = F1_UNIT_PER_H, shared_zone_use = "fraction of co-assigned\ndyadic time")
+# Two lines (one would be wider than panel e). textstyle(atop(displaystyle(.), displaystyle(.)))
+# keeps both lines full size with text-style (closer) line spacing.
+F1_EARLY_RATE_X <- expression(textstyle(atop(displaystyle("Early RFID position-change rate after CC1"),
+                                             displaystyle("(position changes h"^-1 * ")"))))
 
 # Display names of the bundle's design-timeline events (A0_design_timeline$event).
 F1_TIMELINE_DISPLAY <- c(
@@ -198,7 +207,7 @@ f1_panel_association <- function(tab, an, w_mm = F1_BOX$e[1], h_mm = F1_BOX$e[2]
     geom_point(size = 1.05, stroke = 0.2, alpha = 0.9, shape = 21, colour = "grey20", fill = "#6E8B99") +
     annotate("text", x = Inf, y = Inf, label = e_lab, hjust = 1.04, vjust = 1.15, size = NOTE_PT / .pt, colour = INK, lineheight = 1.08) +
     scale_y_continuous(expand = expansion(mult = c(0.05, 0.22))) +
-    labs(x = "Early crossing rate after CC1 (crossings/h)", y = "Later CombZ",
+    labs(x = F1_EARLY_RATE_X, y = "Later CombZ",
          subtitle = "one point per animal; rank correlation; not split by sex") +
     theme_f1()
   bh_panel(pe, w_mm, h_mm)

@@ -26,8 +26,9 @@ figures:
       Home-cage RFID behaviour of animals later classified resilient or susceptible,
       in the first active phase after CC1 and across CC1-CC4, and early behaviour
       versus the later continuous outcome. The primary RES/SUS analyses are SIS-only;
-      CON is descriptive. Antenna-crossing rate measures overall locomotor activity
-      and shared antenna-zone use measures overlap with current cage-mates. Group
+      CON is descriptive. RFID position-change rate is an index of cage-scale
+      relocation and shared RFID-position occupancy an index of spatial overlap
+      with current cage-mates (configuration v1.0.1 terminology, erratum E8). Group
       labels are defined from later CombZ, so panels c, d and e are complementary
       views of overlapping data, not independent replication. All statistics are
       computed and frozen in MMMSociability (Stage 29, Stage 09; bundled by Stage
@@ -76,7 +77,7 @@ figures:
         w: 58
         h: 66
       - id: 1c
-        description: First active phase after CC1 - crossing rate and shared antenna-zone use by later group within sex
+        description: First active phase after CC1 - RFID position-change rate and shared RFID-position occupancy by later group within sex
         producer_script: figures/figure_01_panels.R
         render_mode: copy_svg
         source_data_mode: copy_csv
@@ -124,7 +125,7 @@ figures:
         w: 173
         h: 62
       - id: 1e
-        description: Early crossing rate versus later composite outcome (refreshed Stage 09)
+        description: Early RFID position-change rate versus later composite outcome (refreshed Stage 09)
         producer_script: figures/figure_01_panels.R
         render_mode: copy_svg
         source_data_mode: copy_csv
@@ -137,7 +138,7 @@ figures:
         required_columns: [AnimalNum, Group, Sex, observed_CombZ, heldout_prediction, Movement_mean, crossing_rate_equiv_per_h]
         expected_rows: 111
         scientific_contract: primary_association_spearman_no_model_fitted
-        statistic: Stage 09 PR1 Spearman rank correlation of Movement_mean with CombZ, bootstrap CI, BH over three registered features; x shown as 6 x Movement_mean in crossings/h
+        statistic: Stage 09 PR1 Spearman rank correlation of Movement_mean with CombZ, bootstrap CI, BH over three registered features; x shown as 6 x Movement_mean in position changes/h
         colour_encoding: single colour; the y axis is the score the groups were cut from
         biological_unit: AnimalID
         hemisphere_handling: not_applicable_behavioural
