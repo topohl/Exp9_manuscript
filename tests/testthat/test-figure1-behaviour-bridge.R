@@ -44,8 +44,11 @@ test_that("the bridge is a byte-exact mirror of exactly the frozen bundle", {
   # pinned to its own expected contents below rather than waved through.
   # Pinned canonical behaviour bundles (ebb_v*, MMMSociability Stage 16b) are the
   # second permitted addition; each is hash-verified by test-behaviour-bundle-import.R.
+  # Pinned Stage 30 figure bundles (s30b_v*, MMMSociability Analysis/30b) are the
+  # third; each is hash-verified by test-stage30-bundle-import.R.
   here <- list.files(BRIDGE)
-  expect_setequal(here[!grepl("^ebb_v[0-9]+_[0-9]{8}_[0-9a-f]{7}$", here)], c(BUNDLE_FILES, "source_data"))
+  expect_setequal(here[!grepl("^ebb_v[0-9]+_[0-9]{8}_[0-9a-f]{7}$", here) & !grepl("^s30b_v[0-9]+_[0-9]{8}_[0-9a-f]{7}$", here)],
+                  c(BUNDLE_FILES, "source_data"))
   expect_true(dir.exists(file.path(BRIDGE, "source_data")))
   expect_setequal(
     list.files(file.path(BRIDGE, "source_data")),
