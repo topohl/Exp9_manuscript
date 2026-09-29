@@ -40,10 +40,10 @@ test_that("the renderer reads only the pinned bundle and computes nothing", {
   expect_true(all(c("behaviour_figure_style.R", "behaviour_figure1_panels.R") %in% basename(BEHAVIOUR_LIBS)))
   FORBIDDEN <- c("analysis_ready", "data/raw", "data/processed", "figure1_bridge_mmmsociability",
                  "canonical/later_outcome_combz", "S:/", "read_excel")
-  STATS <- c("\\blm\\(", "\\bglm\\(", "\\blmer\\(", "cor\\.test\\(", "\\bcor\\(", "p\\.adjust\\(", "\\bboot\\(", "replicate\\(",
-             "geom_smooth\\(", "stat_smooth\\(", "stat_summary\\(", "\\bt\\.test\\(", "wilcox\\.test\\(", "\\bmean\\(", "\\bquantile\\(",
-             "\\bmedian\\(", "\\bsd\\(", "\\bvar\\(", "\\bpredict\\(", "\\bfitted\\(", "\\bcoef\\(", "\\bresiduals\\(",
-             "\\bdensity\\(", "\\becdf\\(")
+  # The shared list (tests/testthat/helper-behaviour-forbidden-statistics.R): calls with optional
+  # whitespace before "(", the computing ggplot layers, statistics passed by name, merge().
+  STATS <- BEHAVIOUR_FORBIDDEN_STATS
+  expect_gte(length(STATS), 29L)
   for (src in c(RENDERER, BEHAVIOUR_LIBS)) {
     code <- code_of(src)
     for (f in FORBIDDEN)
