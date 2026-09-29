@@ -1,0 +1,33 @@
+family_id,tier,member,method,declared_m,realised_m,p_raw,p_adjusted,reject_at_alpha_adjusted,discovery_eligible
+P-CC1,primary,Q1|crossing_rate,holm,2,2,0.257827942499315,0.515655884998629,FALSE,TRUE
+P-CC1,primary,Q1|shared_zone_use,holm,2,2,0.657213574536945,0.657213574536945,FALSE,TRUE
+P-TR,primary,Q2b|crossing_rate,holm,2,2,0.954068768808881,1,FALSE,TRUE
+P-TR,primary,Q2b|shared_zone_use,holm,2,2,0.755168768608158,1,FALSE,TRUE
+S-CC1-ORG,secondary,Q1|occupancy_dispersion,holm,2,2,0.243640005519781,0.487280011039562,FALSE,TRUE
+S-CC1-ORG,secondary,Q1|fragmentation,holm,2,2,0.783972558581942,0.783972558581942,FALSE,TRUE
+S-TR-ORG,secondary,Q2b|occupancy_dispersion,holm,2,2,0.469577400539124,0.743703723002404,FALSE,TRUE
+S-TR-ORG,secondary,Q2b|fragmentation,holm,2,2,0.371851861501202,0.743703723002404,FALSE,TRUE
+FU-CC1|crossing_rate,follow-up,RS_by_sex_CC1|crossing_rate|Female,holm,2,2,0.725651904378276,0.725651904378276,FALSE,TRUE
+FU-CC1|crossing_rate,follow-up,RS_by_sex_CC1|crossing_rate|Male,holm,2,2,0.127050212103081,0.254100424206162,FALSE,TRUE
+FU-CC1|shared_zone_use,follow-up,RS_by_sex_CC1|shared_zone_use|Female,holm,2,2,0.197200830432174,0.394401660864347,FALSE,TRUE
+FU-CC1|shared_zone_use,follow-up,RS_by_sex_CC1|shared_zone_use|Male,holm,2,2,0.715449282546574,0.715449282546574,FALSE,TRUE
+FU-CC1|occupancy_dispersion,follow-up,RS_by_sex_CC1|occupancy_dispersion|Female,holm,2,2,0.336006655877766,0.672013311755533,FALSE,TRUE
+FU-CC1|occupancy_dispersion,follow-up,RS_by_sex_CC1|occupancy_dispersion|Male,holm,2,2,0.383335798280263,0.672013311755533,FALSE,TRUE
+FU-CC1|fragmentation,follow-up,RS_by_sex_CC1|fragmentation|Female,holm,2,2,0.975465785094765,1,FALSE,TRUE
+FU-CC1|fragmentation,follow-up,RS_by_sex_CC1|fragmentation|Male,holm,2,2,0.980339509218099,1,FALSE,TRUE
+FU-TR|crossing_rate,follow-up,TR_by_sex|crossing_rate|Female,holm,2,2,0.462196730930815,0.924393461861629,FALSE,TRUE
+FU-TR|crossing_rate,follow-up,TR_by_sex|crossing_rate|Male,holm,2,2,0.751860281555619,0.924393461861629,FALSE,TRUE
+FU-TR|shared_zone_use,follow-up,TR_by_sex|shared_zone_use|Female,holm,2,2,0.302696970300903,0.605393940601806,FALSE,TRUE
+FU-TR|shared_zone_use,follow-up,TR_by_sex|shared_zone_use|Male,holm,2,2,0.896445393899303,0.896445393899303,FALSE,TRUE
+FU-TR|occupancy_dispersion,follow-up,TR_by_sex|occupancy_dispersion|Female,holm,2,2,0.160339623491346,0.320679246982692,FALSE,TRUE
+FU-TR|occupancy_dispersion,follow-up,TR_by_sex|occupancy_dispersion|Male,holm,2,2,0.729312848488282,0.729312848488282,FALSE,TRUE
+FU-TR|fragmentation,follow-up,TR_by_sex|fragmentation|Female,holm,2,2,0.855967271156614,1,FALSE,TRUE
+FU-TR|fragmentation,follow-up,TR_by_sex|fragmentation|Male,holm,2,2,0.559371049303696,1,FALSE,TRUE
+PR1,"prediction (Stage 09, registered)",spearman|Movement_mean,BH,3,3,8.7135675970413e-06,2.61407027911239e-05,TRUE,TRUE
+PR1,"prediction (Stage 09, registered)",spearman|Movement_rmssd,BH,3,3,0.0121198129145568,0.0181797193718352,TRUE,TRUE
+PR1,"prediction (Stage 09, registered)",spearman|Entropy_acf1,BH,3,3,0.0477641182269714,0.0477641182269714,TRUE,TRUE
+PR2,prediction (Stage 09),permutation|movement_mean,holm,2,2,0.000999000999000999,0.001998001998002,TRUE,TRUE
+PR2,prediction (Stage 09),permutation|primary_behavior_family,holm,2,2,0.000999000999000999,0.001998001998002,TRUE,TRUE
+PR3,"prediction (Stage 09, registered)",feature_x_Sex|Movement_mean,BH,3,3,0.950939911223811,0.950939911223811,FALSE,TRUE
+PR3,"prediction (Stage 09, registered)",feature_x_Sex|Movement_rmssd,BH,3,3,0.499345350204944,0.749018025307416,FALSE,TRUE
+PR3,"prediction (Stage 09, registered)",feature_x_Sex|Entropy_acf1,BH,3,3,0.373802774488835,0.749018025307416,FALSE,TRUE
