@@ -1,0 +1,250 @@
+key,panel,bundle,table,column,filters,format,meaning
+edx_a_cr_q2b_f,trajectory_rate,ebb,C3_joint_tests,F,model_id=TR_POOLED|crossing_rate;estimand=Q2b,%.2f,RFID position-change rate Q2b joint KR F (CC1-CC4 RES-SUS x sex)
+edx_a_cr_q2b_df1,trajectory_rate,ebb,C3_joint_tests,df1,model_id=TR_POOLED|crossing_rate;estimand=Q2b,%d,numerator df
+edx_a_cr_q2b_df2,trajectory_rate,ebb,C3_joint_tests,df2,model_id=TR_POOLED|crossing_rate;estimand=Q2b,%.0f,KR denominator df
+edx_a_cr_q2b_holm,trajectory_rate,ebb,E_multiplicity,p_adjusted,family_id=P-TR;member=Q2b|crossing_rate,%.2g,P-TR Holm-adjusted p
+edx_b_sz_q2b_f,trajectory_occupancy,ebb,C3_joint_tests,F,model_id=TR_POOLED|shared_zone_use;estimand=Q2b,%.2f,shared RFID-position occupancy Q2b joint KR F (CC1-CC4 RES-SUS x sex)
+edx_b_sz_q2b_df1,trajectory_occupancy,ebb,C3_joint_tests,df1,model_id=TR_POOLED|shared_zone_use;estimand=Q2b,%d,numerator df
+edx_b_sz_q2b_df2,trajectory_occupancy,ebb,C3_joint_tests,df2,model_id=TR_POOLED|shared_zone_use;estimand=Q2b,%.0f,KR denominator df
+edx_b_sz_q2b_holm,trajectory_occupancy,ebb,E_multiplicity,p_adjusted,family_id=P-TR;member=Q2b|shared_zone_use,%.2g,P-TR Holm-adjusted p
+edx_c_od_q2b_f,trajectory_secondary,ebb,C3_joint_tests,F,model_id=TR_POOLED|occupancy_dispersion;estimand=Q2b,%.2f,occupancy dispersion Q2b joint KR F (CC1-CC4 RES-SUS x sex)
+edx_c_od_q2b_df1,trajectory_secondary,ebb,C3_joint_tests,df1,model_id=TR_POOLED|occupancy_dispersion;estimand=Q2b,%d,numerator df
+edx_c_od_q2b_df2,trajectory_secondary,ebb,C3_joint_tests,df2,model_id=TR_POOLED|occupancy_dispersion;estimand=Q2b,%.0f,KR denominator df
+edx_c_od_q2b_holm,trajectory_secondary,ebb,E_multiplicity,p_adjusted,family_id=S-TR-ORG;member=Q2b|occupancy_dispersion,%.2g,S-TR-ORG Holm-adjusted p
+edx_c_fr_q2b_f,trajectory_secondary,ebb,C3_joint_tests,F,model_id=TR_POOLED|fragmentation;estimand=Q2b,%.2f,fragmentation Q2b joint KR F (CC1-CC4 RES-SUS x sex)
+edx_c_fr_q2b_df1,trajectory_secondary,ebb,C3_joint_tests,df1,model_id=TR_POOLED|fragmentation;estimand=Q2b,%d,numerator df
+edx_c_fr_q2b_df2,trajectory_secondary,ebb,C3_joint_tests,df2,model_id=TR_POOLED|fragmentation;estimand=Q2b,%.0f,KR denominator df
+edx_c_fr_q2b_holm,trajectory_secondary,ebb,E_multiplicity,p_adjusted,family_id=S-TR-ORG;member=Q2b|fragmentation,%.2g,S-TR-ORG Holm-adjusted p
+f1o1_a_n_cc1_animals,f1o1_design,ebb,A0_design_timeline,n_animals,step=2,%d,Figure 1 option 1 panel a (figure_01_annotation_map.csv a_n_cc1_animals): RFID-tracked animals in the first active phase after CC1
+f1o1_a_n_windows,f1o1_design,ebb,A0_design_timeline,n_windows,step=4,%d,Figure 1 option 1 panel a (figure_01_annotation_map.csv a_n_windows): animal-windows across CC1-CC4
+f1o1_a_n_combz,f1o1_design,ebb,A0_design_timeline,n_animals,step=7,%d,Figure 1 option 1 panel a (figure_01_annotation_map.csv a_n_combz): animals with CombZ
+f1o1_b_thr_female,f1o1_combz,ebb,A2b_combz_thresholds,susceptibility_threshold,Sex=Female,%.3f,Figure 1 option 1 panel b (figure_01_annotation_map.csv b_thr_female): female susceptibility threshold
+f1o1_b_thr_male,f1o1_combz,ebb,A2b_combz_thresholds,susceptibility_threshold,Sex=Male,%.3f,Figure 1 option 1 panel b (figure_01_annotation_map.csv b_thr_male): male susceptibility threshold
+f1o1_c_cr_rs_f,f1o1_cc1,ebb,C2_estimates,estimate,source=stage29;construct=crossing_rate;estimand=RS_by_sex_CC1;sex=Female,%.1f,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_cr_rs_f): RFID position-change rate RES-SUS females CC1 (position changes/h)
+f1o1_c_cr_rs_f_lo,f1o1_cc1,ebb,C2_estimates,ci_low,source=stage29;construct=crossing_rate;estimand=RS_by_sex_CC1;sex=Female,%.1f,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_cr_rs_f_lo): 95% CI lower
+f1o1_c_cr_rs_f_hi,f1o1_cc1,ebb,C2_estimates,ci_high,source=stage29;construct=crossing_rate;estimand=RS_by_sex_CC1;sex=Female,%.1f,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_cr_rs_f_hi): 95% CI upper
+f1o1_c_cr_rs_m,f1o1_cc1,ebb,C2_estimates,estimate,source=stage29;construct=crossing_rate;estimand=RS_by_sex_CC1;sex=Male,%.1f,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_cr_rs_m): RFID position-change rate RES-SUS males CC1 (position changes/h)
+f1o1_c_cr_rs_m_lo,f1o1_cc1,ebb,C2_estimates,ci_low,source=stage29;construct=crossing_rate;estimand=RS_by_sex_CC1;sex=Male,%.1f,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_cr_rs_m_lo): 95% CI lower
+f1o1_c_cr_rs_m_hi,f1o1_cc1,ebb,C2_estimates,ci_high,source=stage29;construct=crossing_rate;estimand=RS_by_sex_CC1;sex=Male,%.1f,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_cr_rs_m_hi): 95% CI upper
+f1o1_c_cr_q1,f1o1_cc1,ebb,C2_estimates,estimate,source=stage29;construct=crossing_rate;estimand=Q1;sex=NA,%.1f,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_cr_q1): RFID position-change rate sex difference in RES-SUS (Q1)
+f1o1_c_cr_q1_lo,f1o1_cc1,ebb,C2_estimates,ci_low,source=stage29;construct=crossing_rate;estimand=Q1;sex=NA,%.1f,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_cr_q1_lo): 95% CI lower
+f1o1_c_cr_q1_hi,f1o1_cc1,ebb,C2_estimates,ci_high,source=stage29;construct=crossing_rate;estimand=Q1;sex=NA,%.1f,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_cr_q1_hi): 95% CI upper
+f1o1_c_cr_q1_holm,f1o1_cc1,ebb,E_multiplicity,p_adjusted,family_id=P-CC1;member=Q1|crossing_rate,%.2g,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_cr_q1_holm): P-CC1 Holm-adjusted p
+f1o1_c_sz_rs_f,f1o1_cc1,ebb,C2_estimates,estimate,source=stage29;construct=shared_zone_use;estimand=RS_by_sex_CC1;sex=Female,%.3f,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_sz_rs_f): shared RFID-position occupancy RES-SUS females CC1
+f1o1_c_sz_rs_f_lo,f1o1_cc1,ebb,C2_estimates,ci_low,source=stage29;construct=shared_zone_use;estimand=RS_by_sex_CC1;sex=Female,%.3f,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_sz_rs_f_lo): 95% CI lower
+f1o1_c_sz_rs_f_hi,f1o1_cc1,ebb,C2_estimates,ci_high,source=stage29;construct=shared_zone_use;estimand=RS_by_sex_CC1;sex=Female,%.3f,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_sz_rs_f_hi): 95% CI upper
+f1o1_c_sz_rs_m,f1o1_cc1,ebb,C2_estimates,estimate,source=stage29;construct=shared_zone_use;estimand=RS_by_sex_CC1;sex=Male,%.3f,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_sz_rs_m): shared RFID-position occupancy RES-SUS males CC1
+f1o1_c_sz_rs_m_lo,f1o1_cc1,ebb,C2_estimates,ci_low,source=stage29;construct=shared_zone_use;estimand=RS_by_sex_CC1;sex=Male,%.3f,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_sz_rs_m_lo): 95% CI lower
+f1o1_c_sz_rs_m_hi,f1o1_cc1,ebb,C2_estimates,ci_high,source=stage29;construct=shared_zone_use;estimand=RS_by_sex_CC1;sex=Male,%.3f,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_sz_rs_m_hi): 95% CI upper
+f1o1_c_sz_q1,f1o1_cc1,ebb,C2_estimates,estimate,source=stage29;construct=shared_zone_use;estimand=Q1;sex=NA,%.3f,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_sz_q1): shared RFID-position occupancy sex difference in RES-SUS (Q1)
+f1o1_c_sz_q1_lo,f1o1_cc1,ebb,C2_estimates,ci_low,source=stage29;construct=shared_zone_use;estimand=Q1;sex=NA,%.3f,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_sz_q1_lo): 95% CI lower
+f1o1_c_sz_q1_hi,f1o1_cc1,ebb,C2_estimates,ci_high,source=stage29;construct=shared_zone_use;estimand=Q1;sex=NA,%.3f,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_sz_q1_hi): 95% CI upper
+f1o1_c_sz_q1_holm,f1o1_cc1,ebb,E_multiplicity,p_adjusted,family_id=P-CC1;member=Q1|shared_zone_use,%.2g,Figure 1 option 1 panel c (figure_01_annotation_map.csv c_sz_q1_holm): P-CC1 Holm-adjusted p
+f1o1_e_rho,f1o1_association,ebb,C2_estimates,estimate,source=stage09;construct=Movement_mean;estimand=spearman_rho_vs_CombZ,%.2f,Figure 1 option 1 panel d (figure_01_annotation_map.csv e_rho): Spearman rho early RFID position-change rate vs later CombZ
+f1o1_e_rho_lo,f1o1_association,ebb,C2_estimates,ci_low,source=stage09;construct=Movement_mean;estimand=spearman_rho_vs_CombZ,%.2f,Figure 1 option 1 panel d (figure_01_annotation_map.csv e_rho_lo): bootstrap 95% CI lower
+f1o1_e_rho_hi,f1o1_association,ebb,C2_estimates,ci_high,source=stage09;construct=Movement_mean;estimand=spearman_rho_vs_CombZ,%.2f,Figure 1 option 1 panel d (figure_01_annotation_map.csv e_rho_hi): bootstrap 95% CI upper
+f1o1_e_q,f1o1_association,ebb,E_multiplicity,p_adjusted,family_id=PR1;member=spearman|Movement_mean,%.2e,Figure 1 option 1 panel d (figure_01_annotation_map.csv e_q): PR1 BH q
+f1o1_e_n,f1o1_association,ebb,C2_estimates,n,source=stage09;construct=Movement_mean;estimand=spearman_rho_vs_CombZ,%d,Figure 1 option 1 panel d (figure_01_annotation_map.csv e_n): animals
+f1o1_f_loao,f1o1_prediction,ebb,C2_estimates,estimate,source=stage09;construct=movement_mean;estimand=LOAO_R2,%.3f,Figure 1 option 1 panel e (figure_01_annotation_map.csv f_loao): LOAO R2 movement-mean model
+f1o1_f_base,f1o1_prediction,ebb,C2_estimates,estimate,source=stage09;construct=mean_only;estimand=LOAO_R2,%.3f,Figure 1 option 1 panel e (figure_01_annotation_map.csv f_base): intercept-only baseline LOAO R2
+f1o1_f_rcv,f1o1_prediction,ebb,C2_estimates,estimate,source=stage09;construct=movement_mean;estimand=repeated_CV_mean_R2,%.3f,Figure 1 option 1 panel e (figure_01_annotation_map.csv f_rcv): repeated grouped five-fold mean R2
+f1o1_f_rcv_lo,f1o1_prediction,ebb,C2_estimates,ci_low,source=stage09;construct=movement_mean;estimand=repeated_CV_mean_R2,%.3f,Figure 1 option 1 panel e (figure_01_annotation_map.csv f_rcv_lo): 2.5th percentile across repeats
+f1o1_f_rcv_hi,f1o1_prediction,ebb,C2_estimates,ci_high,source=stage09;construct=movement_mean;estimand=repeated_CV_mean_R2,%.3f,Figure 1 option 1 panel e (figure_01_annotation_map.csv f_rcv_hi): 97.5th percentile across repeats
+f1o1_f_perm_p,f1o1_prediction,ebb,E_multiplicity,p_adjusted,family_id=PR2;member=permutation|movement_mean,%.2g,Figure 1 option 1 panel e (figure_01_annotation_map.csv f_perm_p): PR2 Holm-adjusted permutation p
+f1o1_f_nperm,f1o1_prediction,ebb,A3_permutation_draws,n_permutations,permutation_id=0;model_id=movement_mean,%d,Figure 1 option 1 panel e (figure_01_annotation_map.csv f_nperm): permutation draws
+f1o2_a_n_cc1_animals,f1o2_design,ebb,A0_design_timeline,n_animals,step=2,%d,Figure 1 option 2 panel a (figure_01_annotation_map.csv a_n_cc1_animals): RFID-tracked animals in the first active phase after CC1
+f1o2_a_n_windows,f1o2_design,ebb,A0_design_timeline,n_windows,step=4,%d,Figure 1 option 2 panel a (figure_01_annotation_map.csv a_n_windows): animal-windows across CC1-CC4
+f1o2_a_n_combz,f1o2_design,ebb,A0_design_timeline,n_animals,step=7,%d,Figure 1 option 2 panel a (figure_01_annotation_map.csv a_n_combz): animals with CombZ
+f1o2_b_thr_female,f1o2_combz,ebb,A2b_combz_thresholds,susceptibility_threshold,Sex=Female,%.3f,Figure 1 option 2 panel b (figure_01_annotation_map.csv b_thr_female): female susceptibility threshold
+f1o2_b_thr_male,f1o2_combz,ebb,A2b_combz_thresholds,susceptibility_threshold,Sex=Male,%.3f,Figure 1 option 2 panel b (figure_01_annotation_map.csv b_thr_male): male susceptibility threshold
+f1o2_c_cr_rs_f,f1o2_cc1,ebb,C2_estimates,estimate,source=stage29;construct=crossing_rate;estimand=RS_by_sex_CC1;sex=Female,%.1f,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_cr_rs_f): RFID position-change rate RES-SUS females CC1 (position changes/h)
+f1o2_c_cr_rs_f_lo,f1o2_cc1,ebb,C2_estimates,ci_low,source=stage29;construct=crossing_rate;estimand=RS_by_sex_CC1;sex=Female,%.1f,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_cr_rs_f_lo): 95% CI lower
+f1o2_c_cr_rs_f_hi,f1o2_cc1,ebb,C2_estimates,ci_high,source=stage29;construct=crossing_rate;estimand=RS_by_sex_CC1;sex=Female,%.1f,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_cr_rs_f_hi): 95% CI upper
+f1o2_c_cr_rs_m,f1o2_cc1,ebb,C2_estimates,estimate,source=stage29;construct=crossing_rate;estimand=RS_by_sex_CC1;sex=Male,%.1f,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_cr_rs_m): RFID position-change rate RES-SUS males CC1 (position changes/h)
+f1o2_c_cr_rs_m_lo,f1o2_cc1,ebb,C2_estimates,ci_low,source=stage29;construct=crossing_rate;estimand=RS_by_sex_CC1;sex=Male,%.1f,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_cr_rs_m_lo): 95% CI lower
+f1o2_c_cr_rs_m_hi,f1o2_cc1,ebb,C2_estimates,ci_high,source=stage29;construct=crossing_rate;estimand=RS_by_sex_CC1;sex=Male,%.1f,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_cr_rs_m_hi): 95% CI upper
+f1o2_c_cr_q1,f1o2_cc1,ebb,C2_estimates,estimate,source=stage29;construct=crossing_rate;estimand=Q1;sex=NA,%.1f,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_cr_q1): RFID position-change rate sex difference in RES-SUS (Q1)
+f1o2_c_cr_q1_lo,f1o2_cc1,ebb,C2_estimates,ci_low,source=stage29;construct=crossing_rate;estimand=Q1;sex=NA,%.1f,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_cr_q1_lo): 95% CI lower
+f1o2_c_cr_q1_hi,f1o2_cc1,ebb,C2_estimates,ci_high,source=stage29;construct=crossing_rate;estimand=Q1;sex=NA,%.1f,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_cr_q1_hi): 95% CI upper
+f1o2_c_cr_q1_holm,f1o2_cc1,ebb,E_multiplicity,p_adjusted,family_id=P-CC1;member=Q1|crossing_rate,%.2g,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_cr_q1_holm): P-CC1 Holm-adjusted p
+f1o2_c_sz_rs_f,f1o2_cc1,ebb,C2_estimates,estimate,source=stage29;construct=shared_zone_use;estimand=RS_by_sex_CC1;sex=Female,%.3f,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_sz_rs_f): shared RFID-position occupancy RES-SUS females CC1
+f1o2_c_sz_rs_f_lo,f1o2_cc1,ebb,C2_estimates,ci_low,source=stage29;construct=shared_zone_use;estimand=RS_by_sex_CC1;sex=Female,%.3f,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_sz_rs_f_lo): 95% CI lower
+f1o2_c_sz_rs_f_hi,f1o2_cc1,ebb,C2_estimates,ci_high,source=stage29;construct=shared_zone_use;estimand=RS_by_sex_CC1;sex=Female,%.3f,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_sz_rs_f_hi): 95% CI upper
+f1o2_c_sz_rs_m,f1o2_cc1,ebb,C2_estimates,estimate,source=stage29;construct=shared_zone_use;estimand=RS_by_sex_CC1;sex=Male,%.3f,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_sz_rs_m): shared RFID-position occupancy RES-SUS males CC1
+f1o2_c_sz_rs_m_lo,f1o2_cc1,ebb,C2_estimates,ci_low,source=stage29;construct=shared_zone_use;estimand=RS_by_sex_CC1;sex=Male,%.3f,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_sz_rs_m_lo): 95% CI lower
+f1o2_c_sz_rs_m_hi,f1o2_cc1,ebb,C2_estimates,ci_high,source=stage29;construct=shared_zone_use;estimand=RS_by_sex_CC1;sex=Male,%.3f,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_sz_rs_m_hi): 95% CI upper
+f1o2_c_sz_q1,f1o2_cc1,ebb,C2_estimates,estimate,source=stage29;construct=shared_zone_use;estimand=Q1;sex=NA,%.3f,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_sz_q1): shared RFID-position occupancy sex difference in RES-SUS (Q1)
+f1o2_c_sz_q1_lo,f1o2_cc1,ebb,C2_estimates,ci_low,source=stage29;construct=shared_zone_use;estimand=Q1;sex=NA,%.3f,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_sz_q1_lo): 95% CI lower
+f1o2_c_sz_q1_hi,f1o2_cc1,ebb,C2_estimates,ci_high,source=stage29;construct=shared_zone_use;estimand=Q1;sex=NA,%.3f,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_sz_q1_hi): 95% CI upper
+f1o2_c_sz_q1_holm,f1o2_cc1,ebb,E_multiplicity,p_adjusted,family_id=P-CC1;member=Q1|shared_zone_use,%.2g,Figure 1 option 2 panel c (figure_01_annotation_map.csv c_sz_q1_holm): P-CC1 Holm-adjusted p
+f1o2_e_rho,f1o2_association,ebb,C2_estimates,estimate,source=stage09;construct=Movement_mean;estimand=spearman_rho_vs_CombZ,%.2f,Figure 1 option 2 panel d (figure_01_annotation_map.csv e_rho): Spearman rho early RFID position-change rate vs later CombZ
+f1o2_e_rho_lo,f1o2_association,ebb,C2_estimates,ci_low,source=stage09;construct=Movement_mean;estimand=spearman_rho_vs_CombZ,%.2f,Figure 1 option 2 panel d (figure_01_annotation_map.csv e_rho_lo): bootstrap 95% CI lower
+f1o2_e_rho_hi,f1o2_association,ebb,C2_estimates,ci_high,source=stage09;construct=Movement_mean;estimand=spearman_rho_vs_CombZ,%.2f,Figure 1 option 2 panel d (figure_01_annotation_map.csv e_rho_hi): bootstrap 95% CI upper
+f1o2_e_q,f1o2_association,ebb,E_multiplicity,p_adjusted,family_id=PR1;member=spearman|Movement_mean,%.2e,Figure 1 option 2 panel d (figure_01_annotation_map.csv e_q): PR1 BH q
+f1o2_e_n,f1o2_association,ebb,C2_estimates,n,source=stage09;construct=Movement_mean;estimand=spearman_rho_vs_CombZ,%d,Figure 1 option 2 panel d (figure_01_annotation_map.csv e_n): animals
+f1o2_f_loao,f1o2_prediction,ebb,C2_estimates,estimate,source=stage09;construct=movement_mean;estimand=LOAO_R2,%.3f,Figure 1 option 2 panel e (figure_01_annotation_map.csv f_loao): LOAO R2 movement-mean model
+f1o2_f_base,f1o2_prediction,ebb,C2_estimates,estimate,source=stage09;construct=mean_only;estimand=LOAO_R2,%.3f,Figure 1 option 2 panel e (figure_01_annotation_map.csv f_base): intercept-only baseline LOAO R2
+f1o2_f_rcv,f1o2_prediction,ebb,C2_estimates,estimate,source=stage09;construct=movement_mean;estimand=repeated_CV_mean_R2,%.3f,Figure 1 option 2 panel e (figure_01_annotation_map.csv f_rcv): repeated grouped five-fold mean R2
+f1o2_f_rcv_lo,f1o2_prediction,ebb,C2_estimates,ci_low,source=stage09;construct=movement_mean;estimand=repeated_CV_mean_R2,%.3f,Figure 1 option 2 panel e (figure_01_annotation_map.csv f_rcv_lo): 2.5th percentile across repeats
+f1o2_f_rcv_hi,f1o2_prediction,ebb,C2_estimates,ci_high,source=stage09;construct=movement_mean;estimand=repeated_CV_mean_R2,%.3f,Figure 1 option 2 panel e (figure_01_annotation_map.csv f_rcv_hi): 97.5th percentile across repeats
+f1o2_f_perm_p,f1o2_prediction,ebb,E_multiplicity,p_adjusted,family_id=PR2;member=permutation|movement_mean,%.2g,Figure 1 option 2 panel e (figure_01_annotation_map.csv f_perm_p): PR2 Holm-adjusted permutation p
+f1o2_f_nperm,f1o2_prediction,ebb,A3_permutation_draws,n_permutations,permutation_id=0;model_id=movement_mean,%d,Figure 1 option 2 panel e (figure_01_annotation_map.csv f_nperm): permutation draws
+lr_rs_f,light_rate,ebb,C2_estimates,estimate,source=stage29_exposure;model_id=LIGHT_CC1_BY_SEX|Female;estimand=RS_by_sex_CC1_light,%.2f,light-phase RFID position-change rate after CC1: RES - SUS in females (position changes/h; Stage 29 secondary estimate; not tested)
+lr_rs_f_lo,light_rate,ebb,C2_estimates,ci_low,source=stage29_exposure;model_id=LIGHT_CC1_BY_SEX|Female;estimand=RS_by_sex_CC1_light,%.2f,95% CI lower
+lr_rs_f_hi,light_rate,ebb,C2_estimates,ci_high,source=stage29_exposure;model_id=LIGHT_CC1_BY_SEX|Female;estimand=RS_by_sex_CC1_light,%.2f,95% CI upper
+lr_rs_m,light_rate,ebb,C2_estimates,estimate,source=stage29_exposure;model_id=LIGHT_CC1_BY_SEX|Male;estimand=RS_by_sex_CC1_light,%.2f,light-phase RFID position-change rate after CC1: RES - SUS in males (position changes/h; Stage 29 secondary estimate; not tested)
+lr_rs_m_lo,light_rate,ebb,C2_estimates,ci_low,source=stage29_exposure;model_id=LIGHT_CC1_BY_SEX|Male;estimand=RS_by_sex_CC1_light,%.2f,95% CI lower
+lr_rs_m_hi,light_rate,ebb,C2_estimates,ci_high,source=stage29_exposure;model_id=LIGHT_CC1_BY_SEX|Male;estimand=RS_by_sex_CC1_light,%.2f,95% CI upper
+lr_int,light_rate,ebb,C2_estimates,estimate,source=stage29_exposure;model_id=LIGHT_CC1_POOLED;estimand=Q1_light,%.2f,light-phase RFID position-change rate after CC1: female - male difference in RES - SUS (pooled model g_RS:sex_c; position changes/h; not tested)
+lr_int_lo,light_rate,ebb,C2_estimates,ci_low,source=stage29_exposure;model_id=LIGHT_CC1_POOLED;estimand=Q1_light,%.2f,95% CI lower
+lr_int_hi,light_rate,ebb,C2_estimates,ci_high,source=stage29_exposure;model_id=LIGHT_CC1_POOLED;estimand=Q1_light,%.2f,95% CI upper
+li_rs_f,light_inactivity,s30b,S1b_light_estimates,estimate,estimand_key=RS_F,%.4f,sustained positional inactivity (>=40 s) in the light phase after CC1: RES - SUS in females (fraction; SLEEP-CAT-IA40L-F; Stage 30 exploratory)
+li_rs_f_lo,light_inactivity,s30b,S1b_light_estimates,ci_low,estimand_key=RS_F,%.4f,95% CI lower
+li_rs_f_hi,light_inactivity,s30b,S1b_light_estimates,ci_high,estimand_key=RS_F,%.4f,95% CI upper
+li_rs_f_q,light_inactivity,s30b,S1b_light_estimates,q_local_bh,estimand_key=RS_F,%#.2g,local BH q within family SLEEP-CAT (m = 6)
+li_rs_m,light_inactivity,s30b,S1b_light_estimates,estimate,estimand_key=RS_M,%.4f,sustained positional inactivity (>=40 s) in the light phase after CC1: RES - SUS in males (fraction; SLEEP-CAT-IA40L-M; Stage 30 exploratory)
+li_rs_m_lo,light_inactivity,s30b,S1b_light_estimates,ci_low,estimand_key=RS_M,%.4f,95% CI lower
+li_rs_m_hi,light_inactivity,s30b,S1b_light_estimates,ci_high,estimand_key=RS_M,%.4f,95% CI upper
+li_rs_m_q,light_inactivity,s30b,S1b_light_estimates,q_local_bh,estimand_key=RS_M,%#.2g,local BH q within family SLEEP-CAT (m = 6)
+li_int,light_inactivity,s30b,S1b_light_estimates,estimate,estimand_key=INT_FM,%.4f,sustained positional inactivity (>=40 s) in the light phase after CC1: female - male difference in RES - SUS (fraction; SLEEP-CAT-IA40L-INT; Stage 30 exploratory)
+li_int_lo,light_inactivity,s30b,S1b_light_estimates,ci_low,estimand_key=INT_FM,%.4f,95% CI lower
+li_int_hi,light_inactivity,s30b,S1b_light_estimates,ci_high,estimand_key=INT_FM,%.4f,95% CI upper
+li_int_q,light_inactivity,s30b,S1b_light_estimates,q_local_bh,estimand_key=INT_FM,%#.2g,local BH q within family SLEEP-CAT (m = 6)
+li_n_ge099,light_inactivity,s30b,S1c_light_descriptives,n_ge_0.99,scope=overall_87;measure=posinact40_light,%d,SIS animals at CC1 whose light-phase inactivity fraction is >= 0.99 (descriptive count; the in-panel axis note)
+li_n_animals,light_inactivity,s30b,S1c_light_descriptives,n,scope=overall_87;measure=posinact40_light,%d,SIS animals at CC1 with a light-phase inactivity fraction (descriptive count; the in-panel axis note)
+lc_ia_rs_f_q,light_compact,s30b,S1b_light_estimates,q_local_bh,estimand_key=RS_F,%#.2g,compact light-phase panel: local BH q of RES - SUS inactivity in females (SLEEP-CAT; m = 6)
+lc_ia_rs_m_q,light_compact,s30b,S1b_light_estimates,q_local_bh,estimand_key=RS_M,%#.2g,compact light-phase panel: local BH q of RES - SUS inactivity in males (SLEEP-CAT; m = 6)
+lc_ia_int_q,light_compact,s30b,S1b_light_estimates,q_local_bh,estimand_key=INT_FM,%#.2g,compact light-phase panel: local BH q of the female - male difference in RES - SUS inactivity (SLEEP-CAT; m = 6)
+ld_rho,light_dependence,s30b,S2b_rate_inactivity_relationship,rho_rounded,phase=light,%.2f,light phase: Spearman rho of inactivity (>=40 s) with the position-change rate after Batch x cage-change centring (registry group_blind_qc; descriptive; not a test)
+ld_n_windows,light_dependence,s30b,S2b_rate_inactivity_relationship,n_windows,phase=light,%d,light-phase animal-windows in the relationship (all 111 RFID animals x CC1-CC4)
+ld_n_animals,light_dependence,s30b,S2b_rate_inactivity_relationship,n_animals,phase=light,%d,RFID animals in the relationship
+ld_icc,light_dependence,s30b,S2b_rate_inactivity_relationship,icc_rounded,phase=light,%.2f,light phase: residual reliability (ICC1 by Batch x CC) of inactivity after a spline on the position-change rate (registry group_blind_qc; descriptive)
+ckpp_n_increased,cookie_prepost,s30b,S3b_cookie_descriptives,n_increased,scope=pooled_77;measure=dcookie60,%d,SIS animals (B2-B6) whose RFID position-change rate was higher in POST60 than in PRE60 on EPM+1 (dcookie60 > 0; descriptive count)
+ckpp_n,cookie_prepost,s30b,S3b_cookie_descriptives,n,scope=pooled_77;measure=dcookie60,%d,SIS animals (B2-B6) with a home-cage cookie response (second presentation; EPM+1)
+ckrs_f,cookie_rs,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CAT-DC60-F,%.1f,home-cage cookie response (dcookie60): RES - SUS in females (position changes/h; COOKIE-CAT; registered exploratory test)
+ckrs_f_lo,cookie_rs,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CAT-DC60-F,%.1f,95% CI lower
+ckrs_f_hi,cookie_rs,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CAT-DC60-F,%.1f,95% CI upper
+ckrs_f_p,cookie_rs,s30b,S3c_cookie_estimates,p_raw,id=COOKIE-CAT-DC60-F,%.2f,raw p (Kenward-Roger t)
+ckrs_f_q,cookie_rs,s30b,S3c_cookie_estimates,q_local_bh,id=COOKIE-CAT-DC60-F,%.2f,local BH q within family COOKIE-CAT (m = 3)
+ckrs_m,cookie_rs,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CAT-DC60-M,%.1f,home-cage cookie response (dcookie60): RES - SUS in males (position changes/h; COOKIE-CAT; registered exploratory test)
+ckrs_m_lo,cookie_rs,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CAT-DC60-M,%.1f,95% CI lower
+ckrs_m_hi,cookie_rs,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CAT-DC60-M,%.1f,95% CI upper
+ckrs_m_p,cookie_rs,s30b,S3c_cookie_estimates,p_raw,id=COOKIE-CAT-DC60-M,%.2f,raw p (Kenward-Roger t)
+ckrs_m_q,cookie_rs,s30b,S3c_cookie_estimates,q_local_bh,id=COOKIE-CAT-DC60-M,%.2f,local BH q within family COOKIE-CAT (m = 3)
+ckrs_int,cookie_rs,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CAT-DC60-INT,%.1f,home-cage cookie response (dcookie60): female - male difference in RES - SUS (g_RS:sex_c; position changes/h; COOKIE-CAT; registered exploratory test)
+ckrs_int_lo,cookie_rs,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CAT-DC60-INT,%.1f,95% CI lower
+ckrs_int_hi,cookie_rs,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CAT-DC60-INT,%.1f,95% CI upper
+ckrs_int_p,cookie_rs,s30b,S3c_cookie_estimates,p_raw,id=COOKIE-CAT-DC60-INT,%.2f,raw p (Kenward-Roger t)
+ckrs_int_q,cookie_rs,s30b,S3c_cookie_estimates,q_local_bh,id=COOKIE-CAT-DC60-INT,%.2f,local BH q within family COOKIE-CAT (m = 3)
+ckcz_f,cookie_combz,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CONT-DC60-F,%.4f,frozen slope of later CombZ on the home-cage cookie response in females (CombZ per position change/h; COOKIE-CONT; registered exploratory test); equals S3d slope (Female)
+ckcz_f_lo,cookie_combz,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CONT-DC60-F,%.4f,95% CI lower (Satterthwaite CR2)
+ckcz_f_hi,cookie_combz,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CONT-DC60-F,%.4f,95% CI upper (Satterthwaite CR2)
+ckcz_m,cookie_combz,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CONT-DC60-M,%.4f,frozen slope of later CombZ on the home-cage cookie response in males (CombZ per position change/h; COOKIE-CONT; registered exploratory test); equals S3d slope (Male)
+ckcz_m_lo,cookie_combz,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CONT-DC60-M,%.4f,95% CI lower (Satterthwaite CR2)
+ckcz_m_hi,cookie_combz,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CONT-DC60-M,%.4f,95% CI upper (Satterthwaite CR2)
+ckcz_int_p,cookie_combz,s30b,S3c_cookie_estimates,p_raw,id=COOKIE-CONT-DC60-INT,%.2f,raw p of the female - male difference in slope (x:sex_c; COOKIE-CONT; Satterthwaite CR2)
+scr_n_tests,screen_matrix,s30b,S0_master_hypotheses,row_order,id=COOKIE-CAT-DC60-INT,%d,number of registered Stage 30 discovery tests in the title: row_order of the last S0 row (S0 row_order runs 1..48 over the 48 rows; the builder checks it equals the rows of S4)
+scr_l_df1,screen_matrix,s30b,S0_master_hypotheses,df1,id=SCREEN-L-PCR-F,%d,numerator df of the L joint F in the subtitle (the builder checks every L row has this df1)
+scr_m_screen_cont,screen_matrix,s30b,S0_master_hypotheses,family_m,id=SCREEN-CONT-OCC-F,%d,family size m of SCREEN-CONT (row suffix; the builder checks every row of the family has this m)
+scr_m_screen_l,screen_matrix,s30b,S0_master_hypotheses,family_m,id=SCREEN-L-PCR-F,%d,family size m of SCREEN-L (row suffix; the builder checks every row of the family has this m)
+scr_m_sleep_cont,screen_matrix,s30b,S0_master_hypotheses,family_m,id=SLEEP-CONT-IA40A-F,%d,family size m of SLEEP-CONT (row suffix; the builder checks every row of the family has this m)
+scr_m_sleep_cat,screen_matrix,s30b,S0_master_hypotheses,family_m,id=SLEEP-CAT-IA40A-F,%d,family size m of SLEEP-CAT (row suffix; the builder checks every row of the family has this m)
+scr_m_sleep_l,screen_matrix,s30b,S0_master_hypotheses,family_m,id=SLEEP-L-IA40A-F,%d,family size m of SLEEP-L (row suffix; the builder checks every row of the family has this m)
+scr_m_cookie_cont,screen_matrix,s30b,S0_master_hypotheses,family_m,id=COOKIE-CONT-DC60-F,%d,family size m of COOKIE-CONT (row suffix; the builder checks every row of the family has this m)
+scr_m_cookie_cat,screen_matrix,s30b,S0_master_hypotheses,family_m,id=COOKIE-CAT-DC60-F,%d,family size m of COOKIE-CAT (row suffix; the builder checks every row of the family has this m)
+scr_screen_cont_occ_f_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-CONT-OCC-F,%#.2g,SCREEN-CONT-OCC-F raw p of the registered test
+scr_screen_cont_occ_f_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-CONT-OCC-F,%#.2g,SCREEN-CONT-OCC-F local Benjamini-Hochberg q within family SCREEN-CONT
+scr_screen_cont_occ_m_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-CONT-OCC-M,%#.2g,SCREEN-CONT-OCC-M raw p of the registered test
+scr_screen_cont_occ_m_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-CONT-OCC-M,%#.2g,SCREEN-CONT-OCC-M local Benjamini-Hochberg q within family SCREEN-CONT
+scr_screen_cont_occ_int_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-CONT-OCC-INT,%#.2g,SCREEN-CONT-OCC-INT raw p of the registered test
+scr_screen_cont_occ_int_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-CONT-OCC-INT,%#.2g,SCREEN-CONT-OCC-INT local Benjamini-Hochberg q within family SCREEN-CONT
+scr_screen_cont_frag_f_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-CONT-FRAG-F,%#.2g,SCREEN-CONT-FRAG-F raw p of the registered test
+scr_screen_cont_frag_f_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-CONT-FRAG-F,%#.2g,SCREEN-CONT-FRAG-F local Benjamini-Hochberg q within family SCREEN-CONT
+scr_screen_cont_frag_m_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-CONT-FRAG-M,%#.2g,SCREEN-CONT-FRAG-M raw p of the registered test
+scr_screen_cont_frag_m_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-CONT-FRAG-M,%#.2g,SCREEN-CONT-FRAG-M local Benjamini-Hochberg q within family SCREEN-CONT
+scr_screen_cont_frag_int_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-CONT-FRAG-INT,%#.2g,SCREEN-CONT-FRAG-INT raw p of the registered test
+scr_screen_cont_frag_int_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-CONT-FRAG-INT,%#.2g,SCREEN-CONT-FRAG-INT local Benjamini-Hochberg q within family SCREEN-CONT
+scr_screen_cont_lpcr_f_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-CONT-LPCR-F,%#.2g,SCREEN-CONT-LPCR-F raw p of the registered test
+scr_screen_cont_lpcr_f_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-CONT-LPCR-F,%#.2g,SCREEN-CONT-LPCR-F local Benjamini-Hochberg q within family SCREEN-CONT
+scr_screen_cont_lpcr_m_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-CONT-LPCR-M,%#.2g,SCREEN-CONT-LPCR-M raw p of the registered test
+scr_screen_cont_lpcr_m_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-CONT-LPCR-M,%#.2g,SCREEN-CONT-LPCR-M local Benjamini-Hochberg q within family SCREEN-CONT
+scr_screen_cont_lpcr_int_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-CONT-LPCR-INT,%#.2g,SCREEN-CONT-LPCR-INT raw p of the registered test
+scr_screen_cont_lpcr_int_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-CONT-LPCR-INT,%#.2g,SCREEN-CONT-LPCR-INT local Benjamini-Hochberg q within family SCREEN-CONT
+scr_sleep_cont_ia40a_f_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SLEEP-CONT-IA40A-F,%#.2g,SLEEP-CONT-IA40A-F raw p of the registered test
+scr_sleep_cont_ia40a_f_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SLEEP-CONT-IA40A-F,%#.2g,SLEEP-CONT-IA40A-F local Benjamini-Hochberg q within family SLEEP-CONT
+scr_sleep_cont_ia40a_m_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SLEEP-CONT-IA40A-M,%#.2g,SLEEP-CONT-IA40A-M raw p of the registered test
+scr_sleep_cont_ia40a_m_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SLEEP-CONT-IA40A-M,%#.2g,SLEEP-CONT-IA40A-M local Benjamini-Hochberg q within family SLEEP-CONT
+scr_sleep_cont_ia40a_int_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SLEEP-CONT-IA40A-INT,%#.2g,SLEEP-CONT-IA40A-INT raw p of the registered test
+scr_sleep_cont_ia40a_int_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SLEEP-CONT-IA40A-INT,%#.2g,SLEEP-CONT-IA40A-INT local Benjamini-Hochberg q within family SLEEP-CONT
+scr_sleep_cont_ia40l_f_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SLEEP-CONT-IA40L-F,%#.2g,SLEEP-CONT-IA40L-F raw p of the registered test
+scr_sleep_cont_ia40l_f_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SLEEP-CONT-IA40L-F,%#.2g,SLEEP-CONT-IA40L-F local Benjamini-Hochberg q within family SLEEP-CONT
+scr_sleep_cont_ia40l_m_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SLEEP-CONT-IA40L-M,%#.2g,SLEEP-CONT-IA40L-M raw p of the registered test
+scr_sleep_cont_ia40l_m_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SLEEP-CONT-IA40L-M,%#.2g,SLEEP-CONT-IA40L-M local Benjamini-Hochberg q within family SLEEP-CONT
+scr_sleep_cont_ia40l_int_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SLEEP-CONT-IA40L-INT,%#.2g,SLEEP-CONT-IA40L-INT raw p of the registered test
+scr_sleep_cont_ia40l_int_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SLEEP-CONT-IA40L-INT,%#.2g,SLEEP-CONT-IA40L-INT local Benjamini-Hochberg q within family SLEEP-CONT
+scr_cookie_cont_dc60_f_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=COOKIE-CONT-DC60-F,%#.2g,COOKIE-CONT-DC60-F raw p of the registered test
+scr_cookie_cont_dc60_f_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=COOKIE-CONT-DC60-F,%#.2g,COOKIE-CONT-DC60-F local Benjamini-Hochberg q within family COOKIE-CONT
+scr_cookie_cont_dc60_m_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=COOKIE-CONT-DC60-M,%#.2g,COOKIE-CONT-DC60-M raw p of the registered test
+scr_cookie_cont_dc60_m_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=COOKIE-CONT-DC60-M,%#.2g,COOKIE-CONT-DC60-M local Benjamini-Hochberg q within family COOKIE-CONT
+scr_cookie_cont_dc60_int_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=COOKIE-CONT-DC60-INT,%#.2g,COOKIE-CONT-DC60-INT raw p of the registered test
+scr_cookie_cont_dc60_int_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=COOKIE-CONT-DC60-INT,%#.2g,COOKIE-CONT-DC60-INT local Benjamini-Hochberg q within family COOKIE-CONT
+scr_sleep_cat_ia40a_f_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SLEEP-CAT-IA40A-F,%#.2g,SLEEP-CAT-IA40A-F raw p of the registered test
+scr_sleep_cat_ia40a_f_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SLEEP-CAT-IA40A-F,%#.2g,SLEEP-CAT-IA40A-F local Benjamini-Hochberg q within family SLEEP-CAT
+scr_sleep_cat_ia40a_m_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SLEEP-CAT-IA40A-M,%#.2g,SLEEP-CAT-IA40A-M raw p of the registered test
+scr_sleep_cat_ia40a_m_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SLEEP-CAT-IA40A-M,%#.2g,SLEEP-CAT-IA40A-M local Benjamini-Hochberg q within family SLEEP-CAT
+scr_sleep_cat_ia40a_int_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SLEEP-CAT-IA40A-INT,%#.2g,SLEEP-CAT-IA40A-INT raw p of the registered test
+scr_sleep_cat_ia40a_int_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SLEEP-CAT-IA40A-INT,%#.2g,SLEEP-CAT-IA40A-INT local Benjamini-Hochberg q within family SLEEP-CAT
+scr_sleep_cat_ia40l_f_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SLEEP-CAT-IA40L-F,%#.2g,SLEEP-CAT-IA40L-F raw p of the registered test
+scr_sleep_cat_ia40l_f_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SLEEP-CAT-IA40L-F,%#.2g,SLEEP-CAT-IA40L-F local Benjamini-Hochberg q within family SLEEP-CAT
+scr_sleep_cat_ia40l_m_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SLEEP-CAT-IA40L-M,%#.2g,SLEEP-CAT-IA40L-M raw p of the registered test
+scr_sleep_cat_ia40l_m_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SLEEP-CAT-IA40L-M,%#.2g,SLEEP-CAT-IA40L-M local Benjamini-Hochberg q within family SLEEP-CAT
+scr_sleep_cat_ia40l_int_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SLEEP-CAT-IA40L-INT,%#.2g,SLEEP-CAT-IA40L-INT raw p of the registered test
+scr_sleep_cat_ia40l_int_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SLEEP-CAT-IA40L-INT,%#.2g,SLEEP-CAT-IA40L-INT local Benjamini-Hochberg q within family SLEEP-CAT
+scr_cookie_cat_dc60_f_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=COOKIE-CAT-DC60-F,%#.2g,COOKIE-CAT-DC60-F raw p of the registered test
+scr_cookie_cat_dc60_f_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=COOKIE-CAT-DC60-F,%#.2g,COOKIE-CAT-DC60-F local Benjamini-Hochberg q within family COOKIE-CAT
+scr_cookie_cat_dc60_m_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=COOKIE-CAT-DC60-M,%#.2g,COOKIE-CAT-DC60-M raw p of the registered test
+scr_cookie_cat_dc60_m_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=COOKIE-CAT-DC60-M,%#.2g,COOKIE-CAT-DC60-M local Benjamini-Hochberg q within family COOKIE-CAT
+scr_cookie_cat_dc60_int_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=COOKIE-CAT-DC60-INT,%#.2g,COOKIE-CAT-DC60-INT raw p of the registered test
+scr_cookie_cat_dc60_int_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=COOKIE-CAT-DC60-INT,%#.2g,COOKIE-CAT-DC60-INT local Benjamini-Hochberg q within family COOKIE-CAT
+scr_screen_l_pcr_f_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-L-PCR-F,%#.2g,SCREEN-L-PCR-F raw p of the registered test
+scr_screen_l_pcr_f_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-L-PCR-F,%#.2g,SCREEN-L-PCR-F local Benjamini-Hochberg q within family SCREEN-L
+scr_screen_l_pcr_m_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-L-PCR-M,%#.2g,SCREEN-L-PCR-M raw p of the registered test
+scr_screen_l_pcr_m_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-L-PCR-M,%#.2g,SCREEN-L-PCR-M local Benjamini-Hochberg q within family SCREEN-L
+scr_screen_l_pcr_int_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-L-PCR-INT,%#.2g,SCREEN-L-PCR-INT raw p of the registered test
+scr_screen_l_pcr_int_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-L-PCR-INT,%#.2g,SCREEN-L-PCR-INT local Benjamini-Hochberg q within family SCREEN-L
+scr_screen_l_spo_f_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-L-SPO-F,%#.2g,SCREEN-L-SPO-F raw p of the registered test
+scr_screen_l_spo_f_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-L-SPO-F,%#.2g,SCREEN-L-SPO-F local Benjamini-Hochberg q within family SCREEN-L
+scr_screen_l_spo_m_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-L-SPO-M,%#.2g,SCREEN-L-SPO-M raw p of the registered test
+scr_screen_l_spo_m_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-L-SPO-M,%#.2g,SCREEN-L-SPO-M local Benjamini-Hochberg q within family SCREEN-L
+scr_screen_l_spo_int_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-L-SPO-INT,%#.2g,SCREEN-L-SPO-INT raw p of the registered test
+scr_screen_l_spo_int_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-L-SPO-INT,%#.2g,SCREEN-L-SPO-INT local Benjamini-Hochberg q within family SCREEN-L
+scr_screen_l_occ_f_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-L-OCC-F,%#.2g,SCREEN-L-OCC-F raw p of the registered test
+scr_screen_l_occ_f_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-L-OCC-F,%#.2g,SCREEN-L-OCC-F local Benjamini-Hochberg q within family SCREEN-L
+scr_screen_l_occ_m_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-L-OCC-M,%#.2g,SCREEN-L-OCC-M raw p of the registered test
+scr_screen_l_occ_m_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-L-OCC-M,%#.2g,SCREEN-L-OCC-M local Benjamini-Hochberg q within family SCREEN-L
+scr_screen_l_occ_int_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-L-OCC-INT,%#.2g,SCREEN-L-OCC-INT raw p of the registered test
+scr_screen_l_occ_int_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-L-OCC-INT,%#.2g,SCREEN-L-OCC-INT local Benjamini-Hochberg q within family SCREEN-L
+scr_screen_l_frag_f_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-L-FRAG-F,%#.2g,SCREEN-L-FRAG-F raw p of the registered test
+scr_screen_l_frag_f_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-L-FRAG-F,%#.2g,SCREEN-L-FRAG-F local Benjamini-Hochberg q within family SCREEN-L
+scr_screen_l_frag_m_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-L-FRAG-M,%#.2g,SCREEN-L-FRAG-M raw p of the registered test
+scr_screen_l_frag_m_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-L-FRAG-M,%#.2g,SCREEN-L-FRAG-M local Benjamini-Hochberg q within family SCREEN-L
+scr_screen_l_frag_int_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-L-FRAG-INT,%#.2g,SCREEN-L-FRAG-INT raw p of the registered test
+scr_screen_l_frag_int_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-L-FRAG-INT,%#.2g,SCREEN-L-FRAG-INT local Benjamini-Hochberg q within family SCREEN-L
+scr_screen_l_lpcr_f_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-L-LPCR-F,%#.2g,SCREEN-L-LPCR-F raw p of the registered test
+scr_screen_l_lpcr_f_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-L-LPCR-F,%#.2g,SCREEN-L-LPCR-F local Benjamini-Hochberg q within family SCREEN-L
+scr_screen_l_lpcr_m_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-L-LPCR-M,%#.2g,SCREEN-L-LPCR-M raw p of the registered test
+scr_screen_l_lpcr_m_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-L-LPCR-M,%#.2g,SCREEN-L-LPCR-M local Benjamini-Hochberg q within family SCREEN-L
+scr_screen_l_lpcr_int_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-L-LPCR-INT,%#.2g,SCREEN-L-LPCR-INT raw p of the registered test
+scr_screen_l_lpcr_int_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-L-LPCR-INT,%#.2g,SCREEN-L-LPCR-INT local Benjamini-Hochberg q within family SCREEN-L
+scr_sleep_l_ia40a_f_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SLEEP-L-IA40A-F,%#.2g,SLEEP-L-IA40A-F raw p of the registered test
+scr_sleep_l_ia40a_f_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SLEEP-L-IA40A-F,%#.2g,SLEEP-L-IA40A-F local Benjamini-Hochberg q within family SLEEP-L
+scr_sleep_l_ia40a_m_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SLEEP-L-IA40A-M,%#.2g,SLEEP-L-IA40A-M raw p of the registered test
+scr_sleep_l_ia40a_m_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SLEEP-L-IA40A-M,%#.2g,SLEEP-L-IA40A-M local Benjamini-Hochberg q within family SLEEP-L
+scr_sleep_l_ia40a_int_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SLEEP-L-IA40A-INT,%#.2g,SLEEP-L-IA40A-INT raw p of the registered test
+scr_sleep_l_ia40a_int_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SLEEP-L-IA40A-INT,%#.2g,SLEEP-L-IA40A-INT local Benjamini-Hochberg q within family SLEEP-L
+scr_sleep_l_ia40l_f_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SLEEP-L-IA40L-F,%#.2g,SLEEP-L-IA40L-F raw p of the registered test
+scr_sleep_l_ia40l_f_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SLEEP-L-IA40L-F,%#.2g,SLEEP-L-IA40L-F local Benjamini-Hochberg q within family SLEEP-L
+scr_sleep_l_ia40l_m_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SLEEP-L-IA40L-M,%#.2g,SLEEP-L-IA40L-M raw p of the registered test
+scr_sleep_l_ia40l_m_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SLEEP-L-IA40L-M,%#.2g,SLEEP-L-IA40L-M local Benjamini-Hochberg q within family SLEEP-L
+scr_sleep_l_ia40l_int_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SLEEP-L-IA40L-INT,%#.2g,SLEEP-L-IA40L-INT raw p of the registered test
+scr_sleep_l_ia40l_int_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SLEEP-L-IA40L-INT,%#.2g,SLEEP-L-IA40L-INT local Benjamini-Hochberg q within family SLEEP-L
