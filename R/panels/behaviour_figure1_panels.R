@@ -30,7 +30,17 @@
 #                                                    fragmentation), their annotation-key
 #                                                    stems, the Holm family printed,
 #                                                    the overall title/caption, CON on/off;
-#   f1_panel_association(minus_ticks), f1_panel_prediction(minus_ticks).
+#   f1_panel_association(minus_ticks), f1_panel_prediction(minus_ticks);
+#   typography = "candidate" (design, cc1, association, prediction)
+#                                                    CANDIDATE_SPEC A typography: en-dash
+#                                                    ranges (18:30–06:30, CC1–CC4, 0.125–0.193),
+#                                                    U+2212 in the e-notation exponent,
+#                                                    spaced "RES − SUS" and "Female − male" labels;
+#   compact_header = TRUE (cc1, trajectory, prediction)
+#                                                    no patchwork outer margin (the 5.5-pt
+#                                                    default), so the title sits under the
+#                                                    panel letter at the Figure 1 top margin;
+#   f1_panel_association(title)                      an optional panel title.
 # They change layout and typography only: every printed number still comes
 # from an$fa() / an$ci() / an$ann().
 #
@@ -84,6 +94,13 @@ F1_TIMELINE_DISPLAY <- c(
   "CombZ computed" = "CombZ\ncomputed",
   "RES/SUS assigned" = "Resilient /\nsusceptible")
 
+#' TRUE for the candidate typography, FALSE for Figure 1's own (the default everywhere).
+f1_candidate_typography <- function(typography) {
+  if (!is.character(typography) || length(typography) != 1L || !typography %in% c("figure1", "candidate"))
+    stop("typography must be \"figure1\" or \"candidate\".", call. = FALSE)
+  identical(typography, "candidate")
+}
+
 #' The stored Stage 29 per-group model means of one construct (row filter only).
 f1_model_means <- function(C2, estimand_prefix, construct) {
   x <- C2[C2$source == "stage29" & C2$construct == construct & grepl(estimand_prefix, C2$estimand), , drop = FALSE]
@@ -93,11 +110,13 @@ f1_model_means <- function(C2, estimand_prefix, construct) {
 }
 
 # =============================================================== panel a
-f1_panel_design <- function(tab, an, w_mm = F1_BOX$a[1], h_mm = F1_BOX$a[2]) {
+f1_panel_design <- function(tab, an, w_mm = F1_BOX$a[1], h_mm = F1_BOX$a[2], typography = "figure1") {
+  cand <- f1_candidate_typography(typography)
   fa <- an$fa
   tl <- tab("A0_design_timeline")
   tl <- tl[order(tl$step), , drop = FALSE]
   DISPLAY <- F1_TIMELINE_DISPLAY
+  if (cand) DISPLAY[] <- gsub("CC2-CC4", "CC2–CC4", DISPLAY, fixed = TRUE)
   if (!identical(sort(names(DISPLAY)), sort(tl$event)))
     stop("The bundle timeline events differ from the display map.", call. = FALSE)
   n <- nrow(tl)
@@ -108,7 +127,8 @@ f1_panel_design <- function(tab, an, w_mm = F1_BOX$a[1], h_mm = F1_BOX$a[2]) {
                       ink = ifelse(is_rec, "white", INK), stringsAsFactors = FALSE)
   STAGE$fill[tl$role == "reference"] <- GREEN_DARK; STAGE$ink[tl$role == "reference"] <- "white"
   REC_I <- which(is_rec | tl$role %in% c("reference", "stressor")); OUT_I <- which(is_out)
-  a_cap <- sprintf("RFID: %s animals, %s active-phase animal-windows (18:30-06:30) across CC1-CC4; CombZ: %s animals",
+  a_cap <- sprintf(if (cand) "RFID: %s animals, %s active-phase animal-windows (18:30–06:30) across CC1–CC4; CombZ: %s animals"
+                   else "RFID: %s animals, %s active-phase animal-windows (18:30-06:30) across CC1-CC4; CombZ: %s animals",
                    fa("a_n_cc1_animals"), fa("a_n_windows"), fa("a_n_combz"))
   pa <- ggplot() +
     geom_rect(data = STAGE, aes(xmin = x0, xmax = x1, ymin = 0.30, ymax = 1.15, fill = I(fill)), colour = NA) +
@@ -161,7 +181,8 @@ f1_panel_combz <- function(tab, an, w_mm = F1_BOX$b[1], h_mm = F1_BOX$b[2], jitt
 # Groups sit at fixed offsets within each sex; the model mean and CI are drawn just right of their own group.
 # text_position "plot" aligns the construct title and the contrast caption to the plot's left
 # edge instead of the panel's (for narrow boxes, where the panel-aligned text overruns the half).
-f1_panel_cc1_one <- function(A1, C2, an, k, key, jitter_seed = NA, text_position = "panel") {
+f1_panel_cc1_one <- function(A1, C2, an, k, key, jitter_seed = NA, text_position = "panel", typography = "figure1") {
+  cand <- f1_candidate_typography(typography)
   fa <- an$fa; ci <- an$ci
   OFF <- c(CON = -0.28, RES = 0, SUS = 0.28)
   C_TITLE <- F1_CONSTRUCT_TITLE
@@ -173,7 +194,8 @@ f1_panel_cc1_one <- function(A1, C2, an, k, key, jitter_seed = NA, text_position
   if (nrow(mm) != 4L) stop("panel c: expected 4 model means for ", k, call. = FALSE)
   mm$Sex <- factor(mm$sex, levels = c("Female", "Male")); mm$Group <- factor(mm$Group, levels = GROUP_LEV)
   mm$x <- as.numeric(mm$Sex) + OFF[as.character(mm$Group)] + 0.11
-  cap <- sprintf("RES−SUS, F: %s\nRES−SUS, M: %s\nsex difference: %s\nP-CC1 Holm p = %s",
+  cap <- sprintf(if (cand) "RES − SUS, F: %s\nRES − SUS, M: %s\nFemale − male: %s\nP-CC1 Holm p = %s"
+                 else "RES−SUS, F: %s\nRES−SUS, M: %s\nsex difference: %s\nP-CC1 Holm p = %s",
                  ci(paste0("c_", key, "_rs_f")), ci(paste0("c_", key, "_rs_m")), ci(paste0("c_", key, "_q1")), fa(paste0("c_", key, "_q1_holm")))
   set.seed(2)  # jitter is presentational only
   p <- ggplot(pts, aes(x, y)) +
@@ -194,15 +216,22 @@ f1_panel_cc1_one <- function(A1, C2, an, k, key, jitter_seed = NA, text_position
   p
 }
 
-f1_panel_cc1 <- function(tab, an, w_mm = F1_BOX$c[1], h_mm = F1_BOX$c[2], jitter_seed = c(NA, NA), text_position = "panel") {
+#' compact_header = TRUE: the overall title takes the Figure 1 top margin under the panel letter
+#' (the patchwork default outer margin of 5.5 pt would put it level with the letter) and the two
+#' construct plots start just below it, with the collected legend left-justified.
+f1_panel_cc1 <- function(tab, an, w_mm = F1_BOX$c[1], h_mm = F1_BOX$c[2], jitter_seed = c(NA, NA), text_position = "panel",
+                         typography = "figure1", compact_header = FALSE) {
   A1 <- tab("A1_animal_cc1")
   C2 <- tab("C2_estimates")
-  pc <- patchwork::wrap_plots(f1_panel_cc1_one(A1, C2, an, "crossing_rate", "cr", jitter_seed[1], text_position),
-                              f1_panel_cc1_one(A1, C2, an, "shared_zone_use", "sz", jitter_seed[length(jitter_seed)], text_position),
+  pc <- patchwork::wrap_plots(f1_panel_cc1_one(A1, C2, an, "crossing_rate", "cr", jitter_seed[1], text_position, typography),
+                              f1_panel_cc1_one(A1, C2, an, "shared_zone_use", "sz", jitter_seed[length(jitter_seed)], text_position, typography),
                               nrow = 1, guides = "collect") +
     patchwork::plot_annotation(title = "First active phase after CC1 (SIS; CON hollow grey, not modelled)",
                                theme = theme(plot.title = element_text(size = BASE_PT, colour = INK))) &
     theme(legend.position = "top")
+  if (isTRUE(compact_header))
+    pc <- (pc & theme(plot.margin = margin(1, 3, 3, 3))) +
+      patchwork::plot_annotation(theme = theme(plot.margin = margin(11.5, 0, 0, 0), legend.justification = "left"))
   bh_panel(pc, w_mm, h_mm)
 }
 
@@ -253,12 +282,15 @@ f1_panel_trajectory_one <- function(C2, B2, an, k, key, family = "P-TR", show_co
 #' family      the Holm family printed after the Q2b test: one value, or one per construct
 #'             ("P-TR" for the primary constructs, "S-TR-ORG" for the secondary ones);
 #' title       overall title (NULL: none); caption  overall caption (NULL: none);
-#' show_con    draw CON's stored descriptive means in grey (Figure 1d: TRUE).
+#' show_con    draw CON's stored descriptive means in grey (Figure 1d: TRUE);
+#' compact_header  TRUE: no patchwork outer margin (the 5.5-pt default) and 1 pt between the
+#'             collected legend and the plots, so the first title sits at the Figure 1 top
+#'             margin under the panel letter (Figure 1d: FALSE).
 #' The defaults draw Figure 1d exactly.
 f1_panel_trajectory <- function(tab, an, w_mm = F1_BOX$d[1], h_mm = F1_BOX$d[2],
                                 constructs = c("crossing_rate", "shared_zone_use"),
                                 keys = F1_TRAJECTORY_KEYS[constructs], family = "P-TR",
-                                title = F1_TRAJECTORY_TITLE, caption = NULL, show_con = TRUE) {
+                                title = F1_TRAJECTORY_TITLE, caption = NULL, show_con = TRUE, compact_header = FALSE) {
   C2 <- tab("C2_estimates")
   B2 <- tab("B2_descriptive_summaries")
   if (!length(constructs) || anyDuplicated(constructs)) stop("f1_panel_trajectory: give one or more distinct constructs.", call. = FALSE)
@@ -276,26 +308,35 @@ f1_panel_trajectory <- function(tab, an, w_mm = F1_BOX$d[1], h_mm = F1_BOX$d[2],
   pd <- patchwork::wrap_plots(parts, nrow = 1, guides = "collect") +
     do.call(patchwork::plot_annotation, ann) &
     theme(legend.position = "top")
+  if (isTRUE(compact_header))
+    pd <- (pd & theme(legend.box.spacing = unit(1, "pt"))) +
+      patchwork::plot_annotation(theme = theme(plot.margin = margin(0, 0, 0, 0), legend.justification = "left"))
   bh_panel(pd, w_mm, h_mm)
 }
 
 # =============================================================== panel e
-f1_panel_association <- function(tab, an, w_mm = F1_BOX$e[1], h_mm = F1_BOX$e[2], minus_ticks = FALSE) {
+f1_panel_association <- function(tab, an, w_mm = F1_BOX$e[1], h_mm = F1_BOX$e[2], minus_ticks = FALSE,
+                                 typography = "figure1", title = NULL) {
+  cand <- f1_candidate_typography(typography)
   fa <- an$fa
   A2 <- tab("A2_prediction_animals")
-  e_lab <- sprintf("Spearman ρ = %s\n95%% CI [%s, %s]\nBH q = %s, n = %s", fa("e_rho"), fa("e_rho_lo"), fa("e_rho_hi"), fa("e_q"), fa("e_n"))
+  e_q <- if (cand) bh_sci_minus(fa("e_q")) else fa("e_q")
+  e_lab <- sprintf("Spearman ρ = %s\n95%% CI [%s, %s]\nBH q = %s, n = %s", fa("e_rho"), fa("e_rho_lo"), fa("e_rho_hi"), e_q, fa("e_n"))
   pe <- ggplot(A2, aes(crossing_rate_equiv_per_h, observed_CombZ)) +
     geom_point(size = 1.05, stroke = 0.2, alpha = 0.9, shape = 21, colour = "grey20", fill = "#6E8B99") +
     annotate("text", x = Inf, y = Inf, label = e_lab, hjust = 1.04, vjust = 1.15, size = NOTE_PT / .pt, colour = INK, lineheight = 1.08) +
     scale_y_continuous(expand = expansion(mult = c(0.05, 0.22)), labels = if (isTRUE(minus_ticks)) f1_minus_labels else waiver()) +
     labs(x = F1_EARLY_RATE_X, y = "Later CombZ",
          subtitle = "one point per animal; rank correlation; not split by sex") +
+    (if (!is.null(title)) labs(title = title) else NULL) +
     theme_f1()
   bh_panel(pe, w_mm, h_mm)
 }
 
 # =============================================================== panel f
-f1_panel_prediction <- function(tab, an, w_mm = F1_BOX$f[1], h_mm = F1_BOX$f[2], minus_ticks = FALSE) {
+f1_panel_prediction <- function(tab, an, w_mm = F1_BOX$f[1], h_mm = F1_BOX$f[2], minus_ticks = FALSE,
+                                typography = "figure1", compact_header = FALSE) {
+  cand <- f1_candidate_typography(typography)
   minus_ticks <- isTRUE(minus_ticks)
   fa <- an$fa
   A2 <- tab("A2_prediction_animals")
@@ -321,7 +362,8 @@ f1_panel_prediction <- function(tab, an, w_mm = F1_BOX$f[1], h_mm = F1_BOX$f[2],
     geom_histogram(bins = 24, fill = "grey78", colour = "white", linewidth = 0.15) +
     geom_vline(xintercept = obs, linewidth = 0.45, colour = GROUP_COL[["SUS"]]) +
     annotate("text", x = obs, y = Inf, vjust = 1.15, hjust = 1.06,
-             label = sprintf("observed R² = %s\nHolm p = %s\n\nrepeated grouped 5-fold\nR² = %s (%s-%s\nacross repeats)",
+             label = sprintf(if (cand) "observed R² = %s\nHolm p = %s\n\nrepeated grouped 5-fold\nR² = %s (%s–%s\nacross repeats)"
+                             else "observed R² = %s\nHolm p = %s\n\nrepeated grouped 5-fold\nR² = %s (%s-%s\nacross repeats)",
                              fa("f_loao"), fa("f_perm_p"), fa("f_rcv"), fa("f_rcv_lo"), fa("f_rcv_hi")),
              size = NOTE_PT / .pt, colour = INK, lineheight = 1.08) +
     scale_y_continuous(expand = expansion(mult = c(0, 0.22))) +
@@ -329,5 +371,6 @@ f1_panel_prediction <- function(tab, an, w_mm = F1_BOX$f[1], h_mm = F1_BOX$f[2],
     labs(x = expression("null R"^2 ~ "(permuted outcomes)"), y = sprintf("Permutations (n = %s)", fa("f_nperm"))) +
     theme_f1()
   pf <- patchwork::wrap_plots(pf_scatter, pf_null, nrow = 1, widths = c(0.6, 1))
+  if (isTRUE(compact_header)) pf <- pf + patchwork::plot_annotation(theme = theme(plot.margin = margin(0, 0, 0, 0)))
   bh_panel(pf, w_mm, h_mm)
 }
