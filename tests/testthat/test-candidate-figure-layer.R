@@ -24,16 +24,17 @@ testthat::test_that("the candidate contract is a separate file from the canonica
   testthat::expect_identical(CAND$compares_against, "manuscript_figures_v2")
 
   # The canonical contract is untouched BY THIS LAYER. It has moved on for its
-  # own reasons - Phase 5B promoted final_truth_v9, so it is now v3 with 2a-2h
-  # and 3a-3i - but nothing here may be the cause of that, which is what the
-  # reference check at the end of this file actually enforces.
+  # own reasons - Phase 5B promoted final_truth_v9 (2a-2h), and the Figure 3
+  # adaptation architecture made it v4 with 3a-3m - but nothing here may be the
+  # cause of that, which is what the reference check at the end of this file
+  # actually enforces.
   y <- yaml::read_yaml(cf_canonical_contract_path())
   testthat::expect_identical(y$contract_version,
-                             "manuscript_figures_v3_final_truth_v9_promoted")
+                             "manuscript_figures_v4_figure3_adaptation")
   ids2 <- vapply(y$figures[["02"]]$panels, function(p) as.character(p$id), character(1))
   ids3 <- vapply(y$figures[["03"]]$panels, function(p) as.character(p$id), character(1))
   testthat::expect_identical(ids2, paste0("2", letters[1:8]))
-  testthat::expect_identical(ids3, paste0("3", letters[1:9]))
+  testthat::expect_identical(ids3, paste0("3", letters[1:13]))
 })
 
 testthat::test_that("candidate panel ids cannot collide with canonical panel ids", {
