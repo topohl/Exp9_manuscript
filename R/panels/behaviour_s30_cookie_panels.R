@@ -189,7 +189,7 @@ s30_panel_cookie_rs <- function(tab, an, w_mm = S30_COOKIE_BOX$rs[1], h_mm = S30
     geom_point(aes(fill = Group, shape = Group), position = position_jitter(width = 0.05, height = 0, seed = jitter_seed),
                size = 0.7, stroke = 0.18, alpha = 0.55, colour = "grey20") +
     scale_fill_manual(values = GROUP_COL[c("RES", "SUS")]) +
-    scale_shape_manual(values = GROUP_SHAPE[c("RES", "SUS")]) +
+    scale_shape_manual(values = GROUP_CIRCLE[c("RES", "SUS")]) +
     guides(fill = guide_legend(override.aes = list(size = 1.3, alpha = 0.9, stroke = 0.25))) +
     scale_x_continuous(breaks = 1:2, labels = S30CK_SEX, limits = c(0.6, 2.4), expand = c(0, 0)) +
     scale_y_continuous(limits = c(0, NA), expand = expansion(mult = c(0.02, 0.05)), labels = s30ck_ticks) +

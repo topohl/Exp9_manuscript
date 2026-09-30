@@ -101,7 +101,7 @@ Option 2 redrawn to the journal's figure rules (candidate `figure_01_option2_nat
 **Window.** The light phase (06:30–18:30 on the RFID logger clock) that follows the first active phase after CC1.
 
 **Left, light-phase RFID position-change rate** (position changes h⁻¹).
-- Top: animals by sex and later group. RES are triangles and SUS are squares; CON animals are not shown and were not modelled.
+- Top: animals by sex and later group, drawn as circles coloured by group (RES light grey, SUS red); CON animals are not shown and were not modelled.
 - Bottom: RES − SUS in females and in males, and the female − male difference in RES − SUS, with 95% CIs.
 - These are Stage 29 secondary estimates: sex-stratified `y ~ Batch + group + (1 | cage epoch)` and the pooled model with group:sex, Kenward–Roger. Their decision basis was post hoc context, and no test was performed.
 

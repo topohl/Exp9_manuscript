@@ -268,7 +268,7 @@ f1_panel_cc1 <- function(tab, an, w_mm = F1_BOX$c[1], h_mm = F1_BOX$c[2], jitter
 # descriptive means (B2; show_con = FALSE drops them), and the construct's Q2b joint test (C3)
 # with its Holm p in `family` (E_multiplicity) as subtitle. `key` is the annotation-key stem:
 # the keys <key>_q2b_df1, _q2b_df2, _q2b_f and _q2b_holm must be declared in the resolver's map.
-f1_panel_trajectory_one <- function(C2, B2, an, k, key, family = "P-TR", show_con = TRUE) {
+f1_panel_trajectory_one <- function(C2, B2, an, k, key, family = "P-TR", show_con = TRUE, group_shape = GROUP_SHAPE) {
   fa <- an$fa
   C_TITLE <- F1_CONSTRUCT_TITLE
   C_Y <- F1_CONSTRUCT_Y
@@ -296,7 +296,7 @@ f1_panel_trajectory_one <- function(C2, B2, an, k, key, family = "P-TR", show_co
     geom_point(aes(shape = Group, fill = Group), size = 1.2, stroke = 0.25, colour = "grey15", position = pd) +
     facet_wrap(~ Sex, nrow = 1) +
     scale_colour_manual(values = GROUP_COL[c("RES", "SUS")]) + scale_fill_manual(values = GROUP_COL[c("RES", "SUS")]) +
-    scale_shape_manual(values = GROUP_SHAPE[c("RES", "SUS")]) +
+    scale_shape_manual(values = group_shape[c("RES", "SUS")]) +
     scale_x_continuous(breaks = 1:4, labels = paste0("CC", 1:4)) +
     labs(x = NULL, y = C_Y[[k]], title = C_TITLE[[k]], subtitle = sub_txt) +
     theme_f1()
@@ -323,7 +323,7 @@ f1_panel_trajectory <- function(tab, an, w_mm = F1_BOX$d[1], h_mm = F1_BOX$d[2],
                                 constructs = c("crossing_rate", "shared_zone_use"),
                                 keys = F1_TRAJECTORY_KEYS[constructs], family = "P-TR",
                                 title = F1_TRAJECTORY_TITLE, caption = NULL, show_con = TRUE, compact_header = FALSE,
-                                title_position = "panel") {
+                                title_position = "panel", group_shape = GROUP_SHAPE) {
   if (!identical(title_position, "panel") && !identical(title_position, "plot"))
     stop("f1_panel_trajectory: title_position must be \"panel\" or \"plot\".", call. = FALSE)
   C2 <- tab("C2_estimates")
@@ -334,7 +334,7 @@ f1_panel_trajectory <- function(tab, an, w_mm = F1_BOX$d[1], h_mm = F1_BOX$d[2],
   if (!length(family) %in% c(1L, length(constructs))) stop("f1_panel_trajectory: family must have length 1 or one per construct.", call. = FALSE)
   family <- rep_len(family, length(constructs))
   parts <- lapply(seq_along(constructs), function(i)
-    f1_panel_trajectory_one(C2, B2, an, constructs[[i]], keys[[i]], family = family[[i]], show_con = show_con))
+    f1_panel_trajectory_one(C2, B2, an, constructs[[i]], keys[[i]], family = family[[i]], show_con = show_con, group_shape = group_shape))
   ann <- list(title = title, theme = theme(plot.title = element_text(size = BASE_PT, colour = INK)))
   if (!is.null(caption))
     ann <- list(title = title, caption = caption,

@@ -30,6 +30,9 @@ source(repo_path("R", "plotting_nature.R"))
 GROUP_COL <- NATURE_SEMANTIC_PALETTES$group[c("CON", "RES", "SUS")]
 GROUP_LEV <- c("CON", "RES", "SUS")
 GROUP_SHAPE <- c(CON = 21L, RES = 24L, SUS = 22L)
+# Circles for every group: the candidate figures draw group by colour alone (user directive 2026-09-30).
+# Opt-in; the canonical Figure 1 keeps GROUP_SHAPE.
+GROUP_CIRCLE <- c(CON = 21L, RES = 21L, SUS = 21L)
 SEX_SHAPE <- c(Female = 21L, Male = 24L)
 CON_GREY <- "grey45"   # CON is descriptive: hollow grey marks and dashed lines (RES is the light group ink)
 

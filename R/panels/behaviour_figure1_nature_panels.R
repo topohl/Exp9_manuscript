@@ -40,7 +40,7 @@
 F1N <- BH_NATURE
 # Group marks are circles in every panel (user directive 2026-09-30): colour alone differentiates CON /
 # RES / SUS, so a shape never means group in one panel and something else in another.
-F1N_GROUP_SHAPE <- c(CON = 21L, RES = 21L, SUS = 21L)
+F1N_GROUP_SHAPE <- GROUP_CIRCLE
 # The superscript -1 of the per-hour unit, at the 5-pt floor (a plain <sup> would draw 4.4 pt).
 F1N_PER_H <- "h<sup><span style='font-size:5pt'>−1</span></sup>"
 # Axis titles, sentence case "Quantity (unit)".

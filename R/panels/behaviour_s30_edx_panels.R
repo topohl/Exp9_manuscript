@@ -155,7 +155,7 @@ edx_panel_primary_trajectory <- function(tab, an, construct = c("crossing_rate",
   construct <- match.arg(construct)
   f1_panel_trajectory(tab, an, w_mm, h_mm, constructs = construct, keys = EDX_TRAJECTORY_KEYS[construct],
                       family = "P-TR", title = NULL, caption = caption, show_con = show_con, compact_header = TRUE,
-                      title_position = EDX_TITLE_POSITION)
+                      title_position = EDX_TITLE_POSITION, group_shape = GROUP_CIRCLE)
 }
 
 #' ED X a/b as one panel (173 x 58): both primary constructs side by side (Figure 1d at the ED
@@ -165,7 +165,7 @@ edx_panel_primary_trajectories <- function(tab, an, w_mm = EDX_BOX$ab[1], h_mm =
                                            title = NULL, caption = edx_caption(EDX_CAPTION_PRIMARY, show_con)) {
   f1_panel_trajectory(tab, an, w_mm, h_mm, constructs = EDX_PRIMARY, keys = EDX_TRAJECTORY_KEYS[EDX_PRIMARY],
                       family = "P-TR", title = title, caption = caption, show_con = show_con, compact_header = TRUE,
-                      title_position = EDX_TITLE_POSITION)
+                      title_position = EDX_TITLE_POSITION, group_shape = GROUP_CIRCLE)
 }
 
 # ---------------------------------------------------------------- ED X c: secondary constructs
@@ -178,5 +178,5 @@ edx_panel_secondary_trajectories <- function(tab, an, w_mm = EDX_BOX$c[1], h_mm 
                                              title = NULL, caption = edx_caption(EDX_CAPTION_SECONDARY, show_con)) {
   f1_panel_trajectory(tab, an, w_mm, h_mm, constructs = EDX_SECONDARY, keys = EDX_TRAJECTORY_KEYS[EDX_SECONDARY],
                       family = "S-TR-ORG", title = title, caption = caption, show_con = show_con, compact_header = TRUE,
-                      title_position = EDX_TITLE_POSITION)
+                      title_position = EDX_TITLE_POSITION, group_shape = GROUP_CIRCLE)
 }
