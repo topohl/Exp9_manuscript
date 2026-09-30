@@ -5,7 +5,7 @@ Analysis owner: BehavioralDynamics/MMMSociability Stage 31b. This repository
 only imports verified frozen tables and renders them. No candidate time scan
 or inferred grid timestamp is an input.
 
-Frozen source: `source_data/MMMSociability/cc4_phase_groups_20260929_v2/`, with
+Frozen source: `source_data/MMMSociability_candidates/cc4_phase_groups_20260929_v2/`, with
 its own `manifest.csv`. This is separate from the existing Figure 1 bridge.
 `tools/import_cc4_phase_groups.R` refuses overwrites and verifies all copied
 bytes. The renderer re-verifies the complete local bundle before plotting.

@@ -4,7 +4,7 @@ source(repo_path("R", "panels", "cc4_phase_groups_candidate.R"))
 import_cc4_phase_groups <- function(source_dir, bundle_id) {
   if (!grepl("^cc4_phase_groups_[A-Za-z0-9_-]+$", bundle_id)) stop("Invalid CC4 bundle ID.", call. = FALSE)
   cc4_verify_bundle(source_dir)
-  upstream <- "MMMSociability"
+  upstream <- "MMMSociability_candidates"
   dest <- repo_path("source_data", upstream, bundle_id)
   if (file.exists(dest)) stop("Frozen import already exists.", call. = FALSE)
   m <- utils::read.csv(file.path(source_dir,"manifest.csv"),stringsAsFactors=FALSE)

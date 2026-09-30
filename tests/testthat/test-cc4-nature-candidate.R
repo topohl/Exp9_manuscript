@@ -2,7 +2,7 @@ source(testthat::test_path("..","..","R","paths.R"))
 source(repo_path("R","vendor","plotting_nature.R"))
 source(repo_path("R","panels","cc4_phase_groups_candidate.R"))
 source(repo_path("R","panels","cc4_phase_groups_nature.R"))
-upstream <- "MMMSociability"
+upstream <- "MMMSociability_candidates"
 src <- repo_path("source_data",upstream,"cc4_phase_groups_20260929_v2")
 
 testthat::test_that("Nature panels retain frozen estimates and readable units", {

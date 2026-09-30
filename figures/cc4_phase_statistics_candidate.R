@@ -5,7 +5,7 @@ source(repo_path("R","panels","cc4_phase_statistics_candidate.R"))
 render_cc4_statistics<-function(bundle_id,output_dir) {
   if(!grepl("^cc4_phase_statistics_[A-Za-z0-9_-]+$",bundle_id)) stop("Invalid statistical bundle ID.",call.=FALSE)
   if(file.exists(output_dir)) stop("Statistical candidate output already exists.",call.=FALSE)
-  upstream<-"MMMSociability";src<-repo_path("source_data",upstream,bundle_id)
+  upstream<-"MMMSociability_candidates";src<-repo_path("source_data",upstream,bundle_id)
   d<-cc4_stats_read_bundle(src);p<-cc4_stats_plot(d)
   dir.create(output_dir,recursive=TRUE)
   for(ext in c("png","pdf","svg")) ggplot2::ggsave(file.path(output_dir,paste0("cc4_primary_statistics.",ext)),p,
