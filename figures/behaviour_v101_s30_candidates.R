@@ -30,7 +30,11 @@
 #      stored bundle rows behind those keys (row filtering only);
 #   5. assembles the candidate (manuscript_figure_assemble_svg, absolute layout, 8-pt letters)
 #      and rasterises it (manuscript_figure_raster_companions: PNG and raster PDF at 300 dpi,
-#      from a copy of the assembled page with the panels inlined, see inline_for_raster());
+#      from a copy of the assembled page with the panels inlined, see inline_for_raster()); a
+#      candidate with `assembly: vector_page` is instead drawn as ONE vector page (bh_save_page:
+#      the same panel plots at their boxes on one device, letters as the assembler draws them;
+#      SVG with live text and a cairo PDF with Arial embedded) with a 300-dpi PNG preview of the
+#      page SVG (bh_page_png);
 #   6. writes the panel manifest, the input manifest and the run manifest.
 # Finally it writes the generation receipt (every output with bytes and sha256).
 #
@@ -41,7 +45,7 @@
 # on the global RNG stream or on build order (the reused Figure 1 builders still call set.seed(),
 # which the explicit seeds make irrelevant), and nothing here reads the clock: two renders at one
 # commit give byte-identical SVGs, source data and panel/input manifests. The assembled PNG and PDF carry magick's
-# timestamps, so their hashes (and the run manifests and receipt that record them) differ
+# (and cairo's) timestamps, so their hashes (and the run manifests and receipt that record them) differ
 # between renders.
 
 suppressPackageStartupMessages({
@@ -109,21 +113,30 @@ prefixed <- function(an, s) edx_annotation_prefixed(an, arg(s, "key_prefix"))
 typo <- function(s) arg(s, "typography", "figure1")
 top_pt <- function(s) as.numeric(arg(s, "top_margin_pt", 11.5))
 num_or_null <- function(s, name) if (is.null(s$args[[name]])) NULL else as.numeric(s$args[[name]])
+# style: the builders' style profile ("figure1", the default, or "nature"); frame: the row's shared
+# plot frame of a nature-style panel (args plot_top_mm and axis_mm), or NULL.
+sty <- function(s) arg(s, "style", "figure1")
+frame_of <- function(s) {
+  if (is.null(s$args$plot_top_mm) != is.null(s$args$axis_mm)) stop("panel ", s$id, ": give plot_top_mm and axis_mm together.", call. = FALSE)
+  if (is.null(s$args$plot_top_mm)) NULL else list(top = as.numeric(s$args$plot_top_mm), axis = as.numeric(s$args$axis_mm))
+}
 BUILDERS <- list(
-  f1_panel_design = function(s, an) f1_panel_design(TABS$ebb, prefixed(an, s), s$w, s$h, typography = typo(s)),
+  f1_panel_design = function(s, an) f1_panel_design(TABS$ebb, prefixed(an, s), s$w, s$h, typography = typo(s), style = sty(s)),
   f1_panel_combz = function(s, an) f1_panel_combz(TABS$ebb, prefixed(an, s), s$w, s$h, jitter_seed = seeds(s, 1L),
     subtitle = if (isTRUE(arg(s, "subtitle_line_break"))) F1OPT_COMBZ_SUBTITLE_NARROW else F1_COMBZ_SUBTITLE,
-    minus_ticks = isTRUE(arg(s, "minus_ticks")), title_position = arg(s, "title_position", "panel")),
+    minus_ticks = isTRUE(arg(s, "minus_ticks")), title_position = arg(s, "title_position", "panel"),
+    style = sty(s), frame = frame_of(s)),
   f1_panel_cc1 = function(s, an) f1_panel_cc1(TABS$ebb, prefixed(an, s), s$w, s$h, jitter_seed = seeds(s, 2L),
-    text_position = arg(s, "text_position", "panel"), typography = typo(s), compact_header = isTRUE(arg(s, "compact_header"))),
+    text_position = arg(s, "text_position", "panel"), typography = typo(s), compact_header = isTRUE(arg(s, "compact_header")),
+    style = sty(s), frame = frame_of(s)),
   f1_panel_association = function(s, an) f1_panel_association(TABS$ebb, prefixed(an, s), s$w, s$h,
     minus_ticks = isTRUE(arg(s, "minus_ticks")), typography = typo(s),
     title = if (isTRUE(arg(s, "candidate_title"))) F1OPT_ASSOCIATION_TITLE else NULL,
-    title_position = arg(s, "title_position", "panel")),
+    title_position = arg(s, "title_position", "panel"), style = sty(s), frame = frame_of(s)),
   f1_panel_prediction = function(s, an) f1_panel_prediction(TABS$ebb, prefixed(an, s), s$w, s$h,
     minus_ticks = isTRUE(arg(s, "minus_ticks")), typography = typo(s), compact_header = isTRUE(arg(s, "compact_header")),
     scatter_width = as.numeric(arg(s, "scatter_width", 0.6)), bottom_pad_pt = as.numeric(arg(s, "bottom_pad_pt", 0)),
-    title_position = arg(s, "title_position", "panel")),
+    title_position = arg(s, "title_position", "panel"), style = sty(s), frame = frame_of(s)),
   edx_panel_primary_trajectory = function(s, an) edx_panel_primary_trajectory(TABS$ebb, an, arg(s, "construct"), s$w, s$h,
     show_con = isTRUE(arg(s, "show_con", TRUE))),
   edx_panel_secondary_trajectories = function(s, an) edx_panel_secondary_trajectories(TABS$ebb, an, s$w, s$h,
@@ -133,7 +146,7 @@ BUILDERS <- list(
   s30_panel_light_phase = function(s, an) s30_panel_light_phase(TABS, an, s$w, s$h, jitter_seed = seeds(s, 1L),
     top_margin_pt = top_pt(s), panel_top_mm = num_or_null(s, "panel_top_mm"), panel_h_mm = num_or_null(s, "panel_h_mm")),
   s30_panel_light_compact = function(s, an) s30_panel_light_compact(an, s$w, s$h, q_rows = as.character(unlist(arg(s, "q_rows"))),
-    top_margin_pt = top_pt(s)),
+    top_margin_pt = top_pt(s), style = sty(s), frame = frame_of(s)),
   s30_panel_light_dependence = function(s, an) s30_panel_light_dependence(TABS, an, s$w, s$h, top_margin_pt = top_pt(s),
     panel_top_mm = num_or_null(s, "panel_top_mm"), panel_h_mm = num_or_null(s, "panel_h_mm")),
   s30_panel_cookie_prepost = function(s, an) s30_panel_cookie_prepost(TABS$s30b, an, s$w, s$h),
@@ -340,6 +353,7 @@ for (key in names(CONTRACT$candidates)) {
                logs = file.path(ROOTS$logs, key))
   invisible(lapply(dirs, dir_create))
   panel_rows <- list(); input_use <- list(); asm <- list(); asm_paths <- character(0)
+  vector_page <- identical(cand$assembly, "vector_page"); page_items <- list()
 
   for (s in cand$panels) {
     if (is.null(BUILDERS[[s$builder]])) stop(key, "/", s$id, ": unknown builder ", s$builder, call. = FALSE)
@@ -381,6 +395,7 @@ for (key in names(CONTRACT$candidates)) {
     asm_id <- if (nzchar(s$letter)) s$letter else "0"   # the assembler draws sub("^[0-9]+", "", id): "0" draws no letter
     asm[[length(asm) + 1L]] <- list(id = asm_id, x = s$x, y = s$y, w = s$w, h = s$h)
     asm_paths[[asm_id]] <- svg
+    page_items[[length(page_items) + 1L]] <- list(panel = panel, x = s$x, y = s$y, letter = s$letter)
     panel_rows[[length(panel_rows) + 1L]] <- data.frame(
       generation = GENERATION, candidate = key, panel = s$id, letter = s$letter, builder = s$builder,
       description = gsub("[[:space:]]+", " ", s$description),
@@ -398,14 +413,22 @@ for (key in names(CONTRACT$candidates)) {
       status = "candidate_only_not_promoted", stringsAsFactors = FALSE)
   }
 
-  # assemble (absolute layout; letters by the assembler) and rasterise at 300 dpi
-  figure <- list(width_mm = cand$width_mm, height_mm = cand$height_mm, layout_mode = "absolute")
+  # assemble (absolute layout; letters by the assembler) and rasterise at 300 dpi; or, for a
+  # vector page, draw every panel plot at its box on one device (SVG and vector PDF) and
+  # rasterise the page SVG to the PNG preview
   asm_svg <- file.path(dirs$assembled, paste0(key, ".svg"))
-  manuscript_figure_assemble_svg(asm_paths, asm, figure, asm_svg)
-  raster_src <- inline_for_raster(asm_svg, file.path(tempdir(), paste0(key, "_raster_source.svg")))
-  raster <- manuscript_figure_raster_companions(raster_src, file.path(dirs$assembled, paste0(key, ".png")),
-                                                file.path(dirs$assembled, paste0(key, ".pdf")))
-  unlink(raster_src)
+  if (vector_page) {
+    page <- bh_save_page(page_items, cand$width_mm, cand$height_mm, asm_svg, file.path(dirs$assembled, paste0(key, ".pdf")),
+                         letter_pt = CONTRACT$panel_letter_pt)
+    raster <- list(bh_page_png(asm_svg, file.path(dirs$assembled, paste0(key, ".png"))), page[["pdf"]])
+  } else {
+    figure <- list(width_mm = cand$width_mm, height_mm = cand$height_mm, layout_mode = "absolute")
+    manuscript_figure_assemble_svg(asm_paths, asm, figure, asm_svg)
+    raster_src <- inline_for_raster(asm_svg, file.path(tempdir(), paste0(key, "_raster_source.svg")))
+    raster <- manuscript_figure_raster_companions(raster_src, file.path(dirs$assembled, paste0(key, ".png")),
+                                                  file.path(dirs$assembled, paste0(key, ".pdf")))
+    unlink(raster_src)
+  }
   if (length(raster) != 2L) stop(key, ": the PNG/PDF companions were not written.", call. = FALSE)
   note_output(key, "assembled_svg", asm_svg)
   note_output(key, "assembled_png", raster[[1]])
@@ -449,9 +472,13 @@ for (key in names(CONTRACT$candidates)) {
     panel_manifest = list(path = rel(pm), sha256 = sha(pm)),
     input_manifest = list(path = rel(im), sha256 = sha(im)),
     outputs = lapply(own, function(r) list(kind = r$kind, path = r$path, bytes = r$bytes, sha256 = r$sha256)),
-    assembled_svg_contract = "self_contained_vector_svg_with_embedded_panel_svgs_absolute_layout",
-    assembled_png_contract = "rasterized_via_magick_at_300_dpi_from_the_assembled_SVG_with_its_panels_inlined_as_nested_svg",
-    assembled_pdf_contract = "raster_backed_PDF_via_magick_at_300_dpi_from_the_assembled_SVG_with_its_panels_inlined_as_nested_svg",
+    assembly = if (vector_page) "vector_page" else "embedded_panel_svgs",
+    assembled_svg_contract = if (vector_page) "one_vector_page_svglite_live_text_no_embedded_images_absolute_layout"
+                             else "self_contained_vector_svg_with_embedded_panel_svgs_absolute_layout",
+    assembled_png_contract = if (vector_page) "preview_rasterized_via_magick_at_300_dpi_from_the_vector_page_svg"
+                             else "rasterized_via_magick_at_300_dpi_from_the_assembled_SVG_with_its_panels_inlined_as_nested_svg",
+    assembled_pdf_contract = if (vector_page) "vector_pdf_via_cairo_pdf_with_embedded_arial_no_raster_images"
+                             else "raster_backed_PDF_via_magick_at_300_dpi_from_the_assembled_SVG_with_its_panels_inlined_as_nested_svg",
     software = list(r = paste(R.version$major, R.version$minor, sep = "."),
                     packages = lapply(c(ggplot2 = "ggplot2", patchwork = "patchwork", svglite = "svglite", magick = "magick"),
                                       function(p) as.character(utils::packageVersion(p)))))
