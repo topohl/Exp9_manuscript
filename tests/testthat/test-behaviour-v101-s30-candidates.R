@@ -11,6 +11,7 @@ repo <- function(...) file.path(testthat::test_path("..", ".."), ...)
 source(repo("R", "paths.R"))
 source(repo("R", "behaviour_bundle.R"))
 source(repo("R", "stage30_bundle.R"))
+source(repo("R", "figure_support_bundle.R"))
 
 GEN <- "behaviour_v101_s30"
 CONTRACT_PATH <- repo("figures", "figure_behaviour_v101_s30_contract.yml")
@@ -29,7 +30,8 @@ TEXTS <- repo("manuscript", "candidates", GEN, c("legends.md", "results_text.md"
 BANNED <- c("antenna", "crossing", "sleep", "cookie approach", "investigation", "consumption", "time near cookie",
             "habituation", "confirmatory", "preregistered", "pre-registered", "female-specific", "sex-specific",
             "significant")
-have_pins <- file.exists(repo("config", "behaviour_bundle.yml")) && file.exists(repo("config", "stage30_bundle.yml"))
+have_pins <- file.exists(repo("config", "behaviour_bundle.yml")) && file.exists(repo("config", "stage30_bundle.yml")) &&
+  file.exists(repo("config", "figure_support_bundle.yml"))
 rendered <- file.exists(RECEIPT)
 code_of <- function(p) { src <- readLines(p, warn = FALSE, encoding = "UTF-8"); src[!grepl("^[[:space:]]*#", src)] }
 rd <- function(p) utils::read.csv(p, stringsAsFactors = FALSE, colClasses = "character", na.strings = character(0), encoding = "UTF-8")
@@ -42,7 +44,7 @@ TABLE_CACHE <- new.env(parent = emptyenv())
 bundle_table <- function(bundle, name) {
   k <- paste(bundle, name)
   if (!exists(k, envir = TABLE_CACHE, inherits = FALSE))
-    assign(k, switch(bundle, ebb = behaviour_bundle_table(name), s30b = stage30_bundle_table(name),
+    assign(k, switch(bundle, ebb = behaviour_bundle_table(name), s30b = stage30_bundle_table(name), fsb = fsb_bundle_table(name),
                      stop("unknown bundle ", bundle)), envir = TABLE_CACHE)
   get(k, envir = TABLE_CACHE, inherits = FALSE)
 }
@@ -97,7 +99,9 @@ LABEL_WORDS <- c(
   "\\(18:30\u201306:30\\)",    # the registered active phase (Figure 1a caption, en dash)
   "95% CI",                    # interval label
   "\\b5-fold\\b",              # the registered cross-validation design (Figure 1f text)
-  "F = 1\\b")                  # the L reference line of the screen (always an axis break)
+  "F = 1\\b",                  # the L reference line of the screen (always an axis break)
+  "every 4 days",              # the registered cage-change interval (option 3 a)
+  "3 cages/sex")               # option 3 c: one CON cage per batch, three batches per sex (a design constant the builders check against fsb F1)
 NUMBER <- "(?<![A-Za-z0-9.])\u2212?[0-9]+(?:\\.[0-9]+)?(?:e[-+\u2212]?[0-9]+)?"
 PURE_NUMBER <- "^\u2212?[0-9]+(\\.[0-9]+)?$"
 SUPERSCRIPT <- c("\u2212", "1", "2", "\u22121")   # plotmath h^-1 and R^2, drawn below 6 pt
@@ -109,7 +113,9 @@ panel_svg <- function(s) file.path(FIGROOT, s$candidate, "panels", sprintf("%s_%
 # 5.0 pt with no superscript exception (the other candidates keep 6 pt with the plotmath exception).
 NATURE <- "figure_01_option2_nature"
 vector_page <- function(k) identical(CT$candidates[[k]]$assembly, "vector_page")
-TEXT_FLOOR_PT <- c(figure_01_option2_nature = 5.0)
+TEXT_FLOOR_PT <- c(figure_01_option2_nature = 5.0, figure_01_option3_nature = 5.0, figure_01_option3_panel_d = 5.0)
+# Figure 1 option 3 (OPTION3_SPEC): the page, and the stand-alone copy of its panel d.
+OPTION3 <- "figure_01_option3_nature"; OPTION3_D <- "figure_01_option3_panel_d"
 # Fill and stroke colours an SVG draws (svglite style attributes), upper-case hex.
 svg_colours <- function(path) {
   txt <- paste(readLines(path, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
@@ -173,7 +179,7 @@ test_that("the candidate contract is candidate-only and declares every panel com
   expect_equal(CT$scientific_recomputation, "none")
   expect_equal(CT$entry_point, "figures/behaviour_v101_s30_candidates.R")
   expect_equal(CT$annotation_map, "figures/behaviour_v101_s30_annotation_map.csv")
-  expect_setequal(KEYS, c("figure_01_option1", "figure_01_option2", "figure_01_option2_nature", "light_phase_panel", "light_dependence_ed",
+  expect_setequal(KEYS, c("figure_01_option1", "figure_01_option2", "figure_01_option2_nature", "figure_01_option3_nature", "figure_01_option3_panel_d", "light_phase_panel", "light_dependence_ed",
                           "cookie_ed", "screen_summary", "ed_behaviour_longitudinal_light", "ed_behaviour_cookie"))
   lib_code <- unlist(lapply(BEHAVIOUR_LIBS, readLines, warn = FALSE))
   JITTERED <- c("f1_panel_combz", "f1_panel_cc1", "s30_panel_light_measure", "s30_panel_light_phase", "s30_panel_cookie_rs")
@@ -194,7 +200,7 @@ test_that("the candidate contract is candidate-only and declares every panel com
       s <- cand$panels[[i]]; b <- boxes[[i]]
       expect_true(nzchar(s$description), info = paste(k, s$id))
       expect_true(any(startsWith(lib_code, paste0(s$builder, " <- function("))), info = paste(k, s$id, "builder", s$builder))
-      expect_true(length(s$inputs) > 0 && all(grepl("^(ebb|s30b)/[A-Za-z0-9_]+$", unlist(s$inputs))), info = paste(k, s$id))
+      expect_true(length(s$inputs) > 0 && all(grepl("^(ebb|s30b|fsb)/[A-Za-z0-9_]+$", unlist(s$inputs))), info = paste(k, s$id))
       # a panel prints map values, or (the Nature-layout design panel) has moved all of them to its legend
       expect_true(length(s$annotation_panels) > 0 || length(s$annotation_panels_legend) > 0, info = paste(k, s$id))
       if (s$builder %in% JITTERED)
@@ -218,6 +224,8 @@ test_that("the candidate contract is candidate-only and declares every panel com
   expect_equal(CT$bundles$ebb$manifest_sha256, behaviour_bundle_pin()$manifest_sha256)
   expect_equal(CT$bundles$s30b$bundle_id, stage30_bundle_pin()$bundle_id)
   expect_equal(CT$bundles$s30b$manifest_sha256, stage30_bundle_pin()$manifest_sha256)
+  expect_equal(CT$bundles$fsb$bundle_id, fsb_bundle_pin()$bundle_id)
+  expect_equal(CT$bundles$fsb$manifest_sha256, fsb_bundle_pin()$manifest_sha256)
 })
 
 test_that("no candidate key or the generation appears in the publication registry or the canonical contract", {
@@ -233,7 +241,7 @@ test_that("every annotation key resolves to exactly one stored cell", {
   m <- rd(MAP_PATH)
   expect_identical(names(m), c("key", "panel", "bundle", "table", "column", "filters", "format", "meaning"))
   expect_equal(anyDuplicated(m$key), 0L)
-  expect_true(all(m$bundle %in% c("ebb", "s30b")))
+  expect_true(all(m$bundle %in% c("ebb", "s30b", "fsb")))
   # every map panel is printed, plotted or quoted in a legend by some contract panel, and every
   # declared map panel exists
   declared <- unique(unlist(lapply(all_panels(), function(s)
@@ -260,6 +268,17 @@ test_that("every annotation key resolves to exactly one stored cell", {
   i <- match(sub("^f1o([12]|2n)_", "", opt$key), canon$key)
   expect_false(anyNA(i))
   for (col in c("table", "column", "filters", "format")) expect_identical(opt[[col]], canon[[col]][i], info = col)
+  o3 <- m[startsWith(m$key, "f1o3n_"), , drop = FALSE]
+  expect_gt(nrow(o3), 0L)
+  o3_only <- grepl("(option 3 only; no canonical Figure 1 key)", o3$meaning, fixed = TRUE)
+  j <- match(sub("^f1o3n_", "", o3$key[!o3_only]), canon$key)
+  expect_false(anyNA(j), info = paste(o3$key[!o3_only][is.na(j)], collapse = ", "))
+  for (col in c("table", "column", "filters", "format")) expect_identical(o3[[col]][!o3_only], canon[[col]][j], info = paste("f1o3n_", col))
+  expect_true(all(is.na(match(sub("^f1o3n_", "", o3$key[o3_only]), canon$key))))
+  o3_panels <- unique(unlist(lapply(c(CT$candidates[[OPTION3]]$panels, CT$candidates[[OPTION3_D]]$panels), function(s)
+    c(s$annotation_panels, s$annotation_panels_plotted, s$annotation_panels_legend))))
+  expect_setequal(unique(o3$panel), o3_panels)
+  expect_true(all(startsWith(o3_panels, "f1o3n_")))
   skip_if_not(have_pins, "bundles not pinned")
   for (r in seq_len(nrow(m))) {
     v <- tryCatch(resolve(m[r, , drop = FALSE]), error = function(e) paste("ERROR", conditionMessage(e)))
@@ -392,8 +411,9 @@ test_that("the outputs exist, are authored at their boxes and equal the receipt"
   skip_if_not(have_pins, "bundles not pinned")
   skip_if_not(rendered, "candidates not rendered")
   rc <- rd(RECEIPT)
-  expect_identical(names(rc), c("generation", "candidate", "kind", "path", "bytes", "sha256", "ebb_bundle_id", "s30b_bundle_id"))
+  expect_identical(names(rc), c("generation", "candidate", "kind", "path", "bytes", "sha256", "ebb_bundle_id", "s30b_bundle_id", "fsb_bundle_id"))
   expect_true(all(rc$generation == GEN))
+  expect_true(all(rc$fsb_bundle_id == fsb_bundle_pin()$bundle_id))
   expect_true(all(rc$ebb_bundle_id == behaviour_bundle_pin()$bundle_id))
   expect_true(all(rc$s30b_bundle_id == stage30_bundle_pin()$bundle_id))
   expect_equal(anyDuplicated(rc$path), 0L)
@@ -423,6 +443,8 @@ test_that("the outputs exist, are authored at their boxes and equal the receipt"
     expect_equal(run$bundles$ebb$bundle_id, behaviour_bundle_pin()$bundle_id, info = k)
     expect_equal(run$bundles$s30b$bundle_id, stage30_bundle_pin()$bundle_id, info = k)
     expect_equal(run$bundles$s30b$manifest_sha256, stage30_bundle_pin()$manifest_sha256, info = k)
+    expect_equal(run$bundles$fsb$bundle_id, fsb_bundle_pin()$bundle_id, info = k)
+    expect_equal(run$bundles$fsb$manifest_sha256, fsb_bundle_pin()$manifest_sha256, info = k)
     expect_match(run$render_git_commit, "^[0-9a-f]{40}$", info = k)
     outs <- do.call(rbind, lapply(run$outputs, as.data.frame, stringsAsFactors = FALSE))
     expect_setequal(outs$sha256, r$sha256[r$kind != "run_manifest"])
@@ -522,12 +544,13 @@ test_that("the Nature-layout candidate is one vector page with live text, embedd
 test_that("the tracked receipt copy records every candidate output of the current generation", {
   expect_true(file.exists(TRACKED_RECEIPT))
   tr <- rd(TRACKED_RECEIPT)
-  expect_identical(names(tr), c("generation", "candidate", "kind", "path", "bytes", "sha256", "ebb_bundle_id", "s30b_bundle_id"))
+  expect_identical(names(tr), c("generation", "candidate", "kind", "path", "bytes", "sha256", "ebb_bundle_id", "s30b_bundle_id", "fsb_bundle_id"))
   expect_setequal(unique(tr$candidate), KEYS)
   for (k in KEYS) expect_equal(sum(tr$candidate == k & tr$kind == "panel_svg"), length(CT$candidates[[k]]$panels), info = k)
   skip_if_not(have_pins, "bundles not pinned")
   expect_true(all(tr$ebb_bundle_id == behaviour_bundle_pin()$bundle_id))
   expect_true(all(tr$s30b_bundle_id == stage30_bundle_pin()$bundle_id))
+  expect_true(all(tr$fsb_bundle_id == fsb_bundle_pin()$bundle_id))
   skip_if_not(rendered, "candidates not rendered")
   # The deterministic outputs (panel and assembled SVGs, source data, panel and input manifests)
   # must equal the tracked copy. The PNG, the PDF and the run manifests that record their hashes
@@ -538,4 +561,105 @@ test_that("the tracked receipt copy records every candidate output of the curren
   b <- tr[tr$kind %in% DET, c("candidate", "kind", "path", "bytes", "sha256")]
   a <- a[order(a$path), ]; b <- b[order(b$path), ]; rownames(a) <- rownames(b) <- NULL
   expect_identical(b, a)
+})
+
+test_that("Figure 1 option 3 is one vector page with live text, embedded Arial, existing inks and the specification's wording", {
+  cand <- CT$candidates[[OPTION3]]; dcand <- CT$candidates[[OPTION3_D]]
+  expect_true(vector_page(OPTION3)); expect_true(vector_page(OPTION3_D))
+  # OPTION3_SPEC 3: 183 mm wide; at most 170 mm tall if at all possible, never above 185 mm
+  expect_equal(cand$width_mm, 183)
+  expect_lte(cand$height_mm, 185)
+  expect_lte(cand$height_mm, 170)
+  expect_equal(c(cand$page_margin_mm, cand$panel_gap_mm), c(4, 3))
+  expect_equal(unname(vapply(cand$panels, function(s) s$letter, "")), letters[1:6])
+  # the stand-alone d is the page's panel d: same builder, arguments, inputs, map panels and box size
+  pd <- Filter(function(s) identical(s$id, "d"), cand$panels)[[1]]
+  sd <- dcand$panels[[1]]
+  expect_length(dcand$panels, 1L)
+  for (f in c("builder", "args", "inputs", "annotation_panels", "annotation_panels_legend", "w", "h", "jitter_seed"))
+    expect_identical(sd[[f]], pd[[f]], info = f)
+  expect_identical(sd$letter, "")
+  skip_if_not(have_pins, "bundles not pinned")
+  # "3 cages/sex" (c) is the design the figure-support bundle stores: three CON cages of four animals per sex and cage change
+  f1 <- fsb_bundle_table("F1_con_cage_means")
+  expect_true(all(f1$Group == "CON"))
+  expect_true(all(table(paste(f1$measure, f1$Sex, f1$CC)) == 3L))
+  expect_true(all(f1$n_animals == 4L))
+  skip_if_not(rendered, "candidates not rendered")
+  skip_if_not_installed("xml2")
+  expect_identical(sha(panel_svg(c(sd, list(candidate = OPTION3_D)))), sha(panel_svg(c(pd, list(candidate = OPTION3)))))
+  rc <- rd(RECEIPT)
+  # the inks: every fill and stroke is one option 2 draws, or lies on the manuscript's diverging ramp
+  # (config/manuscript_palette.yml, interpolated in Lab as ggplot2's scale_fill_gradient2 does; the heatmap in b)
+  o2 <- CT$candidates$figure_01_option2$panels
+  o2_ink <- unique(unlist(lapply(o2, function(s) svg_colours(panel_svg(c(s, list(candidate = "figure_01_option2")))))))
+  pal <- yaml::read_yaml(repo("config", "manuscript_palette.yml"))$diverging
+  ramp <- grDevices::col2rgb(scales::div_gradient_pal(pal$low, pal$mid, pal$high, "Lab")(seq(0, 1, length.out = 4001)))
+  on_ramp <- function(hex) {
+    v <- grDevices::col2rgb(hex)
+    vapply(seq_len(ncol(v)), function(i) min(colSums(abs(ramp - v[, i]))) <= 3, logical(1))
+  }
+  for (k in c(OPTION3, OPTION3_D)) {
+    r <- rc[rc$candidate == k, , drop = FALSE]
+    page_svg <- repo(r$path[r$kind == "assembled_svg"]); page_pdf <- repo(r$path[r$kind == "assembled_pdf"])
+    extra <- setdiff(svg_colours(page_svg), o2_ink)
+    expect_true(all(on_ramp(extra)), info = paste(k, "draws a colour that is neither option 2's nor on the diverging ramp:",
+                                                  paste(extra[!on_ramp(extra)], collapse = ", ")))
+    # the page SVG: no embedded image, live text only, nothing below 5.0 pt, Arial, the panels' text exactly
+    svg_src <- paste(readLines(page_svg, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+    expect_false(grepl("<image", svg_src, fixed = TRUE), info = k)
+    expect_false(grepl("base64", svg_src, fixed = TRUE), info = k)
+    page <- svg_text_nodes(page_svg)
+    expect_true(all(page$family == "Arial"), info = k)
+    expect_equal(sum(page$pt < 5.0 - 1e-9 & nzchar(trimws(page$text))), 0L, info = k)
+    panels <- CT$candidates[[k]]$panels
+    lets <- Filter(nzchar, vapply(panels, function(s) s$letter, ""))
+    panel_txt <- unlist(lapply(panels, function(s) svg_text_nodes(panel_svg(c(s, list(candidate = k))))$text))
+    page_txt <- page$text[!(page$pt == 8 & page$text %in% lets)]
+    expect_identical(sort(trimws(page_txt)), sort(trimws(panel_txt)), info = k)
+    # the letters: 8 pt bold at each box's x, baseline 0.92 letter heights below the box top
+    doc <- xml2::xml_ns_strip(xml2::read_xml(page_svg))
+    tn <- xml2::xml_find_all(doc, "//text")
+    bold <- grepl("font-weight: bold", xml2::xml_attr(tn, "style"), fixed = TRUE)
+    expect_setequal(xml2::xml_text(tn[bold]), lets)
+    for (s in Filter(function(s) nzchar(s$letter), panels)) {
+      node <- tn[bold & xml2::xml_text(tn) == s$letter]
+      expect_equal(as.numeric(xml2::xml_attr(node, "x")), s$x / 25.4 * 72, tolerance = 0.02, info = paste(k, s$letter))
+      expect_equal(as.numeric(xml2::xml_attr(node, "y")), (s$y + 8 * 25.4 / 72 * 0.92) / 25.4 * 72, tolerance = 0.02, info = paste(k, s$letter))
+    }
+    # the PDF: one page of the contract's size, vector (no image XObject), every font an embedded Arial
+    pdf <- pdf_text(page_pdf)
+    expect_true(grepl("^%PDF-", pdf, useBytes = TRUE), info = k)
+    expect_length(pdf_hits(pdf, "/Subtype\\s*/Image"), 0L)
+    expect_length(pdf_hits(pdf, "/Type\\s*/Page(?![a-z])", perl = TRUE), 1L)
+    box <- pdf_hits(pdf, "/MediaBox\\s*\\[[^]]*\\]")
+    box <- as.numeric(regmatches(box[length(box)], gregexpr("[0-9]+(\\.[0-9]+)?", box[length(box)]))[[1]])
+    expect_lt(max(abs(box - c(0, 0, CT$candidates[[k]]$width_mm, CT$candidates[[k]]$height_mm) / 25.4 * 72)), 0.01)
+    qpdf <- Sys.which("qpdf")
+    if (nzchar(qpdf)) expect_identical(as.integer(system2(qpdf, c("--check", shQuote(page_pdf)), stdout = FALSE, stderr = FALSE)), 0L)
+    fonts <- unique(pdf_hits(pdf, "/BaseFont\\s*/[A-Za-z0-9+-]+"))
+    expect_true(length(fonts) > 0L && all(grepl("/[A-Z]{6}\\+Arial", fonts)), info = paste(k, paste(fonts, collapse = ", ")))
+    n_desc <- length(pdf_hits(pdf, "/Type\\s*/FontDescriptor"))
+    expect_equal(length(pdf_hits(pdf, "/FontFile[23]?\\s+[0-9]+\\s+[0-9]+\\s+R")), n_desc)
+    # OPTION3_SPEC 0 wording: never "acute"; shared occupancy is social-spatial overlap, never social
+    # behaviour or sociability; no SIS - CON, RES - CON or SUS - CON contrast on the figure
+    txt <- paste(page$text, collapse = " | ")
+    for (b in c("acute", "sociab", "social behaviour", "social behavior", "SIS − CON", "RES − CON", "SUS − CON",
+                "SIS - CON", "RES - CON", "SUS - CON"))
+      expect_false(grepl(b, txt, ignore.case = TRUE, fixed = FALSE), info = paste(k, "prints", b))
+  }
+  # the page's wording (OPTION3_SPEC 3): the timeline without reference or baseline wording, the c title and the CON label once
+  page <- svg_text_nodes(repo(rc$path[rc$candidate == OPTION3 & rc$kind == "assembled_svg"]))
+  a_txt <- svg_text_nodes(panel_svg(c(Filter(function(s) identical(s$id, "a"), cand$panels)[[1]], list(candidate = OPTION3))))$text
+  for (w in c("reference", "baseline")) expect_false(any(grepl(w, a_txt, ignore.case = TRUE)), info = paste("panel a says", w))
+  for (w in c("CC1–CC4: repeated cage-change episodes (every 4 days)", "SIS: regrouped", "CON: intact group (same platform-transfer episodes)",
+              "First active phase after CC1", "CON descriptive reference; 3 cages/sex", "Social-spatial overlap:"))
+    expect_equal(sum(trimws(page$text) == w), 1L, info = w)
+  # no SIS - CON estimate reaches the figure's source data (they stay in the bundle only)
+  for (s in c(cand$panels, dcand$panels)) {
+    k <- if (identical(s$letter, "")) OPTION3_D else OPTION3
+    sdat <- rd(file.path(repo("results", "source_data", "manuscript_candidates", GEN, k), sprintf("%s_%s_source_data.csv", k, s$id)))
+    if ("estimand" %in% names(sdat)) expect_false(any(grepl("^SC_", sdat$estimand)), info = paste(k, s$id))
+    expect_false(any(grepl("stage29_exposure|EXPOSURE_", unlist(sdat))), info = paste(k, s$id))
+  }
 })
