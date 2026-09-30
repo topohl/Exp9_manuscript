@@ -23,8 +23,8 @@
 # whose defaults reproduce the Figure 1 renderer byte for byte:
 #   f1_panel_combz(subtitle, minus_ticks)            a subtitle with a line break for
 #                                                    narrow boxes; U+2212 tick labels;
-#   f1_panel_cc1(text_position)                      "plot" aligns titles and captions
-#                                                    to the plot edge in narrow boxes;
+#   f1_panel_cc1(text_position)                      "plot" aligns titles, captions and the
+#                                                    group legend to the plot edge;
 #   f1_panel_trajectory(constructs, keys, family,    one or more constructs (incl. the
 #                       title, caption, show_con)    secondary occupancy_dispersion and
 #                                                    fragmentation), their annotation-key
@@ -41,9 +41,12 @@
 #                                                    default), so the title sits under the
 #                                                    panel letter at the Figure 1 top margin
 #                                                    (trajectory: 3 pt kept under the caption);
-#   title_position = "plot" (combz, trajectory)      titles (and the trajectory legend) start
-#                                                    at the plot edge, under the panel letter;
+#   title_position = "plot" (combz, trajectory,      titles (and the trajectory and prediction
+#                    association, prediction)        legends) start at the plot edge, under
+#                                                    the panel letter;
 #   f1_panel_prediction(scatter_width)               the scatter's relative width (Figure 1f 0.6);
+#   f1_panel_prediction(bottom_pad_pt)               extra bottom margin (Figure 1f 0), so the axes
+#                                                    sit level with a two-line-x-title row partner;
 #   f1_panel_association(title)                      an optional panel title.
 # They change layout and typography only: every printed number still comes
 # from an$fa() / an$ci() / an$ann().
@@ -226,16 +229,26 @@ f1_panel_cc1_one <- function(A1, C2, an, k, key, jitter_seed = NA, text_position
 #' compact_header = TRUE: the overall title takes the Figure 1 top margin under the panel letter
 #' (the patchwork default outer margin of 5.5 pt would put it level with the letter) and the two
 #' construct plots start just below it, with the collected legend left-justified.
+#' text_position = "plot": the construct titles start at the plot edge, and so does the group
+#' legend. patchwork attaches a collected legend over the panel columns only, so in this mode the
+#' legend stays with the first construct plot, placed against its plot edge (legend.location), and
+#' the second construct plot, with the same marks, draws none (the f1_panel_trajectory pattern).
 f1_panel_cc1 <- function(tab, an, w_mm = F1_BOX$c[1], h_mm = F1_BOX$c[2], jitter_seed = c(NA, NA), text_position = "panel",
                          typography = "figure1", compact_header = FALSE) {
   A1 <- tab("A1_animal_cc1")
   C2 <- tab("C2_estimates")
-  pc <- patchwork::wrap_plots(f1_panel_cc1_one(A1, C2, an, "crossing_rate", "cr", jitter_seed[1], text_position, typography),
-                              f1_panel_cc1_one(A1, C2, an, "shared_zone_use", "sz", jitter_seed[length(jitter_seed)], text_position, typography),
-                              nrow = 1, guides = "collect") +
-    patchwork::plot_annotation(title = "First active phase after CC1 (SIS; CON hollow grey, not modelled)",
-                               theme = theme(plot.title = element_text(size = BASE_PT, colour = INK))) &
-    theme(legend.position = "top")
+  parts <- list(f1_panel_cc1_one(A1, C2, an, "crossing_rate", "cr", jitter_seed[1], text_position, typography),
+                f1_panel_cc1_one(A1, C2, an, "shared_zone_use", "sz", jitter_seed[length(jitter_seed)], text_position, typography))
+  ann <- patchwork::plot_annotation(title = "First active phase after CC1 (SIS; CON hollow grey, not modelled)",
+                                    theme = theme(plot.title = element_text(size = BASE_PT, colour = INK)))
+  pc <- if (identical(text_position, "plot")) {
+    parts[[1]] <- parts[[1]] + theme(legend.position = "top", legend.justification = "left", legend.location = "plot")
+    parts[[2]] <- parts[[2]] + theme(legend.position = "none")
+    patchwork::wrap_plots(parts, nrow = 1, guides = "keep") + ann
+  } else {
+    patchwork::wrap_plots(parts, nrow = 1, guides = "collect") + ann &
+      theme(legend.position = "top")
+  }
   if (isTRUE(compact_header))
     pc <- (pc & theme(plot.margin = margin(1, 3, 3, 3))) +
       patchwork::plot_annotation(theme = theme(plot.margin = margin(11.5, 0, 0, 0), legend.justification = "left"))
@@ -339,8 +352,11 @@ f1_panel_trajectory <- function(tab, an, w_mm = F1_BOX$d[1], h_mm = F1_BOX$d[2],
 }
 
 # =============================================================== panel e
+#' title_position  "panel" (Figure 1e) or "plot": the title and subtitle start at the plot edge.
 f1_panel_association <- function(tab, an, w_mm = F1_BOX$e[1], h_mm = F1_BOX$e[2], minus_ticks = FALSE,
-                                 typography = "figure1", title = NULL) {
+                                 typography = "figure1", title = NULL, title_position = "panel") {
+  if (!identical(title_position, "panel") && !identical(title_position, "plot"))
+    stop("f1_panel_association: title_position must be \"panel\" or \"plot\".", call. = FALSE)
   cand <- f1_candidate_typography(typography)
   fa <- an$fa
   A2 <- tab("A2_prediction_animals")
@@ -354,6 +370,7 @@ f1_panel_association <- function(tab, an, w_mm = F1_BOX$e[1], h_mm = F1_BOX$e[2]
          subtitle = "one point per animal; rank correlation; not split by sex") +
     (if (!is.null(title)) labs(title = title) else NULL) +
     theme_f1()
+  if (identical(title_position, "plot")) pe <- pe + theme(plot.title.position = "plot")
   bh_panel(pe, w_mm, h_mm)
 }
 
@@ -361,10 +378,21 @@ f1_panel_association <- function(tab, an, w_mm = F1_BOX$e[1], h_mm = F1_BOX$e[2]
 #' scatter_width  relative width of the observed-vs-predicted scatter against the permutation
 #'                histogram (1); Figure 1f: 0.6. At 1 the square scatter is as tall as the histogram,
 #'                so their x axes line up.
+#' bottom_pad_pt  extra bottom plot margin (pt) of both component plots (Figure 1f: 0). A row
+#'                partner with a two-line x title (the association panel) has its x axis higher
+#'                than these one-line titles; the pad lifts both axes to its level, and the
+#'                height-limited square scatter then fills the lower plot height.
+#' title_position "panel" (Figure 1f) or "plot": the title and subtitle start at the plot edge
+#'                under the panel letter, and the scatter's legend is placed against the plot.
 f1_panel_prediction <- function(tab, an, w_mm = F1_BOX$f[1], h_mm = F1_BOX$f[2], minus_ticks = FALSE,
-                                typography = "figure1", compact_header = FALSE, scatter_width = 0.6) {
+                                typography = "figure1", compact_header = FALSE, scatter_width = 0.6,
+                                bottom_pad_pt = 0, title_position = "panel") {
   if (!is.numeric(scatter_width) || length(scatter_width) != 1L || !(scatter_width > 0))
     stop("f1_panel_prediction: scatter_width must be one positive number.", call. = FALSE)
+  if (!is.numeric(bottom_pad_pt) || length(bottom_pad_pt) != 1L || !(bottom_pad_pt >= 0))
+    stop("f1_panel_prediction: bottom_pad_pt must be one number >= 0.", call. = FALSE)
+  if (!identical(title_position, "panel") && !identical(title_position, "plot"))
+    stop("f1_panel_prediction: title_position must be \"panel\" or \"plot\".", call. = FALSE)
   cand <- f1_candidate_typography(typography)
   minus_ticks <- isTRUE(minus_ticks)
   fa <- an$fa
@@ -399,6 +427,12 @@ f1_panel_prediction <- function(tab, an, w_mm = F1_BOX$f[1], h_mm = F1_BOX$f[2],
     (if (minus_ticks) scale_x_continuous(labels = f1_minus_labels) else NULL) +
     labs(x = expression("null R"^2 ~ "(permuted outcomes)"), y = sprintf("Permutations (n = %s)", fa("f_nperm"))) +
     theme_f1()
+  if (bottom_pad_pt > 0) {
+    pf_scatter <- pf_scatter + theme(plot.margin = margin(11.5, 3, 3 + bottom_pad_pt, 3))
+    pf_null <- pf_null + theme(plot.margin = margin(11.5, 3, 3 + bottom_pad_pt, 3))
+  }
+  if (identical(title_position, "plot"))
+    pf_scatter <- pf_scatter + theme(plot.title.position = "plot", legend.location = "plot")
   pf <- patchwork::wrap_plots(pf_scatter, pf_null, nrow = 1, widths = c(scatter_width, 1))
   if (isTRUE(compact_header)) pf <- pf + patchwork::plot_annotation(theme = theme(plot.margin = margin(0, 0, 0, 0)))
   bh_panel(pf, w_mm, h_mm)
