@@ -153,3 +153,60 @@ testthat::test_that("canonical Figure 3 contract is a through m", {
     testthat::expect_identical(unname(tools::sha256sum(final_pdf)),
                                unname(tools::sha256sum(producer_pdf)))
 })
+
+testthat::test_that("the registered Figure 3 is the promoted a-m render", {
+  # Tracked files only, so this runs without a results/ workspace. It pins the
+  # canonical identity and the counts the manuscript text cites.
+  reg <- utils::read.csv(repo_path("provenance", "publication_registry",
+                                   "canonical_publication_registry.csv"),
+                         stringsAsFactors = FALSE, colClasses = "character")
+  r <- reg[reg$publication_id == "figure_03", , drop = FALSE]
+  testthat::expect_identical(nrow(r), 1L)
+  testthat::expect_identical(r$status, "CANONICAL")
+  testthat::expect_identical(r$panels,
+                             paste(paste0("3", letters[1:13]), collapse = ","))
+  testthat::expect_identical(r$rendered_artifact, "figures/main/figure_03.svg")
+  testthat::expect_identical(r$canonical_source_data,
+                             "figures/main/source_data/figure_03")
+  for (ext in c(".svg", ".pdf", ".png"))
+    testthat::expect_true(file.exists(repo_path("figures", "main",
+                                                paste0("figure_03", ext))))
+  sha <- function(p) unname(tools::sha256sum(p))
+  testthat::expect_identical(sha(repo_path(r$rendered_artifact)), r$hash)
+  # the frozen a-i figure is history, not the registered one
+  testthat::expect_false(identical(r$hash, sha(repo_path(
+    "source_data", "pRoteomics", "figure_03", "assembled", "figure_03.svg"))))
+
+  sd <- repo_path(r$canonical_source_data)
+  man <- utils::read.csv(file.path(sd, "00_manifest.csv"),
+                         stringsAsFactors = FALSE, colClasses = "character")
+  testthat::expect_identical(man$file,
+                             paste0("figure_03", letters[1:13], "_source_data.csv"))
+  testthat::expect_setequal(list.files(sd), c(man$file, "00_manifest.csv"))
+  testthat::expect_identical(sha(file.path(sd, man$file)), man$sha256)
+  testthat::expect_identical(unique(man$render_git_commit), r$source_commit)
+  testthat::expect_true(grepl("^[0-9a-f]{40}$", r$source_commit))
+
+  rd <- function(panel) utils::read.csv(
+    file.path(sd, paste0("figure_03", panel, "_source_data.csv")),
+    stringsAsFactors = FALSE)
+  b <- rd("b")
+  testthat::expect_identical(nrow(b), 126L)
+  testthat::expect_identical(sum(b$n_fdr_supported > 0), 51L)
+  c3 <- rd("c")
+  classes <- c("resilience-specific remodeling",
+               "susceptibility-specific remodeling", "shared / parallel",
+               "divergent / opposing", "little detectable adaptation")
+  testthat::expect_identical(
+    as.integer(table(factor(c3$adaptation_pattern, levels = classes))),
+    c(25L, 26L, 12L, 3L, 60L))
+  ex <- c3[!is.na(c3$exemplar), , drop = FALSE]
+  testthat::expect_identical(ex$adaptation_pattern[order(ex$exemplar)],
+                             classes[c(4L, 2L, 3L)])
+  d <- rd("d")
+  n_of <- function(comp) d$n[d$compartment == comp][
+    match(classes, d$adaptation_pattern[d$compartment == comp])]
+  testthat::expect_identical(as.integer(n_of("Neuropil")), c(19L, 15L, 6L, 1L, 29L))
+  testthat::expect_identical(as.integer(n_of("Soma")), c(3L, 6L, 2L, 0L, 17L))
+  testthat::expect_identical(as.integer(n_of("Microglia ROI")), c(3L, 5L, 4L, 2L, 14L))
+})
