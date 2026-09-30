@@ -309,12 +309,17 @@ candidates:
       2 mm more for its one-line x title "RES - SUS (fraction of light phase)" at 5.5 pt); row 3 at
       y = 92, 64 high: e 60, f 112 (the spec's 64 / 108: e's plot is square-ish and f's scatter is
       square at the row's panel height). The page is one vector document (assembly vector_page). Type
-      5 / 5.5 pt, letters 8 pt; headers (b's group key, c's and d's titles) sit on the letter's
-      baseline. Row frames: plot tops at 8.1 mm (row 2) and 3.4 mm (row 3) below the box top, x-axis
+      5 / 5.5 pt, letters 8 pt; the headers (c's and d's titles) sit on the letter's baseline, and b's
+      group key (left-aligned at its plot panel) sits on row 2's second line with c's "Female - male:
+      Holm P" lines. Row frames: plot tops at 8.1 mm (row 2) and 3.4 mm (row 3) below the box top, x-axis
       lines at 65.8 and 58.3 mm (plot_top_mm, axis_mm). Values moved off the panels are quoted by the
       legend (annotation_panels_legend): a's n footer (f1o2n_design_legend), c's RES - SUS and
-      female - male CIs (f1o2n_cc1_legend), f's repeated grouped five-fold range and permutation count
-      (f1o2n_prediction_legend); d's legend keys as option 2's.
+      female - male CIs and n (f1o2n_cc1_legend), f's repeated grouped five-fold range, permutation
+      count and n (f1o2n_prediction_legend); d's legend keys as option 2's. The legend's n are stored
+      cells: the Nature-only legend keys f1o2n_c_n_* (C2_estimates model n; B2_descriptive_summaries,
+      which stores each CC1 sex x group n as one cell; G_sample_sizes for the missing shared-occupancy
+      cell) and f1o2n_f_n. The PDF page is exactly 183 x 160 mm: cairo_pdf writes whole points (518 x
+      453), and bh_pdf_mediabox appends an incremental update with the exact MediaBox.
     panels:
       - id: a
         letter: a
@@ -346,11 +351,11 @@ candidates:
         builder: f1_panel_cc1
         description: >-
           First active phase after CC1 (Nature layout): position-change rate and shared occupancy by sex
-          and group, the RES/SUS model means with 95% CIs and the P-CC1 Holm P; the contrast CIs are
-          quoted by the legend
+          and group, the RES/SUS model means with 95% CIs and the P-CC1 Holm P of the female - male
+          difference in RES - SUS; the contrast CIs and the n are quoted by the legend
         args: {key_prefix: f1o2n_, typography: candidate, style: nature, plot_top_mm: 8.1, axis_mm: 65.8}
         jitter_seed: [2, 2]
-        inputs: [ebb/A1_animal_cc1, ebb/C2_estimates, ebb/E_multiplicity]
+        inputs: [ebb/A1_animal_cc1, ebb/C2_estimates, ebb/E_multiplicity, ebb/B2_descriptive_summaries, ebb/G_sample_sizes]
         annotation_panels: [f1o2n_cc1]
         annotation_panels_legend: [f1o2n_cc1_legend]
         x: 53
