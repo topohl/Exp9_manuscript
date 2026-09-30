@@ -4,8 +4,10 @@
 # Stage: manuscript_candidates (generation behaviour_v101_s30)
 # Scope: candidate figures only; nothing is promoted
 # Consumes: the pinned Stage 29 v1.0.1 behaviour bundle (config/behaviour_bundle.yml,
-#           read through R/behaviour_bundle.R) and the pinned Stage 30 figure bundle
-#           (config/stage30_bundle.yml, read through R/stage30_bundle.R)
+#           read through R/behaviour_bundle.R), the pinned Stage 30 figure bundle
+#           (config/stage30_bundle.yml, read through R/stage30_bundle.R) and the pinned
+#           figure-support bundle (config/figure_support_bundle.yml, read through
+#           R/figure_support_bundle.R: descriptive CON cage means, CombZ components)
 # Contract: figures/figure_behaviour_v101_s30_contract.yml
 # Map:      figures/behaviour_v101_s30_annotation_map.csv
 # Produces: results/figures/manuscript_candidates/behaviour_v101_s30/<key>/{panels,assembled}/
@@ -56,6 +58,7 @@ paths_file <- if (file.exists(file.path("R", "paths.R"))) file.path("R", "paths.
 source(paths_file)
 source(repo_path("R", "behaviour_bundle.R"))
 source(repo_path("R", "stage30_bundle.R"))
+source(repo_path("R", "figure_support_bundle.R"))
 source(repo_path("R", "manuscript_figure_utils.R"))
 
 GENERATION <- "behaviour_v101_s30"
@@ -74,13 +77,15 @@ PIN <- behaviour_bundle_pin()
 behaviour_bundle_verify(PIN)
 S30 <- stage30_bundle_pin()
 stage30_bundle_verify(S30)
-PINS <- list(ebb = PIN, s30b = S30)
+FSB <- fsb_bundle_pin()
+fsb_bundle_verify(FSB)
+PINS <- list(ebb = PIN, s30b = S30, fsb = FSB)
 for (b in names(PINS)) {
   if (!identical(CONTRACT$bundles[[b]]$bundle_id, PINS[[b]]$bundle_id) ||
       !identical(CONTRACT$bundles[[b]]$manifest_sha256, PINS[[b]]$manifest_sha256))
     stop("The contract's ", b, " bundle is not the pinned one (", PINS[[b]]$bundle_id, ").", call. = FALSE)
 }
-BUNDLE_DIRS <- list(ebb = behaviour_bundle_dir(PIN), s30b = stage30_bundle_dir(S30))
+BUNDLE_DIRS <- list(ebb = behaviour_bundle_dir(PIN), s30b = stage30_bundle_dir(S30), fsb = fsb_bundle_dir(FSB))
 
 # Table getters, cached, that log every table a panel reads (builders and annotation keys alike).
 READS <- new.env(parent = emptyenv())
@@ -94,7 +99,8 @@ logged_reader <- function(label, reader) {
   }
 }
 TABS <- list(ebb = logged_reader("ebb", function(n) behaviour_bundle_table(n, PIN)),
-             s30b = logged_reader("s30b", function(n) stage30_bundle_table(n, S30)))
+             s30b = logged_reader("s30b", function(n) stage30_bundle_table(n, S30)),
+             fsb = logged_reader("fsb", function(n) fsb_bundle_table(n, FSB)))
 
 for (lib in CONTRACT$libraries) source(repo_path(lib))
 MAP_PATH <- repo_path(CONTRACT$annotation_map)
@@ -153,7 +159,13 @@ BUILDERS <- list(
   s30_panel_cookie_rs = function(s, an) s30_panel_cookie_rs(TABS$s30b, an, s$w, s$h, jitter_seed = seeds(s, 1L)),
   s30_panel_cookie_combz = function(s, an) s30_panel_cookie_combz(TABS$s30b, an, s$w, s$h),
   s30_panel_screen = function(s, an) s30_panel_screen(TABS$s30b, an, s$w, s$h, pq_style = arg(s, "pq_style", "stacked"),
-    top_margin_pt = top_pt(s)))
+    top_margin_pt = top_pt(s)),
+  # Figure 1 option 3 (Nature layout): a-d read the behaviour bundle and the figure-support bundle
+  f1o3n_panel_design = function(s, an) f1o3n_panel_design(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h),
+  f1o3n_panel_combz = function(s, an) f1o3n_panel_combz(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h),
+  f1o3n_panel_cc1 = function(s, an) f1o3n_panel_cc1(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h, jitter_seed = seeds(s, 2L),
+    frame = frame_of(s)),
+  f1o3n_panel_trajectory = function(s, an) f1o3n_panel_trajectory(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h, frame = frame_of(s)))
 
 # ---------------------------------------------------------------- plot introspection
 # The leaf ggplots of a panel (patchwork parts in order; a plain ggplot is its own leaf).
@@ -333,7 +345,7 @@ for (r in ROOTS) {
 RECEIPT_PATH <- repo_path(CONTRACT$output_roots$receipt)
 
 code_files <- c(ENTRY_REL, CONTRACT_REL, CONTRACT$annotation_map, unlist(CONTRACT$libraries),
-                "R/behaviour_bundle.R", "R/stage30_bundle.R", "R/panels/manuscript_figure_utils.R", "R/paths.R")
+                "R/behaviour_bundle.R", "R/stage30_bundle.R", "R/figure_support_bundle.R", "R/panels/manuscript_figure_utils.R", "R/paths.R")
 git_dirty <- tryCatch(system2("git", c("-C", repo_root(), "status", "--porcelain", "--untracked-files=all", "--", code_files),
                               stdout = TRUE, stderr = FALSE), error = function(e) NA_character_)
 RENDER <- list(commit = git_commit_sha(), code_clean = identical(length(git_dirty), 0L), dirty = as.list(git_dirty))
@@ -492,6 +504,7 @@ for (key in names(CONTRACT$candidates)) {
 rc <- do.call(rbind, receipt)
 rc$ebb_bundle_id <- PIN$bundle_id
 rc$s30b_bundle_id <- S30$bundle_id
+rc$fsb_bundle_id <- FSB$bundle_id
 invisible(write_csv_utf8(rc, RECEIPT_PATH))
 cat("receipt:", rel(RECEIPT_PATH), "(", nrow(rc), "outputs )\n")
 if (COPY_RECEIPT) {
@@ -500,4 +513,4 @@ if (COPY_RECEIPT) {
   if (!file.copy(RECEIPT_PATH, tracked, overwrite = TRUE)) stop("could not copy the receipt to ", tracked, call. = FALSE)
   cat("tracked receipt copy:", rel(tracked), "\n")
 }
-cat("bundles:", PIN$bundle_id, S30$bundle_id, " render commit:", RENDER$commit, if (!RENDER$code_clean) "(code not clean)" else "", "\n")
+cat("bundles:", PIN$bundle_id, S30$bundle_id, FSB$bundle_id, " render commit:", RENDER$commit, if (!RENDER$code_clean) "(code not clean)" else "", "\n")
