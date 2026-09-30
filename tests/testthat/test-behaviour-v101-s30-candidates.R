@@ -113,9 +113,14 @@ panel_svg <- function(s) file.path(FIGROOT, s$candidate, "panels", sprintf("%s_%
 # 5.0 pt with no superscript exception (the other candidates keep 6 pt with the plotmath exception).
 NATURE <- "figure_01_option2_nature"
 vector_page <- function(k) identical(CT$candidates[[k]]$assembly, "vector_page")
-TEXT_FLOOR_PT <- c(figure_01_option2_nature = 5.0, figure_01_option3_nature = 5.0, figure_01_option3_panel_d = 5.0)
+TEXT_FLOOR_PT <- c(figure_01_option2_nature = 5.0, figure_01_option3_nature = 5.0, figure_01_option3_panel_d = 5.0,
+                   figure_01_option3b_nature = 5.0)
 # Figure 1 option 3 (OPTION3_SPEC): the page, and the stand-alone copy of its panel d.
 OPTION3 <- "figure_01_option3_nature"; OPTION3_D <- "figure_01_option3_panel_d"
+# Figure 1 option 3b (OPTION3B_SPEC): option 3 with c (post hoc CON / RES / SUS, fsb P1) and d rebuilt.
+OPTION3B <- "figure_01_option3b_nature"
+# The frozen post hoc registry whose rows (fsb P1, P1b) option 3b may draw or quote.
+POSTHOC_REGISTRY_SHA256 <- "a6435d8d84b164671b59486f7a3eb9af2bff29bd251c58866cd4b777f9fa0604"
 # Fill and stroke colours an SVG draws (svglite style attributes), upper-case hex.
 svg_colours <- function(path) {
   txt <- paste(readLines(path, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
@@ -179,7 +184,7 @@ test_that("the candidate contract is candidate-only and declares every panel com
   expect_equal(CT$scientific_recomputation, "none")
   expect_equal(CT$entry_point, "figures/behaviour_v101_s30_candidates.R")
   expect_equal(CT$annotation_map, "figures/behaviour_v101_s30_annotation_map.csv")
-  expect_setequal(KEYS, c("figure_01_option1", "figure_01_option2", "figure_01_option2_nature", "figure_01_option3_nature", "figure_01_option3_panel_d", "light_phase_panel", "light_dependence_ed",
+  expect_setequal(KEYS, c("figure_01_option1", "figure_01_option2", "figure_01_option2_nature", "figure_01_option3_nature", "figure_01_option3_panel_d", "figure_01_option3b_nature", "light_phase_panel", "light_dependence_ed",
                           "cookie_ed", "screen_summary", "ed_behaviour_longitudinal_light", "ed_behaviour_cookie"))
   lib_code <- unlist(lapply(BEHAVIOUR_LIBS, readLines, warn = FALSE))
   JITTERED <- c("f1_panel_combz", "f1_panel_cc1", "s30_panel_light_measure", "s30_panel_light_phase", "s30_panel_cookie_rs")
@@ -279,6 +284,37 @@ test_that("every annotation key resolves to exactly one stored cell", {
     c(s$annotation_panels, s$annotation_panels_plotted, s$annotation_panels_legend))))
   expect_setequal(unique(o3$panel), o3_panels)
   expect_true(all(startsWith(o3_panels, "f1o3n_")))
+  # option 3b: its own keys (f1o3b_) serve only its c and d; a, b, e and f reuse option 3's map panels.
+  # A copied registered key names its f1o3n_ source and resolves the same cell with the same format;
+  # the post hoc keys read fsb P1 / P1b rows of the frozen registry's models only.
+  o3b <- m[startsWith(m$key, "f1o3b_"), , drop = FALSE]
+  expect_gt(nrow(o3b), 0L)
+  o3b_cand <- CT$candidates[[OPTION3B]]$panels
+  cd_panels <- unique(unlist(lapply(Filter(function(s) s$id %in% c("c", "d"), o3b_cand), function(s)
+    c(s$annotation_panels, s$annotation_panels_plotted, s$annotation_panels_legend))))
+  expect_setequal(unique(o3b$panel), cd_panels)
+  expect_true(all(startsWith(cd_panels, "f1o3b_")))
+  for (s in Filter(function(s) !s$id %in% c("c", "d"), o3b_cand))
+    expect_true(all(startsWith(unlist(c(s$annotation_panels, s$annotation_panels_legend)), "f1o3n_")), info = s$id)
+  same <- regmatches(o3b$meaning, regexpr("the same cell as f1o3n_[a-z0-9_]+", o3b$meaning))
+  copied <- grepl("the same cell as f1o3n_", o3b$meaning, fixed = TRUE)
+  src <- m[match(sub("^the same cell as ", "", same), m$key), , drop = FALSE]
+  expect_false(anyNA(src$key))
+  for (col in c("bundle", "table", "column", "filters", "format")) expect_identical(o3b[[col]][copied], src[[col]], info = paste("f1o3b_", col))
+  post <- o3b[!copied, , drop = FALSE]
+  expect_true(all(post$bundle == "fsb" & post$table %in% c("P1_posthoc_con_contrasts", "P1b_posthoc_sensitivity")))
+  expect_true(all(grepl("(^|;)model=(primary_separate_cage_variances|sensitivity_common_cage_variance)(;|$)", post$filters)))
+  expect_true(all(grepl("option 3b only", post$meaning, fixed = TRUE)))
+  # c's printed Holm P: one key per measure x sex x contrast, whose filters name exactly that row
+  holm <- post[post$panel == "f1o3b_cc1", , drop = FALSE]
+  expect_equal(nrow(holm), 12L)
+  expect_true(all(holm$column == "p_holm" & holm$table == "P1_posthoc_con_contrasts"))
+  stem <- regmatches(holm$key, regexec("^f1o3b_c_(cr|sz)_(f|m)_(rc|sc|sr)_holm$", holm$key))
+  expect_true(all(lengths(stem) == 4L))
+  want <- vapply(stem, function(g) sprintf("measure=%s;Sex=%s;model=primary_separate_cage_variances;estimand=%s",
+    c(cr = "crossing_rate", sz = "shared_zone_use")[[g[2]]], c(f = "Female", m = "Male")[[g[3]]],
+    c(rc = "RES_minus_CON", sc = "SUS_minus_CON", sr = "SUS_minus_RES")[[g[4]]]), "")
+  expect_identical(holm$filters, want)
   skip_if_not(have_pins, "bundles not pinned")
   for (r in seq_len(nrow(m))) {
     v <- tryCatch(resolve(m[r, , drop = FALSE]), error = function(e) paste("ERROR", conditionMessage(e)))
@@ -605,7 +641,7 @@ test_that("Figure 1 option 3 is one vector page with live text, embedded Arial, 
     v <- grDevices::col2rgb(hex)
     vapply(seq_len(ncol(v)), function(i) min(colSums(abs(ramp - v[, i]))) <= 3, logical(1))
   }
-  for (k in c(OPTION3, OPTION3_D)) {
+  for (k in c(OPTION3, OPTION3_D, OPTION3B)) {
     r <- rc[rc$candidate == k, , drop = FALSE]
     page_svg <- repo(r$path[r$kind == "assembled_svg"]); page_pdf <- repo(r$path[r$kind == "assembled_pdf"])
     extra <- setdiff(svg_colours(page_svg), o2_ink)
@@ -648,10 +684,10 @@ test_that("Figure 1 option 3 is one vector page with live text, embedded Arial, 
     n_desc <- length(pdf_hits(pdf, "/Type\\s*/FontDescriptor"))
     expect_equal(length(pdf_hits(pdf, "/FontFile[23]?\\s+[0-9]+\\s+[0-9]+\\s+R")), n_desc)
     # OPTION3_SPEC 0 wording: never "acute"; shared occupancy is social-spatial overlap, never social
-    # behaviour or sociability; no SIS - CON, RES - CON or SUS - CON contrast on the figure
+    # behaviour or sociability; no SIS - CON contrast on the figure, and (option 3; option 3b draws the post hoc ones) no RES - CON or SUS - CON
     txt <- paste(page$text, collapse = " | ")
-    for (b in c("acute", "sociab", "social behaviour", "social behavior", "SIS − CON", "RES − CON", "SUS − CON",
-                "SIS - CON", "RES - CON", "SUS - CON"))
+    for (b in c("acute", "sociab", "social behaviour", "social behavior", "SIS − CON", "SIS - CON",
+                if (!identical(k, OPTION3B)) c("RES − CON", "SUS − CON", "RES - CON", "SUS - CON")))
       expect_false(grepl(b, txt, ignore.case = TRUE, fixed = FALSE), info = paste(k, "prints", b))
   }
   # the page's wording (OPTION3_SPEC 3): the timeline without reference or baseline wording, the c title and the CON label once
@@ -672,4 +708,93 @@ test_that("Figure 1 option 3 is one vector page with live text, embedded Arial, 
     if ("estimand" %in% names(sdat)) expect_false(any(grepl("^SC_", sdat$estimand)), info = paste(k, s$id))
     expect_false(any(grepl("stage29_exposure|EXPOSURE_", unlist(sdat))), info = paste(k, s$id))
   }
+})
+
+test_that("Figure 1 option 3b keeps option 3's a, b, e and f and draws the post hoc CON / RES / SUS contrasts in c and a simplified d", {
+  cand <- CT$candidates[[OPTION3B]]; o3 <- CT$candidates[[OPTION3]]
+  expect_true(vector_page(OPTION3B))
+  expect_equal(cand$width_mm, 183)
+  expect_lte(cand$height_mm, 170)
+  expect_equal(c(cand$page_margin_mm, cand$panel_gap_mm), c(4, 3))
+  expect_equal(unname(vapply(cand$panels, function(s) s$letter, "")), letters[1:6])
+  by_id <- function(k) stats::setNames(CT$candidates[[k]]$panels, vapply(CT$candidates[[k]]$panels, function(s) s$id, ""))
+  p3b <- by_id(OPTION3B); p3 <- by_id(OPTION3)
+  # a, b, e and f: option 3's panels (same builder, arguments, inputs, map panels, seeds and box)
+  for (id in c("a", "b", "e", "f")) for (f in c("builder", "args", "inputs", "annotation_panels", "annotation_panels_plotted",
+                                                   "annotation_panels_legend", "jitter_seed", "x", "y", "w", "h"))
+    expect_identical(p3b[[id]][[f]], p3[[id]][[f]], info = paste(id, f))
+  # c and d: option 3's boxes, the option 3b builders; c reads the post hoc rows and no CON cage means,
+  # d the CON descriptive means (F1b) but no cage means either
+  for (id in c("c", "d")) for (f in c("x", "y", "w", "h")) expect_identical(p3b[[id]][[f]], p3[[id]][[f]], info = paste(id, f))
+  expect_identical(c(p3b$c$builder, p3b$d$builder), c("f1o3b_panel_cc1", "f1o3b_panel_trajectory"))
+  expect_true("fsb/P1_posthoc_con_contrasts" %in% unlist(p3b$c$inputs))
+  expect_false(any(c("fsb/F1_con_cage_means", "fsb/F1b_con_reference_means") %in% unlist(p3b$c$inputs)))
+  expect_true("fsb/F1b_con_reference_means" %in% unlist(p3b$d$inputs))
+  expect_false("fsb/F1_con_cage_means" %in% unlist(p3b$d$inputs))
+  expect_identical(p3b$c$args[c("plot_top_mm", "axis_mm")], p3b$d$args[c("plot_top_mm", "axis_mm")])   # one row frame
+  skip_if_not(have_pins, "bundles not pinned")
+  # the pinned figure-support bundle carries the frozen post hoc rows, all OK, labelled post hoc
+  P1 <- fsb_bundle_table("P1_posthoc_con_contrasts")
+  expect_true(all(P1$registry_sha256 == POSTHOC_REGISTRY_SHA256))
+  expect_true(all(P1$tier == "POST HOC exploratory"))
+  expect_true(all(P1$status == "OK"))
+  expect_true(all(P1$display_note == "Post hoc, cage-aware; CON = 3 cages/sex"))
+  expect_true(all(P1$n_con_cages == 3L))
+  skip_if_not(rendered, "candidates not rendered")
+  skip_if_not_installed("xml2")
+  rc <- rd(RECEIPT)
+  out <- function(k, kind) rc$path[rc$candidate == k & rc$kind == kind]
+  # a, b, e and f are byte-identical to option 3's panels and source data
+  for (id in c("a", "b", "e", "f")) {
+    expect_identical(sha(panel_svg(c(p3b[[id]], list(candidate = OPTION3B)))), sha(panel_svg(c(p3[[id]], list(candidate = OPTION3)))), info = id)
+    sd_of <- function(k) repo("results", "source_data", "manuscript_candidates", GEN, k, sprintf("%s_%s_source_data.csv", k, id))
+    expect_identical(sha(sd_of(OPTION3B)), sha(sd_of(OPTION3)), info = id)
+  }
+  # the wording (OPTION3B_SPEC): the c title and the post hoc label once; the three contrasts named once per
+  # measure; no female - male row or CON cage wording; d's registered P-TR line once and the CON key once
+  page <- svg_text_nodes(repo(out(OPTION3B, "assembled_svg")))
+  txt <- trimws(page$text)
+  for (w in c("First active phase after CC1", "Post hoc, cage-aware; CON = 3 cages/sex",
+              "CC1 → CC4, active phase after each cage change", "Group × cage change × sex (P-TR), Holm"))
+    expect_equal(sum(txt == w), 1L, info = w)
+  for (w in c("RES − CON", "SUS − CON", "SUS − RES")) expect_equal(sum(txt == w), 2L, info = w)
+  c_txt <- trimws(svg_text_nodes(panel_svg(c(p3b$c, list(candidate = OPTION3B))))$text)
+  d_txt <- trimws(svg_text_nodes(panel_svg(c(p3b$d, list(candidate = OPTION3B))))$text)
+  expect_equal(sum(c_txt == "Holm"), 4L)   # one "Holm P" head over each forest's P column
+  expect_equal(sum(d_txt == "CON"), 1L)
+  for (w in c("F − M", "Female − male", "female − male", "descriptive reference", "cage mean", "Q2b"))
+    expect_false(any(grepl(w, c(c_txt, d_txt), fixed = TRUE)), info = w)
+  # c's source data: the plotted post hoc rows are the primary model's three means and three contrasts per
+  # measure and sex, from the frozen registry; no CON cage means, no pooled SIS - CON, no female - male row
+  sdc <- rd(repo("results", "source_data", "manuscript_candidates", GEN, OPTION3B, sprintf("%s_c_source_data.csv", OPTION3B)))
+  lay <- sdc[sdc$src_block == "plotted layer" & nzchar(sdc$estimand), , drop = FALSE]
+  expect_setequal(unique(lay$estimand), c("CON_mean", "RES_mean", "SUS_mean", "RES_minus_CON", "SUS_minus_CON", "SUS_minus_RES"))
+  expect_true(all(startsWith(lay$model_id, "PHC|primary|")))
+  expect_true(all(P1$model_id[P1$model == "primary_separate_cage_variances"] %in% lay$model_id))
+  expect_equal(nrow(unique(lay[, c("measure", "Sex", "estimand")])), 24L)
+  # every plotted value is the stored P1 cell (the source data carry the rows as passed to the plot)
+  P1c <- rd(repo("source_data", "MMMSociability", fsb_bundle_pin()$bundle_id, "P1_posthoc_con_contrasts.csv"))
+  kk <- function(d) paste(d$model_id, d$estimand)
+  hit <- match(kk(lay), kk(P1c))
+  expect_false(anyNA(hit))
+  for (col in c("measure", "Sex")) expect_identical(lay[[col]], P1c[[col]][hit], info = col)
+  # (a layer carries only the columns it maps; the source data write each double as R prints it, 15
+  # significant digits)
+  for (col in c("estimate", "ci_low", "ci_high")) {
+    i <- nzchar(lay[[col]])
+    expect_gt(sum(i), 0L)
+    expect_equal(as.numeric(lay[[col]][i]), as.numeric(P1c[[col]][hit[i]]), tolerance = 1e-13, info = col)
+  }
+  expect_false("cage_mean" %in% names(sdc))
+  sdd <- rd(repo("results", "source_data", "manuscript_candidates", GEN, OPTION3B, sprintf("%s_d_source_data.csv", OPTION3B)))
+  expect_false("cage_mean" %in% names(sdd))
+  for (sdat in list(sdc, sdd)) {
+    if ("estimand" %in% names(sdat)) expect_false(any(grepl("^SC_|^Q1$|SIS_minus_CON", sdat$estimand)))
+    expect_false(any(grepl("stage29_exposure|EXPOSURE_", unlist(sdat))))
+  }
+  # the Holm P printed beside each forest row is that row's stored cell (checked by key; the builder also
+  # stops unless the key's value is the plotted row's p_holm)
+  pr <- sdc[sdc$src_block == "annotation key" & sdc$src_role == "printed", , drop = FALSE]
+  expect_equal(nrow(pr), 12L)
+  expect_true(all(pr$src_table == "P1_posthoc_con_contrasts" & pr$src_column == "p_holm"))
 })
