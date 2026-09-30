@@ -112,7 +112,7 @@ testthat::test_that("the Extended Data contract declares the panels the renderer
 
   for (fig in list(cov, sec)) {
     testthat::expect_identical(fig$contract_version,
-                               "manuscript_figures_v3_final_truth_v9_promoted")
+                               "manuscript_figures_v4_figure3_adaptation")
     testthat::expect_false(isTRUE(fig$rendering_repository_computes_statistics))
     testthat::expect_identical(as.numeric(fig$width_mm), 183)
     testthat::expect_identical(as.numeric(fig$height_mm), 118)
