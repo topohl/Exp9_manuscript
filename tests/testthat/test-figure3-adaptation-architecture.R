@@ -1,4 +1,5 @@
 source(testthat::test_path("..", "..", "R", "paths.R"))
+source(repo_path("R", "final_truth_v9_panels.R"))
 source(repo_path("R", "figure3_adaptation_panels.R"))
 
 f3a_inventory_for_test <- function() {
@@ -8,20 +9,47 @@ f3a_inventory_for_test <- function() {
     check.names = FALSE)
 }
 
-testthat::test_that("Figure 3 adaptation registry has the requested seven programmes", {
+testthat::test_that("Figure 3 programmes are the seven v3 registry themes", {
   p <- f3a_programmes()
   testthat::expect_identical(p$programme_order, 1:7)
+  testthat::expect_identical(p$source_theme_id, f9_atlas_themes()$theme_id)
   testthat::expect_identical(p$programme_label, c(
-    "Synapse / vesicle organization", "RNA / RNP processing",
-    "Ribosome / translation", "Mitochondria / OXPHOS / metabolism",
-    "Proteostasis / endolysosomal", "Chromatin / nuclear regulation",
-    "ECM / cell adhesion"))
-  z <- f3a_programme_terms(f3a_inventory_for_test())
-  testthat::expect_true(all(c("GO:0030198", "GO:0007155") %in%
-                              z$GO_ID[z$programme_id == "ecm_adhesion"]))
-  testthat::expect_true("GO:0006457" %in%
-                          z$GO_ID[z$programme_id ==
-                                    "proteostasis_endolysosomal"])
+    "RNA processing", "Translation / ribosome",
+    "Chromatin / epigenetic regulation", "Mitochondrial respiration",
+    "Synaptic signalling / vesicle", "Neuron projection development",
+    "Autophagy / endolysosomal"))
+  testthat::expect_false(anyDuplicated(p$programme_id) > 0L)
+  testthat::expect_false(anyDuplicated(p$colour) > 0L)
+  testthat::expect_true(all(f3a_exemplars()$programme_id %in% p$programme_id))
+
+  # Membership is the registry's claim-eligible theme assignment and nothing
+  # else: no hand-picked GO IDs, no unclassified terms.
+  inv <- f3a_inventory_for_test()
+  z <- f3a_programme_terms(inv)
+  testthat::expect_true(all(z$theme_claim_eligible %in% TRUE))
+  testthat::expect_true(all(mapply(function(ids, theme)
+    theme %in% strsplit(ids, ";", fixed = TRUE)[[1]],
+    z$theme_id, p$source_theme_id[match(z$programme_id, p$programme_id)])))
+})
+
+testthat::test_that("the SUS-RES programme atlas equals the frozen v3 theme atlas", {
+  # Figure 3b and the Extended Data Fig. 6 atlases must be the same theme
+  # aggregation. The frozen SUS-RES atlas (the former panel 3b, drawn by
+  # f9_gsea_atlas) is the reference, cell for cell.
+  cells <- f3a_programme_cells(f3a_inventory_for_test())
+  cells <- cells[cells$contrast == "SUS - RES", , drop = FALSE]
+  cells$theme_id <- f3a_programmes()$source_theme_id[
+    match(cells$programme_id, f3a_programmes()$programme_id)]
+  ref <- utils::read.csv(repo_path(
+    "source_data", "pRoteomics", "figure_03", "figure_03b_source_data.csv"),
+    stringsAsFactors = FALSE)
+  m <- merge(cells, ref, by = c("dataset", "spatial_unit", "theme_id"),
+             suffixes = c("", "_ref"))
+  testthat::expect_identical(nrow(cells), nrow(ref))
+  testthat::expect_identical(nrow(m), nrow(ref))
+  testthat::expect_equal(m$median_NES, m$median_NES_ref, tolerance = 1e-12)
+  testthat::expect_identical(as.integer(m$n_fdr_supported),
+                             as.integer(m$n_fdr))
 })
 
 testthat::test_that("programme summaries cover every context and contrast once", {
@@ -44,7 +72,7 @@ testthat::test_that("five-state adaptation classification is exhaustive and tran
     "little detectable adaptation")
   testthat::expect_setequal(z$adaptation_pattern, expected)
   observed <- table(factor(z$adaptation_pattern, levels = expected))
-  testthat::expect_identical(as.integer(observed), c(25L, 27L, 11L, 3L, 60L))
+  testthat::expect_identical(as.integer(observed), c(25L, 26L, 12L, 3L, 60L))
 
   res <- z$RES_CON_n_fdr > 0L
   sus <- z$SUS_CON_n_fdr > 0L
