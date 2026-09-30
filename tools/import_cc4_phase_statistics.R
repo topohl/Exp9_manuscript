@@ -3,7 +3,7 @@ source(repo_path("R","panels","cc4_phase_statistics_candidate.R"))
 import_cc4_statistics<-function(source_dir,bundle_id) {
   if(!grepl("^cc4_phase_statistics_[A-Za-z0-9_-]+$",bundle_id)) stop("Invalid statistical bundle ID.",call.=FALSE)
   m<-cc4_stats_verify_bundle(source_dir)
-  upstream<-"MMMSociability";dest<-repo_path("source_data",upstream,bundle_id)
+  upstream<-"MMMSociability_candidates";dest<-repo_path("source_data",upstream,bundle_id)
   if(file.exists(dest)) stop("Frozen statistical import already exists.",call.=FALSE)
   files<-c(m$File,"manifest.csv");hashes<-unname(tools::sha256sum(file.path(source_dir,files)))
   for(f in files) {

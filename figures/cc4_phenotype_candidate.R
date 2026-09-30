@@ -6,7 +6,7 @@ source(repo_path("R","panels","cc4_phenotype_candidate.R"))
 render_cc4_phenotypes<-function(bundle_id,descriptive_id,output_dir) {
   if(!grepl("^cc4_phenotypes_[A-Za-z0-9_-]+$",bundle_id)||!grepl("^cc4_phase_groups_[A-Za-z0-9_-]+$",descriptive_id))stop("Invalid bundle IDs.",call.=FALSE)
   if(file.exists(output_dir))stop("Candidate output already exists.",call.=FALSE)
-  upstream<-"MMMSociability"
+  upstream<-"MMMSociability_candidates"
   src<-repo_path("source_data",upstream,bundle_id);ds<-repo_path("source_data",upstream,descriptive_id)
   stats<-cc4g_read(src);descriptive<-cc4_read_bundle(ds)
   # This candidate uses identical per-group populations for trajectory and model.

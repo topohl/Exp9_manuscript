@@ -2,7 +2,7 @@ source(file.path("R","paths.R"))
 source(repo_path("R","panels","cc4_phenotype_candidate.R"))
 import_cc4_phenotypes<-function(source_dir,bundle_id) {
   if(!grepl("^cc4_phenotypes_[A-Za-z0-9_-]+$",bundle_id))stop("Invalid phenotype bundle ID.",call.=FALSE)
-  m<-cc4g_verify(source_dir);upstream<-"MMMSociability"
+  m<-cc4g_verify(source_dir);upstream<-"MMMSociability_candidates"
   dest<-repo_path("source_data",upstream,bundle_id)
   if(file.exists(dest))stop("Frozen phenotype import already exists.",call.=FALSE)
   names<-c(m$File,"manifest.csv");hashes<-unname(tools::sha256sum(file.path(source_dir,names)))

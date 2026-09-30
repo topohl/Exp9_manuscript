@@ -53,7 +53,7 @@ testthat::test_that("equal counts cannot conceal different animals or cages", {
 })
 
 testthat::test_that("eight panels use frozen values, shared scales and the behavioural palette", {
-  upstream<-"MMMSociability"
+  upstream<-"MMMSociability_candidates"
   d<-cc4_read_bundle(repo_path("source_data",upstream,"cc4_phase_groups_20260929_v2"))
   s<-phenotype_fixture();original<-list(d=d,s=s);p<-cc4g_panels(s,d)
   testthat::expect_length(p,8L)

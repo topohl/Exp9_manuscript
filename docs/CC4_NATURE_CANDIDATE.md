@@ -10,7 +10,7 @@ sessions. CON therefore is not an unexposed grid control.
 - Renderer: `figures/cc4_phase_groups_nature_candidate.R`.
 - Panel library: `R/panels/cc4_phase_groups_nature.R`.
 - Test: `tests/testthat/test-cc4-nature-candidate.R`.
-- Source bundle: `source_data/MMMSociability/cc4_phase_groups_20260929_v2/`.
+- Source bundle: `source_data/MMMSociability_candidates/cc4_phase_groups_20260929_v2/`.
 - Reviewed output: `results/figures/manuscript_candidates/cc4_phase_groups_nature_20260929_v2/`.
 
 All three figures are exported as editable vector PDF/SVG and 300 dpi preview

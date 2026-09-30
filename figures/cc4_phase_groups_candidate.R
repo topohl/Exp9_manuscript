@@ -5,7 +5,7 @@ source(repo_path("R", "panels", "cc4_phase_groups_candidate.R"))
 render_cc4_phase_groups <- function(bundle_id, output_dir) {
   if (!grepl("^cc4_phase_groups_[A-Za-z0-9_-]+$",bundle_id)) stop("Invalid CC4 bundle ID.",call.=FALSE)
   if (file.exists(output_dir)) stop("Candidate output already exists.",call.=FALSE)
-  upstream <- "MMMSociability"
+  upstream <- "MMMSociability_candidates"
   src <- repo_path("source_data",upstream,bundle_id)
   data <- cc4_read_bundle(src)
   plots <- cc4_candidate_plots(data)
