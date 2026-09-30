@@ -195,7 +195,7 @@ candidates:
       d, e and f all start their titles at the plot edge, under the letter. f takes the
       equal-width scatter and bottom pad of option 1 e, so the row-3 axes sit on one line. d's
       draft legend quotes the stored CIs, the inactivity saturation counts, the Movement-adjusted
-      female estimate and the dependence descriptors (annotation_panels_legend).
+      female and female - male estimates and the dependence descriptors (annotation_panels_legend).
     panels:
       - id: a
         letter: a
@@ -290,7 +290,8 @@ candidates:
       A letterless page: the panel takes a 3-pt top margin instead of the 11.5-pt letter margin.
       The two halves are separated by a fixed 4-mm gutter column, so the rate strip's CI text and
       the inactivity strip's row labels on the same baselines do not read as one line; the shared
-      legend starts under the flush-left overall title.
+      legend starts under the flush-left overall title. The plain inactivity strip x title takes
+      1.95 pt more top margin, so it shares the baseline of the rate strip's plotmath title.
     panels:
       - id: main
         letter: ""
@@ -410,7 +411,11 @@ candidates:
       and its subtitle is two lines, so the box is 173 x 125 (CANDIDATE_SPEC B6: about 128) at the
       same row pitch; the 2 mm over the first layout pay for 2 pt of space under each block header.
       A 2.5-mm gap follows the Female and Male cells (the forests give 1.7 mm each), so each
-      class letter sits nearer its own p/q text than the next column's forest.
+      class letter sits nearer its own p/q text than the next column's forest. The last cell has
+      no forest to its right: its class letters sit 0.3 mm (not 2.2) from its edge and the cell is
+      1.9 mm narrower (each forest gains a third), so the right ink margin matches the left. The
+      draft legend's saturation statement for the light-phase inactivity rows quotes the S1c
+      counts (map panel screen_legend).
     panels:
       - id: main
         letter: ""
@@ -422,8 +427,9 @@ candidates:
           A-D in grey. No colour or highlighting by class.
         args: {pq_style: stacked, top_margin_pt: 3}
         jitter_seed: null
-        inputs: [s30b/S4_screen_matrix, s30b/S0_master_hypotheses]
+        inputs: [s30b/S4_screen_matrix, s30b/S0_master_hypotheses, s30b/S1c_light_descriptives]
         annotation_panels: [screen_matrix]
+        annotation_panels_legend: [screen_legend]
         x: 5
         "y": 5
         w: 173

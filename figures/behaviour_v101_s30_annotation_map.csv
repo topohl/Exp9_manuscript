@@ -118,6 +118,9 @@ li_int_qglob,light_legend,s30b,S0_master_hypotheses,q_global_bh_descriptive,id=S
 li_rs_f_movadj,light_legend,s30b,S1b_light_estimates,movadj_estimate,estimand_key=RS_F,%.4f,legend and Results text only: registered Movement-adjusted sensitivity of SLEEP-CAT-IA40L-F (same-window position-change rate as covariate): RES - SUS in females (fraction)
 li_rs_f_movadj_lo,light_legend,s30b,S1b_light_estimates,movadj_ci_low,estimand_key=RS_F,%.4f,legend and Results text only: 95% CI lower of the Movement-adjusted female estimate
 li_rs_f_movadj_hi,light_legend,s30b,S1b_light_estimates,movadj_ci_high,estimand_key=RS_F,%.4f,legend and Results text only: 95% CI upper of the Movement-adjusted female estimate
+li_int_movadj,light_legend,s30b,S1b_light_estimates,movadj_estimate,estimand_key=INT_FM,%.4f,legend and Results text only: registered Movement-adjusted sensitivity of SLEEP-CAT-IA40L-INT (same-window position-change rate as covariate): female - male difference in RES - SUS (fraction)
+li_int_movadj_lo,light_legend,s30b,S1b_light_estimates,movadj_ci_low,estimand_key=INT_FM,%.6f,legend and Results text only: 95% CI lower of the Movement-adjusted female - male difference (six decimals: the stored bound is about 1.2e-05 and would print as 0.0000 at four)
+li_int_movadj_hi,light_legend,s30b,S1b_light_estimates,movadj_ci_high,estimand_key=INT_FM,%.4f,legend and Results text only: 95% CI upper of the Movement-adjusted female - male difference
 li_n_f,light_legend,s30b,S1b_light_estimates,n,estimand_key=RS_F,%d,legend and Results text only: SIS females in the light-phase inactivity model (SLEEP-CAT-IA40L-F)
 li_n_m,light_legend,s30b,S1b_light_estimates,n,estimand_key=RS_M,%d,legend and Results text only: SIS males in the light-phase inactivity model (SLEEP-CAT-IA40L-M)
 li_n_cages_f,light_legend,s30b,S1b_light_estimates,n_cages,estimand_key=RS_F,%d,legend and Results text only: cages (cage epochs at CC1) of the female light-phase inactivity model
@@ -151,6 +154,7 @@ ckrs_int_lo,cookie_rs,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CAT-DC60-INT,%#
 ckrs_int_hi,cookie_rs,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CAT-DC60-INT,%#.3g,95% CI upper
 ckrs_int_p,cookie_rs,s30b,S3c_cookie_estimates,p_raw,id=COOKIE-CAT-DC60-INT,%.2f,raw p (Kenward-Roger t)
 ckrs_int_q,cookie_rs,s30b,S3c_cookie_estimates,q_local_bh,id=COOKIE-CAT-DC60-INT,%.2f,local BH q within family COOKIE-CAT (m = 3)
+ckrs_family_m,cookie_rs,s30b,S3c_cookie_estimates,family_m,id=COOKIE-CAT-DC60-F,%d,size m of the local BH family of the cookie-group tests (COOKIE-CAT) in the panel subtitle (the builder checks the three printed rows share it)
 ckcz_f,cookie_combz,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CONT-DC60-F,%#.3g,frozen slope of later CombZ on the home-cage cookie response in females (CombZ per position change/h; COOKIE-CONT; registered exploratory test); equals S3d slope (Female)
 ckcz_f_lo,cookie_combz,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CONT-DC60-F,%#.3g,95% CI lower (Satterthwaite CR2)
 ckcz_f_hi,cookie_combz,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CONT-DC60-F,%#.3g,95% CI upper (Satterthwaite CR2)
@@ -182,6 +186,8 @@ scr_m_sleep_cat,screen_matrix,s30b,S0_master_hypotheses,family_m,id=SLEEP-CAT-IA
 scr_m_sleep_l,screen_matrix,s30b,S0_master_hypotheses,family_m,id=SLEEP-L-IA40A-F,%d,family size m of SLEEP-L (row suffix; the builder checks every row of the family has this m)
 scr_m_cookie_cont,screen_matrix,s30b,S0_master_hypotheses,family_m,id=COOKIE-CONT-DC60-F,%d,family size m of COOKIE-CONT (row suffix; the builder checks every row of the family has this m)
 scr_m_cookie_cat,screen_matrix,s30b,S0_master_hypotheses,family_m,id=COOKIE-CAT-DC60-F,%d,family size m of COOKIE-CAT (row suffix; the builder checks every row of the family has this m)
+scl_n_ge099,screen_legend,s30b,S1c_light_descriptives,n_ge_0.99,scope=overall_87;measure=posinact40_light,%d,legend only: SIS animals at CC1 whose light-phase inactivity fraction is >= 0.99 (the saturation statement for the light-phase inactivity rows of the screen)
+scl_n_animals,screen_legend,s30b,S1c_light_descriptives,n,scope=overall_87;measure=posinact40_light,%d,legend only: SIS animals at CC1 with a light-phase inactivity fraction (the saturation statement for the light-phase inactivity rows of the screen)
 scr_screen_cont_occ_f_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-CONT-OCC-F,%#.2g,SCREEN-CONT-OCC-F raw p of the registered test
 scr_screen_cont_occ_f_q,screen_matrix,s30b,S0_master_hypotheses,q_local_bh,id=SCREEN-CONT-OCC-F,%#.2g,SCREEN-CONT-OCC-F local Benjamini-Hochberg q within family SCREEN-CONT
 scr_screen_cont_occ_m_p,screen_matrix,s30b,S0_master_hypotheses,p_raw,id=SCREEN-CONT-OCC-M,%#.2g,SCREEN-CONT-OCC-M raw p of the registered test
