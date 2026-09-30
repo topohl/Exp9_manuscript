@@ -75,6 +75,25 @@ Panels are lettered in reading order. (a)–(c) are as in option 1, with narrowe
 
 **(e) Early RFID position-change rate after CC1 against later `CombZ`; (f) held-out prediction.** As option 1 (d) and (e).
 
+## Figure 1, option 2 (Nature layout)
+
+Option 2 redrawn to the journal's figure rules (candidate `figure_01_option2_nature`): the same panels, stored values and colours, on one vector page. Values moved off the panels are quoted below; their map panels are `f1o2n_design_legend`, `f1o2n_cc1_legend` and `f1o2n_prediction_legend`, and (d) quotes the light-phase panels' keys, as option 2 does.
+
+**Figure 1 | Home-cage RFID behaviour after the first cage change in animals later classified resilient or susceptible, and the early RFID position-change rate against the later composite outcome.**
+
+**a**, Design. Radio-frequency identification (RFID) recorded home-cage behaviour of stress-exposed (SIS) and control (CON) mice in the first active phase (18:30–06:30) after each cage change (CC1–CC4; CC1 at P25; 111 animals, 444 animal-windows); the later composite outcome (CombZ), 117 animals.
+**b**, CombZ by sex; points, animals. Grey line, same-sex CON mean; dashed line, the threshold that defines susceptible (SUS, below) and resilient (RES) SIS animals; not a test.
+**c**, First active phase after CC1. Hollow grey points, CON (not modelled); black marks and bars, model-based RES and SUS means with 95% confidence intervals (CIs). RES − SUS, female and male: rate −0.7 (−4.8 to 3.4) and 2.3 (−0.7 to 5.3); occupancy 0.022 (−0.012 to 0.055) and 0.009 (−0.042 to 0.060). Female − male difference: rate −2.9 (−8.0 to 2.2), occupancy 0.013 (−0.045 to 0.070); *P*, Holm across the two primary measures (P-CC1). SIS *n*: 46 female (28 RES, 18 SUS), 41 male (25 RES, 16 SUS).
+**d**, Light phase after CC1 (exploratory; SIS only): RES − SUS with 95% CIs. Rate, secondary estimates, not tested; RFID-defined sustained positional inactivity (≥40 s), Benjamini–Hochberg (BH) *q* within the six registered inactivity tests (m = 6).
+**e**, Early rate against later CombZ; points, animals, sexes pooled; Spearman *ρ* with bootstrap 95% CI; BH *q* across three registered features.
+**f**, Leave-one-animal-out (LOAO) prediction of CombZ by the registered movement-mean model. Shape and fill, group (not model inputs); dashed line, identity. Right, 1,000 outcome permutations; red line, observed *R*²; *P*, Holm-adjusted. Repeated grouped five-fold *R*² = 0.168 (0.125–0.193 across repeats; not a CI). Validation is internal. Groups come from later CombZ, so (c)–(f) share animals.
+
+**Methods notes (not counted in the legend)**
+- Position-change rate: position changes per observed hour of the change-only stream of vendor-defined RFID position records. Shared occupancy: the fraction of co-assigned dyadic time an animal carried the same RFID position as a tracked cage-mate; undefined for 2 animals without one at CC1.
+- (c) Sex-stratified linear mixed models of SIS animals, `y ~ Batch + group + (1 | cage epoch)`, Kenward–Roger; the female − male difference from the pooled model with `group:sex`. P-CC1 and P-TR were fixed in configuration v1.0.0, hashed before any RES-versus-SUS model was fitted; v1.0.1 leaves them unchanged.
+- (d) Rate: F −0.95 (−1.91 to 0.01), M 0.73 (−0.25 to 1.71), F − M −1.67 (−3.02 to −0.32). Inactivity: F 0.0032 (0.0006 to 0.0058), M −0.0022 (−0.0048 to 0.0005), F − M 0.0054 (0.0017 to 0.0090); models as in (c). Over all 48 screened tests the descriptive BH *q* is 0.22 (F) and 0.21 (F − M), not decision values. The measure is saturated (76 of 87 animals ≥ 0.99); adjusted for the same-window rate (a registered sensitivity), F 0.0009 (0.0002 to 0.0017), F − M 0.0013 (0.000012 to 0.0025). Inactivity tracks the rate (Spearman *ρ* = −0.93 over 444 group-blind animal-windows; residual reliability 0.08); it captures coarse positional inactivity rather than EEG-defined sleep. The Stage 30 registry was hash-frozen before any Stage 30 association but after the null Stage 29 primary results (decision basis: post hoc context).
+- (e) 5,000-sample percentile bootstrap. (f) Permutations refit the full model; the permutation *P* is Holm-adjusted across the two registered behaviour-only models.
+
 ## Standalone light-phase panel (candidate; used as Extended Data Fig. X d)
 
 **Light phase after CC1: RFID position-change rate and RFID-defined sustained positional inactivity in SIS animals later classified resilient or susceptible.**
