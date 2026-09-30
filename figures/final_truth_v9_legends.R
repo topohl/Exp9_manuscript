@@ -475,7 +475,8 @@ panel_of <- function(id)
 
 rows <- list(); leg <- c("# Figure legends - final_truth_v9", "",
   paste0("Generated from `figures/figure_final_truth_v9_contract.yml`. ",
-         "Candidate layer; not promoted. Biological replicate is the animal ",
+         "Figures 2 and 3 of this layer are the canonical manuscript figures ",
+         "(provenance/publication_registry). Biological replicate is the animal ",
          "(9 animals, 3 per group) throughout unless a panel states otherwise."),
   "")
 

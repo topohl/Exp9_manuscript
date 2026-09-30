@@ -82,9 +82,11 @@ is therefore runtime context rather than artifact identity.
 The entry points do not refit differential-abundance, enrichment, or WGCNA
 models and do not modify p-values, FDRs, module identities, or source results.
 Most panels are promoted from their validated stage-level SVG and source table.
-Figure 3e is the one new render: it filters the existing three-module display
-source to `WGCNA_m12` and uses the same scale and plotting contract as the
-existing renderer.
+Figure 3 (panels a-m) is rendered here by `figures/final_truth_v9_figure_03.R`
+from the frozen imports in `source_data/pRoteomics/`, grouped by the single
+`manuscript_go_themes_v3` registry in `f9_atlas_themes()`, and promoted with
+`tools/promote_manuscript_render.R figure_03`. (In the superseded v2 grid,
+Figure 3e was a WGCNA_m12 filter of the three-module display source.)
 
 The hemisphere contracts intentionally differ by panel and are declared in the
 contract and panel manifest. Technical QC and exploratory PCA remain
