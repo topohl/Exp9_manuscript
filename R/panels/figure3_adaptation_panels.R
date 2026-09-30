@@ -24,7 +24,7 @@ f3a_programmes <- function() {
                chromatin_organization = "#556B5D",
                mitochondrial_respiration_oxphos = "#B45F4B",
                synaptic_signaling_vesicle = "#315B7D",
-               neuron_projection_development = "#8A6A4A",
+               neuron_projection_development = "#743100",
                autophagy_lysosome_endosome = "#7B6A91")
   if (!setequal(themes$theme_id, names(ids)))
     stop("Figure 3 programme ids do not cover the v3 theme registry.",
@@ -294,14 +294,37 @@ f3a_state_map <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     levels = c("Neuropil", "Soma", "Microglia ROI"))
   z$supported_any <- z$RES_CON_n_fdr > 0 | z$SUS_CON_n_fdr > 0
   lim <- ceiling(max(abs(c(z$RES_CON_median_NES, z$SUS_CON_median_NES))) /
-                   0.25) * 0.25 + 0.25
+                   0.25) * 0.25 + 0.5
+  # Region labels sit at the panel edge, clear of the data. Both same-sign
+  # quadrants read shared / parallel and both opposite-sign quadrants
+  # divergent / opposing; the lower-left one sits up the left edge because the
+  # corner itself holds data.
   ann <- data.frame(
-    x = c(0.64, 0.00, 0.88, -0.64, 0) * lim,
-    y = c(0.82, 0.96, 0.00, 0.82, 0.07) * lim,
-    label = c("shared /\nparallel", "SUS-associated",
-              "RES-associated", "divergent /\nopposing",
-              "little detectable"),
-    angle = c(0, 0, 90, 0, 0))
+    x = c(-1, 1, -1, 1, 0, 1, 0) * lim,
+    y = c(1, 1, -0.5, -1, 1, 0, 0.07) * lim,
+    label = c("divergent /\nopposing", "shared /\nparallel",
+              "shared /\nparallel", "divergent /\nopposing",
+              "SUS-\nassociated", "RES-associated", "little detectable"),
+    angle = c(0, 0, 0, 0, 0, 90, 0),
+    hjust = c(0, 1, 0, 1, 0.5, 0.5, 0.5),
+    vjust = c(1, 1, 0.5, 0, 1, 0, 0))
+  ex <- z[!is.na(z$exemplar), , drop = FALSE]
+  # Each exemplar number takes the diagonal position just outside its ring
+  # that has the fewest other points near it and stays inside the panel.
+  off <- 0.36
+  cand <- expand.grid(dx = c(-off, off), dy = c(off, -off))
+  pick <- lapply(seq_len(nrow(ex)), function(i) {
+    x <- ex$RES_CON_median_NES[[i]] + cand$dx
+    y <- ex$SUS_CON_median_NES[[i]] + cand$dy
+    crowd <- vapply(seq_along(x), function(k)
+      sum((z$RES_CON_median_NES - x[[k]])^2 +
+            (z$SUS_CON_median_NES - y[[k]])^2 < 0.3^2), numeric(1))
+    crowd[abs(x) > lim - 0.3 | abs(y) > lim - 0.3] <- Inf
+    k <- which.min(crowd)
+    c(x[[k]], y[[k]])
+  })
+  ex$label_x <- vapply(pick, `[[`, numeric(1), 1L)
+  ex$label_y <- vapply(pick, `[[`, numeric(1), 2L)
   fam <- nf_fam()
   p <- ggplot2::ggplot(z, ggplot2::aes(RES_CON_median_NES,
                                        SUS_CON_median_NES)) +
@@ -309,21 +332,22 @@ f3a_state_map <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_vline(xintercept = 0, colour = "grey75", linewidth = 0.25) +
     ggplot2::annotate("rect", xmin = -0.35, xmax = 0.35,
       ymin = -0.35, ymax = 0.35, fill = "grey95", colour = NA) +
-    ggplot2::geom_label(data = ann,
-      ggplot2::aes(x, y, label = label, angle = angle),
+    ggplot2::geom_text(data = ann,
+      ggplot2::aes(x, y, label = label, angle = angle, hjust = hjust,
+                   vjust = vjust),
       inherit.aes = FALSE, family = fam, size = nf_sz(4.6),
-      colour = "grey42", fill = scales::alpha("white", 0.82),
-      linewidth = 0, label.padding = ggplot2::unit(0.35, "mm"),
-      lineheight = 0.88) +
+      colour = "grey42", lineheight = 0.88) +
     ggplot2::geom_point(ggplot2::aes(colour = programme_short,
                                     shape = compartment,
                                     alpha = supported_any),
                         size = 1.65, stroke = 0.35) +
-    ggplot2::geom_point(data = z[!is.na(z$exemplar), , drop = FALSE],
+    ggplot2::geom_point(data = ex,
       shape = 21, fill = NA, colour = "black", size = 3.0, stroke = 0.65) +
-    ggplot2::geom_text(data = z[!is.na(z$exemplar), , drop = FALSE],
-      ggplot2::aes(label = exemplar), colour = "black", family = fam,
-      fontface = "bold", size = nf_sz(4.8), nudge_y = 0.18) +
+    ggplot2::geom_label(data = ex,
+      ggplot2::aes(label_x, label_y, label = exemplar), colour = "black",
+      family = fam, fontface = "bold", size = nf_sz(4.8),
+      fill = scales::alpha("white", 0.85), linewidth = 0,
+      label.padding = ggplot2::unit(0.2, "mm")) +
     ggplot2::scale_colour_manual(values = cols, name = "GO programme") +
     ggplot2::scale_shape_manual(values = c(16, 17, 15), name = "Compartment") +
     ggplot2::scale_alpha_manual(values = c("FALSE" = 0.28, "TRUE" = 0.88),
@@ -351,8 +375,10 @@ f3a_pattern_burden <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   patterns <- c("resilience-specific remodeling",
                 "susceptibility-specific remodeling", "shared / parallel",
                 "divergent / opposing", "little detectable adaptation")
-  short <- c("RES-\nspecific", "SUS-\nspecific", "Shared /\nparallel",
-             "Divergent /\nopposing", "Little\ndetectable")
+  # The five columns are ~6 mm apart, narrower than any two-line label, so
+  # the class names are slanted rather than stacked.
+  short <- c("RES-specific", "SUS-specific", "Shared / parallel",
+             "Divergent / opposing", "Little detectable")
   compartments <- c("Neuropil", "Soma", "Microglia ROI")
   grid <- expand.grid(compartment = compartments,
                       adaptation_pattern = patterns,
@@ -384,13 +410,16 @@ f3a_pattern_burden <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       name = "Fraction") +
     ggplot2::labs(x = NULL, y = NULL) + nf_theme(grid = "none") +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(size = NF_MIN_PT, lineheight = 0.85),
+      axis.text.x = ggplot2::element_text(size = NF_MIN_PT, angle = 35,
+                                          hjust = 1, vjust = 1),
       axis.text.y = ggplot2::element_text(size = NF_MIN_PT),
       axis.ticks = ggplot2::element_blank(),
       legend.position = "right",
       legend.title = ggplot2::element_text(size = NF_MIN_PT),
       legend.text = ggplot2::element_text(size = NF_MIN_PT),
-      plot.margin = ggplot2::margin(1, 1, 0.5, 1, "mm"))
+      legend.key.width = ggplot2::unit(3, "mm"),
+      legend.box.spacing = ggplot2::unit(0.5, "mm"),
+      plot.margin = ggplot2::margin(1, 0.5, 0.5, 0.5, "mm"))
   write_csv_safe(out, csv_path)
   nv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
