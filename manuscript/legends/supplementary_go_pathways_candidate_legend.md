@@ -3,7 +3,7 @@
 **Additional exact-term enrichment examples and their spatial context.**
 The first two pages pair four previously unillustrated members of the
 seven-family GO program atlas with protein-level views, following Figure 3
-d-i. (a) Translation (GO:0006412) in CA1 stratum oriens neuropil.
+h-m. (a) Translation (GO:0006412) in CA1 stratum oriens neuropil.
 (b) Chromatin organization (GO:0006325) in CA2 neuronal soma.
 (c) Neuron projection development (GO:0031175) in CA2 stratum radiatum
 neuropil. (d) Autophagy (GO:0006914) in CA2 stratum radiatum neuropil.

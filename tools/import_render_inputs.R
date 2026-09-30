@@ -63,8 +63,18 @@ for (cf in c("figures/figure_contract.yml",
   ## Figures whose analysis is owned by MMMSociability are rendered here from the
   ## pinned behaviour bundle (tools/import_behaviour_bundle.R). Their panels are
   ## never imported from pRoteomics, so this tool cannot overwrite them.
+  ##
+  ## Figures this repository renders itself are skipped for the same reason. The
+  ## a-m Figure 3 is produced here by figures/final_truth_v9_figure_03.R from
+  ## source_data/pRoteomics, while pRoteomics still holds the superseded a-i
+  ## panels at the same results/ paths.
+  LOCALLY_RENDERED <- c("figure_03")
   if (!is.null(y$figures))
-    y$figures <- Filter(function(f) !identical(f$analysis_repository, "topohl/MMMSociability") || is.null(f$behaviour_bundle_id), y$figures)
+    y$figures <- Filter(function(f)
+      (!identical(f$analysis_repository, "topohl/MMMSociability") ||
+         is.null(f$behaviour_bundle_id)) &&
+        !isTRUE(as.character(f$canonical_publication_id) %in% LOCALLY_RENDERED),
+      y$figures)
   walk <- function(x) {
     if (!is.list(x)) return(invisible(NULL))
     for (nm in names(x)) {
