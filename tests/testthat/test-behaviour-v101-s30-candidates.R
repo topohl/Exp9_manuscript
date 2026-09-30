@@ -23,6 +23,12 @@ KEYS <- names(CT$candidates)
 FIGROOT <- repo("results", "figures", "manuscript_candidates", GEN)
 RECEIPT <- repo("results", "reports", "manuscript_candidates", GEN, "RECEIPT.csv")
 TRACKED_RECEIPT <- repo("provenance", "candidates", "behaviour_v101_s30_receipt.csv")
+# The candidate legends and Results text (DESIGN 6), committed beside the manuscript, not in it.
+TEXTS <- repo("manuscript", "candidates", GEN, c("legends.md", "results_text.md"))
+# Wording banned in any displayed text (DESIGN 0, CANDIDATE_SPEC A).
+BANNED <- c("antenna", "crossing", "sleep", "cookie approach", "investigation", "consumption", "time near cookie",
+            "habituation", "confirmatory", "preregistered", "pre-registered", "female-specific", "sex-specific",
+            "significant")
 have_pins <- file.exists(repo("config", "behaviour_bundle.yml")) && file.exists(repo("config", "stage30_bundle.yml"))
 rendered <- file.exists(RECEIPT)
 code_of <- function(p) { src <- readLines(p, warn = FALSE, encoding = "UTF-8"); src[!grepl("^[[:space:]]*#", src)] }
@@ -265,9 +271,6 @@ test_that("every number printed on a panel is a resolved annotation value, and e
 test_that("the SVG text uses the manuscript terminology and typography", {
   skip_if_not(rendered, "candidates not rendered")
   skip_if_not_installed("xml2")
-  BANNED <- c("antenna", "crossing", "sleep", "cookie approach", "investigation", "consumption", "time near cookie",
-              "habituation", "confirmatory", "preregistered", "pre-registered", "female-specific", "sex-specific",
-              "significant")
   for (s in all_panels()) {
     path <- panel_svg(s)
     if (!file.exists(path)) next
@@ -285,6 +288,46 @@ test_that("the SVG text uses the manuscript terminology and typography", {
   }
   # every candidate title in the contract is free of banned wording too
   for (k in KEYS) for (b in BANNED) expect_false(grepl(b, CT$candidates[[k]]$title, ignore.case = TRUE), info = paste(k, b))
+})
+
+# Numbers in the candidate texts that are registered settings or design facts, not bundle cells:
+# alpha; the inactivity axis start and threshold (0.975, 0.99 / 99%); clock times (16:00-18:30,
+# 06:30); the 12-h window; the 40/60-s bouts, the 45/60-min cookie windows and the 60 of "delta 60";
+# 1,000 permutations and 5,000 bootstrap samples; the 95% CI; the recording lag 2.3-8.5 h
+# carried over from the canonical Figure 1 legend.
+TEXT_SETTINGS <- c("0.05", "0.975", "0.99", "99", "00", "06", "12", "16", "17", "18", "30", "40", "45", "60",
+                   "1,000", "5,000", "95", "2.3", "8.5")
+text_tokens <- function(line) {
+  s <- gsub("`[^`]*`", " ", line)                                           # code spans: ids, formulas, paths
+  s <- gsub("(ebb|s30b)_v[0-9_a-z]+|v1\\.0(\\.[01])?(_be71e2f)?|\\bbe71e2f\\b", " ", s, perl = TRUE)  # bundle / config ids
+  s <- gsub(paste0("\\b(CC[1-4]|B[1-6]|P25|EPM\\+[12]|S-TR-ORG|P-CC1|P-TR|F\\(3, df\\)|Fig\\. [0-9]+[a-z]?|",
+                   "Figure [0-9]+|Stage (09|29|30)|\u00a7[0-9A-Z]+)"), " ", s, perl = TRUE)    # labels with digits
+  regmatches(s, gregexpr("(?<![A-Za-z0-9.])\u2212?[0-9]+(?:[.,][0-9]+)?", s, perl = TRUE))[[1]]
+}
+
+test_that("the committed candidate texts use the manuscript terminology and quote only resolved values", {
+  expect_true(all(file.exists(TEXTS)), info = paste(TEXTS, collapse = ", "))
+  for (f in TEXTS[file.exists(TEXTS)]) {
+    txt <- paste(readLines(f, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+    # the one permitted use of the sleep vocabulary is the denial "... rather than EEG-defined sleep"
+    scan <- gsub("EEG-defined sleep", " ", txt, fixed = TRUE)
+    for (b in BANNED) expect_false(grepl(b, scan, ignore.case = TRUE), info = paste(basename(f), "uses", b))
+    expect_false(grepl("\\bNS\\b", txt, perl = TRUE), info = paste(basename(f), "prints NS"))
+    # figure identities are placeholders (ED X, ED Y, S-screen), never a numbered ED or Supplementary figure
+    expect_false(grepl("(Extended Data|Supplementary) (Fig\\.|Figure|Table) [0-9]", txt), info = basename(f))
+  }
+  skip_if_not(have_pins, "bundles not pinned")
+  m <- rd(MAP_PATH)
+  value <- vapply(seq_len(nrow(m)), function(r) resolve(m[r, , drop = FALSE]), "")
+  for (f in TEXTS[file.exists(TEXTS)]) {
+    x <- readLines(f, warn = FALSE, encoding = "UTF-8")
+    for (i in seq_along(x)) {
+      bad <- setdiff(text_tokens(x[i]), c(value, TEXT_SETTINGS))
+      expect_equal(bad, character(0), info = sprintf("%s line %d quotes numbers that are neither resolved map values nor registered settings", basename(f), i))
+    }
+  }
+  # the quoted Movement-adjusted female - male bound resolves at full resolution, not as 0.0000
+  expect_false(any(grepl("\\b0\\.0000\\b", unlist(lapply(TEXTS[file.exists(TEXTS)], readLines, warn = FALSE, encoding = "UTF-8")))))
 })
 
 test_that("the outputs exist, are authored at their boxes and equal the receipt", {
