@@ -30,7 +30,9 @@
 #                             female - male difference (a compact sidecar) with the P-CC1 Holm P only;
 #   d  f1o3n_panel_trajectory CC1 -> CC4: the RES/SUS TR_BY_SEX means and 95% CIs (ebb C2), the CON
 #                             descriptive mean (dashed) and the three CON cage means per cage change
-#                             (fsb F1b, F1), and one line per measure for the registered Q2b (P-TR Holm P).
+#                             (fsb F1b, F1), and one line under the header for the registered Q2b of
+#                             both measures (P-TR Holm P); `indent = FALSE` drops the letter indent of
+#                             the header (the letterless stand-alone copy).
 # Group marks are circles, colour = group; every ink is one the earlier candidates draw, plus the
 # manuscript's existing diverging palette for the heatmap.
 #
@@ -52,9 +54,14 @@ F1O3N_DIVERGING <- local({
 F1O3N_CON_CAGES_PER_SEX <- 3L
 F1O3N_CON_LABEL <- "CON descriptive reference; 3 cages/sex"
 
-# Heatmap rows (fsb F2b component ids, in the stored component order), sentence case.
+# Heatmap rows (fsb F2b component ids, in the stored component order), sentence case. Each row is
+# named by what a high signed z means (higher = more resilient-like for every row), so the three
+# components the frozen definition sign-inverts after standardisation read as their inverse; the
+# builder stops unless F2b inverts exactly these three (F1O3N_COMPONENT_INVERTED).
 F1O3N_COMPONENT_LABEL <- c(NOR = "NOR discrimination", sucrose_pref = "Sucrose preference", weight_dev = "Body-weight change",
-                           delta_cort = "Corticosterone rise", adrenal_weight = "Adrenal weight", spleen_weight = "Spleen weight")
+                           delta_cort = "Smaller corticosterone rise", adrenal_weight = "Lower adrenal weight",
+                           spleen_weight = "Lower spleen weight")
+F1O3N_COMPONENT_INVERTED <- c("delta_cort", "adrenal_weight", "spleen_weight")
 # The architecture schematic (a): the four Stage 29 metrics (fsb F1 measure ids) with their domain and
 # metric wording; the tier is read from the bundle.
 F1O3N_ARCH <- data.frame(
@@ -62,11 +69,15 @@ F1O3N_ARCH <- data.frame(
   domain = c("Movement", "Social-spatial overlap", "Spatial organisation", "Temporal organisation"),
   metric = c("position-change rate", "shared occupancy", "occupancy dispersion", "fragmentation"),
   stringsAsFactors = FALSE)
-F1O3N_Q2B_LABEL <- "'Female − male difference in RES − SUS change from CC1 (Q2b): Holm ' * italic('P ') * '= ' * %s"
+# a's SIS / CON line (one line under the four cage-change boxes; plotmath pieces, f1n_expr rules)
+F1O3N_DESIGN_NOTE <- "'At every cage change — ' * 'SIS: regrouped' * '; ' * 'CON: intact group (same platform-transfer episodes)'"
+# d's one statement of the registered Q2b (P-TR), both measures' Holm P on one line under the header
+F1O3N_Q2B_LABEL <- "'F − M, RES − SUS change from CC1 (Q2b), Holm ' * italic('P') * ': rate ' * %s * ', occupancy ' * %s"
 F1O3N_RS_Y <- c(crossing_rate = paste0("RES − SUS (", F1N_PER_H, ")"), shared_zone_use = "RES − SUS (fraction)")
 F1O3N_DOTS_Y <- c(crossing_rate = paste0("Position-change rate (", F1N_PER_H, ")"),
                   shared_zone_use = "Shared occupancy<br>(fraction of dyadic time)")
-F1O3N_TRAJ_Y <- c(crossing_rate = paste0("Position-change<br>rate (", F1N_PER_H, ")"), shared_zone_use = "Shared<br>occupancy")
+F1O3N_TRAJ_Y <- c(crossing_rate = paste0("Position-change<br>rate (", F1N_PER_H, ")"),
+                  shared_zone_use = "Shared occupancy<br>(fraction of<br>dyadic time)")
 # c's sidecar columns (abbreviated; the legend spells them out) and d's group offsets within a cage change.
 F1O3N_SIDE_LABEL <- c("F", "M", "F − M")
 F1O3N_SIDE_X <- c(1, 2, 3.15)            # the wider F - M label takes a little more room
@@ -116,12 +127,12 @@ f1o3n_panel_design <- function(tab, fsb, an, w_mm, h_mm) {
   STAGE$fill[tl$role == "reference"] <- GREEN_DARK; STAGE$ink[tl$role == "reference"] <- "white"
   REC_I <- which(is_rec | tl$role %in% c("reference", "stressor")); OUT_I <- which(is_out)
   Y_LAB <- -F1N_LETTER_BASELINE_MM; Y_RULE <- -3.7; Y_BOX <- c(-10.2, -4.5)
-  Y_NOTE <- -12.6                                      # the SIS / CON line under the cage-change boxes
+  Y_NOTE <- -12.9                                      # the SIS / CON line under the cage-change boxes
   # Architecture schematic, one row under the timeline: group labels, their rules, then the boxes.
   Y_S_LAB <- -16.1; Y_S_RULE <- -16.9; Y_S_BOX <- c(-h_mm + 0.25, -17.6)
   arch <- F1O3N_ARCH
   arch$tier <- unname(tiers[arch$measure])
-  src_w <- 19; arr <- 4.5; hmm_w <- 24; mgap <- 1.5
+  src_w <- 19; arr <- 5.5; hmm_w <- 24; mgap <- 1.5
   box_w <- (w_mm - src_w - 2 * arr - hmm_w - 3 * mgap - 2) / 4
   arch$x0 <- src_w + arr + c(0, box_w + 2 + mgap * (0:2) + box_w * (0:2))
   arch$x1 <- arch$x0 + box_w
@@ -131,6 +142,17 @@ f1o3n_panel_design <- function(tab, fsb, an, w_mm, h_mm) {
   hmm_x0 <- w_mm - hmm_w
   org <- arch$measure != "crossing_rate"
   y_mid <- (Y_S_BOX[1] + Y_S_BOX[2]) / 2
+  # one bracket around all four readouts: the RFID arrow enters it and the HMM arrow leaves it, so
+  # every readout is read from the stream and feeds the downstream layer (not a linear pipeline)
+  brk_x <- c(min(arch$x0) - 0.9, max(arch$x1) + 0.9); tick <- 0.7
+  BRACKET <- data.frame(x = c(brk_x[1], brk_x[1], brk_x[1], brk_x[2], brk_x[2], brk_x[2]),
+                        xend = c(brk_x[1], brk_x[1] + tick, brk_x[1] + tick, brk_x[2], brk_x[2] - tick, brk_x[2] - tick),
+                        y = c(Y_S_BOX[1], Y_S_BOX[1], Y_S_BOX[2], Y_S_BOX[1], Y_S_BOX[1], Y_S_BOX[2]),
+                        yend = c(Y_S_BOX[2], Y_S_BOX[1], Y_S_BOX[2], Y_S_BOX[2], Y_S_BOX[1], Y_S_BOX[2]))
+  # the SIS / CON line, once, centred under all four cage-change boxes (it holds at every cage
+  # change); plotmath pieces, so "SIS: regrouped" and the CON wording are text nodes of their own
+  rec_x <- c(STAGE$x0[min(REC_I)], STAGE$x1[max(REC_I)])
+  note <- f1n_expr(F1O3N_DESIGN_NOTE)
   lab_pt <- F1N$title_pt
   txt <- function(x, y, label, colour = INK, hjust = 0.5, vjust = 0.5, pt = F1N$text_pt, lineheight = 0.92)
     annotate("text", x = x, y = y, label = label, colour = colour, hjust = hjust, vjust = vjust,
@@ -151,12 +173,14 @@ f1o3n_panel_design <- function(tab, fsb, an, w_mm, h_mm) {
              linewidth = F1N$bracket_lw, colour = MUTED) +
     txt((STAGE$x0[min(OUT_I)] + STAGE$x1[max(OUT_I)]) / 2, Y_LAB, "outcome, CombZ and group labels derived",
         colour = MUTED, vjust = 0, pt = lab_pt) +
-    txt(STAGE$x0[min(REC_I)], Y_NOTE, "SIS: regrouped", hjust = 0, vjust = 0) +
-    txt(STAGE$x0[min(REC_I)] + 17, Y_NOTE, "CON: intact group (same platform-transfer episodes)", hjust = 0, vjust = 0) +
+    annotation_custom(f1n_math_grob(note, x = 0.5, y = 0, hjust = 0.5, vjust = 0),
+                      xmin = rec_x[1], xmax = rec_x[2], ymin = Y_NOTE, ymax = Y_NOTE) +
     # architecture: the RFID position stream -> Movement and behavioural organisation -> HMM layer
     annotate("rect", xmin = 0, xmax = src_w, ymin = Y_S_BOX[1], ymax = Y_S_BOX[2], fill = GREEN_DARK, colour = NA) +
     txt(src_w / 2, y_mid, "RFID position\nstream", colour = "white") +
-    arrow_to(src_w + 0.4, arch$x0[1] - 0.5) +
+    geom_segment(data = BRACKET, aes(x = x, xend = xend, y = y, yend = yend), linewidth = F1N$bracket_lw, colour = INK,
+                 lineend = "square") +
+    arrow_to(src_w + 0.4, brk_x[1] - 0.25) +
     geom_rect(data = arch, aes(xmin = x0, xmax = x1, ymin = Y_S_BOX[1], ymax = Y_S_BOX[2]), fill = GREEN_LIGHT, colour = NA) +
     geom_text(data = arch, aes(x = (x0 + x1) / 2, y = y_mid, label = label), colour = INK, size = f1n_text(), lineheight = 0.92) +
     annotate("segment", x = arch$x0[1], xend = arch$x1[1], y = Y_S_RULE, yend = Y_S_RULE, linewidth = F1N$bracket_lw, colour = GREEN_DARK) +
@@ -164,7 +188,7 @@ f1o3n_panel_design <- function(tab, fsb, an, w_mm, h_mm) {
     annotate("segment", x = min(arch$x0[org]), xend = max(arch$x1[org]), y = Y_S_RULE, yend = Y_S_RULE,
              linewidth = F1N$bracket_lw, colour = GREEN_DARK) +
     txt((min(arch$x0[org]) + max(arch$x1[org])) / 2, Y_S_LAB, "Behavioural organisation", colour = GREEN_DARK, vjust = 0) +
-    arrow_to(max(arch$x1) + 0.4, hmm_x0 - 0.5) +
+    arrow_to(brk_x[2] + 0.25, hmm_x0 - 0.5) +
     annotate("rect", xmin = hmm_x0, xmax = w_mm - 0.15, ymin = Y_S_BOX[1], ymax = Y_S_BOX[2], fill = "white", colour = MUTED,
              linewidth = F1N$bracket_lw, linetype = "22") +
     txt((hmm_x0 + w_mm) / 2, y_mid, "HMM behavioural states\nintegrative layer", colour = INK) +
@@ -187,6 +211,9 @@ f1o3n_panel_combz <- function(tab, fsb, an, w_mm, h_mm) {
   F2b <- F2b[order(F2b$component_order), , drop = FALSE]
   if (!identical(F2b$component, names(F1O3N_COMPONENT_LABEL)))
     stop("f1o3n_panel_combz: the stored components differ from the heatmap rows.", call. = FALSE)
+  inv <- toupper(as.character(F2b$sign_inverted)) == "TRUE"
+  if (!setequal(F2b$component[inv], F1O3N_COMPONENT_INVERTED) || !all(F2b$direction[inv] == -1) || !all(F2b$direction[!inv] == 1))
+    stop("f1o3n_panel_combz: the stored sign inversions differ from the heatmap row names.", call. = FALSE)
   sexes <- c("Female", "Male")
   ani <- F2[F2$component == F2b$component[1], c("AnimalNum", "Sex", "Group", "CombZ", "below_threshold", "heatmap_order_within_sex")]
   if (anyDuplicated(ani$AnimalNum) || nrow(F2) != nrow(ani) * nrow(F2b))
@@ -340,15 +367,17 @@ f1o3n_panel_cc1 <- function(tab, fsb, an, w_mm, h_mm, jitter_seed = c(NA, NA), f
       bh_forest_point(aes(y = estimate), data = rows[!rows$int, , drop = FALSE], fill = INK, marks = marks) +
       bh_forest_int_point(aes(y = estimate), data = rows[rows$int, , drop = FALSE], marks = marks) +
       scale_x_continuous(breaks = rows$x, labels = rows$label, limits = c(0.4, 3.75), expand = c(0, 0)) +
-      scale_y_continuous(labels = f1_minus_labels, position = "right") +
+      # the sidecar's axis is on its left, so every rotated title on the row reads bottom to top and
+      # belongs to the plot on its right; the wider right margin is the gutter before the next measure
+      scale_y_continuous(labels = f1_minus_labels) +
       labs(x = NULL, y = F1O3N_RS_Y[[k]], title = "F − M", subtitle = holm) +
       theme_f1(style = "nature") +
-      theme(axis.title.y.right = f1n_markdown(angle = -90, margin = margin(l = 1.2)),
+      theme(axis.title.y = f1n_markdown(angle = 90, margin = margin(r = 1.2)),
             axis.text.x = element_text(size = F1N$text_pt, colour = INK, margin = margin(t = 1)),
             plot.title = element_text(size = F1N$text_pt, colour = INK, hjust = 0.5, margin = margin(b = 0.4)),
             plot.subtitle = element_text(size = F1N$text_pt, colour = INK, hjust = 0.5, margin = margin(b = 1 + top_pad)),
             plot.title.position = "plot",
-            plot.margin = margin(0, 1, 1 + bottom_pad, 1))
+            plot.margin = margin(0, 6, 1 + bottom_pad, 2.5))
   }
   build <- function(top_pad, bottom_pad) {
     parts <- list(dots("crossing_rate", jitter_seed[1], F1O3N_CON_LABEL, top_pad, bottom_pad), side("crossing_rate", "cr", top_pad, bottom_pad),
@@ -363,12 +392,14 @@ f1o3n_panel_cc1 <- function(tab, fsb, an, w_mm, h_mm, jitter_seed = c(NA, NA), f
 }
 
 # =============================================================== d
-f1o3n_panel_trajectory <- function(tab, fsb, an, w_mm, h_mm, frame = NULL) {
+f1o3n_panel_trajectory <- function(tab, fsb, an, w_mm, h_mm, frame = NULL, indent = TRUE) {
   fa <- an$fa
   C2 <- tab("C2_estimates")
   F1 <- fsb("F1_con_cage_means"); F1b <- fsb("F1b_con_reference_means")
   sexes <- c("Female", "Male"); ccs <- paste0("CC", 1:4)
-  one <- function(k, key, top = TRUE, top_pad = 0, bottom_pad = 0) {
+  # one statement of the registered Q2b for both measures, under the header (two stored keys, two text nodes)
+  q2b <- f1n_expr(F1O3N_Q2B_LABEL, fa("d_cr_q2b_holm"), fa("d_sz_q2b_holm"))
+  one <- function(k, top = TRUE, top_pad = 0, bottom_pad = 0) {
     mm <- f1_model_means(C2, "^mean_(RES|SUS)_TR_CC[1-4]$", k); mm <- mm[mm$sex %in% sexes, , drop = FALSE]
     if (nrow(mm) != 16L || !all(grepl("^TR_BY_SEX\\|", mm$model_id))) stop("panel d: expected 16 TR_BY_SEX model means for ", k, call. = FALSE)
     mm$Sex <- factor(mm$sex, levels = sexes); mm$Group <- factor(mm$Group, levels = c("RES", "SUS"))
@@ -378,7 +409,6 @@ f1o3n_panel_trajectory <- function(tab, fsb, an, w_mm, h_mm, frame = NULL) {
     cages$x <- match(cages$CC, ccs) + F1O3N_TRAJ_OFFSET[["CON"]]; ref$x <- match(ref$CC, ccs) + F1O3N_TRAJ_OFFSET[["CON"]]
     cages$Sex <- factor(cages$Sex, levels = sexes); ref$Sex <- factor(ref$Sex, levels = sexes)
     ref <- ref[order(ref$Sex, ref$x), , drop = FALSE]
-    q2b <- f1n_expr(F1O3N_Q2B_LABEL, fa(paste0("d_", key, "_q2b_holm")))
     ggplot(mm, aes(x, estimate)) +
       geom_line(data = ref, aes(x, mean, group = Sex), inherit.aes = FALSE, colour = CON_GREY, linetype = "22", linewidth = F1N$axis_lw) +
       geom_segment(data = ref, aes(x = x - 0.1, xend = x + 0.1, y = mean, yend = mean), inherit.aes = FALSE,
@@ -393,20 +423,20 @@ f1o3n_panel_trajectory <- function(tab, fsb, an, w_mm, h_mm, frame = NULL) {
       scale_fill_manual(values = GROUP_COL[c("RES", "SUS")], guide = "none") +
       scale_x_continuous(breaks = 1:4, labels = ccs, limits = c(0.55, 4.45), expand = c(0, 0)) +
       scale_y_continuous(labels = f1_minus_labels, n.breaks = 4) +
-      labs(x = NULL, y = F1O3N_TRAJ_Y[[k]], title = q2b) +
+      labs(x = NULL, y = F1O3N_TRAJ_Y[[k]], title = if (top) q2b else NULL) +
       theme_f1(style = "nature") +
       theme(axis.title.y = f1n_markdown(lineheight = 1.05), panel.spacing = unit(4, "pt"),
             plot.title = element_text(size = F1N$text_pt, colour = INK, hjust = 0, margin = margin(b = 1 + top_pad)),
             plot.title.position = "plot",
             strip.text = if (top) element_text(size = F1N$title_pt, colour = INK, margin = margin(b = 1, t = 0)) else element_blank(),
             axis.text.x = if (top) element_blank() else element_text(size = F1N$text_pt, colour = INK),
-            plot.margin = margin(0, 1, if (top) 1.5 else 1 + bottom_pad, 1))
+            plot.margin = margin(if (top) 0 else 2.5, 1, if (top) 1.5 else 1 + bottom_pad, 1))
   }
   build <- function(top_pad, bottom_pad) {
-    patchwork::wrap_plots(one("crossing_rate", "cr", TRUE, top_pad), one("shared_zone_use", "sz", FALSE, 0, bottom_pad), ncol = 1) +
+    patchwork::wrap_plots(one("crossing_rate", TRUE, top_pad), one("shared_zone_use", FALSE, 0, bottom_pad), ncol = 1) +
       patchwork::plot_annotation(title = "CC1 → CC4, active phase after each cage change",
                                  theme = theme(plot.title = element_text(size = F1N$title_pt, colour = INK, hjust = 0,
-                                                                         margin = margin(F1N_HEADER_TOP_PT, 0, 1.2, F1N_INDENT_PT)),
+                                                                         margin = margin(F1N_HEADER_TOP_PT, 0, 1.2, if (indent) F1N_INDENT_PT else 0)),
                                                plot.margin = margin(0, 0, 0, 0), plot.background = F1N_BACKGROUND))
   }
   bh_panel(f1n_align(build, frame, w_mm, h_mm, "f1o3n_panel_trajectory"), w_mm, h_mm)

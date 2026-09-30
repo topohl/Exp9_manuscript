@@ -447,11 +447,12 @@ candidates:
         letter: a
         builder: f1o3n_panel_design
         description: >-
-          Design and behavioural architecture: CC1-CC4 as repeated cage-change episodes (SIS regrouped;
-          CON an intact group moved in the same platform-transfer episodes), the outcome steps, and the
-          RFID position stream -> Movement (position-change rate) and behavioural organisation
-          (social-spatial overlap, spatial and temporal organisation) with the stored tier of each metric
-          (fsb F1), and the HMM behavioural states as a downstream, exploratory layer
+          Design and behavioural architecture: CC1-CC4 as repeated cage-change episodes (one line under
+          all four: at every cage change SIS regrouped, CON an intact group moved in the same
+          platform-transfer episodes), the outcome steps, and the RFID position stream -> one bracket
+          around Movement (position-change rate) and behavioural organisation (social-spatial overlap,
+          spatial and temporal organisation), with the stored tier of each metric (fsb F1) -> the HMM
+          behavioural states as a downstream, exploratory layer
         args: {key_prefix: f1o3n_}
         jitter_seed: null
         inputs: [ebb/A0_design_timeline, fsb/F1_con_cage_means]
@@ -501,9 +502,9 @@ candidates:
         builder: f1o3n_panel_trajectory
         description: >-
           CC1 -> CC4 (option, for judgement): the RES/SUS TR_BY_SEX means and 95% CIs (ebb C2), the CON
-          descriptive mean (dashed) and the three CON cage means per cage change (fsb F1b / F1), and per
-          measure the registered Q2b with its P-TR Holm P (ebb E_multiplicity); the F statistics and the
-          FU-TR Holm P are quoted by the legend
+          descriptive mean (dashed) and the three CON cage means per cage change (fsb F1b / F1), and one
+          line under the header for the registered Q2b of both measures with their P-TR Holm P (ebb
+          E_multiplicity); the F statistics and the FU-TR Holm P are quoted by the legend
         args: {key_prefix: f1o3n_, plot_top_mm: 9.54, axis_mm: 50.0}
         jitter_seed: null
         inputs: [ebb/C2_estimates, ebb/C3_joint_tests, ebb/E_multiplicity, fsb/F1_con_cage_means, fsb/F1b_con_reference_means]
@@ -552,8 +553,10 @@ candidates:
     page_margin_mm: 4
     panel_gap_mm: 3
     layout_notes: >-
-      The option 3 page's panel d with the same builder, arguments and box (so its panel SVG is the
-      page's), on its own letterless 70 x 61 mm vector page (4-mm margins). The header keeps its indent.
+      The option 3 page's panel d with the same builder, arguments, inputs and box (so it draws the same
+      text and marks), on its own letterless 70 x 61 mm vector page (4-mm margins). Being letterless,
+      its header drops the letter indent (the entry script passes indent = FALSE for an empty letter),
+      so its panel SVG differs from the page's by that offset only.
     panels:
       - id: d
         letter: ""
