@@ -587,7 +587,13 @@ test_that("Figure 1 option 3 is one vector page with live text, embedded Arial, 
   expect_true(all(f1$n_animals == 4L))
   skip_if_not(rendered, "candidates not rendered")
   skip_if_not_installed("xml2")
-  expect_identical(sha(panel_svg(c(sd, list(candidate = OPTION3_D)))), sha(panel_svg(c(pd, list(candidate = OPTION3)))))
+  # the stand-alone d draws the page's d: the same text nodes and, with every text element removed,
+  # the same SVG (being letterless, only its header drops the letter indent)
+  d_svg <- lapply(list(c(sd, list(candidate = OPTION3_D)), c(pd, list(candidate = OPTION3))), panel_svg)
+  d_txt <- lapply(d_svg, function(p) svg_text_nodes(p)[, c("text", "pt", "family")])
+  expect_identical(d_txt[[1]], d_txt[[2]])
+  no_text <- function(p) gsub("<text[^>]*>.*?</text>", "", paste(readLines(p, warn = FALSE, encoding = "UTF-8"), collapse = "\n"), perl = TRUE)
+  expect_identical(no_text(d_svg[[1]]), no_text(d_svg[[2]]))
   rc <- rd(RECEIPT)
   # the inks: every fill and stroke is one option 2 draws, or lies on the manuscript's diverging ramp
   # (config/manuscript_palette.yml, interpolated in Lab as ggplot2's scale_fill_gradient2 does; the heatmap in b)
@@ -653,8 +659,12 @@ test_that("Figure 1 option 3 is one vector page with live text, embedded Arial, 
   a_txt <- svg_text_nodes(panel_svg(c(Filter(function(s) identical(s$id, "a"), cand$panels)[[1]], list(candidate = OPTION3))))$text
   for (w in c("reference", "baseline")) expect_false(any(grepl(w, a_txt, ignore.case = TRUE)), info = paste("panel a says", w))
   for (w in c("CC1–CC4: repeated cage-change episodes (every 4 days)", "SIS: regrouped", "CON: intact group (same platform-transfer episodes)",
-              "First active phase after CC1", "CON descriptive reference; 3 cages/sex", "Social-spatial overlap:"))
+              "First active phase after CC1", "CON descriptive reference; 3 cages/sex", "Social-spatial overlap:",
+              # b's sign-inverted rows are named by what a high signed z means; d states the Q2b once, for both measures
+              "Smaller corticosterone rise", "Lower adrenal weight", "Lower spleen weight",
+              "F − M, RES − SUS change from CC1 (Q2b), Holm"))
     expect_equal(sum(trimws(page$text) == w), 1L, info = w)
+  for (w in c("Corticosterone rise", "Adrenal weight", "Spleen weight")) expect_false(w %in% trimws(page$text), info = w)
   # no SIS - CON estimate reaches the figure's source data (they stay in the bundle only)
   for (s in c(cand$panels, dcand$panels)) {
     k <- if (identical(s$letter, "")) OPTION3_D else OPTION3

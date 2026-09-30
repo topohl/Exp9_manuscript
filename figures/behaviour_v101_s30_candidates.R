@@ -165,7 +165,8 @@ BUILDERS <- list(
   f1o3n_panel_combz = function(s, an) f1o3n_panel_combz(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h),
   f1o3n_panel_cc1 = function(s, an) f1o3n_panel_cc1(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h, jitter_seed = seeds(s, 2L),
     frame = frame_of(s)),
-  f1o3n_panel_trajectory = function(s, an) f1o3n_panel_trajectory(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h, frame = frame_of(s)))
+  f1o3n_panel_trajectory = function(s, an) f1o3n_panel_trajectory(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h, frame = frame_of(s),
+    indent = nzchar(s$letter)))   # the letterless stand-alone d drops the header's letter indent
 
 # ---------------------------------------------------------------- plot introspection
 # The leaf ggplots of a panel (patchwork parts in order; a plain ggplot is its own leaf).
