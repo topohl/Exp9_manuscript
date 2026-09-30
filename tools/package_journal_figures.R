@@ -10,6 +10,9 @@
 # Inputs are this repository's own frozen material only:
 #   source_data/pRoteomics/<publication_id>/assembled/<publication_id>.svg
 #   source_data/pRoteomics/<publication_id>/*_source_data.csv
+#   or, for promoted identities (tools/promote_manuscript_render.R), the
+#   registry's rendered_artifact under figures/main|extended_data/ and its
+#   canonical_source_data
 #   provenance/publication_registry/canonical_publication_registry.csv
 #   manuscript/legends/
 #
@@ -65,14 +68,14 @@ cat("canonical identities:", nrow(canon), "\n")
 cat("mode               :", if (dry_run) "dry-run" else "write", "\n\n")
 
 rows <- list(); missing <- character(0); mismatched <- character(0)
+sd_bad <- character(0)
 for (i in seq_len(nrow(canon))) {
   pid <- canon$publication_id[i]
-  ## Identities backed by the pinned MMMSociability behaviour bundle are packaged
-  ## from their promoted, manuscript-owned render (tools/promote_manuscript_render.R)
-  ## and the bundle copy; every other identity keeps the pRoteomics route.
-  bundle_backed <- identical(canon$originating_analysis[i], "topohl/MMMSociability") &&
-    grepl("^source_data/MMMSociability/ebb_", canon$canonical_source_data[i])
-  svg <- if (bundle_backed) repo_path(canon$rendered_artifact[i]) else
+  ## Identities with a promoted, tracked render (tools/promote_manuscript_render.R:
+  ## figures/main/ or figures/extended_data/) are packaged from that render and
+  ## their registered source data; every other identity keeps the pRoteomics route.
+  promoted <- grepl("^figures/(main|extended_data)/", canon$rendered_artifact[i])
+  svg <- if (promoted) repo_path(canon$rendered_artifact[i]) else
     repo_path("source_data", "pRoteomics", pid, "assembled", paste0(pid, ".svg"))
   if (!file.exists(svg)) { missing <- c(missing, pid); next }
 
@@ -92,7 +95,17 @@ for (i in seq_len(nrow(canon))) {
   }
 
   ## source data for the identity travels with the figure
-  sd_src <- if (bundle_backed) repo_path(canon$canonical_source_data[i]) else repo_path("source_data", "pRoteomics", pid)
+  sd_src <- if (promoted) repo_path(canon$canonical_source_data[i]) else repo_path("source_data", "pRoteomics", pid)
+  ## promoted source data travels only if it is still what was promoted
+  sd_man <- file.path(sd_src, "00_manifest.csv")
+  if (promoted && file.exists(sd_man)) {
+    mm <- utils::read.csv(sd_man, stringsAsFactors = FALSE)
+    ## a self-rendered promotion owns its whole folder, so nothing unlisted may ride along
+    exact <- "render_git_commit" %in% names(mm) &&
+      !setequal(list.files(sd_src), c(mm$file, "00_manifest.csv"))
+    if (exact || !all(file.exists(file.path(sd_src, mm$file))) ||
+        any(sha(file.path(sd_src, mm$file)) != mm$sha256)) sd_bad <- c(sd_bad, pid)
+  }
   sd_files <- setdiff(list.files(sd_src, pattern = "[.]csv$"), character(0))
   if (!dry_run && length(sd_files)) {
     dir_create(file.path(BUNDLE, "source_data", jn))
@@ -113,6 +126,10 @@ for (i in seq_len(nrow(canon))) {
 if (length(missing)) {
   stop("assembled artefact absent for: ", paste(missing, collapse = ", "),
        "\nRun tools/import_render_inputs.R first.", call. = FALSE)
+}
+if (length(sd_bad)) {
+  stop("promoted source data does not match its 00_manifest.csv for: ",
+       paste(sd_bad, collapse = ", "), call. = FALSE)
 }
 if (length(mismatched)) {
   stop("assembled artefact does not match the registry hash for: ",
