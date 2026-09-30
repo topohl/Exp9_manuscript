@@ -48,6 +48,11 @@ F1OPT_ASSOCIATION_TITLE <- "Early position-change rate vs later CombZ"
 # The prediction scatter and its permutation histogram take equal widths in the options (Figure 1f:
 # 0.6 to 1), so the scatter is as tall as the histogram and the two x axes line up.
 F1OPT_SCATTER_WIDTH <- 1
+# Extra bottom margin (pt) of the prediction plots in the options (Figure 1f: 0): their one-line x
+# titles end above the association panel's two-line one, so all three row-3 axes sit on one line.
+F1OPT_PREDICTION_BOTTOM_PAD_PT <- 8.7
+# One title anchor on the option pages: every title starts at the plot edge, under the letter.
+F1OPT_TITLE_POSITION <- "plot"
 
 # ---------------------------------------------------------------- annotation keys and labels
 EDX_TRAJECTORY_KEYS <- c(crossing_rate = "edx_a_cr", shared_zone_use = "edx_b_sz",
@@ -74,7 +79,8 @@ EDX_TITLE_POSITION <- "plot"
 # The Figure 1d-style overall titles, for callers that prefer a title over the caption.
 EDX_TITLE_PRIMARY <- "Primary constructs, active phase after each cage change: sex-stratified model estimates ± 95% CI (CON descriptive means, grey)"
 EDX_TITLE_SECONDARY <- "Secondary constructs, active phase after each cage change: sex-stratified model estimates ± 95% CI (CON descriptive means, grey)"
-# Panel b of option 2 is 50 mm wide: the Figure 1b subtitle breaks after the semicolon.
+# The Figure 1b subtitle broken after the semicolon, for a narrow panel-anchored box (contract arg
+# subtitle_line_break); at the plot edge the one-line subtitle fits option 2's 50-mm b.
 F1OPT_COMBZ_SUBTITLE_NARROW <- "dashed threshold defines RES/SUS;\nnot a test"
 
 #' A resolver that answers the Figure 1 builders' key names from prefixed candidate keys.
@@ -110,10 +116,10 @@ edx_annotation_prefixed <- function(an, prefix) {
 #' Returns the five Figure 1 panels as bh_panel objects, named by the option's letters:
 #' option 1 list(a, b, c, d, e); option 2 list(a, b, c, e, f), its compact light-phase panel d
 #' coming from s30_panel_light_compact (not built here).
-#' Option 2 differs from option 1 only in the narrower b and c boxes, and in the typographic
-#' adjustments those boxes need: the b subtitle breaks onto two lines, and b and c align their
-#' titles (and c its contrast captions) to the plot edge (title_position / text_position = "plot"),
-#' as the compact panel d beside them does.
+#' Both options put every title (and c its contrast captions and group legend) at the plot edge
+#' (title_position / text_position = "plot"), as the compact panel d of option 2 does, and pad the
+#' prediction plots at the bottom so the row-3 axes sit on one line (the figure contract's args).
+#' Option 2 differs from option 1 only in the narrower b and c boxes.
 f1opt_panels <- function(tab, an, option = c("figure_01_option1", "figure_01_option2"),
                          jitter_seed = list(b = 1L, c = c(2L, 2L)), minus_ticks = TRUE,
                          typography = "candidate", compact_header = TRUE,
@@ -123,19 +129,18 @@ f1opt_panels <- function(tab, an, option = c("figure_01_option1", "figure_01_opt
   if (is.null(jitter_seed$b) || length(jitter_seed$c) < 1L || anyNA(c(jitter_seed$b, jitter_seed$c)))
     stop("f1opt_panels: pass explicit jitter seeds list(b = , c = c(, )).", call. = FALSE)
   pre <- edx_annotation_prefixed(an, key_prefix)
-  narrow <- identical(option, "figure_01_option2")
   let <- names(F1OPT_SOURCE_PANEL[[option]])
   out <- list(
     f1_panel_design(tab, pre, box$a[1], box$a[2], typography = typography),
     f1_panel_combz(tab, pre, box$b[1], box$b[2], jitter_seed = jitter_seed$b,
-                   subtitle = if (narrow) F1OPT_COMBZ_SUBTITLE_NARROW else F1_COMBZ_SUBTITLE, minus_ticks = minus_ticks,
-                   title_position = if (narrow) "plot" else "panel"),
+                   subtitle = F1_COMBZ_SUBTITLE, minus_ticks = minus_ticks, title_position = F1OPT_TITLE_POSITION),
     f1_panel_cc1(tab, pre, box$c[1], box$c[2], jitter_seed = jitter_seed$c,
-                 text_position = if (narrow) "plot" else "panel", typography = typography, compact_header = compact_header),
+                 text_position = F1OPT_TITLE_POSITION, typography = typography, compact_header = compact_header),
     f1_panel_association(tab, pre, box[[let[4]]][1], box[[let[4]]][2], minus_ticks = minus_ticks,
-                         typography = typography, title = F1OPT_ASSOCIATION_TITLE),
+                         typography = typography, title = F1OPT_ASSOCIATION_TITLE, title_position = F1OPT_TITLE_POSITION),
     f1_panel_prediction(tab, pre, box[[let[5]]][1], box[[let[5]]][2], minus_ticks = minus_ticks,
-                        typography = typography, compact_header = compact_header, scatter_width = F1OPT_SCATTER_WIDTH))
+                        typography = typography, compact_header = compact_header, scatter_width = F1OPT_SCATTER_WIDTH,
+                        bottom_pad_pt = F1OPT_PREDICTION_BOTTOM_PAD_PT, title_position = F1OPT_TITLE_POSITION))
   stats::setNames(out, let)
 }
 

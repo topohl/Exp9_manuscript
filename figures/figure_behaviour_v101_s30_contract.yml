@@ -43,8 +43,11 @@
 #                      ranges, U+2212 exponent, "RES − SUS" / "Female − male" labels); the
 #                      canonical Figure 1 keeps its own strings
 #   compact_header     no patchwork outer margin, so the title sits under the letter
-#   title_position: plot   titles start at the plot edge (one anchor per row or page)
+#   title_position: plot   titles start at the plot edge (one anchor per page)
+#   text_position: plot    (f1_panel_cc1) titles, captions and the group legend start at the plot edge
 #   scatter_width      relative width of the prediction scatter (Figure 1f: 0.6)
+#   bottom_pad_pt      extra bottom margin of the prediction plots (Figure 1f: 0), so their x axes
+#                      sit level with the association panel's (two-line x title) in the same row
 #
 # Boxes follow CANDIDATE_SPEC C; departures are recorded under `layout_notes`.
 
@@ -103,7 +106,11 @@ candidates:
       (d 66 @5, e 105 @73). c, d and e use the candidate typography and headers of the
       reused Figure 1 builders (typography, compact_header, the association title). In e the
       scatter and the permutation histogram take equal widths (scatter_width 1; Figure 1f 0.6),
-      so the scatter is about 43 mm square and its x axis lines up with the histogram's.
+      and both carry 8.7 pt of extra bottom margin (bottom_pad_pt), so their one-line x titles
+      end above d's two-line one and all three x axes sit on one line; the height-limited square
+      scatter is about 41 mm. One title anchor on the page: b, c, d and e start their titles at
+      the plot edge under the letter (title_position / text_position plot), and every group
+      legend starts under its title.
     panels:
       - id: a
         letter: a
@@ -121,7 +128,7 @@ candidates:
         letter: b
         builder: f1_panel_combz
         description: Later CombZ and the RES/SUS definition by the same-sex control-referenced threshold (definition, not a test)
-        args: {key_prefix: f1o1_, minus_ticks: true, subtitle_line_break: false}
+        args: {key_prefix: f1o1_, minus_ticks: true, subtitle_line_break: false, title_position: plot}
         jitter_seed: 1
         inputs: [ebb/A4_combz_animals, ebb/A2b_combz_thresholds]
         annotation_panels: [f1o1_combz]
@@ -133,7 +140,7 @@ candidates:
         letter: c
         builder: f1_panel_cc1
         description: First active phase after CC1, RFID position-change rate and shared RFID-position occupancy; per-sex RES - SUS, the Female - male difference and its P-CC1 Holm p (Stage 29 primary)
-        args: {key_prefix: f1o1_, text_position: panel, typography: candidate, compact_header: true}
+        args: {key_prefix: f1o1_, text_position: plot, typography: candidate, compact_header: true}
         jitter_seed: [2, 2]
         inputs: [ebb/A1_animal_cc1, ebb/C2_estimates, ebb/E_multiplicity]
         annotation_panels: [f1o1_cc1]
@@ -145,7 +152,7 @@ candidates:
         letter: d
         builder: f1_panel_association
         description: Early RFID position-change rate vs later CombZ (Stage 09 registered association, rank correlation, not split by sex)
-        args: {key_prefix: f1o1_, minus_ticks: true, typography: candidate, candidate_title: true}
+        args: {key_prefix: f1o1_, minus_ticks: true, typography: candidate, candidate_title: true, title_position: plot}
         jitter_seed: null
         inputs: [ebb/A2_prediction_animals, ebb/C2_estimates, ebb/E_multiplicity]
         annotation_panels: [f1o1_association]
@@ -157,7 +164,8 @@ candidates:
         letter: e
         builder: f1_panel_prediction
         description: Held-out prediction of later CombZ and its permutation null (Stage 09 registered prediction)
-        args: {key_prefix: f1o1_, minus_ticks: true, typography: candidate, compact_header: true, scatter_width: 1}
+        args: {key_prefix: f1o1_, minus_ticks: true, typography: candidate, compact_header: true, scatter_width: 1,
+               bottom_pad_pt: 8.7, title_position: plot}
         jitter_seed: null
         inputs: [ebb/A2_prediction_animals, ebb/A3_permutation_draws, ebb/C2_estimates, ebb/E_multiplicity]
         annotation_panels: [f1o1_prediction]
@@ -182,11 +190,12 @@ candidates:
       c 88 + f 36 + two 2-mm gaps = 178 mm from x = 5) would end at the page edge, so c is
       narrowed by 4 mm (the permitted adjustment) and the compact panel by 1 mm: b 50 @5, c 84
       @57, d 35 @143. Rows as option 1: a 173 x 29, row 2 at y = 36, row 3 at y = 100, 65 high.
-      Row 2 has one title anchor: b (title_position plot), c (text_position plot) and d all start
-      their titles at the plot edge, under the letter; row 3 keeps the panel anchor of option 1.
-      f takes the equal-width scatter of option 1 e. d's draft legend quotes the stored CIs, the
-      inactivity saturation counts, the Movement-adjusted female estimate and the dependence
-      descriptors (annotation_panels_legend).
+      One title anchor on the page, as option 1: b (title_position plot; its one-line subtitle
+      fits at the plot edge), c (text_position plot, the group legend under its first title),
+      d, e and f all start their titles at the plot edge, under the letter. f takes the
+      equal-width scatter and bottom pad of option 1 e, so the row-3 axes sit on one line. d's
+      draft legend quotes the stored CIs, the inactivity saturation counts, the Movement-adjusted
+      female estimate and the dependence descriptors (annotation_panels_legend).
     panels:
       - id: a
         letter: a
@@ -203,8 +212,8 @@ candidates:
       - id: b
         letter: b
         builder: f1_panel_combz
-        description: Later CombZ and the RES/SUS definition (narrow box; the subtitle breaks after the semicolon)
-        args: {key_prefix: f1o2_, minus_ticks: true, subtitle_line_break: true, title_position: plot}
+        description: Later CombZ and the RES/SUS definition (narrow box; title at the plot edge)
+        args: {key_prefix: f1o2_, minus_ticks: true, subtitle_line_break: false, title_position: plot}
         jitter_seed: 1
         inputs: [ebb/A4_combz_animals, ebb/A2b_combz_thresholds]
         annotation_panels: [f1o2_combz]
@@ -246,7 +255,7 @@ candidates:
         letter: e
         builder: f1_panel_association
         description: Early RFID position-change rate vs later CombZ (Stage 09)
-        args: {key_prefix: f1o2_, minus_ticks: true, typography: candidate, candidate_title: true}
+        args: {key_prefix: f1o2_, minus_ticks: true, typography: candidate, candidate_title: true, title_position: plot}
         jitter_seed: null
         inputs: [ebb/A2_prediction_animals, ebb/C2_estimates, ebb/E_multiplicity]
         annotation_panels: [f1o2_association]
@@ -258,7 +267,8 @@ candidates:
         letter: f
         builder: f1_panel_prediction
         description: Held-out prediction of later CombZ and its permutation null (Stage 09)
-        args: {key_prefix: f1o2_, minus_ticks: true, typography: candidate, compact_header: true, scatter_width: 1}
+        args: {key_prefix: f1o2_, minus_ticks: true, typography: candidate, compact_header: true, scatter_width: 1,
+               bottom_pad_pt: 8.7, title_position: plot}
         jitter_seed: null
         inputs: [ebb/A2_prediction_animals, ebb/A3_permutation_draws, ebb/C2_estimates, ebb/E_multiplicity]
         annotation_panels: [f1o2_prediction]
