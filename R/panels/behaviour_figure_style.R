@@ -10,13 +10,15 @@
 #   GROUP_COL / GROUP_LEV / GROUP_SHAPE / SEX_SHAPE / CON_GREY   group and sex encoding
 #   INK / MUTED / RULE / GREEN_* / NEUTRAL_BOX                    inks
 #   BASE_PT / BODY_PT / NOTE_PT                                   type sizes (pt)
-#   theme_f1()                                                    the Figure 1 theme
+#   BH_NATURE, bh_style_nature()                                  the opt-in Nature style profile
+#   theme_f1()                                                    the Figure 1 theme (style = "nature": the profile)
 #   BH_FOREST, bh_forest_zero(), bh_forest_ci(), bh_forest_point(), bh_forest_int_point()
 #                                                                 forest marks of the behaviour ED renderer
 #                                                                 (interaction rows: white diamond)
 #   bh_minus(), bh_sci_minus()                                    typographic minus (U+2212)
 #   bh_annotation()                                               multi-bundle annotation-map resolver
 #   bh_panel(), bh_save_svg()                                     panel box and SVG device
+#   bh_save_page()                                                one vector page (SVG + PDF) of placed panels
 
 suppressPackageStartupMessages(library(ggplot2))
 
@@ -34,8 +36,39 @@ INK <- "#2B2B2B"; MUTED <- "#6E6E6E"; RULE <- "#B5B5B5"
 GREEN_DARK <- "#2F6F62"; GREEN_MID <- "#6FA79B"; GREEN_LIGHT <- "#A8D5CF"; NEUTRAL_BOX <- "#EDEDED"
 BASE_PT <- 7; BODY_PT <- 6.5; NOTE_PT <- 6
 
-theme_f1 <- function(base = BASE_PT) {
-  theme_classic(base_size = base, base_family = "sans") +
+# ---------------------------------------------------------------- style profiles
+# "figure1" is the Figure 1 house style above (the default everywhere). "nature" is the opt-in
+# profile of the Nature-layout candidate (NATURE_REDESIGN_SPEC 1-3): two text sizes (5 pt for
+# ticks, keys, direct labels and on-panel statistics; 5.5 pt for axis titles, facet strips and
+# the few one-line headers; the 8-pt letters are the assembler's), 0.47-pt open L-axes with
+# 1.5-pt outward ticks, and one animal-mark vocabulary. It changes sizes and weights only: every
+# ink, fill and shape is one of the constants above, and nothing here carries a value.
+# Line widths are ggplot2 linewidths (mm-based: 0.22 draws 0.47 pt); point sizes and strokes are
+# ggplot2 size / stroke (0.95 with stroke 0.26 draws a 2.4-pt circle with a 0.37-pt outline).
+BH_NATURE <- list(
+  text_pt = 5, title_pt = 5.5,
+  axis_lw = 0.22, tick_len_pt = 1.5,
+  point_size = 0.95, point_stroke = 0.26, point_colour = "grey20",  # animal marks (b, c, e, f), opaque
+  jitter_width = 0.14,                                              # the same jitter half-width in b and c
+  mean_size = 1.4, mean_stroke = 0.3, mean_lw = 0.3,                # c: model mean and its capless 95% CI
+  forest = list(point_size = 1.1, point_stroke = 0.25, int_size = 1.0, int_stroke = 0.25, ci_linewidth = 0.3),  # d: lighter than c
+  rule_lw = 0.14, identity_lw = 0.235, bracket_lw = 0.23,           # CON-mean rule, identity line, a's brackets
+  header_indent_mm = 3.2)                                           # a header on the letter's line starts here
+BH_STYLES <- c("figure1", "nature")
+
+#' TRUE for the Nature profile, FALSE for the Figure 1 house style (the default everywhere).
+bh_style_nature <- function(style) {
+  if (!is.character(style) || length(style) != 1L || !style %in% BH_STYLES)
+    stop("style must be one of ", paste(sprintf('"%s"', BH_STYLES), collapse = ", "), ".", call. = FALSE)
+  identical(style, "nature")
+}
+
+#' The Figure 1 theme. `style = "nature"` returns the same theme at the Nature profile's sizes and
+#' weights (BH_NATURE); the default draws Figure 1 exactly as before.
+theme_f1 <- function(base = BASE_PT, style = "figure1") {
+  nature <- bh_style_nature(style)
+  if (nature) base <- BH_NATURE$title_pt
+  th <- theme_classic(base_size = base, base_family = "sans") +
     theme(
       axis.text = element_text(size = BODY_PT, colour = INK),
       axis.title = element_text(size = base, colour = INK),
@@ -54,6 +87,22 @@ theme_f1 <- function(base = BASE_PT) {
       plot.caption = element_text(size = NOTE_PT, colour = INK, hjust = 0, lineheight = 1.05, margin = margin(t = 1.5)),
       # 4 mm of top margin: the assembler draws the panel letter over the top-left corner.
       plot.margin = margin(11.5, 3, 3, 3))
+  if (!nature) return(th)
+  N <- BH_NATURE
+  th + theme(
+    axis.text = element_text(size = N$text_pt, colour = INK),
+    axis.title = element_text(size = N$title_pt, colour = INK),
+    axis.line = element_line(linewidth = N$axis_lw, colour = "black"),
+    axis.ticks = element_line(linewidth = N$axis_lw, colour = "black"),
+    axis.ticks.length = unit(N$tick_len_pt, "pt"),
+    strip.text = element_text(size = N$title_pt, colour = INK, face = "plain", margin = margin(b = 1, t = 0)),
+    legend.text = element_text(size = N$text_pt, margin = margin(l = 0.8)),
+    legend.key.height = unit(5, "pt"), legend.key.width = unit(5, "pt"),
+    legend.key.spacing.x = unit(3.5, "pt"),
+    plot.title = element_text(size = N$title_pt, colour = INK, hjust = 0, face = "plain", margin = margin(b = 0.5)),
+    plot.subtitle = element_text(size = N$text_pt, colour = "grey25", margin = margin(b = 1)),
+    plot.caption = element_text(size = N$text_pt, colour = INK, hjust = 0, margin = margin(t = 1)),
+    plot.margin = margin(0, 1, 1, 1))
 }
 
 # ---------------------------------------------------------------- forest marks
@@ -172,4 +221,44 @@ bh_save_svg <- function(p, path, w_mm = NULL, h_mm = NULL) {
   svglite::svglite(path, width = w_mm / 25.4, height = h_mm / 25.4, bg = "white", fix_text_size = FALSE)
   print(p); grDevices::dev.off()
   path
+}
+
+#' Write placed panels as ONE vector page: each panel's plot drawn into a grid viewport at its box
+#' (x, y from the page's top-left corner, w, h; mm) on one device, and each panel letter drawn over
+#' its box's top-left corner as manuscript_figure_assemble_svg draws it in absolute mode (bold,
+#' `letter_pt`, left edge at the box x, baseline 0.92 letter heights below the box top). The same
+#' drawing goes to an SVG (svglite, fix_text_size = FALSE as bh_save_svg: live text, no embedded
+#' images, deterministic) and to a PDF (cairo_pdf, family Arial: fonts embedded as TrueType subsets,
+#' no raster images). `panels` is a list of list(panel = <bh_panel>, x, y, letter). Returns both paths.
+bh_save_page <- function(panels, width_mm, height_mm, svg_path, pdf_path, letter_pt = 8) {
+  lab_mm <- letter_pt * 25.4 / 72
+  draw <- function() {
+    grid::grid.newpage()
+    grid::grid.rect(gp = grid::gpar(col = NA, fill = "white"))
+    for (p in panels) {
+      grid::pushViewport(grid::viewport(x = grid::unit(p$x, "mm"), y = grid::unit(height_mm - p$y, "mm"),
+                                        width = grid::unit(p$panel$w_mm, "mm"), height = grid::unit(p$panel$h_mm, "mm"),
+                                        just = c("left", "top")))
+      plot <- p$panel$plot
+      grid::grid.draw(if (inherits(plot, "patchwork")) patchwork::patchworkGrob(plot) else ggplot2::ggplotGrob(plot))
+      grid::popViewport()
+    }
+    for (p in panels) if (nzchar(p$letter))
+      grid::grid.text(p$letter, x = grid::unit(p$x, "mm"), y = grid::unit(height_mm - p$y - lab_mm * 0.92, "mm"),
+                      hjust = 0, vjust = 0, gp = grid::gpar(fontsize = letter_pt, fontface = "bold", fontfamily = "sans", col = "black"))
+  }
+  svglite::svglite(svg_path, width = width_mm / 25.4, height = height_mm / 25.4, bg = "white", fix_text_size = FALSE)
+  tryCatch(draw(), finally = grDevices::dev.off())
+  grDevices::cairo_pdf(pdf_path, width = width_mm / 25.4, height = height_mm / 25.4, family = "Arial", bg = "white")
+  tryCatch(draw(), finally = grDevices::dev.off())
+  c(svg = svg_path, pdf = pdf_path)
+}
+
+#' The review PNG of a vector page: the page SVG rasterised by magick (librsvg) at `dpi`, on white.
+#' Preview only; the SVG and the PDF are the deliverables.
+bh_page_png <- function(svg_path, png_path, dpi = 300) {
+  image <- magick::image_read(svg_path, density = dpi)
+  image <- magick::image_background(image, "white", flatten = TRUE)
+  magick::image_write(image, path = png_path, format = "png")
+  png_path
 }
