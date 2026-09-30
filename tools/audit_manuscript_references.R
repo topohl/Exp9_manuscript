@@ -41,6 +41,16 @@ status_of <- function(pid) {
   if (is.na(i)) "NOT_IN_REGISTRY" else registry$status[i]
 }
 
+# The published artefact, resolved as packaging resolves it: a promoted,
+# tracked render under figures/main|extended_data/, otherwise the frozen
+# pRoteomics assembly.
+artifact_of <- function(pid) {
+  i <- match(pid, registry$publication_id)
+  if (!is.na(i) && grepl("^figures/(main|extended_data)/", registry$rendered_artifact[i]))
+    return(repo_path(registry$rendered_artifact[i]))
+  repo_path("source_data", "pRoteomics", pid, "assembled", paste0(pid, ".svg"))
+}
+
 files <- c(repo_path("manuscript", "manuscript_draft.md"),
            list.files(repo_path("manuscript", "legends"), pattern = "_legend[.]md$",
                       full.names = TRUE),
@@ -90,8 +100,7 @@ for (f in files) {
           d <- decl[decl$is_ed == is_ed_hit & decl$number == num, , drop = FALSE]
           pid <- if (nrow(d)) unique(d$publication_id)[1] else NA_character_
           ok_panel <- if (is.na(L)) nrow(d) > 0L else any(d$letter == L)
-          art <- if (!is.na(pid)) repo_path("source_data", "pRoteomics", pid,
-                                            "assembled", paste0(pid, ".svg")) else NA_character_
+          art <- if (!is.na(pid)) artifact_of(pid) else NA_character_
           rows[[length(rows) + 1L]] <- data.frame(
             source_file = basename(f), citation = hh,
             kind = if (is_ed_hit) "extended_data" else "main_figure",

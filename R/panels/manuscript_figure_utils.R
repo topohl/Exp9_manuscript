@@ -476,13 +476,16 @@ manuscript_figure_write_manifest <- function(
   session_path <- file.path(paths$logs, "sessionInfo.txt")
   capture.output(utils::sessionInfo(), file = session_path)
   manifest_path <- file.path(paths$logs, "run_manifest.yml")
+  code <- git_code_state()
   manifest <- list(
     timestamp = format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z"),
     contract_version = figure$contract_version,
     figure = fig_label,
     repository_relative_contract = relative_to(manuscript_figure_contract_path()),
     repository_root_at_render = repo_root(),
-    render_git_commit = git_commit_sha(),
+    render_git_commit = code$commit,
+    render_code_clean = code$code_clean,
+    render_code_dirty = code$dirty,
     scientific_recomputation = FALSE,
     inputs = manuscript_figure_records_as_list(input_manifest),
     outputs = lapply(outputs[file.exists(outputs)], function(x) list(
@@ -599,6 +602,7 @@ manuscript_figure_main <- function(figure_id) {
   paths <- manuscript_figure_output_paths(args$output_root, figure_id)
   invisible(lapply(paths, dir_create))
   panel_paths <- character()
+  source_paths <- character()
   panel_records <- list()
   incomplete <- character()
 
@@ -632,6 +636,7 @@ manuscript_figure_main <- function(figure_id) {
     }
 
     panel_paths[[panel_id]] <- panel_svg
+    if (!is.na(source_target)) source_paths[[panel_id]] <- source_target
     panel_records[[length(panel_records) + 1L]] <- data.frame(
       figure = fig_label,
       panel = panel_id,
@@ -653,7 +658,8 @@ manuscript_figure_main <- function(figure_id) {
     )
   }
 
-  outputs <- unname(panel_paths)
+  # every materialized file is hashed into the run manifest, source data included
+  outputs <- unname(c(panel_paths, source_paths))
   pdf_contract <- "raster_backed_PDF_from_assembled_SVG_via_magick_at_300_dpi"
   if (is.null(args$panel)) {
     assembled_svg <- file.path(paths$assembled, paste0(fig_stub, ".svg"))

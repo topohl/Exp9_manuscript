@@ -428,6 +428,20 @@ git_commit_sha <- function() {
   if (is.na(sha) || !nzchar(sha)) NA_character_ else sha
 }
 
+# Whether the code a render runs is exactly the commit: any modified, staged or
+# untracked file under the code directories makes it unclean. A git failure
+# reports unclean rather than clean.
+git_code_state <- function(code_dirs = c("R", "figures", "config", "tools")) {
+  dirty <- tryCatch(
+    system2("git", c("-C", repo_root(), "status", "--porcelain",
+                     "--untracked-files=all", "--", code_dirs),
+            stdout = TRUE, stderr = FALSE),
+    error = function(e) NA_character_)
+  status <- attr(dirty, "status")
+  clean <- identical(length(dirty), 0L) && (is.null(status) || identical(status, 0L))
+  list(commit = git_commit_sha(), code_clean = clean, dirty = as.list(dirty))
+}
+
 run_context_metadata <- function() {
   env_flags <- c(
     "PROTEOMICS_DATASET",
