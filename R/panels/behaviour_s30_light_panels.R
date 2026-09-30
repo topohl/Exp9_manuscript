@@ -331,8 +331,11 @@ s30_panel_light_phase <- function(tabs, an, w_mm = S30_LIGHT_BOX$phase[1], h_mm 
 #' `q_rows` (default all three, as in B1, so the display is not selective; c("F", "INT") gives
 #' the CANDIDATE_SPEC B3 minimum) and names its unit in its subtitle, so that its axis (the
 #' panel's last) has only tick labels below it, like the Figure 1b axis beside it.
+#' style = "nature" (opt-in; frame = the row's plot frame) returns s30n_panel_light_compact()
+#' of R/panels/behaviour_figure1_nature_panels.R (Figure 1 option 2, Nature layout, panel d).
 s30_panel_light_compact <- function(an, w_mm = S30_LIGHT_BOX$compact[1], h_mm = S30_LIGHT_BOX$compact[2],
-                                    q_rows = c("F", "M", "INT"), top_margin_pt = 11.5) {
+                                    q_rows = c("F", "M", "INT"), top_margin_pt = 11.5, style = "figure1", frame = NULL) {
+  if (bh_style_nature(style)) return(s30n_panel_light_compact(an, w_mm, h_mm, q_rows = q_rows, frame = frame))
   q_all <- c(F = "lc_ia_rs_f_q", M = "lc_ia_rs_m_q", INT = "lc_ia_int_q")
   if (!all(q_rows %in% names(q_all))) stop("s30_panel_light_compact: q_rows must be among F, M, INT.", call. = FALSE)
   rate <- s30_light_rows(an, "rate", row_labels = S30_ROW_SHORT)

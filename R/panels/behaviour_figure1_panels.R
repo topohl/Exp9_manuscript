@@ -47,7 +47,11 @@
 #   f1_panel_prediction(scatter_width)               the scatter's relative width (Figure 1f 0.6);
 #   f1_panel_prediction(bottom_pad_pt)               extra bottom margin (Figure 1f 0), so the axes
 #                                                    sit level with a two-line-x-title row partner;
-#   f1_panel_association(title)                      an optional panel title.
+#   f1_panel_association(title)                      an optional panel title;
+#   style = "nature", frame (design, combz, cc1,     the opt-in Nature profile (BH_NATURE): the
+#                   association, prediction)         builders return the f1n_* variants of
+#                                                    R/panels/behaviour_figure1_nature_panels.R
+#                                                    (frame: the shared plot frame of a row).
 # They change layout and typography only: every printed number still comes
 # from an$fa() / an$ci() / an$ann().
 #
@@ -117,7 +121,8 @@ f1_model_means <- function(C2, estimand_prefix, construct) {
 }
 
 # =============================================================== panel a
-f1_panel_design <- function(tab, an, w_mm = F1_BOX$a[1], h_mm = F1_BOX$a[2], typography = "figure1") {
+f1_panel_design <- function(tab, an, w_mm = F1_BOX$a[1], h_mm = F1_BOX$a[2], typography = "figure1", style = "figure1") {
+  if (bh_style_nature(style)) return(f1n_panel_design(tab, an, w_mm, h_mm, typography = typography))
   cand <- f1_candidate_typography(typography)
   fa <- an$fa
   tl <- tab("A0_design_timeline")
@@ -158,7 +163,9 @@ f1_panel_design <- function(tab, an, w_mm = F1_BOX$a[1], h_mm = F1_BOX$a[2], typ
 # =============================================================== panel b
 # The threshold defines the groups; the separation is by construction, so no brackets and no stars.
 f1_panel_combz <- function(tab, an, w_mm = F1_BOX$b[1], h_mm = F1_BOX$b[2], jitter_seed = NA,
-                           subtitle = F1_COMBZ_SUBTITLE, minus_ticks = FALSE, title_position = "panel") {
+                           subtitle = F1_COMBZ_SUBTITLE, minus_ticks = FALSE, title_position = "panel",
+                           style = "figure1", frame = NULL) {
+  if (bh_style_nature(style)) return(f1n_panel_combz(tab, an, w_mm, h_mm, jitter_seed = jitter_seed, frame = frame))
   if (!identical(title_position, "panel") && !identical(title_position, "plot"))
     stop("f1_panel_combz: title_position must be \"panel\" or \"plot\".", call. = FALSE)
   fa <- an$fa
@@ -234,7 +241,8 @@ f1_panel_cc1_one <- function(A1, C2, an, k, key, jitter_seed = NA, text_position
 #' legend stays with the first construct plot, placed against its plot edge (legend.location), and
 #' the second construct plot, with the same marks, draws none (the f1_panel_trajectory pattern).
 f1_panel_cc1 <- function(tab, an, w_mm = F1_BOX$c[1], h_mm = F1_BOX$c[2], jitter_seed = c(NA, NA), text_position = "panel",
-                         typography = "figure1", compact_header = FALSE) {
+                         typography = "figure1", compact_header = FALSE, style = "figure1", frame = NULL) {
+  if (bh_style_nature(style)) return(f1n_panel_cc1(tab, an, w_mm, h_mm, jitter_seed = jitter_seed, frame = frame))
   A1 <- tab("A1_animal_cc1")
   C2 <- tab("C2_estimates")
   parts <- list(f1_panel_cc1_one(A1, C2, an, "crossing_rate", "cr", jitter_seed[1], text_position, typography),
@@ -354,7 +362,9 @@ f1_panel_trajectory <- function(tab, an, w_mm = F1_BOX$d[1], h_mm = F1_BOX$d[2],
 # =============================================================== panel e
 #' title_position  "panel" (Figure 1e) or "plot": the title and subtitle start at the plot edge.
 f1_panel_association <- function(tab, an, w_mm = F1_BOX$e[1], h_mm = F1_BOX$e[2], minus_ticks = FALSE,
-                                 typography = "figure1", title = NULL, title_position = "panel") {
+                                 typography = "figure1", title = NULL, title_position = "panel",
+                                 style = "figure1", frame = NULL) {
+  if (bh_style_nature(style)) return(f1n_panel_association(tab, an, w_mm, h_mm, typography = typography, frame = frame))
   if (!identical(title_position, "panel") && !identical(title_position, "plot"))
     stop("f1_panel_association: title_position must be \"panel\" or \"plot\".", call. = FALSE)
   cand <- f1_candidate_typography(typography)
@@ -386,7 +396,8 @@ f1_panel_association <- function(tab, an, w_mm = F1_BOX$e[1], h_mm = F1_BOX$e[2]
 #'                under the panel letter, and the scatter's legend is placed against the plot.
 f1_panel_prediction <- function(tab, an, w_mm = F1_BOX$f[1], h_mm = F1_BOX$f[2], minus_ticks = FALSE,
                                 typography = "figure1", compact_header = FALSE, scatter_width = 0.6,
-                                bottom_pad_pt = 0, title_position = "panel") {
+                                bottom_pad_pt = 0, title_position = "panel", style = "figure1", frame = NULL) {
+  if (bh_style_nature(style)) return(f1n_panel_prediction(tab, an, w_mm, h_mm, typography = typography, frame = frame))
   if (!is.numeric(scatter_width) || length(scatter_width) != 1L || !(scatter_width > 0))
     stop("f1_panel_prediction: scatter_width must be one positive number.", call. = FALSE)
   if (!is.numeric(bottom_pad_pt) || length(bottom_pad_pt) != 1L || !(bottom_pad_pt >= 0))
