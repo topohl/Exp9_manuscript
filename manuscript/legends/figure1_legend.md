@@ -1,95 +1,88 @@
 # Figure 1 legend
 
-Draft legend. Every number below is recoverable from
-`source_data/MMMSociability/source_data/figure1_panel_statistics.csv`,
-which is the contract for what this figure may state. All statistics were
-computed in the upstream behavioural repository and frozen; nothing on this
-figure is calculated in the proteomics repository.
+Draft legend for author review. It describes design, measures, models and
+sample sizes; every statistic is printed on the panels and resolves, through
+`figures/figure_01_annotation_map.csv`, to one cell of the pinned canonical
+behaviour bundle (`config/behaviour_bundle.yml`). All statistics were computed
+and frozen in MMMSociability (Stage 29 characterisation and Stage 09 registered
+prediction, bundled by Stage 16b under configuration v1.0.1, bundle
+`ebb_v101_20260929_b2ce507`); nothing on this figure is calculated in this
+repository. The analytic parent of v1.0.1 is configuration v1.0.0, hashed before
+any resilient-versus-susceptible model was fitted; v1.0.1 changes documentation
+and terminology and binds the corrected data version (cage labels), with no
+analytic change, and was made after outcome inspection. The title and any
+interpretive sentence are left to the authors.
 
 ---
 
-**Figure 1 | Early spontaneous home-cage activity predicts later composite stress
-outcome.**
+**Figure 1 | Home-cage RFID behaviour after cage changes in animals later
+classified resilient or susceptible, and the early RFID position-change rate
+against the later composite outcome.**
 
-**(a)** Experimental timeline. Radio-frequency identification tracking of
-undisturbed home-cage activity was recorded in the first active-phase block
-following the first cage change at postnatal day 25 (P25; CC1), across a fixed
-clock window from 18:30 inclusive to 06:30 exclusive — 12 h, binned at 10 min, giving
-72 expected slots per animal. Seventy-two is the design expectation rather than
-the realised coverage: 50 of 111 animals contributed all 72 slots and the
-remaining 61 were missing leading slots only, with no interior or trailing gaps
-in any animal (mean coverage 98.6%). Every component of the later outcome, the
-composite score derived from them and the resilient/susceptible labels derived
-from that score were obtained after this window closed, so the classification did
-not exist at the time of recording.
+**(a)** Design. Radio-frequency identification (RFID) position records of
+undisturbed home-cage behaviour were analysed in the first full active phase
+after each cage change (18:30–06:30, 12 h), beginning an estimated 2.3–8.5 h
+after the change; the first cage change (CC1) was at postnatal day 25 (P25). No
+RFID recording exists before CC1. Stress-exposed (SIS) animals experienced
+repeated changes of cage composition; control (CON) animals were never
+regrouped. Every component of the later outcome, the composite score and the
+resilient/susceptible labels were obtained after these windows. Measures are
+computed from the change-only stream of RFID position records without time bins.
 
 **(b)** Later composite outcome and the rule that defines the phenotype. Each
-point is one animal (n = 117), plotted by sex because the classification is
-referenced within sex. `CombZ` is the unweighted mean of six components — novel
-object recognition, sucrose preference, weight deviation, delta corticosterone,
-adrenal weight and spleen weight — each z-scored against same-sex control animals
-using the population standard deviation, with the last three sign-inverted so
-that all six share an orientation. Higher `CombZ` indicates a more resilient-like
-outcome. Grey line, same-sex control mean; dashed line, the susceptibility
-threshold at one control population standard deviation below that mean
-(−0.437 male, −0.222 female). Stress-exposed animals below the threshold were
-classified susceptible and the remainder resilient; control animals were never
-relabelled. This panel shows how the groups were defined. Because these six
-components construct `CombZ` and `CombZ` constructs the classification,
-differences between the resulting groups in those components are guaranteed and
-are not presented here as independent confirmation of the phenotype.
+point is one animal (n = 117). `CombZ` is the unweighted mean of six components
+(novel object recognition, sucrose preference, weight deviation, delta
+corticosterone, adrenal weight, spleen weight), each z-scored against same-sex
+controls with the population standard deviation, with the last three
+sign-inverted. Higher `CombZ` indicates a more resilient-like outcome. Grey
+line, same-sex control mean; dashed line, the susceptibility threshold one
+control population standard deviation below it. SIS animals below the threshold
+were classified susceptible (SUS) and the remainder resilient (RES). The panel
+shows how the groups were defined, not a test of them.
 
-**(c)** Early mean movement over the window in (a) against later `CombZ`; one
-point per animal, n = 111 (58 female, 53 male; 24 control, 49 resilient, 38
-susceptible). Spearman ρ = −0.39, 95% confidence interval [−0.55, −0.21] from
-5,000 percentile bootstrap resamples, q = 6.9 × 10⁻⁵ after Benjamini–Hochberg
-correction across three prespecified features. Given the orientation of the
-score, the negative sign means that animals more active during the first
-undisturbed night tended towards a lower later `CombZ`, that is, towards a less
-resilient-like outcome. No model is fitted in this panel and no line is drawn
-through the points; the reported statistic is a rank correlation. The panel is
-deliberately not stratified by sex, because the formal feature-by-sex interaction
-is unsupported (all q = 0.90).
+**(c)** First active phase after CC1. Left, RFID position-change rate (position
+changes per observed hour, h⁻¹), an index of cage-scale relocation. Right,
+shared RFID-position occupancy: the fraction of co-assigned dyadic time an animal
+was assigned to the same RFID position as its current tracked cage-mates, an
+index of spatial overlap with cage-mates. Points, animals; hollow grey points, CON, shown for
+reference and not modelled. Black points and bars, model-based RES and SUS means
+with 95% confidence intervals from sex-stratified linear mixed models of SIS
+animals (`y ~ Batch + group + (1 | cage epoch)`, Kenward–Roger). Printed:
+RES − SUS within each sex (95% CI), and the sex difference in RES − SUS from the
+pooled SIS model (`y ~ Batch + group + group:sex + (1 | cage epoch)`) with its
+Holm-adjusted p across the two primary measures (family P-CC1, m = 2).
+SIS animals: 46 female (28 RES, 18 SUS) and 41 male (25 RES, 16 SUS); shared
+RFID-position occupancy is undefined for 2 animals without a tracked cage-mate at
+CC1.
 
-**(d)** Held-out prediction of continuous `CombZ`, with its permutation null.
-*Left*, each point is one animal, its predicted value obtained from a model
-refitted on the other 110 animals and evaluated on that animal alone
-(leave-one-animal-out, n = 111). The model is the prespecified movement-mean
-model, whose sole predictor is early mean movement; it was fixed in a registry
-before fitting and carries no outcome-derived term. Fill denotes later outcome
-group and shape denotes sex, for orientation only: neither entered the model.
-Dashed line, identity, not a fit. Leave-one-animal-out R² = 0.159 against
-−0.018 for an intercept-only baseline. *Right*, the complete fitting and
-cross-validation procedure repeated under 1,000 permutations of the outcome,
-refitting every model in full for each draw; histogram, the 1,000 permuted
-leave-one-animal-out R² values; vertical line, the observed value of 0.159,
-which no permuted draw reached (p = 1/1001). A repeated grouped five-fold
-scheme with the animal as the grouping unit gives a closely matching estimate
-(R² = 0.156; 2.5th–97.5th percentile range across 100 repeats 0.116–0.179 — a
-resampling range across repeats, not a confidence interval). The prediction
-target is the continuous score throughout; no classifier was fitted, so no
-accuracy or area under the curve exists and none is reported.
+**(d)** Active phase after each of CC1–CC4. Lines, model-based RES and SUS means
+with 95% confidence intervals from sex-stratified mixed models with cage change
+as a categorical factor, animal and cage-epoch random intercepts, and, for
+the position-change rate, an uncorrelated random slope over cage changes; grey dashed
+lines, descriptive CON means. Printed: the joint Kenward–Roger F test of whether
+the RES − SUS trajectory differs between sexes (three group × cage change × sex
+terms in the pooled SIS model) with its Holm-adjusted p across the two primary
+measures (family P-TR, m = 2). The cage-change-averaged sex moderation is a
+secondary estimate reported separately.
 
-The biological unit is the animal throughout. Validation is internal: animals
-were withheld within a single cohort, not tested in an independent cohort. Cage
-identity is not represented in the analysis design, so cage-level dependence
-could be neither modelled nor assessed retrospectively; this bounds how far the
-estimate generalises beyond the cages sampled and is not a route by which outcome
-information could have reached the predictor.
+**(e)** Early RFID position-change rate after CC1 (shown as 6 × the Stage 09
+10-min mean movement, position changes h⁻¹) against later `CombZ`; one point per animal,
+n = 111. Spearman ρ with a 5,000-sample percentile bootstrap 95% CI and
+Benjamini–Hochberg q across three registered features. No model is fitted in
+this panel and no line is drawn.
 
----
+**(f)** Held-out prediction of continuous `CombZ` by the registered
+movement-mean model (sole predictor early mean movement), leave-one-animal-out
+(n = 111); dashed line, identity. Fill, later group; shape, sex; neither entered
+the model. Right, 1,000 full-refit permutations of the outcome; vertical line,
+observed value; permutation p Holm-adjusted across the two registered
+behaviour-only models. The repeated grouped five-fold range is a resampling range
+across repeats, not a confidence interval. Validation is internal.
 
-## Wording constraints applied
-
-| Constraint | Applied |
-|---|---|
-| prediction target is continuous `CombZ` | stated in (d) |
-| never "predicts susceptibility" or "predicts resilience" | absent |
-| never "movement-only" | the model is named the movement-mean model |
-| never "independent" or "external" validation | stated as internal in the closing paragraph |
-| no female-specific or sex-specific claim | (c) states the interaction is unsupported |
-| Entropy ACF1 not presented as supported | absent from the figure entirely |
-| RMSSD not promoted to equal status | absent from the figure entirely |
-| 72 slots is the design expectation | (a) gives design and realised coverage separately |
-| classification components not shown as validation | stated explicitly in (b) |
-| repeated-CV range is not a confidence interval | stated explicitly in (d) |
+Groups were assigned from later `CombZ`, so panels (c)–(e) use overlapping
+animals and data and are complementary views, not independent replication. A
+sex-moderation estimate whose interval includes zero indicates imprecision, not
+equivalence. The primary families (P-CC1, P-TR) were fixed, with every model,
+contrast and robustness rule, in configuration v1.0.0, hashed before any
+resilient-versus-susceptible model was fitted; configuration v1.0.1, under which
+this figure was rendered, leaves that specification unchanged.

@@ -1,0 +1,982 @@
+# Candidate figure contract: behaviour generation behaviour_v101_s30.
+#
+# THIS IS NOT THE MANUSCRIPT CONTRACT. figures/figure_contract.yml remains the
+# sole authority for the numbered figures. Nothing here promotes, replaces or
+# overwrites a canonical figure (figures/main/*, Figures 1-3 in results/figures/
+# manuscript/), and the whole candidate generation can be deleted without
+# affecting the canonical pipeline. No candidate key is registered in
+# provenance/publication_registry/.
+#
+# Rendering only. Every panel plots stored values of the pinned bundles, read
+# through R/behaviour_bundle.R, R/stage30_bundle.R and R/figure_support_bundle.R:
+# the Stage 29 v1.0.1 behaviour bundle (ebb), the Stage 30 figure bundle (s30b) and
+# the figure-support bundle (fsb: descriptive CON cage means and the CombZ
+# components as they enter CombZ, figure_01_option3_*; from fsb_v2 also the
+# verbatim rows of the MMM post hoc CON/RES/SUS run 29b, figure_01_option3b_nature
+# panel c, fitted upstream once and labelled post hoc). Every printed
+# number resolves through the annotation map to exactly one stored cell
+# (bundle_cell). Nothing is fitted, tested, adjusted or summarised here.
+#
+# Entry point: figures/behaviour_v101_s30_candidates.R renders every panel at its
+# box, assembles each candidate in absolute layout (8-pt bold lowercase letters
+# drawn by manuscript_figure_assemble_svg), writes the 300-dpi PNG and raster PDF
+# (manuscript_figure_raster_companions), the per-panel source data, the panel and
+# input manifests, a run manifest per candidate and the generation receipt.
+#
+# Per panel:
+#   id                 file stem suffix of the panel SVG (<candidate>_<id>.svg)
+#   letter             the letter the assembler draws ("" = none: single-panel pages)
+#   builder            the panel-library function (R/panels/behaviour_*.R) that draws it
+#   args               the builder's layout arguments (no values: every number is in the map)
+#   jitter_seed        explicit seed(s) of the presentational jitter (null: no jitter)
+#   inputs             bundle tables the panel reads, including the tables behind its
+#                      annotation keys (the entry script stops if the builder reads others)
+#   annotation_panels  map panels whose keys this panel prints (value-for-value tested)
+#   annotation_panels_plotted  map panels whose keys it resolves only to place marks
+#   annotation_panels_legend   map panels whose keys the panel's draft legend or the draft Results
+#                      text quotes; the entry script resolves them into the panel's source data
+#                      with src_role "legend" (they are not drawn on this panel)
+#   x, y, w, h         the absolute box in mm; the panel SVG is authored at w x h (scale 1)
+#
+# Layout arguments shared by several builders:
+#   top_margin_pt      the panel's top margin; letterless single-panel pages pass 3 (the 11.5-pt
+#                      default leaves room for a panel letter)
+#   panel_top_mm, panel_h_mm   absolute top and height of the first plot panel, so two boxes of
+#                      one row share one panel frame (ED X d/e)
+#   typography: candidate      CANDIDATE_SPEC A typography in the reused Figure 1 builders (en-dash
+#                      ranges, U+2212 exponent, "RES − SUS" / "Female − male" labels); the
+#                      canonical Figure 1 keeps its own strings
+#   compact_header     no patchwork outer margin, so the title sits under the letter
+#   title_position: plot   titles start at the plot edge (one anchor per page)
+#   text_position: plot    (f1_panel_cc1) titles, captions and the group legend start at the plot edge
+#   scatter_width      relative width of the prediction scatter (Figure 1f: 0.6)
+#   bottom_pad_pt      extra bottom margin of the prediction plots (Figure 1f: 0), so their x axes
+#                      sit level with the association panel's (two-line x title) in the same row
+#   style: nature      the opt-in Nature style profile (BH_NATURE; NATURE_REDESIGN_SPEC): the builders
+#                      draw their f1n_* / s30n_* variants (R/panels/behaviour_figure1_nature_panels.R);
+#                      the default "figure1" draws exactly as before
+#   plot_top_mm, axis_mm   (style nature) the top edge of the first plot panel and the x-axis line of
+#                      the last one, in mm below the box top, so the panels of a row share one frame
+#
+# Per candidate (optional):
+#   assembly: vector_page  the page is drawn as ONE vector document (bh_save_page: every panel plot in
+#                      a grid viewport at its box on one device; SVG with live text, vector PDF with
+#                      Arial embedded, PNG preview rasterised from the page SVG). Default: the panel
+#                      SVGs are embedded in an assembled SVG and rasterised to PNG and PDF.
+#   page_margin_mm, panel_gap_mm   the candidate's own grid (default: the generation's 5 and 2)
+#
+# Boxes follow CANDIDATE_SPEC C; departures are recorded under `layout_notes`.
+
+contract_version: behaviour_v101_s30_candidates_v1
+generation: behaviour_v101_s30
+status: candidate_only_not_promoted
+canonical_contract: figures/figure_contract.yml
+entry_point: figures/behaviour_v101_s30_candidates.R
+annotation_map: figures/behaviour_v101_s30_annotation_map.csv
+rendering_repository_computes_statistics: false
+scientific_recomputation: none
+panel_letter_pt: 8
+page_margin_mm: 5
+panel_gap_mm: 2
+bundles:
+  ebb:
+    pin: config/behaviour_bundle.yml
+    reader: R/behaviour_bundle.R
+    bundle_id: ebb_v101_20260929_b2ce507
+    manifest_sha256: ec59aa337fc63511de4aa2bf3e1ee1f4b34b84d6d671565f74e0bb3939f7226c
+  s30b:
+    pin: config/stage30_bundle.yml
+    reader: R/stage30_bundle.R
+    bundle_id: s30b_v10_20260929_5394f2f
+    manifest_sha256: 8930d8bf5ee93ace00f9d187377803f664036f858df4c7ae8d6b8f8804a3f87d
+  fsb:
+    pin: config/figure_support_bundle.yml
+    reader: R/figure_support_bundle.R
+    bundle_id: fsb_v2_20260930_a23d699
+    manifest_sha256: c59c500f248fba0873df3b1c2661d3f63ce81b2deec63bb7225e320db608e9c5
+libraries:
+  - R/panels/behaviour_figure_style.R
+  - R/panels/behaviour_figure1_panels.R
+  - R/panels/behaviour_s30_edx_panels.R
+  - R/panels/behaviour_s30_light_panels.R
+  - R/panels/behaviour_s30_cookie_panels.R
+  - R/panels/behaviour_s30_screen_panels.R
+  - R/panels/behaviour_figure1_nature_panels.R
+  - R/panels/behaviour_figure1_option3_panels.R
+  - R/panels/behaviour_figure1_option3b_panels.R
+output_roots:
+  figures: results/figures/manuscript_candidates/behaviour_v101_s30
+  source_data: results/source_data/manuscript_candidates/behaviour_v101_s30
+  reports: results/reports/manuscript_candidates/behaviour_v101_s30
+  logs: results/logs/manuscript_candidates/behaviour_v101_s30
+  receipt: results/reports/manuscript_candidates/behaviour_v101_s30/RECEIPT.csv
+  tracked_receipt_copy: provenance/candidates/behaviour_v101_s30_receipt.csv
+
+candidates:
+
+  # ------------------------------------------------------------------ 1
+  figure_01_option1:
+    title: Figure 1, option 1 (design, CombZ, CC1 estimates, early rate vs CombZ, held-out prediction)
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: main-figure candidate (Figure 1); the CC1-CC4 trajectories move to Extended Data X
+    width_mm: 183
+    height_mm: 170
+    layout_mode: absolute
+    layout_notes: >-
+      CANDIDATE_SPEC C1 geometry with 3 mm moved from the design panel to the bottom row, the
+      visual centre: a 173 x 29 @5,5 (a had 2.2 mm of empty band above its bracket labels);
+      row 2 at y = 36 (b 58 @5, c 113 @65, both 62 high); row 3 at y = 100, 65 high
+      (d 66 @5, e 105 @73). c, d and e use the candidate typography and headers of the
+      reused Figure 1 builders (typography, compact_header, the association title). In e the
+      scatter and the permutation histogram take equal widths (scatter_width 1; Figure 1f 0.6),
+      and both carry 8.7 pt of extra bottom margin (bottom_pad_pt), so their one-line x titles
+      end above d's two-line one and all three x axes sit on one line; the height-limited square
+      scatter is about 41 mm. One title anchor on the page: b, c, d and e start their titles at
+      the plot edge under the letter (title_position / text_position plot), and every group
+      legend starts under its title.
+    panels:
+      - id: a
+        letter: a
+        builder: f1_panel_design
+        description: Design and timeline (Figure 1a builder at the option box)
+        args: {key_prefix: f1o1_, typography: candidate}
+        jitter_seed: null
+        inputs: [ebb/A0_design_timeline]
+        annotation_panels: [f1o1_design]
+        x: 5
+        "y": 5
+        w: 173
+        h: 29
+      - id: b
+        letter: b
+        builder: f1_panel_combz
+        description: Later CombZ and the RES/SUS definition by the same-sex control-referenced threshold (definition, not a test)
+        args: {key_prefix: f1o1_, minus_ticks: true, subtitle_line_break: false, title_position: plot}
+        jitter_seed: 1
+        inputs: [ebb/A4_combz_animals, ebb/A2b_combz_thresholds]
+        annotation_panels: [f1o1_combz]
+        x: 5
+        "y": 36
+        w: 58
+        h: 62
+      - id: c
+        letter: c
+        builder: f1_panel_cc1
+        description: First active phase after CC1, RFID position-change rate and shared RFID-position occupancy; per-sex RES - SUS, the Female - male difference and its P-CC1 Holm p (Stage 29 primary)
+        args: {key_prefix: f1o1_, text_position: plot, typography: candidate, compact_header: true}
+        jitter_seed: [2, 2]
+        inputs: [ebb/A1_animal_cc1, ebb/C2_estimates, ebb/E_multiplicity]
+        annotation_panels: [f1o1_cc1]
+        x: 65
+        "y": 36
+        w: 113
+        h: 62
+      - id: d
+        letter: d
+        builder: f1_panel_association
+        description: Early RFID position-change rate vs later CombZ (Stage 09 registered association, rank correlation, not split by sex)
+        args: {key_prefix: f1o1_, minus_ticks: true, typography: candidate, candidate_title: true, title_position: plot}
+        jitter_seed: null
+        inputs: [ebb/A2_prediction_animals, ebb/C2_estimates, ebb/E_multiplicity]
+        annotation_panels: [f1o1_association]
+        x: 5
+        "y": 100
+        w: 66
+        h: 65
+      - id: e
+        letter: e
+        builder: f1_panel_prediction
+        description: Held-out prediction of later CombZ and its permutation null (Stage 09 registered prediction)
+        args: {key_prefix: f1o1_, minus_ticks: true, typography: candidate, compact_header: true, scatter_width: 1,
+               bottom_pad_pt: 8.7, title_position: plot}
+        jitter_seed: null
+        inputs: [ebb/A2_prediction_animals, ebb/A3_permutation_draws, ebb/C2_estimates, ebb/E_multiplicity]
+        annotation_panels: [f1o1_prediction]
+        x: 73
+        "y": 100
+        w: 105
+        h: 65
+
+  # ------------------------------------------------------------------ 2
+  figure_01_option2:
+    title: Figure 1, option 2 (option 1 plus a compact light-phase estimate panel in row 2)
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: main-figure candidate (Figure 1); letters in reading order, the compact light-phase panel is d in row 2 and the association and prediction panels become e and f
+    width_mm: 183
+    height_mm: 170
+    layout_mode: absolute
+    layout_notes: >-
+      Letters follow reading order (journal style): a design; row 2 b CombZ, c CC1, d light
+      phase (exploratory); row 3 e early rate vs CombZ, f held-out prediction. Against option 1,
+      d and e become e and f; the option-2 legend maps them. CANDIDATE_SPEC C2 row 2 (b 50 +
+      c 88 + f 36 + two 2-mm gaps = 178 mm from x = 5) would end at the page edge, so c is
+      narrowed by 4 mm (the permitted adjustment) and the compact panel by 1 mm: b 50 @5, c 84
+      @57, d 35 @143. Rows as option 1: a 173 x 29, row 2 at y = 36, row 3 at y = 100, 65 high.
+      One title anchor on the page, as option 1: b (title_position plot; its one-line subtitle
+      fits at the plot edge), c (text_position plot, the group legend under its first title),
+      d, e and f all start their titles at the plot edge, under the letter. f takes the
+      equal-width scatter and bottom pad of option 1 e, so the row-3 axes sit on one line. d's
+      draft legend quotes the stored CIs, the inactivity saturation counts, the Movement-adjusted
+      female and female - male estimates and the dependence descriptors (annotation_panels_legend).
+    panels:
+      - id: a
+        letter: a
+        builder: f1_panel_design
+        description: Design and timeline (Figure 1a builder at the option box)
+        args: {key_prefix: f1o2_, typography: candidate}
+        jitter_seed: null
+        inputs: [ebb/A0_design_timeline]
+        annotation_panels: [f1o2_design]
+        x: 5
+        "y": 5
+        w: 173
+        h: 29
+      - id: b
+        letter: b
+        builder: f1_panel_combz
+        description: Later CombZ and the RES/SUS definition (narrow box; title at the plot edge)
+        args: {key_prefix: f1o2_, minus_ticks: true, subtitle_line_break: false, title_position: plot}
+        jitter_seed: 1
+        inputs: [ebb/A4_combz_animals, ebb/A2b_combz_thresholds]
+        annotation_panels: [f1o2_combz]
+        x: 5
+        "y": 36
+        w: 50
+        h: 62
+      - id: c
+        letter: c
+        builder: f1_panel_cc1
+        description: First active phase after CC1 (narrow box; construct titles and contrast captions aligned to the plot edge)
+        args: {key_prefix: f1o2_, text_position: plot, typography: candidate, compact_header: true}
+        jitter_seed: [2, 2]
+        inputs: [ebb/A1_animal_cc1, ebb/C2_estimates, ebb/E_multiplicity]
+        annotation_panels: [f1o2_cc1]
+        x: 57
+        "y": 36
+        w: 84
+        h: 62
+      - id: d
+        letter: d
+        builder: s30_panel_light_compact
+        description: >-
+          Light phase (exploratory): stored RES - SUS after CC1 (SIS only) for the RFID
+          position-change rate (Stage 29 secondary estimate, not tested; no p) and for
+          sustained positional inactivity (>=40 s) (Stage 30 exploratory; local BH q, m = 6,
+          printed for the F, M and F - M rows)
+        args: {q_rows: ["F", "M", "INT"]}
+        jitter_seed: null
+        inputs: [ebb/C2_estimates, s30b/S1b_light_estimates, s30b/S1c_light_descriptives, s30b/S0_master_hypotheses, s30b/S2b_rate_inactivity_relationship]
+        annotation_panels: [light_compact]
+        annotation_panels_plotted: [light_rate, light_inactivity]
+        annotation_panels_legend: [light_legend, light_rate, light_inactivity, light_dependence]
+        x: 143
+        "y": 36
+        w: 35
+        h: 62
+      - id: e
+        letter: e
+        builder: f1_panel_association
+        description: Early RFID position-change rate vs later CombZ (Stage 09)
+        args: {key_prefix: f1o2_, minus_ticks: true, typography: candidate, candidate_title: true, title_position: plot}
+        jitter_seed: null
+        inputs: [ebb/A2_prediction_animals, ebb/C2_estimates, ebb/E_multiplicity]
+        annotation_panels: [f1o2_association]
+        x: 5
+        "y": 100
+        w: 66
+        h: 65
+      - id: f
+        letter: f
+        builder: f1_panel_prediction
+        description: Held-out prediction of later CombZ and its permutation null (Stage 09)
+        args: {key_prefix: f1o2_, minus_ticks: true, typography: candidate, compact_header: true, scatter_width: 1,
+               bottom_pad_pt: 8.7, title_position: plot}
+        jitter_seed: null
+        inputs: [ebb/A2_prediction_animals, ebb/A3_permutation_draws, ebb/C2_estimates, ebb/E_multiplicity]
+        annotation_panels: [f1o2_prediction]
+        x: 73
+        "y": 100
+        w: 105
+        h: 65
+
+  # ------------------------------------------------------------------ 2n
+  figure_01_option2_nature:
+    title: Figure 1, option 2 (Nature layout; the option 2 content redrawn to the journal's figure rules)
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: main-figure candidate (Figure 1); option 2 in the Nature layout, beside figure_01_option2 for comparison; same content, stored values and inks
+    width_mm: 183
+    height_mm: 160
+    layout_mode: absolute
+    assembly: vector_page
+    page_margin_mm: 4
+    panel_gap_mm: 3
+    layout_notes: >-
+      NATURE_REDESIGN_SPEC (2026-09-30). Figure 2's grid: 4-mm margins, 3-mm gutters, 183 x 160 mm.
+      a 175 x 11 (the spec's about 17: the timeline rule, its dots and the n footer are gone, and the
+      6-mm boxes need 11); row 2 at y = 18, 71 high: b 46, c 84, d 39 (the spec's 86 / 37: d needs
+      2 mm more for its one-line x title "RES - SUS (fraction of light phase)" at 5.5 pt); row 3 at
+      y = 92, 64 high: e 60, f 112 (the spec's 64 / 108: e's plot is square-ish and f's scatter is
+      square at the row's panel height). The page is one vector document (assembly vector_page). Type
+      5 / 5.5 pt, letters 8 pt; the headers (c's and d's titles) sit on the letter's baseline, and b's
+      group key (left-aligned at its plot panel) sits on row 2's second line with c's "Female - male:
+      Holm P" lines. Row frames: plot tops at 8.1 mm (row 2) and 3.4 mm (row 3) below the box top, x-axis
+      lines at 65.8 and 58.3 mm (plot_top_mm, axis_mm). Values moved off the panels are quoted by the
+      legend (annotation_panels_legend): a's n footer (f1o2n_design_legend), c's RES - SUS and
+      female - male CIs and n (f1o2n_cc1_legend), f's repeated grouped five-fold range, permutation
+      count and n (f1o2n_prediction_legend); d's legend keys as option 2's. The legend's n are stored
+      cells: the Nature-only legend keys f1o2n_c_n_* (C2_estimates model n; B2_descriptive_summaries,
+      which stores each CC1 sex x group n as one cell; G_sample_sizes for the missing shared-occupancy
+      cell) and f1o2n_f_n. The PDF page is exactly 183 x 160 mm: cairo_pdf writes whole points (518 x
+      453), and bh_pdf_mediabox appends an incremental update with the exact MediaBox.
+    panels:
+      - id: a
+        letter: a
+        builder: f1_panel_design
+        description: Design (Nature layout; the n footer moved to the legend)
+        args: {key_prefix: f1o2n_, typography: candidate, style: nature}
+        jitter_seed: null
+        inputs: [ebb/A0_design_timeline]
+        annotation_panels: []
+        annotation_panels_legend: [f1o2n_design_legend]
+        x: 4
+        "y": 4
+        w: 175
+        h: 11
+      - id: b
+        letter: b
+        builder: f1_panel_combz
+        description: Later CombZ and the RES/SUS threshold (Nature layout; the figure group key on the header line)
+        args: {key_prefix: f1o2n_, style: nature, plot_top_mm: 8.1, axis_mm: 65.8}
+        jitter_seed: 1
+        inputs: [ebb/A4_combz_animals, ebb/A2b_combz_thresholds]
+        annotation_panels: [f1o2n_combz]
+        x: 4
+        "y": 18
+        w: 46
+        h: 71
+      - id: c
+        letter: c
+        builder: f1_panel_cc1
+        description: >-
+          First active phase after CC1 (Nature layout): position-change rate and shared occupancy by sex
+          and group, the RES/SUS model means with 95% CIs and the P-CC1 Holm P of the female - male
+          difference in RES - SUS; the contrast CIs and the n are quoted by the legend
+        args: {key_prefix: f1o2n_, typography: candidate, style: nature, plot_top_mm: 8.1, axis_mm: 65.8}
+        jitter_seed: [2, 2]
+        inputs: [ebb/A1_animal_cc1, ebb/C2_estimates, ebb/E_multiplicity, ebb/B2_descriptive_summaries, ebb/G_sample_sizes]
+        annotation_panels: [f1o2n_cc1]
+        annotation_panels_legend: [f1o2n_cc1_legend]
+        x: 53
+        "y": 18
+        w: 84
+        h: 71
+      - id: d
+        letter: d
+        builder: s30_panel_light_compact
+        description: >-
+          Light phase (exploratory), Nature layout: stored RES - SUS after CC1 (SIS only) for the RFID
+          position-change rate (Stage 29 secondary estimate, not tested) and sustained positional
+          inactivity (>=40 s) (Stage 30 exploratory; local BH q, m = 6, one column for the F, M and
+          F - M rows)
+        args: {q_rows: ["F", "M", "INT"], style: nature, plot_top_mm: 8.1, axis_mm: 65.8}
+        jitter_seed: null
+        inputs: [ebb/C2_estimates, s30b/S1b_light_estimates, s30b/S1c_light_descriptives, s30b/S0_master_hypotheses, s30b/S2b_rate_inactivity_relationship]
+        annotation_panels: [light_compact]
+        annotation_panels_plotted: [light_rate, light_inactivity]
+        annotation_panels_legend: [light_legend, light_rate, light_inactivity, light_dependence]
+        x: 140
+        "y": 18
+        w: 39
+        h: 71
+      - id: e
+        letter: e
+        builder: f1_panel_association
+        description: Early RFID position-change rate vs later CombZ (Stage 09; Nature layout)
+        args: {key_prefix: f1o2n_, typography: candidate, style: nature, plot_top_mm: 3.4, axis_mm: 58.3}
+        jitter_seed: null
+        inputs: [ebb/A2_prediction_animals, ebb/C2_estimates, ebb/E_multiplicity]
+        annotation_panels: [f1o2n_association]
+        x: 4
+        "y": 92
+        w: 60
+        h: 64
+      - id: f
+        letter: f
+        builder: f1_panel_prediction
+        description: >-
+          Held-out prediction of later CombZ and its permutation null (Stage 09; Nature layout: group
+          shapes, direct labels; the resampling range and permutation count quoted by the legend)
+        args: {key_prefix: f1o2n_, typography: candidate, style: nature, plot_top_mm: 3.4, axis_mm: 58.3}
+        jitter_seed: null
+        inputs: [ebb/A2_prediction_animals, ebb/A3_permutation_draws, ebb/C2_estimates, ebb/E_multiplicity]
+        annotation_panels: [f1o2n_prediction]
+        annotation_panels_legend: [f1o2n_prediction_legend]
+        x: 67
+        "y": 92
+        w: 112
+        h: 64
+
+  # ------------------------------------------------------------------ 2b
+  figure_01_option3_nature:
+    title: Figure 1, option 3 (Nature layout; design and behavioural architecture, CombZ and its components, CC1 with CON cage marks, CC1 to CC4, early rate vs CombZ, held-out prediction)
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: main-figure candidate (Figure 1); OPTION3_SPEC (2026-09-30), beside figure_01_option2_nature for comparison; the light phase stays in Extended Data X
+    width_mm: 183
+    height_mm: 170
+    layout_mode: absolute
+    assembly: vector_page
+    page_margin_mm: 4
+    panel_gap_mm: 3
+    layout_notes: >-
+      OPTION3_SPEC 3 in the Nature profile (NATURE_REDESIGN_SPEC): 4-mm margins, 3-mm gutters, 183 x
+      170 mm, one vector page. Four rows: a 175 x 25 (the timeline, CC1-CC4 as repeated cage-change
+      episodes with the SIS / CON line, and the architecture schematic under it); b 175 x 35 (CombZ at
+      its stored rank within sex over the group strip and the six-component heatmap, F | M); row 3 at
+      y = 70, 53 high: c 110 (first active phase after CC1, each measure with its compact RES - SUS
+      sidecar) and d 62 (CC1 -> CC4, rate over occupancy, F | M); row 4 at y = 126, 40 high: e 58 and
+      f 114 (option 2 Nature's builders at option 3's boxes). Row frames: plot tops 9.54 mm (row 3) and
+      3.4 mm (row 4) below the box top, x-axis lines at 50.0 and 34.3 mm (plot_top_mm, axis_mm). The
+      heatmap uses the manuscript's diverging palette (config/manuscript_palette.yml; symmetric limits
+      capped at +/-3); every other ink is one option 2 draws. CON cage marks and the CON reference come
+      from the figure-support bundle (fsb F1, F1b); "3 cages/sex" is a design constant the builders check
+      against F1 (three CON cages of four animals per sex and cage change). The PDF page is exactly
+      183 x 170 mm (bh_pdf_mediabox).
+    panels:
+      - id: a
+        letter: a
+        builder: f1o3n_panel_design
+        description: >-
+          Design and behavioural architecture: CC1-CC4 as repeated cage-change episodes (one line under
+          all four: at every cage change SIS regrouped, CON an intact group moved in the same
+          platform-transfer episodes), the outcome steps, and the RFID position stream -> one bracket
+          around Movement (position-change rate) and behavioural organisation (social-spatial overlap,
+          spatial and temporal organisation), with the stored tier of each metric (fsb F1) -> the HMM
+          behavioural states as a downstream, exploratory layer
+        args: {key_prefix: f1o3n_}
+        jitter_seed: null
+        inputs: [ebb/A0_design_timeline, fsb/F1_con_cage_means]
+        annotation_panels: []
+        annotation_panels_legend: [f1o3n_design_legend]
+        x: 4
+        "y": 4
+        w: 175
+        h: 25
+      - id: b
+        letter: b
+        builder: f1o3n_panel_combz
+        description: >-
+          Later CombZ per animal at its stored rank within sex (fsb F2) with the stored threshold and
+          CON-mean lines (ebb A2b), the group strip, and the six components' signed z as they enter
+          CombZ (fsb F2; diverging palette, capped at +/-3), the RES/SUS boundary marked; the figure's
+          group key
+        args: {key_prefix: f1o3n_}
+        jitter_seed: null
+        inputs: [ebb/A2b_combz_thresholds, fsb/F2_combz_components, fsb/F2b_combz_definition]
+        annotation_panels: [f1o3n_combz]
+        annotation_panels_legend: [f1o3n_combz_legend]
+        x: 4
+        "y": 32
+        w: 175
+        h: 35
+      - id: c
+        letter: c
+        builder: f1o3n_panel_cc1
+        description: >-
+          First active phase after CC1: position-change rate and shared occupancy by sex and group
+          (animals, ebb A1; RES/SUS CC1_BY_SEX model means and 95% CIs, ebb C2; the CON descriptive mean
+          and the three CON cage means, fsb F1b / F1), and beside each measure the stored RES - SUS
+          contrasts F, M and the female - male difference (ebb C2) with the P-CC1 Holm P only
+        args: {key_prefix: f1o3n_, plot_top_mm: 9.54, axis_mm: 50.0}
+        jitter_seed: [2, 2]
+        inputs: [ebb/A1_animal_cc1, ebb/B2_descriptive_summaries, ebb/C2_estimates, ebb/E_multiplicity, fsb/F1_con_cage_means, fsb/F1b_con_reference_means]
+        annotation_panels: [f1o3n_cc1]
+        annotation_panels_plotted: [f1o3n_cc1_contrasts]
+        annotation_panels_legend: [f1o3n_cc1_contrasts, f1o3n_cc1_legend]
+        x: 4
+        "y": 70
+        w: 110
+        h: 53
+      - id: d
+        letter: d
+        builder: f1o3n_panel_trajectory
+        description: >-
+          CC1 -> CC4 (option, for judgement): the RES/SUS TR_BY_SEX means and 95% CIs (ebb C2), the CON
+          descriptive mean (dashed) and the three CON cage means per cage change (fsb F1b / F1), and one
+          line under the header for the registered Q2b of both measures with their P-TR Holm P (ebb
+          E_multiplicity); the F statistics and the FU-TR Holm P are quoted by the legend
+        args: {key_prefix: f1o3n_, plot_top_mm: 9.54, axis_mm: 50.0}
+        jitter_seed: null
+        inputs: [ebb/C2_estimates, ebb/C3_joint_tests, ebb/E_multiplicity, fsb/F1_con_cage_means, fsb/F1b_con_reference_means]
+        annotation_panels: [f1o3n_trajectory]
+        annotation_panels_legend: [f1o3n_trajectory_legend]
+        x: 117
+        "y": 70
+        w: 62
+        h: 53
+      - id: e
+        letter: e
+        builder: f1_panel_association
+        description: Early RFID position-change rate vs later CombZ (Stage 09; option 2 Nature's builder at option 3's box)
+        args: {key_prefix: f1o3n_, typography: candidate, style: nature, plot_top_mm: 3.4, axis_mm: 34.3}
+        jitter_seed: null
+        inputs: [ebb/A2_prediction_animals, ebb/C2_estimates, ebb/E_multiplicity]
+        annotation_panels: [f1o3n_association]
+        x: 4
+        "y": 126
+        w: 58
+        h: 40
+      - id: f
+        letter: f
+        builder: f1_panel_prediction
+        description: Held-out prediction of later CombZ and its permutation null (Stage 09; option 2 Nature's builder at option 3's box)
+        args: {key_prefix: f1o3n_, typography: candidate, style: nature, plot_top_mm: 3.4, axis_mm: 34.3}
+        jitter_seed: null
+        inputs: [ebb/A2_prediction_animals, ebb/A3_permutation_draws, ebb/C2_estimates, ebb/E_multiplicity]
+        annotation_panels: [f1o3n_prediction]
+        annotation_panels_legend: [f1o3n_prediction_legend]
+        x: 65
+        "y": 126
+        w: 114
+        h: 40
+
+  # ------------------------------------------------------------------ 2c
+  figure_01_option3_panel_d:
+    title: Figure 1, option 3 panel d alone (CC1 to CC4 with the CON cage marks), for judgement
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: stand-alone copy of figure_01_option3_nature panel d, so its main-figure place can be judged
+    width_mm: 70
+    height_mm: 61
+    layout_mode: absolute
+    assembly: vector_page
+    page_margin_mm: 4
+    panel_gap_mm: 3
+    layout_notes: >-
+      The option 3 page's panel d with the same builder, arguments, inputs and box (so it draws the same
+      text and marks), on its own letterless 70 x 61 mm vector page (4-mm margins). Being letterless,
+      its header drops the letter indent (the entry script passes indent = FALSE for an empty letter),
+      so its panel SVG differs from the page's by that offset only.
+    panels:
+      - id: d
+        letter: ""
+        builder: f1o3n_panel_trajectory
+        description: The figure_01_option3_nature panel d, alone
+        args: {key_prefix: f1o3n_, plot_top_mm: 9.54, axis_mm: 50.0}
+        jitter_seed: null
+        inputs: [ebb/C2_estimates, ebb/C3_joint_tests, ebb/E_multiplicity, fsb/F1_con_cage_means, fsb/F1b_con_reference_means]
+        annotation_panels: [f1o3n_trajectory]
+        annotation_panels_legend: [f1o3n_trajectory_legend]
+        x: 4
+        "y": 4
+        w: 62
+        h: 53
+
+  # ------------------------------------------------------------------ 2d
+  figure_01_option3b_nature:
+    title: Figure 1, option 3b (Nature layout; option 3 with c showing the post hoc CON, RES and SUS means and contrasts and a simplified CC1 to CC4 panel d)
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: main-figure candidate (Figure 1); OPTION3B_SPEC (2026-09-30), beside figure_01_option3_nature for comparison
+    width_mm: 183
+    height_mm: 170
+    layout_mode: absolute
+    assembly: vector_page
+    page_margin_mm: 4
+    panel_gap_mm: 3
+    layout_notes: >-
+      OPTION3B_SPEC: option 3's page (183 x 170 mm, 4-mm margins, 3-mm gutters, one vector page) with a,
+      b, e and f exactly as option 3 (same builders, arguments and boxes, so the same panel SVGs) and c
+      and d rebuilt at option 3's boxes. c (110 x 53): per measure (position-change rate; social-spatial
+      overlap) and sex, the animals as circles coloured by group, the post hoc three-group means and 95%
+      CIs (fsb P1, verbatim from the MMM post hoc run 29b; registry POSTHOC_CON_CONTRASTS v1.0), and
+      under each sex a forest of RES - CON, SUS - CON and SUS - RES with the Holm P (m = 3) of each row;
+      no CON cage means and no female - male row. Group-mean intervals beyond the presentational y
+      limits end in an arrowhead at the limit (the CON means; Kenward-Roger df below 2). d (62 x 53):
+      three lines per measure and sex, the CON descriptive mean dashed (fsb F1b; no interval, no cage
+      marks) and the RES / SUS TR_BY_SEX means with 95% CIs (ebb C2) offset either side of each cage
+      change, and one P-TR line under the header. Row 3 frame: plot tops 7.95 mm and x-axis lines
+      47.5 mm below the box top (c's forest x-axis carries its title below it).
+    panels:
+      - id: a
+        letter: a
+        builder: f1o3n_panel_design
+        description: As figure_01_option3_nature a (same builder, arguments, inputs and box)
+        args: {key_prefix: f1o3n_}
+        jitter_seed: null
+        inputs: [ebb/A0_design_timeline, fsb/F1_con_cage_means]
+        annotation_panels: []
+        annotation_panels_legend: [f1o3n_design_legend]
+        x: 4
+        "y": 4
+        w: 175
+        h: 25
+      - id: b
+        letter: b
+        builder: f1o3n_panel_combz
+        description: As figure_01_option3_nature b (same builder, arguments, inputs and box)
+        args: {key_prefix: f1o3n_}
+        jitter_seed: null
+        inputs: [ebb/A2b_combz_thresholds, fsb/F2_combz_components, fsb/F2b_combz_definition]
+        annotation_panels: [f1o3n_combz]
+        annotation_panels_legend: [f1o3n_combz_legend]
+        x: 4
+        "y": 32
+        w: 175
+        h: 35
+      - id: c
+        letter: c
+        builder: f1o3b_panel_cc1
+        description: >-
+          First active phase after CC1, per measure and sex: animals as circles by group (ebb A1), the post
+          hoc batch-balanced CON / RES / SUS means with 95% CIs, and under each sex the post hoc RES - CON,
+          SUS - CON and SUS - RES contrasts with their Holm P (fsb P1, primary model; registry
+          POSTHOC_CON_CONTRASTS v1.0); the legend quotes the registered FU-CC1 and P-CC1 results (ebb C2,
+          E_multiplicity), the n, the Kenward-Roger df and the one sensitivity disagreement (fsb P1, P1b)
+        args: {key_prefix: f1o3b_, plot_top_mm: 7.95, axis_mm: 47.5}
+        jitter_seed: [2, 2]
+        inputs: [ebb/A1_animal_cc1, ebb/C2_estimates, ebb/E_multiplicity, fsb/P1_posthoc_con_contrasts, fsb/P1b_posthoc_sensitivity]
+        annotation_panels: [f1o3b_cc1]
+        annotation_panels_legend: [f1o3b_cc1_legend]
+        x: 4
+        "y": 70
+        w: 110
+        h: 53
+      - id: d
+        letter: d
+        builder: f1o3b_panel_trajectory
+        description: >-
+          CC1 -> CC4: the CON descriptive mean (dashed grey; fsb F1b), the registered RES / SUS TR_BY_SEX
+          means and 95% CIs (ebb C2), offset, and one line under the header with the P-TR Holm P of both
+          measures (ebb E_multiplicity); the legend quotes the Q2b F tests and the FU-TR Holm P (ebb C3, E)
+        args: {key_prefix: f1o3b_, plot_top_mm: 7.95, axis_mm: 47.5}
+        jitter_seed: null
+        inputs: [ebb/C2_estimates, ebb/C3_joint_tests, ebb/E_multiplicity, fsb/F1b_con_reference_means]
+        annotation_panels: [f1o3b_trajectory]
+        annotation_panels_legend: [f1o3b_trajectory_legend]
+        x: 117
+        "y": 70
+        w: 62
+        h: 53
+      - id: e
+        letter: e
+        builder: f1_panel_association
+        description: As figure_01_option3_nature e (same builder, arguments, inputs and box)
+        args: {key_prefix: f1o3n_, typography: candidate, style: nature, plot_top_mm: 3.4, axis_mm: 34.3}
+        jitter_seed: null
+        inputs: [ebb/A2_prediction_animals, ebb/C2_estimates, ebb/E_multiplicity]
+        annotation_panels: [f1o3n_association]
+        x: 4
+        "y": 126
+        w: 58
+        h: 40
+      - id: f
+        letter: f
+        builder: f1_panel_prediction
+        description: As figure_01_option3_nature f (same builder, arguments, inputs and box)
+        args: {key_prefix: f1o3n_, typography: candidate, style: nature, plot_top_mm: 3.4, axis_mm: 34.3}
+        jitter_seed: null
+        inputs: [ebb/A2_prediction_animals, ebb/A3_permutation_draws, ebb/C2_estimates, ebb/E_multiplicity]
+        annotation_panels: [f1o3n_prediction]
+        annotation_panels_legend: [f1o3n_prediction_legend]
+        x: 65
+        "y": 126
+        w: 114
+        h: 40
+
+
+  # ------------------------------------------------------------------ 3
+  light_phase_panel:
+    title: Light phase after CC1, two representations of one phenotype (SIS; CON not modelled)
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: stand-alone panel candidate (also ED X d)
+    width_mm: 132
+    height_mm: 86
+    layout_mode: absolute
+    layout_notes: >-
+      A letterless page: the panel takes a 3-pt top margin instead of the 11.5-pt letter margin.
+      The two halves are separated by a fixed 4-mm gutter column, so the rate strip's CI text and
+      the inactivity strip's row labels on the same baselines do not read as one line; the shared
+      legend starts under the flush-left overall title. The plain inactivity strip x title takes
+      1.95 pt more top margin, so it shares the baseline of the rate strip's plotmath title.
+    panels:
+      - id: main
+        letter: ""
+        builder: s30_panel_light_phase
+        description: >-
+          Left, light-phase RFID position-change rate: SIS animals at CC1 (ebb A1) and the
+          stored RES - SUS contrasts F / M / F - M (ebb C2, Stage 29 secondary estimate; not
+          tested). Right, sustained positional inactivity (>=40 s): SIS animals at CC1 (s30b S1)
+          and the stored contrasts (s30b S1b, Stage 30 exploratory, local BH q per row, m = 6); the
+          inactivity axis starts at 0.975 and says so in-panel.
+        args: {top_margin_pt: 3}
+        jitter_seed: 1
+        inputs: [ebb/A1_animal_cc1, ebb/C2_estimates, s30b/S1_light_animals_cc1, s30b/S1b_light_estimates, s30b/S1c_light_descriptives, s30b/S0_master_hypotheses]
+        annotation_panels: [light_rate, light_inactivity]
+        annotation_panels_legend: [light_legend]
+        x: 5
+        "y": 5
+        w: 122
+        h: 76
+
+  # ------------------------------------------------------------------ 4
+  light_dependence_ed:
+    title: Inactivity tracks the RFID position-change rate (descriptive; all animals)
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: stand-alone Extended Data panel candidate (also ED X e)
+    width_mm: 63
+    height_mm: 86
+    layout_mode: absolute
+    layout_notes: >-
+      A letterless page: the panel takes a 3-pt top margin instead of the 11.5-pt letter margin.
+    panels:
+      - id: main
+        letter: ""
+        builder: s30_panel_light_dependence
+        description: >-
+          The 444 light-phase animal-windows (s30b S2; 111 RFID animals, CC1-CC4, no group
+          colour, window values as stored, not centred): sustained positional inactivity
+          (>=40 s) against the RFID position-change rate, with the stored S2b light-row
+          descriptors (Spearman rho after Batch x cage-change centring, counts, residual
+          reliability). No line, no p.
+        args: {top_margin_pt: 3}
+        jitter_seed: null
+        inputs: [s30b/S2_rate_inactivity_windows, s30b/S2b_rate_inactivity_relationship]
+        annotation_panels: [light_dependence]
+        x: 5
+        "y": 5
+        w: 53
+        h: 76
+
+  # ------------------------------------------------------------------ 5
+  cookie_ed:
+    title: Home-cage cookie response (second presentation, EPM+1), SIS animals B2-B6
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: Extended Data panel-row candidate
+    width_mm: 183
+    height_mm: 76
+    layout_mode: absolute
+    layout_notes: >-
+      CANDIDATE_SPEC B5 boxes (58 + 60 + 59 mm plus two 2-mm gaps = 181 mm) leave 1-mm page
+      margins. The row keeps the 5-mm margins of every other page: a 56 @5, b 58 @63,
+      c 55 @123 (each within the "about" sizes of B5). The boxes are 66 mm high (B5: about 62),
+      so b's animal panel is longer than its two-line y title; a and c share one frame. a
+      declares the numbers the draft legend and Results text quote for the whole page (map
+      panel cookie_text: the pooled PRE/POST medians and IQRs, the group counts, cages, batches).
+    panels:
+      - id: a
+        letter: a
+        builder: s30_panel_cookie_prepost
+        description: PRE60 to POST60 RFID position-change rate per SIS animal by sex, with the stored median and IQR per window and sex (s30b S3, S3b)
+        args: {}
+        jitter_seed: null
+        inputs: [s30b/S3_cookie_animals, s30b/S3b_cookie_descriptives, s30b/S5_display_labels, s30b/S3c_cookie_estimates]
+        annotation_panels: [cookie_prepost]
+        annotation_panels_legend: [cookie_text]
+        x: 5
+        "y": 5
+        w: 56
+        h: 66
+      - id: b
+        letter: b
+        builder: s30_panel_cookie_rs
+        description: Response (POST60 - PRE60) by later group within sex, and the stored COOKIE-CAT RES - SUS contrasts F / M / F - M with CI, p and local BH q (registered exploratory test; s30b S3, S3c)
+        args: {}
+        jitter_seed: 30
+        inputs: [s30b/S3_cookie_animals, s30b/S3c_cookie_estimates]
+        annotation_panels: [cookie_rs]
+        x: 63
+        "y": 5
+        w: 58
+        h: 66
+      - id: c
+        letter: c
+        builder: s30_panel_cookie_combz
+        description: Response vs later CombZ by sex, the stored line of the frozen COOKIE-CONT slope through the sex-resolved centroid, the printed slopes with CI and the Female - male slope-difference p (s30b S3, S3c, S3d)
+        args: {}
+        jitter_seed: null
+        inputs: [s30b/S3_cookie_animals, s30b/S3c_cookie_estimates, s30b/S3d_cookie_cont_lines]
+        annotation_panels: [cookie_combz]
+        x: 123
+        "y": 5
+        w: 55
+        h: 66
+
+  # ------------------------------------------------------------------ 6
+  screen_summary:
+    title: "Stage 30 exploratory screen: the 48 registered tests (Supplementary Figure candidate)"
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: Supplementary Figure candidate
+    width_mm: 183
+    height_mm: 135
+    layout_mode: absolute
+    layout_notes: >-
+      A letterless page: the panel takes a 3-pt top margin instead of the 11.5-pt letter margin,
+      and its subtitle is two lines, so the box is 173 x 125 (CANDIDATE_SPEC B6: about 128) at the
+      same row pitch; the 2 mm over the first layout pay for 2 pt of space under each block header.
+      A 2.5-mm gap follows the Female and Male cells (the forests give 1.7 mm each), so each
+      class letter sits nearer its own p/q text than the next column's forest. The last cell has
+      no forest to its right: its class letters sit 0.3 mm (not 2.2) from its edge and the cell is
+      1.9 mm narrower (each forest gains a third), so the right ink margin matches the left. The
+      draft legend's saturation statement for the light-phase inactivity rows quotes the S1c
+      counts (map panel screen_legend).
+    panels:
+      - id: main
+        letter: ""
+        builder: s30_panel_screen
+        description: >-
+          Decision matrix of the 48 registered Stage 30 discovery tests: columns Female | Male |
+          Female - male; blocks CONT (standardized slope), CAT (standardized RES - SUS) and L
+          (joint F, solid reference at F = 1); raw p and local BH q per cell; the registered class
+          A-D in grey. No colour or highlighting by class.
+        args: {pq_style: stacked, top_margin_pt: 3}
+        jitter_seed: null
+        inputs: [s30b/S4_screen_matrix, s30b/S0_master_hypotheses, s30b/S1c_light_descriptives]
+        annotation_panels: [screen_matrix]
+        annotation_panels_legend: [screen_legend]
+        x: 5
+        "y": 5
+        w: 173
+        h: 125
+
+  # ------------------------------------------------------------------ 7
+  ed_behaviour_longitudinal_light:
+    title: Extended Data X candidate, CC1-CC4 trajectories and the light phase
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: Extended Data figure candidate (ED X)
+    width_mm: 183
+    height_mm: 202
+    layout_mode: absolute
+    layout_notes: >-
+      a/b are the two 85.5-mm panels of CANDIDATE_SPEC C7 and c its 173-mm panel, all 54 mm high:
+      their compact header (no patchwork outer margin above the title; 3 pt kept under the
+      caption) keeps the plot height the spec's 58 mm gave. One title anchor on the page: a-c
+      start their titles and legends at the plot edge under the letter, as d and e do. Row 3
+      takes the freed height: d is B2, the light-phase panel itself (122 x 80, one legend, one
+      SIS line, equal halves with a 4-mm gutter; the legend refers to "d, left / right"), and e
+      is B4 (49 x 80). d and e share one panel frame (panel_top_mm, panel_h_mm), so the
+      dependence scatter reads across on the same inactivity axis as d's right half. Letters
+      a-e. Height 5 + 54 + 2 + 54 + 2 + 80 + 5 = 202 mm.
+    panels:
+      - id: a
+        letter: a
+        builder: edx_panel_primary_trajectory
+        description: RFID position-change rate, CC1-CC4 active-phase RES/SUS model estimates +/- 95% CI by sex (ebb C2 TR_BY_SEX), CON descriptive means (ebb B2), Q2b F with its P-TR Holm p (ebb C3, E_multiplicity)
+        args: {construct: crossing_rate, show_con: true}
+        jitter_seed: null
+        inputs: [ebb/C2_estimates, ebb/B2_descriptive_summaries, ebb/C3_joint_tests, ebb/E_multiplicity]
+        annotation_panels: [trajectory_rate]
+        x: 5
+        "y": 5
+        w: 85.5
+        h: 54
+      - id: b
+        letter: b
+        builder: edx_panel_primary_trajectory
+        description: Shared RFID-position occupancy, CC1-CC4 trajectories as in a
+        args: {construct: shared_zone_use, show_con: true}
+        jitter_seed: null
+        inputs: [ebb/C2_estimates, ebb/B2_descriptive_summaries, ebb/C3_joint_tests, ebb/E_multiplicity]
+        annotation_panels: [trajectory_occupancy]
+        x: 92.5
+        "y": 5
+        w: 85.5
+        h: 54
+      - id: c
+        letter: c
+        builder: edx_panel_secondary_trajectories
+        description: Stage 29 secondary constructs occupancy dispersion and fragmentation, CC1-CC4 trajectories (ebb C2 TR_BY_SEX means; C3 Q2b; S-TR-ORG Holm p)
+        args: {show_con: true}
+        jitter_seed: null
+        inputs: [ebb/C2_estimates, ebb/B2_descriptive_summaries, ebb/C3_joint_tests, ebb/E_multiplicity]
+        annotation_panels: [trajectory_secondary]
+        x: 5
+        "y": 61
+        w: 173
+        h: 54
+      - id: d
+        letter: d
+        builder: s30_panel_light_phase
+        description: >-
+          The light-phase panel (B2). Left, light-phase RFID position-change rate after CC1: SIS
+          animals (ebb A1) and the stored RES - SUS contrasts (ebb C2; Stage 29 secondary estimate;
+          not tested). Right, sustained positional inactivity (>=40 s): SIS animals (s30b S1) and the
+          stored contrasts with local BH q (s30b S1b; Stage 30 exploratory, m = 6); axis starts at 0.975
+        args: {panel_top_mm: 15.6, panel_h_mm: 31}
+        jitter_seed: 1
+        inputs: [ebb/A1_animal_cc1, ebb/C2_estimates, s30b/S1_light_animals_cc1, s30b/S1b_light_estimates, s30b/S1c_light_descriptives, s30b/S0_master_hypotheses]
+        annotation_panels: [light_rate, light_inactivity]
+        annotation_panels_legend: [light_legend]
+        x: 5
+        "y": 117
+        w: 122
+        h: 80
+      - id: e
+        letter: e
+        builder: s30_panel_light_dependence
+        description: Inactivity against the position-change rate over the 444 light-phase animal-windows (s30b S2, S2b; descriptive, all animals, points uncentred, not a test), in d's panel frame
+        args: {panel_top_mm: 15.6, panel_h_mm: 31}
+        jitter_seed: null
+        inputs: [s30b/S2_rate_inactivity_windows, s30b/S2b_rate_inactivity_relationship]
+        annotation_panels: [light_dependence]
+        x: 129
+        "y": 117
+        w: 49
+        h: 80
+
+  # ------------------------------------------------------------------ 8
+  ed_behaviour_cookie:
+    title: Extended Data Y candidate, home-cage cookie response (second presentation, EPM+1)
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: Extended Data figure candidate (ED Y); the same content as cookie_ed on its own ED page
+    width_mm: 183
+    height_mm: 76
+    layout_mode: absolute
+    layout_notes: Same panels, boxes and seeds as cookie_ed (see its layout_notes).
+    panels:
+      - id: a
+        letter: a
+        builder: s30_panel_cookie_prepost
+        description: PRE60 to POST60 RFID position-change rate per SIS animal by sex, with the stored median and IQR per window and sex (s30b S3, S3b)
+        args: {}
+        jitter_seed: null
+        inputs: [s30b/S3_cookie_animals, s30b/S3b_cookie_descriptives, s30b/S5_display_labels, s30b/S3c_cookie_estimates]
+        annotation_panels: [cookie_prepost]
+        annotation_panels_legend: [cookie_text]
+        x: 5
+        "y": 5
+        w: 56
+        h: 66
+      - id: b
+        letter: b
+        builder: s30_panel_cookie_rs
+        description: Response by later group within sex and the stored COOKIE-CAT RES - SUS contrasts with CI, p and local BH q (s30b S3, S3c)
+        args: {}
+        jitter_seed: 30
+        inputs: [s30b/S3_cookie_animals, s30b/S3c_cookie_estimates]
+        annotation_panels: [cookie_rs]
+        x: 63
+        "y": 5
+        w: 58
+        h: 66
+      - id: c
+        letter: c
+        builder: s30_panel_cookie_combz
+        description: Response vs later CombZ by sex with the stored frozen-slope line, slopes with CI and the slope-difference p (s30b S3, S3c, S3d)
+        args: {}
+        jitter_seed: null
+        inputs: [s30b/S3_cookie_animals, s30b/S3c_cookie_estimates, s30b/S3d_cookie_cont_lines]
+        annotation_panels: [cookie_combz]
+        x: 123
+        "y": 5
+        w: 55
+        h: 66

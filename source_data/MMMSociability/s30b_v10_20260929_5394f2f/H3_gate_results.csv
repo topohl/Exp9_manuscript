@@ -1,0 +1,57 @@
+stage,gate,passed,hard,detail
+0-code,MMM files used are committed and clean (git status --untracked-files=all / ls-files),TRUE,TRUE,5394f2f3fb6c58d0e1f337bb22c33fdac2203365
+0-code,REAL run executes the committed Analysis/30b_stage30_figure_bundle.R,TRUE,TRUE,C:/Users/topohl/Documents/GitHub/MMMSociability/Analysis/30b_stage30_figure_bundle.R
+0-code,pinned registry / x4_01 hashes = the Stage 30 driver constants (Functions/stage30_screen.R),TRUE,TRUE,""
+0-output,REAL bundle version folder does not exist (immutable),TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/stage30_figure_bundle/s30b_v10_20260929_5394f2f
+0-output,REAL staging folder does not exist (no earlier aborted write),TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/stage30_figure_bundle/.tmp_s30b_v10_20260929_5394f2f
+0-output,REAL BUNDLE_REGISTRY.csv has no row for this bundle id,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/stage30_figure_bundle/BUNDLE_REGISTRY.csv
+0-output,REAL gate log for this bundle does not exist (immutable),TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/stage30_figure_bundle/logs/s30b_v10_20260929_5394f2f_gate_results.csv
+0-output,every output path shorter than 250 characters (Windows R path limit),TRUE,TRUE,187
+stage30_run,frozen Stage 30 run folder name,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/pipeline/30_exploratory_screen/v1.0_be71e2f
+stage30_run,audit/output_manifest.csv SHA-256 = pinned,TRUE,TRUE,77f271ad022f8fec9680f09e0f29540ce0c02189cd68143749100c9eac9d68d2
+stage30_run,output manifest lists 27 files,TRUE,TRUE,27
+stage30_run,every manifest file: bytes and SHA-256 match (CR stripped),TRUE,TRUE,""
+stage30_run,no file in the run folder outside the manifest,TRUE,TRUE,""
+stage30_run,manifest run_mode = REAL,TRUE,TRUE,REAL_EXPLORATORY_POST_HOC_CONTEXT
+stage30_run,README commit = Stage 30 run commit,TRUE,TRUE,commit be71e2f07bfefeeb13c1e1f82cbc62cff2e052dc
+stage30_run,README registry sha256 = frozen registry,TRUE,TRUE,registry sha256 5c252bf699bc0f517c5508854d710bbaa014d4b6fe98d128eb0071bde89dd05e
+stage30_run,README names one Stage 29 folder,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/pipeline/29_canonical_behavior_releases/v101_dv2_b2ce507
+stage30_run,run_manifest: REAL mode at the run commit with the frozen registry,TRUE,TRUE,REAL be71e2f07bfefeeb13c1e1f82cbc62cff2e052dc 5c252bf699bc0f517c5508854d710bbaa014d4b6fe98d128eb0071bde89dd05e
+stage30_run,"run_manifest: status OK=48, no block failure",TRUE,TRUE,OK=48 0
+stage30_run,audit/run_failures.csv has no row,TRUE,TRUE,0
+1-registry,registry JSON SHA-256 = frozen v1.0,TRUE,TRUE,5c252bf699bc0f517c5508854d710bbaa014d4b6fe98d128eb0071bde89dd05e
+1-registry,"registry status FROZEN, version 1.0",TRUE,TRUE,""
+1-registry,registry path and hash = Stage 30 input_hashes (role registry),TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/stage30_registry/v1.0/stage30_registry_v1.0.json
+2-inputs,freeze_record:sus_list : on-disk SHA-256 = Stage 30 input_hashes = pinned,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/sus_animals.csv dea3804b71b479f84900f946e5494b204ed0e8801498da459a6fc781beb9f391
+2-inputs,freeze_record:con_list : on-disk SHA-256 = Stage 30 input_hashes = pinned,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/con_animals.csv eddd2ee9c3a182f98211b4cbba689e2bb5f72985aeb178f72b25b7d25db1b75d
+2-inputs,freeze_record:combz_table : on-disk SHA-256 = Stage 30 input_hashes = pinned,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/later_outcome_combz/tables/later_outcome_combz_animal_level.csv 1f6a2a69c6b0781b8de8da50ecdadf309b62bbc9c82106c0fa91d18119a7de54
+2-inputs,inactivity_reference : on-disk SHA-256 = Stage 30 input_hashes = pinned,TRUE,TRUE,C:/Users/topohl/Documents/e9_behavior_rationalization_audit_2026-09-27/stage30_sleep_cookie/evidence/wfD/X4_critic/x4_01_inactivity_animal_window.csv a533b239852fbe46c8a4ff776754984f4fe1f29c0c4277082487c1546f7acf8a
+2-inputs,w1_04_gate_values.csv SHA-256 = pinned = w1_99_output_sha256.txt entry,TRUE,TRUE,ae80b7e12beb2c4e6beb1570f8f45bd047937f88fcb1b8a207fe023b4efa46ef ae80b7e12beb2c4e6beb1570f8f45bd047937f88fcb1b8a207fe023b4efa46ef
+stage29_bundle,Stage 29 bundle folder = pinned bundle id,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/behavior_bundle/ebb_v101_20260929_b2ce507
+stage29_bundle,00_manifest.csv SHA-256 = pinned,TRUE,TRUE,ec59aa337fc63511de4aa2bf3e1ee1f4b34b84d6d671565f74e0bb3939f7226c
+stage29_bundle,every bundle file: bytes and SHA-256 match,TRUE,TRUE,""
+stage29_bundle,no file in the bundle outside its manifest,TRUE,TRUE,""
+stage29_bundle,BUNDLE_REGISTRY row: FROZEN with the pinned manifest hash,TRUE,TRUE,1 row(s)
+3-stage29,Stage 30 README Stage 29 folder = ebb_v101 H_provenance stage29_output_dir,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/pipeline/29_canonical_behavior_releases/v101_dv2_b2ce507
+4-read,"features: 348 SIS windows (87 x CC1-CC4), 77 cookie SIS animals; x4_01 1776 rows",TRUE,TRUE,348 77 1776
+4-read,full-precision rds = features CSV (15 significant digits) for every numeric column,TRUE,TRUE,""
+5-labels,group rule = Stage 30 driver s30sc_labels_from_lists (every SIS animal),TRUE,TRUE,"RES 53, SUS 34"
+5-labels,Group = ebb_v101 A1 Group for the 87 SIS CC1 animals,TRUE,TRUE,""
+5-labels,Group = ebb_v101 A4 Group for every SIS animal (87 CC1 + 77 cookie),TRUE,TRUE,""
+5-labels,Group = CombZ-table outcome_group for every SIS animal,TRUE,TRUE,""
+5-labels,RES/SUS counts by batch = registry SIS_CC1 res_sus_counts_by_batch (Stage 30 helper),TRUE,TRUE,B1 4/6; B2 14/2; B3 7/9; B4 9/6; B5 7/8; B6 12/3
+5-labels,RES/SUS total = registry SIS_CC1 total (Stage 30 helper),TRUE,TRUE,""
+5-labels,RES/SUS counts by batch = registry COOKIE_SIS_F group_counts (Stage 30 helper),TRUE,TRUE,""
+5-labels,RES/SUS counts by batch = registry COOKIE_SIS_M group_counts (Stage 30 helper),TRUE,TRUE,""
+5-labels,cookie SIS RES/SUS = registry COOKIE_SIS group_counts (Stage 30 helper),TRUE,TRUE,""
+5-labels,CombZ (canonical table) = ebb_v101 A1 CombZ (87) and A4 CombZ (all SIS) within 1e-12,TRUE,TRUE,""
+6-tables,S0: standardized estimate reproduced from the stored rule within 1e-12 (48 rows),TRUE,TRUE,1.66533453693773e-15
+6-tables,S0b: standardized estimate reproduced within 1e-12 (16 POOL rows),TRUE,TRUE,6.66133814775094e-16
+6-tables,"S1 = ebb_v101 A1 (Sex, Batch, CageEpisodeID identical; light_phase_crossing_rate within 1e-9)",TRUE,TRUE,""
+6-tables,S2 light windows = Stage 30 SIS features (rate and >= 40 s fraction within 1e-9; 348 windows),TRUE,TRUE,""
+6-tables,"S2b: round(full, 2) = registry rho / ICC; 444 windows and 111 animals per phase",TRUE,TRUE,active -0.959524720988885 0.110269816920397; light -0.932567566199956 0.0836534157544893
+6-tables,"registry group_blind_qc medians / share >= 0.99 = round(w1_04, 3)",TRUE,TRUE,active_median 0.942 0.942; light_median 0.996 0.996; light_windows_ge_0.99 0.874 0.874
+6-tables,"S3d: line n = frozen n_animals (F 46, M 31) and batches = frozen n_batches",TRUE,TRUE,Female 46; Male 31
+6-tables,"S4: 48 cells = 16 metric rows (CONT 6, CAT 3, L 7) x 3 columns",TRUE,TRUE,""
+6-tables,"display labels contain no banned wording (S0, S3d derivation, S4, S5)",TRUE,TRUE,""
+6-tables,no table carries run_mode,TRUE,TRUE,""

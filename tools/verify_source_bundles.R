@@ -128,6 +128,120 @@ if (!file.exists(b_manifest)) {
   }
 }
 
+## --------------------------------------------- MMMSociability canonical behaviour bundle
+cat("\nMMMSociability canonical behaviour bundle (Stage 16b)\n")
+pin_path <- repo_path("config", "behaviour_bundle.yml")
+bb_manifest <- repo_path("provenance", "source_manifests", "behaviour_bundle_manifest.csv")
+if (!file.exists(pin_path)) {
+  note_fail("no behaviour bundle is pinned:", pin_path)
+} else {
+  pin <- yaml::read_yaml(pin_path)
+  bd <- repo_path("source_data", "MMMSociability", pin$bundle_id)
+  cat("  pinned bundle      :", pin$bundle_id, "(config", pin$config_version, substr(pin$config_sha256, 1, 12), ")\n")
+  own <- file.path(bd, "00_manifest.csv")
+  if (!file.exists(own)) {
+    note_fail("pinned bundle is not imported:", bd)
+  } else {
+    if (!identical(sha(own), pin$manifest_sha256)) note_fail("00_manifest.csv differs from the pinned manifest hash")
+    m <- utils::read.csv(own, stringsAsFactors = FALSE)
+    act <- vapply(file.path(bd, m$file), sha, character(1), USE.NAMES = FALSE)
+    ok <- !is.na(act) & act == m$sha256
+    cat("  hash-verified      :", sum(ok), "/", nrow(m), "\n")
+    if (any(!ok)) note_fail(sum(!ok), "bundle file(s) are not byte-exact:", paste(head(m$file[!ok], 10), collapse = ", "))
+    extra <- setdiff(list.files(bd), c(m$file, "00_manifest.csv"))
+    if (length(extra)) note_fail("unlisted file(s) in the bundle copy:", paste(extra, collapse = ", "))
+    if (!file.exists(bb_manifest)) note_fail("behaviour bundle import manifest is missing:", bb_manifest) else {
+      im <- utils::read.csv(bb_manifest, stringsAsFactors = FALSE)
+      im <- im[im$bundle_id == pin$bundle_id, , drop = FALSE]
+      if (!setequal(im$file, list.files(bd)) || any(im$sha256 != vapply(file.path(bd, im$file), sha, character(1), USE.NAMES = FALSE)))
+        note_fail("the import manifest does not match the pinned copy")
+    }
+  }
+}
+
+## --------------------------------------------- MMMSociability canonical Stage 30 figure bundle
+## Verified only when one is pinned (config/stage30_bundle.yml); until the first
+## Stage 30 import there is nothing to check.
+cat("\nMMMSociability canonical Stage 30 figure bundle\n")
+s30_pin_path <- repo_path("config", "stage30_bundle.yml")
+if (!file.exists(s30_pin_path)) {
+  cat("  pinned bundle      : none (config/stage30_bundle.yml absent; not verified)\n")
+} else {
+  source(repo_path("R", "stage30_bundle.R"))
+  s30_manifest <- repo_path("provenance", "source_manifests", "stage30_bundle_manifest.csv")
+  s30 <- tryCatch(stage30_bundle_pin(), error = function(e) { note_fail(conditionMessage(e)); NULL })
+  if (!is.null(s30)) {
+    sd30 <- stage30_bundle_dir(s30)
+    cat("  pinned bundle      :", s30$bundle_id, "(Stage 30 run", substr(s30$stage30_run_commit %||% "", 1, 7),
+        "; built from", s30$stage29_bundle_id, ")\n")
+    ok30 <- tryCatch(stage30_bundle_verify(s30), error = function(e) { note_fail(conditionMessage(e)); FALSE })
+    if (isTRUE(ok30)) {
+      n30 <- nrow(utils::read.csv(file.path(sd30, "00_manifest.csv"), stringsAsFactors = FALSE))
+      cat("  hash-verified      :", n30, "/", n30, "\n")
+      prov30 <- tryCatch(s30_provenance(file.path(sd30, "H_provenance.csv")), error = function(e) { note_fail(conditionMessage(e)); NULL })
+      if (!is.null(prov30) && (!identical(prov30$status, "FROZEN") || !identical(prov30$bundle_id, s30$bundle_id)))
+        note_fail("the Stage 30 bundle's H_provenance is not FROZEN for", s30$bundle_id)
+    }
+    if (!file.exists(s30_manifest)) note_fail("Stage 30 bundle import manifest is missing:", s30_manifest) else {
+      im30 <- utils::read.csv(s30_manifest, stringsAsFactors = FALSE)
+      im30 <- im30[im30$bundle_id == s30$bundle_id, , drop = FALSE]
+      if (!nrow(im30) || !setequal(im30$file, list.files(sd30)) ||
+          any(im30$sha256 != vapply(file.path(sd30, im30$file), sha, character(1), USE.NAMES = FALSE)))
+        note_fail("the Stage 30 import manifest does not match the pinned copy")
+    }
+    ## Stage 30 figures combine the Stage 29 bundle and the Stage 30 bundle, so the
+    ## Stage 30 bundle must have been built from the Stage 29 bundle that is pinned.
+    if (file.exists(pin_path)) {
+      bpin <- yaml::read_yaml(pin_path)
+      if (!identical(s30$stage29_bundle_id, bpin$bundle_id) || !identical(s30$stage29_bundle_manifest_sha256, bpin$manifest_sha256))
+        note_fail("the Stage 30 bundle was built from", s30$stage29_bundle_id, "but the pinned behaviour bundle is", bpin$bundle_id)
+    }
+  }
+}
+
+## --------------------------------------------- MMMSociability canonical figure-support bundle
+## Verified only when one is pinned (config/figure_support_bundle.yml).
+cat("\nMMMSociability canonical figure-support bundle\n")
+fsb_pin_path <- repo_path("config", "figure_support_bundle.yml")
+if (!file.exists(fsb_pin_path)) {
+  cat("  pinned bundle      : none (config/figure_support_bundle.yml absent; not verified)\n")
+} else {
+  if (!exists("stage30_bundle_pin", mode = "function")) source(repo_path("R", "stage30_bundle.R"))
+  source(repo_path("R", "figure_support_bundle.R"))
+  fsb_manifest <- repo_path("provenance", "source_manifests", "figure_support_bundle_manifest.csv")
+  fsb <- tryCatch(fsb_bundle_pin(), error = function(e) { note_fail(conditionMessage(e)); NULL })
+  if (!is.null(fsb)) {
+    sdf <- fsb_bundle_dir(fsb)
+    cat("  pinned bundle      :", fsb$bundle_id, "(built from", fsb$stage29_bundle_id, "; CombZ table",
+        substr(fsb$combz_table_sha256 %||% "", 1, 8), ")\n")
+    okf <- tryCatch(fsb_bundle_verify(fsb), error = function(e) { note_fail(conditionMessage(e)); FALSE })
+    if (isTRUE(okf)) {
+      nf <- nrow(utils::read.csv(file.path(sdf, "00_manifest.csv"), stringsAsFactors = FALSE))
+      cat("  hash-verified      :", nf, "/", nf, "\n")
+      provf <- tryCatch(s30_provenance(file.path(sdf, "H_provenance.csv"), keys = FSB_PROVENANCE_KEYS),
+                        error = function(e) { note_fail(conditionMessage(e)); NULL })
+      if (!is.null(provf) && (!identical(provf$status, "FROZEN") || !identical(provf$bundle_id, fsb$bundle_id)))
+        note_fail("the figure-support bundle's H_provenance is not FROZEN for", fsb$bundle_id)
+      if (!is.null(provf) && !startsWith(provf$scientific_recomputation, FSB_RECOMPUTATION_PREFIX))
+        note_fail("the figure-support bundle declares more than the descriptive recomputation")
+    }
+    if (!file.exists(fsb_manifest)) note_fail("figure-support bundle import manifest is missing:", fsb_manifest) else {
+      imf <- utils::read.csv(fsb_manifest, stringsAsFactors = FALSE)
+      imf <- imf[imf$bundle_id == fsb$bundle_id, , drop = FALSE]
+      if (!nrow(imf) || !setequal(imf$file, list.files(sdf)) ||
+          any(imf$sha256 != vapply(file.path(sdf, imf$file), sha, character(1), USE.NAMES = FALSE)))
+        note_fail("the figure-support import manifest does not match the pinned copy")
+    }
+    ## The figure-support bundle carries CON references and CombZ components that are
+    ## drawn beside Stage 29 values, so it must have been built from the pinned Stage 29 bundle.
+    if (file.exists(pin_path)) {
+      bpin <- yaml::read_yaml(pin_path)
+      if (!identical(fsb$stage29_bundle_id, bpin$bundle_id) || !identical(fsb$stage29_bundle_manifest_sha256, bpin$manifest_sha256))
+        note_fail("the figure-support bundle was built from", fsb$stage29_bundle_id, "but the pinned behaviour bundle is", bpin$bundle_id)
+    }
+  }
+}
+
 cat("\n")
 if (problems == 0L) {
   cat("RESULT: PASS - every imported bundle matches its manifest.\n")

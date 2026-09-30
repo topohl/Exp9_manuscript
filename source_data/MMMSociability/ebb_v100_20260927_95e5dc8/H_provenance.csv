@@ -1,0 +1,16 @@
+key,value
+bundle_id,ebb_v100_20260927_95e5dc8
+status,FROZEN
+generated_at,2026-09-27T18:43:35+0200
+generator,Analysis/16b_canonical_behavior_bundle.R
+mmm_git_commit,95e5dc80b2ec823c8fb791923e15811b5c9e34de
+mmm_branch,refactor/rfid-four-domain-characterization
+stage29_run_commit,0555c9006cc725e1173ddfc7449510b285f642ba
+config_id,E9_SIS_RFID_BEHAVIOR_CANONICAL
+config_version,1.0.0
+config_sha256,33d22430b0e6d3a45a28bea8546a185c523aedf72055ddf5ae208cff51f8950e
+stage29_started_at,1790526632
+r_version,R version 4.5.1 (2025-06-13 ucrt)
+packages,lme4 2.0.1; lmerTest 3.2.1; pbkrtest 0.5.5; glmmTMB 1.1.14; clubSandwich 0.7.0; sandwich 3.1.1; data.table 1.18.2.1; Matrix 1.7.5; reformulas 0.4.4
+active_window,"first full active phase after each cage change: [anchor, anchor + 43,200 s) on the RFID logger clock"
+primary_population,animals not on Analysis/con_animals.csv (outcome_group RES or SUS)

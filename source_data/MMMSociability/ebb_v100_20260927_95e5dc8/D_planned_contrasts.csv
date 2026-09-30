@@ -1,0 +1,16 @@
+contrast_id,model,L,meaning,role
+Q1,CC1_POOLED,g_RS:sex_c=1,(RES - SUS)_female - (RES - SUS)_male,KR t
+Q2b,TR_POOLED,g_RS:c2:sex_c; g_RS:c3:sex_c; g_RS:c4:sex_c,does the RES/SUS trajectory across cage changes differ by sex,joint KR F (3 df)
+Q2b_components,TR_POOLED,"",each g_RS:ck:sex_c (change of DiD from CC1 to CCk),estimate + 95% CI (interprets Q2b)
+Q2c,TR_POOLED,g_RS:sex_c=1; g_RS:c2:sex_c=0.25; g_RS:c3:sex_c=0.25; g_RS:c4:sex_c=0.25,CC-averaged sex moderation,secondary estimand; estimate + 95% CI; no p
+Q2a,TR_POOLED,g_RS:c2; g_RS:c3; g_RS:c4,sex-averaged RES/SUS change from CC1 to CCk,"secondary estimand; estimate + 95% CI per component; no joint test, no p"
+RS_sexavg_CC1,CC1_POOLED,g_RS=1,,secondary estimand; estimate + 95% CI; no p
+RS_sexavg_by_CC,TR_POOLED,"",sex-averaged RES-SUS at CC1 = g_RS; at CCk = g_RS + g_RS:ck,estimate + 95% CI; no p
+DiD_by_CC,TR_POOLED,"",k = 1: g_RS:sex_c; k = 2-4: g_RS:sex_c + g_RS:ck:sex_c,estimate + 95% CI (interprets Q2b); no p
+RS_by_sex_CC1,CC1_BY_SEX,g_RS=1,,follow-up / localisation; p with Holm over the 2 sexes (FU-CC1)
+RS_by_sex_by_CC,TR_BY_SEX,"",RES-SUS at CC1 = g_RS; at CCk = g_RS + g_RS:ck,estimate + 95% CI; no p
+TR_by_sex,TR_BY_SEX,g_RS:c2; g_RS:c3; g_RS:c4,,follow-up / localisation; p with Holm over the 2 sexes (FU-TR)
+group_means,CC1_BY_SEX and TR_BY_SEX,"",,estimate + 95% CI for Figure 1c/d; per-sex means and SEs come only from stratified fits
+Sex_by_CC,S3,c2:sex_c; c3:sex_c; c4:sex_c,,estimate + 95% CI only (nuisance batch-set x CC)
+SIS_minus_CON,EXPOSURE_CC1; EXPOSURE_TR,"",,
+light_phase_within_SIS,CC1_POOLED; CC1_BY_SEX; TR_POOLED; TR_BY_SEX,"",,
