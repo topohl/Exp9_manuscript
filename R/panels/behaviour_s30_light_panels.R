@@ -243,7 +243,7 @@ s30_light_measure_parts <- function(measure, tabs, an, jitter_seed, standalone) 
                size = S30_ANIMAL_MARK$size, stroke = S30_ANIMAL_MARK$stroke, alpha = S30_ANIMAL_MARK$alpha,
                colour = "grey20") +
     scale_fill_manual(values = GROUP_COL[c("RES", "SUS")], drop = FALSE) +
-    scale_shape_manual(values = GROUP_SHAPE[c("RES", "SUS")], drop = FALSE) +
+    scale_shape_manual(values = GROUP_CIRCLE[c("RES", "SUS")], drop = FALSE) +
     guides(fill = guide_legend(override.aes = list(size = 1.3, alpha = 0.9, stroke = 0.25)),
            shape = guide_legend()) +
     scale_x_continuous(breaks = 1:2, labels = c("Female", "Male"), limits = c(0.62, 2.38), expand = c(0, 0)) +
