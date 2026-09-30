@@ -7,9 +7,11 @@
 # affecting the canonical pipeline. No candidate key is registered in
 # provenance/publication_registry/.
 #
-# Rendering only. Every panel plots stored values of the two pinned bundles,
-# read through R/behaviour_bundle.R and R/stage30_bundle.R: the Stage 29 v1.0.1
-# behaviour bundle (ebb) and the Stage 30 figure bundle (s30b). Every printed
+# Rendering only. Every panel plots stored values of the pinned bundles, read
+# through R/behaviour_bundle.R, R/stage30_bundle.R and R/figure_support_bundle.R:
+# the Stage 29 v1.0.1 behaviour bundle (ebb), the Stage 30 figure bundle (s30b) and
+# the figure-support bundle (fsb: descriptive CON cage means and the CombZ
+# components as they enter CombZ; figure_01_option3_*). Every printed
 # number resolves through the annotation map to exactly one stored cell
 # (bundle_cell). Nothing is fitted, tested, adjusted or summarised here.
 #
@@ -85,6 +87,11 @@ bundles:
     reader: R/stage30_bundle.R
     bundle_id: s30b_v10_20260929_5394f2f
     manifest_sha256: 8930d8bf5ee93ace00f9d187377803f664036f858df4c7ae8d6b8f8804a3f87d
+  fsb:
+    pin: config/figure_support_bundle.yml
+    reader: R/figure_support_bundle.R
+    bundle_id: fsb_v1_20260930_f06552c
+    manifest_sha256: a418d0c8655e6d9abd8b32dc9e61e2cefba206e96599e30d1b7eb9e4286df57a
 libraries:
   - R/panels/behaviour_figure_style.R
   - R/panels/behaviour_figure1_panels.R
@@ -93,6 +100,7 @@ libraries:
   - R/panels/behaviour_s30_cookie_panels.R
   - R/panels/behaviour_s30_screen_panels.R
   - R/panels/behaviour_figure1_nature_panels.R
+  - R/panels/behaviour_figure1_option3_panels.R
 output_roots:
   figures: results/figures/manuscript_candidates/behaviour_v101_s30
   source_data: results/source_data/manuscript_candidates/behaviour_v101_s30
@@ -407,6 +415,159 @@ candidates:
         "y": 92
         w: 112
         h: 64
+
+  # ------------------------------------------------------------------ 2b
+  figure_01_option3_nature:
+    title: Figure 1, option 3 (Nature layout; design and behavioural architecture, CombZ and its components, CC1 with CON cage marks, CC1 to CC4, early rate vs CombZ, held-out prediction)
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: main-figure candidate (Figure 1); OPTION3_SPEC (2026-09-30), beside figure_01_option2_nature for comparison; the light phase stays in Extended Data X
+    width_mm: 183
+    height_mm: 170
+    layout_mode: absolute
+    assembly: vector_page
+    page_margin_mm: 4
+    panel_gap_mm: 3
+    layout_notes: >-
+      OPTION3_SPEC 3 in the Nature profile (NATURE_REDESIGN_SPEC): 4-mm margins, 3-mm gutters, 183 x
+      170 mm, one vector page. Four rows: a 175 x 25 (the timeline, CC1-CC4 as repeated cage-change
+      episodes with the SIS / CON line, and the architecture schematic under it); b 175 x 35 (CombZ at
+      its stored rank within sex over the group strip and the six-component heatmap, F | M); row 3 at
+      y = 70, 53 high: c 110 (first active phase after CC1, each measure with its compact RES - SUS
+      sidecar) and d 62 (CC1 -> CC4, rate over occupancy, F | M); row 4 at y = 126, 40 high: e 58 and
+      f 114 (option 2 Nature's builders at option 3's boxes). Row frames: plot tops 9.54 mm (row 3) and
+      3.4 mm (row 4) below the box top, x-axis lines at 50.0 and 34.3 mm (plot_top_mm, axis_mm). The
+      heatmap uses the manuscript's diverging palette (config/manuscript_palette.yml; symmetric limits
+      capped at +/-3); every other ink is one option 2 draws. CON cage marks and the CON reference come
+      from the figure-support bundle (fsb F1, F1b); "3 cages/sex" is a design constant the builders check
+      against F1 (three CON cages of four animals per sex and cage change). The PDF page is exactly
+      183 x 170 mm (bh_pdf_mediabox).
+    panels:
+      - id: a
+        letter: a
+        builder: f1o3n_panel_design
+        description: >-
+          Design and behavioural architecture: CC1-CC4 as repeated cage-change episodes (SIS regrouped;
+          CON an intact group moved in the same platform-transfer episodes), the outcome steps, and the
+          RFID position stream -> Movement (position-change rate) and behavioural organisation
+          (social-spatial overlap, spatial and temporal organisation) with the stored tier of each metric
+          (fsb F1), and the HMM behavioural states as a downstream, exploratory layer
+        args: {key_prefix: f1o3n_}
+        jitter_seed: null
+        inputs: [ebb/A0_design_timeline, fsb/F1_con_cage_means]
+        annotation_panels: []
+        annotation_panels_legend: [f1o3n_design_legend]
+        x: 4
+        "y": 4
+        w: 175
+        h: 25
+      - id: b
+        letter: b
+        builder: f1o3n_panel_combz
+        description: >-
+          Later CombZ per animal at its stored rank within sex (fsb F2) with the stored threshold and
+          CON-mean lines (ebb A2b), the group strip, and the six components' signed z as they enter
+          CombZ (fsb F2; diverging palette, capped at +/-3), the RES/SUS boundary marked; the figure's
+          group key
+        args: {key_prefix: f1o3n_}
+        jitter_seed: null
+        inputs: [ebb/A2b_combz_thresholds, fsb/F2_combz_components, fsb/F2b_combz_definition]
+        annotation_panels: [f1o3n_combz]
+        annotation_panels_legend: [f1o3n_combz_legend]
+        x: 4
+        "y": 32
+        w: 175
+        h: 35
+      - id: c
+        letter: c
+        builder: f1o3n_panel_cc1
+        description: >-
+          First active phase after CC1: position-change rate and shared occupancy by sex and group
+          (animals, ebb A1; RES/SUS CC1_BY_SEX model means and 95% CIs, ebb C2; the CON descriptive mean
+          and the three CON cage means, fsb F1b / F1), and beside each measure the stored RES - SUS
+          contrasts F, M and the female - male difference (ebb C2) with the P-CC1 Holm P only
+        args: {key_prefix: f1o3n_, plot_top_mm: 9.54, axis_mm: 50.0}
+        jitter_seed: [2, 2]
+        inputs: [ebb/A1_animal_cc1, ebb/B2_descriptive_summaries, ebb/C2_estimates, ebb/E_multiplicity, fsb/F1_con_cage_means, fsb/F1b_con_reference_means]
+        annotation_panels: [f1o3n_cc1]
+        annotation_panels_plotted: [f1o3n_cc1_contrasts]
+        annotation_panels_legend: [f1o3n_cc1_contrasts, f1o3n_cc1_legend]
+        x: 4
+        "y": 70
+        w: 110
+        h: 53
+      - id: d
+        letter: d
+        builder: f1o3n_panel_trajectory
+        description: >-
+          CC1 -> CC4 (option, for judgement): the RES/SUS TR_BY_SEX means and 95% CIs (ebb C2), the CON
+          descriptive mean (dashed) and the three CON cage means per cage change (fsb F1b / F1), and per
+          measure the registered Q2b with its P-TR Holm P (ebb E_multiplicity); the F statistics and the
+          FU-TR Holm P are quoted by the legend
+        args: {key_prefix: f1o3n_, plot_top_mm: 9.54, axis_mm: 50.0}
+        jitter_seed: null
+        inputs: [ebb/C2_estimates, ebb/C3_joint_tests, ebb/E_multiplicity, fsb/F1_con_cage_means, fsb/F1b_con_reference_means]
+        annotation_panels: [f1o3n_trajectory]
+        annotation_panels_legend: [f1o3n_trajectory_legend]
+        x: 117
+        "y": 70
+        w: 62
+        h: 53
+      - id: e
+        letter: e
+        builder: f1_panel_association
+        description: Early RFID position-change rate vs later CombZ (Stage 09; option 2 Nature's builder at option 3's box)
+        args: {key_prefix: f1o3n_, typography: candidate, style: nature, plot_top_mm: 3.4, axis_mm: 34.3}
+        jitter_seed: null
+        inputs: [ebb/A2_prediction_animals, ebb/C2_estimates, ebb/E_multiplicity]
+        annotation_panels: [f1o3n_association]
+        x: 4
+        "y": 126
+        w: 58
+        h: 40
+      - id: f
+        letter: f
+        builder: f1_panel_prediction
+        description: Held-out prediction of later CombZ and its permutation null (Stage 09; option 2 Nature's builder at option 3's box)
+        args: {key_prefix: f1o3n_, typography: candidate, style: nature, plot_top_mm: 3.4, axis_mm: 34.3}
+        jitter_seed: null
+        inputs: [ebb/A2_prediction_animals, ebb/A3_permutation_draws, ebb/C2_estimates, ebb/E_multiplicity]
+        annotation_panels: [f1o3n_prediction]
+        annotation_panels_legend: [f1o3n_prediction_legend]
+        x: 65
+        "y": 126
+        w: 114
+        h: 40
+
+  # ------------------------------------------------------------------ 2c
+  figure_01_option3_panel_d:
+    title: Figure 1, option 3 panel d alone (CC1 to CC4 with the CON cage marks), for judgement
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: stand-alone copy of figure_01_option3_nature panel d, so its main-figure place can be judged
+    width_mm: 70
+    height_mm: 61
+    layout_mode: absolute
+    assembly: vector_page
+    page_margin_mm: 4
+    panel_gap_mm: 3
+    layout_notes: >-
+      The option 3 page's panel d with the same builder, arguments and box (so its panel SVG is the
+      page's), on its own letterless 70 x 61 mm vector page (4-mm margins). The header keeps its indent.
+    panels:
+      - id: d
+        letter: ""
+        builder: f1o3n_panel_trajectory
+        description: The figure_01_option3_nature panel d, alone
+        args: {key_prefix: f1o3n_, plot_top_mm: 9.54, axis_mm: 50.0}
+        jitter_seed: null
+        inputs: [ebb/C2_estimates, ebb/C3_joint_tests, ebb/E_multiplicity, fsb/F1_con_cage_means, fsb/F1b_con_reference_means]
+        annotation_panels: [f1o3n_trajectory]
+        annotation_panels_legend: [f1o3n_trajectory_legend]
+        x: 4
+        "y": 4
+        w: 62
+        h: 53
 
   # ------------------------------------------------------------------ 3
   light_phase_panel:
