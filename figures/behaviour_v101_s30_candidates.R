@@ -7,7 +7,8 @@
 #           read through R/behaviour_bundle.R), the pinned Stage 30 figure bundle
 #           (config/stage30_bundle.yml, read through R/stage30_bundle.R) and the pinned
 #           figure-support bundle (config/figure_support_bundle.yml, read through
-#           R/figure_support_bundle.R: descriptive CON cage means, CombZ components)
+#           R/figure_support_bundle.R: descriptive CON cage means, CombZ components, and
+#           from fsb_v2 the verbatim rows of the MMM post hoc CON/RES/SUS run 29b)
 # Contract: figures/figure_behaviour_v101_s30_contract.yml
 # Map:      figures/behaviour_v101_s30_annotation_map.csv
 # Produces: results/figures/manuscript_candidates/behaviour_v101_s30/<key>/{panels,assembled}/
@@ -166,7 +167,11 @@ BUILDERS <- list(
   f1o3n_panel_cc1 = function(s, an) f1o3n_panel_cc1(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h, jitter_seed = seeds(s, 2L),
     frame = frame_of(s)),
   f1o3n_panel_trajectory = function(s, an) f1o3n_panel_trajectory(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h, frame = frame_of(s),
-    indent = nzchar(s$letter)))   # the letterless stand-alone d drops the header's letter indent
+    indent = nzchar(s$letter)),   # the letterless stand-alone d drops the header's letter indent
+  # Figure 1 option 3b (Nature layout): c (post hoc CON / RES / SUS rows of fsb P1) and the simplified d
+  f1o3b_panel_cc1 = function(s, an) f1o3b_panel_cc1(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h, jitter_seed = seeds(s, 2L),
+    frame = frame_of(s)),
+  f1o3b_panel_trajectory = function(s, an) f1o3b_panel_trajectory(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h, frame = frame_of(s)))
 
 # ---------------------------------------------------------------- plot introspection
 # The leaf ggplots of a panel (patchwork parts in order; a plain ggplot is its own leaf).
