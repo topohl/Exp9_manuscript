@@ -210,3 +210,27 @@ testthat::test_that("the registered Figure 3 is the promoted a-m render", {
   testthat::expect_identical(as.integer(n_of("Soma")), c(3L, 6L, 2L, 0L, 17L))
   testthat::expect_identical(as.integer(n_of("Microglia ROI")), c(3L, 5L, 4L, 2L, 14L))
 })
+
+testthat::test_that("the manuscript text describes the promoted a-m Figure 3", {
+  draft <- readLines(repo_path("manuscript", "manuscript_draft.md"), warn = FALSE)
+  # the a-i panel ranges are gone, and no reference is split across a line,
+  # which the line-based reference guards could not see
+  testthat::expect_false(any(grepl("Fig\\. ?3(c[–-]f|d[–-]f|g[–-]i)", draft)))
+  testthat::expect_false(any(grepl("Fig\\.$", draft)))
+  # the pattern counts in the text are the promoted source data's
+  txt <- gsub("\\s+", " ", paste(draft, collapse = " "))
+  c3 <- utils::read.csv(repo_path("figures", "main", "source_data", "figure_03",
+                                  "figure_03c_source_data.csv"),
+                        stringsAsFactors = FALSE)
+  n <- table(c3$adaptation_pattern)
+  quoted <- sprintf(paste0(
+    "Of the %d cells, %d were supported against controls only in resilient ",
+    "animals (resilience-specific), %d only in susceptible animals ",
+    "(susceptibility-specific), %d in both with medians of the same sign ",
+    "(shared / parallel) and %d in both with medians of opposite sign ",
+    "(divergent / opposing); the remaining %d were supported in neither"),
+    nrow(c3), n[["resilience-specific remodeling"]],
+    n[["susceptibility-specific remodeling"]], n[["shared / parallel"]],
+    n[["divergent / opposing"]], n[["little detectable adaptation"]])
+  testthat::expect_true(grepl(quoted, txt, fixed = TRUE))
+})

@@ -363,43 +363,83 @@ atlas of seven ontology-defined program families — RNA processing / splicing /
 RNP organisation, translation / ribosome biogenesis, chromatin organisation /
 epigenetic regulation, mitochondrial respiration / oxidative phosphorylation,
 synaptic signalling / vesicle-mediated transport, neuron projection development,
-and autophagy / endolysosomal trafficking (253 constituent GO biological-process
-terms; Fig. 3b, Extended Data Fig. 6a,b). FDR-supported constituent terms occur
-in 132 of the 378 theme × unit × contrast cells, and as observed those supported
-cells are distributed unevenly across spatial contexts and across the three
-contrasts; no test of that unevenness was performed. The atlas is a
-descriptive summary, not a test: cell colour is the median normalised enrichment
-score of a family's constituent terms, no theme-level P value or FDR is computed
-or implied, and the seven families deliberately capture a curated subset — 26.7%
-of FDR-supported GO occurrences and 14.0% of unique supported GO identifiers —
-with the complete results provided as source data. [Methods: MT-06, MT-07]
+and autophagy / endolysosomal trafficking (246 GO biological-process terms,
+seven of which belong to two families; Fig. 3b, Extended Data Fig. 6a,b). Across
+the three pairwise contrasts, FDR-supported constituent terms occur in 132 of the
+378 theme × unit × contrast cells — 51 of the 126 susceptible-versus-resilient
+cells shown in Fig. 3b, and 40 and 41 of the resilient-versus-control and
+susceptible-versus-control cells — and as observed those supported cells are
+distributed unevenly across spatial contexts and across the three contrasts; no
+test of that unevenness was performed. The atlas is a descriptive summary, not a
+test: cell colour is the median normalised enrichment score of a family's
+constituent terms, dot area in Fig. 3b is the number of those terms that are
+individually FDR-supported, no theme-level P value or FDR is computed or implied,
+and the seven families deliberately capture a curated subset — 26.7% of
+FDR-supported GO occurrences and 14.0% of unique supported GO identifiers — with
+the complete results provided as source data. [Methods: MT-06, MT-07]
 
-Three representative programs, one per measurement compartment, are shown (Fig.
-3c–f). Each was chosen editorially from the terms already FDR-supported for the
+To describe how each outcome group departs from controls, every program ×
+spatial-unit cell was placed by its median enrichment score for resilient versus
+control and for susceptible versus control animals (Fig. 3c), and assigned to one
+of five descriptive patterns according to which of those two contrasts contains at
+least one FDR-supported constituent term (Fig. 3d). Of the 126 cells, 25 were
+supported against controls only in resilient animals (resilience-specific), 26
+only in susceptible animals (susceptibility-specific), 12 in both with medians of
+the same sign (shared / parallel) and 3 in both with medians of opposite sign
+(divergent / opposing); the remaining 60 were supported in neither (little
+detectable adaptation). Little detectable adaptation was the most frequent pattern
+in every compartment (29 of 70 neuropil, 17 of 28 neuronal-soma and 14 of 28
+microglia-enriched cells), and resilience-specific cells were proportionally more
+frequent in the neuropil (19 of 70) than in either other compartment (3 of 28
+each); that difference was not tested. These patterns summarise FDR support in
+two control contrasts judged separately and are not a test. A cell supported in
+one contrast and not the other has not been shown to differ between resilient and
+susceptible animals — that comparison is the susceptible-versus-resilient
+contrast of Fig. 3b — the classification defines no new multiple-testing family,
+and little detectable adaptation means that no constituent term reached support
+at three animals per group, not that the program is unchanged. [Methods: MT-07,
+MT-14]
+
+Three representative programs, one per measurement compartment, are shown as
+three constituent terms in each of the three contrasts (Fig. 3e–g), with the
+ranked enrichment of one fixed term (Fig. 3h–j). Each was chosen editorially from
+the terms already FDR-supported for the
 susceptible-versus-resilient contrast in that compartment, so they illustrate the
 form these program differences take rather than constituting an unbiased sample.
 Throughout, gene-set FDR is conditional on the ranked per-gene contrast statistic
 and is a statement about gene ranks rather than about the three animals per
 group; enrichment P values are floored at the method tolerance of 1 × 10⁻¹⁰, and
 each of the three terms below sits at that floor in at least one displayed cell.
-A synaptic-signalling program in CA3 stratum radiatum neuropil (GO:0099536) was
+A synaptic-signalling term in CA3 stratum radiatum neuropil (GO:0099536) was
 lower in susceptible animals relative to both resilient animals and controls (NES
 −1.72, FDR 4.1 × 10⁻⁸; NES −1.72, FDR 7.4 × 10⁻⁶), with no support for the
-resilient-versus-control arm (FDR 0.19). An mRNA-processing program in CA2
+resilient-versus-control arm (NES +1.34, FDR 0.19). An mRNA-processing term in CA2
 neuronal soma (GO:0006397) showed the same asymmetry in the opposite direction
 (NES +2.13, FDR 1.9 × 10⁻⁷ and NES +1.62, FDR 0.028; resilient-versus-control
-FDR 0.78). Both are therefore susceptibility-associated. By contrast, a reduced
-oxidative-phosphorylation program in the CA1 microglia-enriched ROI (GO:0006119 —
-an enriched measurement context, not purified cells)
-was supported in all three contrasts in the same direction (NES −2.11, −2.76 and
-−1.78; FDR 5.8 × 10⁻⁵, 1.5 × 10⁻⁸ and 3.1 × 10⁻³) and is better described as a
-graded, stress-associated direction than as an outcome-specific one. These three
+FDR 0.78). Both terms are therefore susceptibility-associated, but their program
+contexts are classified differently in Fig. 3c,d. In CA2 soma none of the 44
+RNA-processing terms was supported for resilient versus control animals and 9 were
+for susceptible versus control animals, a susceptibility-specific pattern. In CA3
+stratum radiatum, 12 of the 62 synaptic-signalling / vesicle terms were supported
+and lower in susceptible animals than in controls, but 2 were supported and higher
+in resilient animals than in controls (presynaptic endocytosis, GO:0140238, NES
++1.82, FDR 0.032; regulation of synaptic plasticity, GO:0048167, NES +1.66, FDR
+0.033), and the two program medians have opposite signs (+1.28 and −1.32), so that
+context is divergent / opposing even though the displayed term is not itself
+supported in resilient animals. By contrast, a reduced oxidative-phosphorylation
+term in the CA1 microglia-enriched ROI (GO:0006119 — an enriched measurement
+context, not purified cells) was supported in all three contrasts in the same
+direction (NES −2.11, −2.76 and −1.78; FDR 5.8 × 10⁻⁵, 1.5 × 10⁻⁸ and
+3.1 × 10⁻³) and is better described as a graded, stress-associated direction than
+as an outcome-specific one; its program context is shared / parallel, with 12 of
+16 terms supported and reduced in resilient and 15 of 16 in susceptible animals
+relative to controls. These three
 terms were selected as one illustrative example per compartment and are not the
 strongest result in their own units. The microglia-enriched ROI is an enriched
 measurement context rather than a purified population, so this result cannot
 establish a cell-intrinsic microglial property. The three displayed pairwise
 contrasts are algebraically related and are not independent replications.
-[Methods: MT-08, MT-09]
+[Methods: MT-08, MT-09, MT-14]
 
 Three further analyses bound how strongly these program-level results should be
 read. Under a correlation-aware competitive gene-set sensitivity analysis applied
@@ -426,7 +466,7 @@ low power, so this is a limited-power negative result rather than evidence of
 absence, and
 the neuronal-soma and microglia-enriched compartments were not tested in that
 analysis. Selected leading-edge proteins are
-shown to expose which proteins carry each enrichment signal (Fig. 3g–i); none of
+shown to expose which proteins carry each enrichment signal (Fig. 3k–m); none of
 the 63 displayed values is individually FDR-supported at the protein level
 (smallest BH FDR 0.53), and they are descriptive rather than independent
 confirmation. [Methods: MT-10, MT-11, MT-12]
@@ -598,6 +638,19 @@ level of description. Leading-edge proteins decompose which proteins carry each
 program-level signal and are useful for that purpose, but membership of a leading
 edge is not a protein-level result: none of the displayed leading-edge values is
 individually supported after correction.
+
+The adaptation-state patterns of Fig. 3c,d call for the same restraint. They
+record, for each program and spatial context, whether resilient animals,
+susceptible animals, both or neither carry an FDR-supported constituent term
+relative to controls. Resilience-specific and susceptibility-specific patterns
+were about equally common (25 and 26 of 126 cells), and contexts supported in both
+groups were mostly parallel rather than opposing (12 against 3), but none of these
+comparisons was tested. A resilience-specific pattern is compatible with an
+outcome-associated molecular response in resilient animals without establishing
+one, because support in one contrast and not the other is not a demonstrated
+difference between the groups; and the 60 cells of little detectable adaptation
+are failures to reach support at three animals per group rather than evidence that
+those programs are unaffected by stress.
 
 Two further analyses bound how strongly the program-level results should be read.
 A correlation-aware competitive sensitivity analysis applied to the identical
@@ -945,12 +998,45 @@ ontology structure and is independent of phenotype.** The mitochondrial
 respiration / oxidative phosphorylation family comprises 16 GO terms; the
 glycolysis sub-DAG (`GO:0006096`) is excluded by an explicit exclusion rule,
 while pyruvate decarboxylation to acetyl-CoA (`GO:0006086`) and the
-tricarboxylic acid cycle (`GO:0006099`) are retained. Family colour is the
-**median normalised enrichment score** of the constituent canonical terms; a
-support marker indicates that at least one constituent term passed its own
-prespecified FDR threshold. **The aggregation constitutes no additional
-multiple-testing family and no theme-level *P* value or FDR is computed or
-implied.** [M-06, M-07]
+tricarboxylic acid cycle (`GO:0006099`) are retained. The seven families comprise
+253 family–term assignments over 246 unique GO identifiers: six rRNA-processing
+terms belong to both the RNA-processing and the translation families, and
+synaptic vesicle recycling via endosome (`GO:0036466`) to both the synaptic and
+the autophagy families; each is counted in both. Family colour is the **median
+normalised enrichment score** of the constituent canonical terms. In the
+susceptible-versus-resilient atlas (Fig. 3b), dot area is proportional to the
+number of constituent terms with BH FDR < 0.05 in that cell, and a cell with none
+carries no dot; in the resilient-versus-control and susceptible-versus-control
+atlases (Extended Data Fig. 6a,b) a fixed-size support marker indicates that at
+least one constituent term passed its own prespecified FDR threshold. Numbered
+outlines mark the three exemplar contexts. **The aggregation constitutes no
+additional multiple-testing family and no theme-level *P* value or FDR is computed
+or implied.** [M-06, M-07, M-32]
+
+## Adaptation-state classification
+
+For each of the 126 program × spatial-unit cells (seven families × 18 spatial
+units), the resilient-versus-control and susceptible-versus-control contrasts were
+summarised separately by the median NES of the constituent terms and by the number
+of constituent terms with BH FDR < 0.05, using the canonical enrichment results and
+the within-comparison FDR described above. A contrast is supported in a cell when
+at least one constituent term has BH FDR < 0.05. A cell supported in neither
+contrast is labelled little detectable adaptation; in one contrast only,
+resilience-specific or susceptibility-specific; and in both, shared / parallel
+when the two medians have the same sign and divergent / opposing when they differ.
+Fig. 3c plots the two medians, with point opacity marking support in either
+contrast, and Fig. 3d gives the number of cells in each pattern per compartment,
+with dot area proportional to the within-compartment fraction. **The
+classification adds no test, threshold or multiple-testing family**; because each
+contrast is judged against controls separately, a cell's pattern is not a test of
+a difference between resilient and susceptible animals. Direction is taken from the
+median of all constituent terms whereas support requires one term, so the two can
+disagree: in 4 of the 81 supported contrast × cell combinations at least one
+supported term runs against the median, and of the three divergent / opposing
+cells, the translation / ribosome-biogenesis cell of the CA1 microglia-enriched ROI
+has supported terms that are reduced in both contrasts, so its opposing label
+reflects the medians alone. The region labels of Fig. 3c mark sign quadrants and do
+not define the classification. [M-33]
 
 ## CAMERA sensitivity analysis
 
