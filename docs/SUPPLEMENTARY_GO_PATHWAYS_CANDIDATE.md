@@ -41,17 +41,18 @@ performed here. The three stress-group contrasts are related comparisons.
 Term-level FDR dots do not mean the broader seven-family atlas has a theme-level
 FDR. The microglia-enriched ROI is not a purified cell population.
 The candidate calls `f9_gsea_curve_plot()` in
-`R/panels/final_truth_v9_panels.R`, the same drawing function used by Figure 3
-d-f through `f9_gsea_curve()`. This shares the header, running ES, hit ticks,
-three-contrast strip, palette, typography, and recorded Figure 3 NES colour
-limit. The candidate reads the Figure 3d source-data row to verify that limit.
-It also calls `f9_protein_zoom_plot()`, the same drawing function used by Figure
-3 g-i through `f9_protein_zoom()`. The seven genes per term follow Figure 3's
+`R/panels/final_truth_v9_panels.R`, the drawing function the earlier a-i Figure 3
+used for panels d-f through `f9_gsea_curve()` (the current curves, 3h-j, are
+drawn by `f3a_curve()`). This shares that design's header, running ES, hit
+ticks, three-contrast strip, palette, typography, and recorded NES colour
+limit. The candidate reads the frozen a-i Figure 3d source-data row to verify
+that limit. It also calls `f9_protein_zoom_plot()`, the same drawing function
+used by Figure 3 k-m through `f3a_proteins()`. The seven genes per term follow Figure 3's
 leading-edge, absolute-ranked-statistic selection rule. Their log2 fold
 changes and BH FDRs come from stored mapped protein-level DA files. None of
 the 84 displayed protein/contrast rows has BH FDR below 0.05; the protein
 panels are descriptive. Their four-panel x-axis limit is set from all four
-appendix selections, because their values exceed Figure 3 g-i's three-panel
+appendix selections, because their values exceed Figure 3 k-m's three-panel
 limit. The figure legend and numeric axes should be kept with both pages.
 
 ## Files and commands

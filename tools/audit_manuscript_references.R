@@ -63,7 +63,7 @@ NOT_CITATION_SURFACES <- c("figure_panel_reference_audit.csv",
 files <- files[file.exists(files) & !(basename(files) %in% NOT_CITATION_SURFACES)]
 
 expand <- function(tail_) {
-  ls_ <- regmatches(tail_, gregexpr("[a-i]", tail_))[[1]]
+  ls_ <- regmatches(tail_, gregexpr("[a-m]", tail_))[[1]]
   idx <- match(ls_, letters)
   if (grepl("[–-]", tail_) && length(idx) >= 2L && !anyNA(idx)) {
     ls_ <- letters[seq(min(idx), max(idx))]
@@ -76,8 +76,8 @@ for (f in files) {
   ln <- readLines(f, warn = FALSE)
   for (i in seq_along(ln)) {
     # Extended Data first, so its "Fig. N" is not mistaken for a main figure
-    for (pat in c(ed = "Extended Data Fig[.][ ]?[0-9]+[a-i]?(([,–-])[a-i])*",
-                  main = "(?<!Extended Data )Fig[.][ ]?[123][a-i](([,–-])[a-i])*")) {
+    for (pat in c(ed = "Extended Data Fig[.][ ]?[0-9]+[a-m]?(([,–-])[a-m])*",
+                  main = "(?<!Extended Data )Fig[.][ ]?[123][a-m](([,–-])[a-m])*")) {
       hits <- regmatches(ln[i], gregexpr(pat, ln[i], perl = TRUE))[[1]]
       is_ed <- identical(pat, unname(pat["ed"])) || grepl("^Extended", pat)
       for (hh in hits) {

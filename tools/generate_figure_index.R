@@ -41,7 +41,9 @@ contracts <- sort(list.files(repo_path("figures"), pattern = "[.]ya?ml$"))
 
 entry_points <- gen_registry$manuscript_entry_point
 canonical_renderers <- gen_registry$canonical_renderer
-canonical_gens <- unique(gen_registry$canonical_generation)
+# A descriptive suffix ("final_truth_v9 adaptation architecture") must not drop
+# its generation from the canonical set.
+canonical_gens <- unique(sub("[ (].*$", "", gen_registry$canonical_generation))
 canonical_gens <- canonical_gens[canonical_gens %in% GENERATIONS]
 
 generation_of <- function(nm) {

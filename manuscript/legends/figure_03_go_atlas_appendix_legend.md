@@ -7,9 +7,9 @@ autophagy and endolysosomal biology. Within each theme, terms are ordered by
 GO ID. A term assigned to more than one theme is shown in each applicable
 group and identified in the source index.
 
-Each column pairs a running GSEA enrichment curve and three-contrast NES
-strip (Figure 3d–f design) with the corresponding leading-edge protein
-zoom (Figure 3g–i design). The displayed spatial unit is the FDR-supported
+Each column pairs a running GSEA enrichment curve (as in Figure 3h–j) and a
+three-contrast NES strip with the corresponding leading-edge protein zoom
+(Figure 3k–m design). The displayed spatial unit is the FDR-supported
 SUS - RES occurrence with the smallest stored BH FDR for that GO ID, with
 ties resolved by dataset and spatial-unit name. The strips show RES - CON,
 SUS - CON, and SUS - RES for that same unit. Dots above strips indicate
