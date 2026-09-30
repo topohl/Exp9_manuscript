@@ -12,7 +12,7 @@ if (!exists("nv_contract", mode = "function")) {
 }
 
 s9f_contract_path <- function() repo_path("figures", "figure_final_truth_v9_contract.yml")
-s9f_contract_version <- function() "manuscript_final_truth_v9_figures_v1"
+s9f_contract_version <- function() "manuscript_final_truth_v9_figures_v2_adaptation"
 
 s9f_output_paths <- function(figure_key, output_root = path_results()) {
   list(
@@ -37,6 +37,7 @@ s9f_shared_paths <- function(output_root = path_results()) {
 
 s9f_renderer_sources <- function() {
   c(repo_path("R", "final_truth_v9_panels.R"),
+    repo_path("R", "figure3_adaptation_panels.R"),
     repo_path("R", "final_truth_v9_ed_panels.R"),
     repo_path("R", "final_truth_v9_fidelity_panels.R"),
     repo_path("R", "final_truth_v9_figure_utils.R"),

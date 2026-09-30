@@ -21,7 +21,7 @@
 # Every spatial panel uses config/manuscript_spatial_order.yml: neuropil carries
 # region x layer, soma and the microglia-enriched ROI are region-level only.
 
-contract_version: manuscript_final_truth_v9_figures_v1
+contract_version: manuscript_final_truth_v9_figures_v2_adaptation
 status: promoted_canonical_manuscript_figures_2_and_3
 # Promoted in Phase 5B. Figures 2 and 3 of the manuscript are this generation.
 # figures/figure_contract.yml declares them and is the manuscript-facing
@@ -141,7 +141,7 @@ panels:
 
   # ===================== FIGURE 3 =========================================
   - id: v9_dap_track
-    renderer: f9_dap_track
+    renderer: f3a_dap_burden
     role: sparse_single_protein_da
     spatial_axes: compartment+region+layer
     phenotype_axes: SUS-RES
@@ -152,115 +152,142 @@ panels:
       it: canonical FDR-supported SUS-RES count, and the robustness-qualified
       count. Numeric rather than bars so the CA2-SLM canonical value cannot
       dominate the panel.
-    primary_source: results/tables/11_spatial_systems/atlas/protein_spatial_cell_affinity.csv
+    primary_source: source_data/pRoteomics/figure_03/figure_03a_source_data.csv
 
   - id: v9_atlas
-    renderer: f9_gsea_atlas
+    renderer: f3a_atlas
     role: program_atlas
     contrast: SUS - RES
-    # This panel carries the column labels for the DAP track drawn directly
-    # above it, which suppresses its own axis text. Declaring the coupling makes
-    # the renderer pin the right gutter to the shared NF_RGT constant and move
-    # its colour bar below the axis, so the two panels' column pitches are equal
-    # by construction rather than by coincidence. Without it the track's numbers
-    # sit nearly a full column right of the labels that identify them (PB-01).
-    shares_column_geometry_with: v9_dap_track
     spatial_axes: compartment+region+layer
     phenotype_axes: SUS-RES
     main_or_ed: main_concise
     narrative: >-
-      the central quantitative panel. Claim-eligible themes only; the two
-      qc_review themes are excluded. Shares its column geometry exactly with the
-      DAP track above so the two read as one block.
-    primary_source: results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
+      the central programme-level SUS-RES atlas. Median NES encodes direction
+      and magnitude; dot size encodes the number of FDR-supported constituent
+      GO terms. Three outlined cells define the downstream exemplars.
+    primary_source: source_data/pRoteomics/supplementary_selection_inventories/pathway_enrichment_inventory.csv
 
-  - id: v9_bridge
-    renderer: f9_anatomy_bridge
-    role: anatomical_program_bridge
+  - id: v9_adaptation_state
+    renderer: f3a_state_map
+    role: adaptation_state_map
     spatial_axes: compartment+region+layer
-    phenotype_axes: RES-CON+SUS-CON+SUS-RES
+    phenotype_axes: RES-CON+SUS-CON
     main_or_ed: main_unique
     narrative: >-
-      ONE shared hippocampal schematic with three anchored callouts, replacing
-      three repeated miniature maps. Each callout carries a compact
-      three-contrast strip. Wording stays conservative: the two exemplars whose
-      RES-CON arm is not FDR-supported are called susceptibility-associated,
-      never divergent.
-    primary_source: results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
+      every programme-context is positioned by median RES-CON and SUS-CON NES,
+      making active resilience-associated, susceptibility-associated, shared,
+      divergent and little-detectable adaptation visible without treating
+      non-significance as passive biology.
+    primary_source: source_data/pRoteomics/supplementary_selection_inventories/pathway_enrichment_inventory.csv
+
+  - id: v9_adaptation_burden
+    renderer: f3a_pattern_burden
+    role: adaptation_pattern_burden
+    spatial_axes: compartment
+    phenotype_axes: RES-CON+SUS-CON
+    main_or_ed: main_concise
+    narrative: >-
+      counts and fractions of the five transparent adaptation classifications,
+      split across neuropil, soma and the microglia-enriched ROI.
+    primary_source: source_data/pRoteomics/supplementary_selection_inventories/pathway_enrichment_inventory.csv
+
+  - id: v9_card_syn
+    renderer: f3a_exemplar_card
+    role: exemplar_constituent_terms
+    exemplar: 1
+    spatial_axes: compartment+region+layer
+    phenotype_axes: RES-CON+SUS-CON+SUS-RES
+    main_or_ed: main_concise
+    narrative: Neuropil CA3-SR synapse and vesicle constituent-term card.
+    primary_source: source_data/pRoteomics/supplementary_selection_inventories/pathway_enrichment_inventory.csv
+
+  - id: v9_card_rna
+    renderer: f3a_exemplar_card
+    role: exemplar_constituent_terms
+    exemplar: 2
+    spatial_axes: compartment+region
+    phenotype_axes: RES-CON+SUS-CON+SUS-RES
+    main_or_ed: main_concise
+    narrative: Soma CA2 RNA and RNP processing constituent-term card.
+    primary_source: source_data/pRoteomics/supplementary_selection_inventories/pathway_enrichment_inventory.csv
+
+  - id: v9_card_ox
+    renderer: f3a_exemplar_card
+    role: exemplar_constituent_terms
+    exemplar: 3
+    spatial_axes: compartment+region
+    phenotype_axes: RES-CON+SUS-CON+SUS-RES
+    main_or_ed: main_concise
+    narrative: Microglia-enriched ROI CA1 mitochondrial/OXPHOS constituent-term card.
+    primary_source: source_data/pRoteomics/supplementary_selection_inventories/pathway_enrichment_inventory.csv
 
   - id: v9_curve_syn
-    renderer: f9_gsea_curve
+    renderer: f3a_curve
     role: direct_evidence
-    column_index: "1"
-    program_key: synaptic
+    exemplar: 1
     spatial_axes: compartment+region+layer
     phenotype_axes: RES-CON+SUS-CON+SUS-RES
     main_or_ed: main_concise
     narrative: neuropil CA3-SR synaptic signalling, exact reconstructed running enrichment.
-    primary_source: null
+    primary_source: source_data/pRoteomics/figure_03_adaptation/selection.csv
     input_dependencies:
-      - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
+      - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
 
   - id: v9_curve_rna
-    renderer: f9_gsea_curve
+    renderer: f3a_curve
     role: direct_evidence
-    column_index: "2"
-    program_key: rna
+    exemplar: 2
     spatial_axes: compartment+region
     phenotype_axes: RES-CON+SUS-CON+SUS-RES
     main_or_ed: main_concise
     narrative: neuronal soma CA2-SP mRNA processing.
-    primary_source: null
+    primary_source: source_data/pRoteomics/figure_03_adaptation/selection.csv
     input_dependencies:
-      - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
+      - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
 
   - id: v9_curve_ox
-    renderer: f9_gsea_curve
+    renderer: f3a_curve
     role: direct_evidence
-    column_index: "3"
-    program_key: oxphos
+    exemplar: 3
     spatial_axes: compartment+region
     phenotype_axes: RES-CON+SUS-CON+SUS-RES
     main_or_ed: main_concise
     narrative: >-
       microglia-enriched CA1 oxidative phosphorylation, the only exemplar whose
       three-group ordering is fully FDR-supported.
-    primary_source: null
+    primary_source: source_data/pRoteomics/figure_03_adaptation/selection.csv
     input_dependencies:
-      - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
+      - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
 
   - id: v9_prot_syn
-    renderer: f9_protein_zoom
+    renderer: f3a_proteins
     role: leading_edge_proteins
-    show_legend: false
-    program_key: synaptic
+    exemplar: 1
     spatial_axes: region+layer
     phenotype_axes: RES-CON+SUS-CON+SUS-RES
     main_or_ed: main_unique
     narrative: the proteins carrying the CA3-SR synaptic program.
-    primary_source: results/tables/11_spatial_systems/atlas/protein_sus_res_fdr_supported_atlas.csv
+    primary_source: source_data/pRoteomics/figure_03_adaptation/protein_zoom_values.csv
 
   - id: v9_prot_rna
-    renderer: f9_protein_zoom
+    renderer: f3a_proteins
     role: leading_edge_proteins
-    show_legend: false
-    program_key: rna
+    exemplar: 2
     spatial_axes: region
     phenotype_axes: RES-CON+SUS-CON+SUS-RES
     main_or_ed: main_unique
     narrative: the proteins carrying the CA2 neuronal-soma mRNA-processing program.
-    primary_source: results/tables/11_spatial_systems/atlas/protein_sus_res_fdr_supported_atlas.csv
+    primary_source: source_data/pRoteomics/figure_03_adaptation/protein_zoom_values.csv
 
   - id: v9_prot_ox
-    renderer: f9_protein_zoom
+    renderer: f3a_proteins
     role: leading_edge_proteins
-    show_legend: true
-    program_key: oxphos
+    exemplar: 3
     spatial_axes: region
     phenotype_axes: RES-CON+SUS-CON+SUS-RES
     main_or_ed: main_unique
     narrative: the proteins carrying the CA1 microglia-enriched OXPHOS program.
-    primary_source: results/tables/11_spatial_systems/atlas/protein_sus_res_fdr_supported_atlas.csv
+    primary_source: source_data/pRoteomics/figure_03_adaptation/protein_zoom_values.csv
 
 
   # ===================== EXTENDED DATA ====================================
@@ -510,18 +537,22 @@ figures:
     width_mm: 183
     height_mm: 170
     question: >-
-      What molecular programs distinguish later resilient and susceptible
-      outcomes, where do they occur, and which proteins carry them?
+      Do resilience and susceptibility represent distinct spatial modes of
+      molecular adaptation to social instability stress?
     layout:
-      - {panel: v9_dap_track, label: a, x: 4,   "y": 4,   w: 175, h: 13}
-      - {panel: v9_atlas,     label: b, x: 4,   "y": 17,  w: 175, h: 44}
-      - {panel: v9_bridge,    label: c, x: 4,   "y": 64,  w: 175, h: 32}
-      - {panel: v9_curve_syn, label: d, x: 4,   "y": 99,  w: 56,  h: 37}
-      - {panel: v9_curve_rna, label: e, x: 64,  "y": 99,  w: 56,  h: 37}
-      - {panel: v9_curve_ox,  label: f, x: 124, "y": 99,  w: 55,  h: 37}
-      - {panel: v9_prot_syn,  label: g, x: 4,   "y": 139, w: 56,  h: 29}
-      - {panel: v9_prot_rna,  label: h, x: 64,  "y": 139, w: 56,  h: 29}
-      - {panel: v9_prot_ox,   label: i, x: 124, "y": 139, w: 55,  h: 29}
+      - {panel: v9_dap_track,         label: a, x: 4,   "y": 4,   w: 175, h: 10}
+      - {panel: v9_atlas,             label: b, x: 4,   "y": 15,  w: 175, h: 34}
+      - {panel: v9_adaptation_state,  label: c, x: 4,   "y": 51,  w: 110, h: 34}
+      - {panel: v9_adaptation_burden, label: d, x: 117, "y": 51,  w: 62,  h: 34}
+      - {panel: v9_card_syn,          label: e, x: 4,   "y": 87,  w: 56,  h: 24}
+      - {panel: v9_card_rna,          label: f, x: 64,  "y": 87,  w: 56,  h: 24}
+      - {panel: v9_card_ox,           label: g, x: 124, "y": 87,  w: 55,  h: 24}
+      - {panel: v9_curve_syn,         label: h, x: 4,   "y": 113, w: 56,  h: 27}
+      - {panel: v9_curve_rna,         label: i, x: 64,  "y": 113, w: 56,  h: 27}
+      - {panel: v9_curve_ox,          label: j, x: 124, "y": 113, w: 55,  h: 27}
+      - {panel: v9_prot_syn,          label: k, x: 4,   "y": 142, w: 56,  h: 26}
+      - {panel: v9_prot_rna,          label: l, x: 64,  "y": 142, w: 56,  h: 26}
+      - {panel: v9_prot_ox,           label: m, x: 124, "y": 142, w: 55,  h: 26}
 
   - name: ED1_FINAL_V9
     figure_key: extended_data

@@ -1,0 +1,4 @@
+"exemplar","programme_id","dataset","spatial_unit","GO_ID","GO_description","NES","BH_FDR","enrichmentScore","setSize","n_ranked","peak_rank","selection_rule"
+1,"synapse_vesicle","neuron_neuropil","CA3_sr","GO:0099536","synaptic signaling",-1.71924782386866,4.12222222222222e-08,-0.396463863852377,507,4967,3124,"manuscript-fixed programme/location/constituent-term exemplar"
+2,"rna_rnp","neuron_soma","CA2_sp","GO:0006397","mRNA processing",2.12576029806184,1.9295e-07,0.402045766004613,297,5448,1077,"manuscript-fixed programme/location/constituent-term exemplar"
+3,"mitochondria_oxphos","microglia","CA1","GO:0006119","oxidative phosphorylation",-2.11097705826318,5.75222270996947e-05,-0.510367164597921,105,5139,3932,"manuscript-fixed programme/location/constituent-term exemplar"

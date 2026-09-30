@@ -1,0 +1,16 @@
+CC4 Stage 31c protocol, fixed before bootstrap execution.
+All conditions received grid. Whole-phase associations; no causal/timing-specific grid inference.
+I2 vs I3-I5 and A2 vs A3-A5; 12h vs36h; complete cage roster per phase family, A1 not required.
+Primary cage NB2: Condition*Period + Batch*Period + offset(log(animal-hours)) + (1|CageID).
+Secondary animal NB2: Group*Period + Batch*Period + offset(log(hours)) + (1|AnimalKey)+(1|CageID)+(0+Post|CageID).
+Numerical gate: convergence0, positive Hessian, finite likelihood/coefficients, max gradient<=0.01. BFGS retry only on failed fits.
+Boundary flag: any random-effect SD<0.0001. Boundary observed models withheld; boundary refits accepted only if numerical gate passes.
+Secondary family withheld if any of four observed models is boundary/nonvalid; no silent simplification or Wald substitution.
+Primary null-model simulation LRT with fresh random effects; full-model simulation percentile CI; first requested successful draws.
+Fixed maximum attempts ceiling(draws/0.94); stop if cumulative refit failures exceed5% at200-draw checkpoints.
+P=(1+number simulated LR>=observed LR)/(1+successful draws); Holm across four primary tests.
+Model rates integrate cage variance and weight batches equally. Intervals pointwise, not simultaneous.
+Secondary tests remain withheld in this implementation pending assessment of all four observed covariance fits.
+Sensitivity fits: leave-one-batch-out; NB2 dispersion by Condition+Period; RES/SUS mixed cages only. No sensitivity p-values.
+Successful draws: 4999 ; base seed: 20260929 ; validation_only: FALSE
+Plan adopted after descriptive inspection; not preregistered. No randomization assumption verified.

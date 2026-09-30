@@ -8,15 +8,14 @@ testthat::test_that("manuscript figure contract has exact unique panel identitie
   ids2 <- vapply(fig2$panels, function(x) as.character(x$id), character(1))
   ids3 <- vapply(fig3$panels, function(x) as.character(x$id), character(1))
 
-  # Promoted in Phase 5B: Figures 2 and 3 are the final_truth_v9 generation,
-  # a-h and a-i, which is the structure Results 2 and 3 were written against.
+  # Figure 2 remains a-h; the adaptation redesign expands Figure 3 to a-m.
   testthat::expect_identical(ids2, paste0("2", letters[1:8]))
-  testthat::expect_identical(ids3, paste0("3", letters[1:9]))
+  testthat::expect_identical(ids3, paste0("3", letters[1:13]))
   testthat::expect_false(anyDuplicated(c(ids2, ids3)) > 0L)
   testthat::expect_identical(fig2$contract_version,
-                             "manuscript_figures_v3_final_truth_v9_promoted")
+                             "manuscript_figures_v4_figure3_adaptation")
   testthat::expect_identical(fig3$contract_version,
-                             "manuscript_figures_v3_final_truth_v9_promoted")
+                             "manuscript_figures_v4_figure3_adaptation")
 })
 
 testthat::test_that("Figure 2a is a rendered anatomy schematic, not a placeholder", {
@@ -45,7 +44,9 @@ testthat::test_that("contract pins canonical panels and does not use newest-file
   for (asset in c("v9_schematic.svg", "v9_depth.svg", "v9_pca.svg",
                   "v9_fingerprint.svg", "v9_compartment.svg", "v9_bilateral_main.svg",
                   "v9_external_main.svg", "v9_internal_main.svg",
-                  "v9_dap_track.svg", "v9_atlas.svg", "v9_bridge.svg",
+                  "v9_dap_track.svg", "v9_atlas.svg",
+                  "v9_adaptation_state.svg", "v9_adaptation_burden.svg",
+                  "v9_card_syn.svg", "v9_card_rna.svg", "v9_card_ox.svg",
                   "v9_curve_syn.svg", "v9_curve_rna.svg", "v9_curve_ox.svg",
                   "v9_prot_syn.svg", "v9_prot_rna.svg", "v9_prot_ox.svg")) {
     testthat::expect_match(contract_text, asset, fixed = TRUE)
