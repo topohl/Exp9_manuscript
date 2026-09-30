@@ -5,7 +5,7 @@
 # The Figure 1 builders (R/panels/behaviour_figure1_panels.R) and the compact light-phase builder
 # (R/panels/behaviour_s30_light_panels.R) take `style = "figure1"` by default and draw exactly as
 # before; with style = "nature" they return the builders below. Same tables, same stored values,
-# same inks, fills and shapes; what changes is layout, type and weight (NATURE_REDESIGN_SPEC 2-3):
+# same inks and fills; group marks are circles throughout (colour = group); what changes is layout, type and weight (NATURE_REDESIGN_SPEC 2-3):
 #   a  f1n_panel_design       boxes 6 mm tall, 5.5-pt labels, 0.49-pt brackets, no timeline rule
 #                             and dots, the n footer quoted by the legend;
 #   b  f1n_panel_combz        no title; upright 5.5-pt strips; 5-pt threshold labels; 0.3-pt CON
@@ -20,7 +20,7 @@
 #                             limits, units in the x titles, one right-aligned BH q column;
 #   e  f1n_panel_association  no title; one-line x title; two statistics lines, the q as
 #                             "2.61 × 10^−5" (f1n_sci_parts: three text nodes, the exponent at 5 pt);
-#   f  f1n_panel_prediction   group shapes (no sex shapes, no key); square scatter; direct labels
+#   f  f1n_panel_prediction   group circles coloured by group (no sex shapes, no key); square scatter; direct labels
 #                             by the observed line and the null bars; the resampling range and the
 #                             permutation count quoted by the legend.
 # Every printed number is an$fa() of one annotation key (the value-for-value test reads the panel
@@ -38,6 +38,9 @@
 # and R/panels/behaviour_s30_light_panels.R sourced first; packages ggtext and patchwork.
 
 F1N <- BH_NATURE
+# Group marks are circles in every panel (user directive 2026-09-30): colour alone differentiates CON /
+# RES / SUS, so a shape never means group in one panel and something else in another.
+F1N_GROUP_SHAPE <- c(CON = 21L, RES = 21L, SUS = 21L)
 # The superscript -1 of the per-hour unit, at the 5-pt floor (a plain <sup> would draw 4.4 pt).
 F1N_PER_H <- "h<sup><span style='font-size:5pt'>−1</span></sup>"
 # Axis titles, sentence case "Quantity (unit)".
@@ -200,7 +203,7 @@ f1n_panel_combz <- function(tab, an, w_mm, h_mm, jitter_seed, frame = NULL) {
                  hjust = 1, vjust = -0.25, size = f1n_text(), colour = INK, fill = "white", linewidth = 0,
                  label.padding = unit(0.5, "pt")) +
       facet_wrap(~ Sex, nrow = 1) +
-      scale_fill_manual(values = GROUP_COL, name = NULL) + scale_shape_manual(values = GROUP_SHAPE, name = NULL) +
+      scale_fill_manual(values = GROUP_COL, name = NULL) + scale_shape_manual(values = F1N_GROUP_SHAPE, name = NULL) +
       guides(fill = guide_legend(override.aes = key_aes), shape = guide_legend()) +
       scale_x_discrete(expand = expansion(add = c(0.45, 0.45))) +
       scale_y_continuous(labels = f1_minus_labels) +
@@ -240,7 +243,7 @@ f1n_panel_cc1 <- function(tab, an, w_mm, h_mm, jitter_seed = c(NA, NA), frame = 
       facet_wrap(~ Sex, nrow = 1) +
       scale_fill_manual(values = c(CON = "white", GROUP_COL[c("RES", "SUS")]), guide = "none") +
       scale_colour_manual(values = c(`TRUE` = CON_GREY, `FALSE` = F1N$point_colour), guide = "none") +
-      scale_shape_manual(values = GROUP_SHAPE, guide = "none") +
+      scale_shape_manual(values = F1N_GROUP_SHAPE, guide = "none") +
       scale_x_continuous(breaks = seq_along(GROUP_LEV), labels = GROUP_LEV, limits = c(0.6, 3.48), expand = c(0, 0)) +
       labs(x = NULL, y = F1N_CONSTRUCT_Y[[k]], title = holm) +
       theme_f1(style = "nature") +
@@ -373,7 +376,7 @@ f1n_panel_prediction <- function(tab, an, w_mm, h_mm, typography = "candidate", 
     pf_scatter <- ggplot(A2, aes(observed_CombZ, heldout_prediction)) +
       geom_abline(slope = 1, intercept = 0, linetype = "22", linewidth = F1N$identity_lw, colour = "grey62") +
       geom_point(aes(fill = Group, shape = Group), size = F1N$point_size, stroke = F1N$point_stroke, colour = F1N$point_colour) +
-      scale_fill_manual(values = GROUP_COL, guide = "none") + scale_shape_manual(values = GROUP_SHAPE, guide = "none") +
+      scale_fill_manual(values = GROUP_COL, guide = "none") + scale_shape_manual(values = F1N_GROUP_SHAPE, guide = "none") +
       scale_x_continuous(labels = f1_minus_labels) + scale_y_continuous(labels = f1_minus_labels) +
       coord_cartesian(xlim = lim, ylim = lim) +
       annotation_custom(f1n_math_grob(lab_loao, x = left, y = grid::unit(1, "npc") - grid::unit(2.3, "mm"), hjust = 0)) +
