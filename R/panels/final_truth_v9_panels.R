@@ -800,6 +800,28 @@ f9_atlas_cells <- function(th, contrast) {
   cells
 }
 
+# Seven rows under registry manuscript_go_themes_v3, in the registry display
+# order: a molecular-to-cellular progression, fixed and phenotype-independent.
+# It is never sorted by NES, FDR, direction or number of supported cells.
+# Mitochondrial respiration is correct again under v3, which excludes the
+# cytosolic glycolysis sub-DAG that had forced the broader "Energy metabolism".
+# This is the only copy of the row set and its labels: the ED6 atlases and every
+# Figure 3 programme panel read it here, so the two cannot drift apart again.
+# The row set is frozen by pRoteomics docs/ATLAS_PROGRAM_SELECTION_AND_NAMING_
+# RULES.md; membership comes from the registry's theme assignments only, never
+# from hand-picked GO IDs.
+f9_atlas_themes <- function() {
+  SHORT <- c(rna_processing_splicing_rnp = "RNA processing",
+             ribosome_translation = "Translation / ribosome",
+             chromatin_organization = "Chromatin / epigenetic regulation",
+             mitochondrial_respiration_oxphos = "Mitochondrial respiration",
+             synaptic_signaling_vesicle = "Synaptic signalling / vesicle",
+             neuron_projection_development = "Neuron projection development",
+             autophagy_lysosome_endosome = "Autophagy / endolysosomal")
+  data.frame(theme_id = names(SHORT), label = unname(SHORT),
+             stringsAsFactors = FALSE)
+}
+
 f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   fam <- nf_fam()
   th <- nv_read_csv(repo_path(panel$primary_source))
@@ -810,18 +832,8 @@ f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   o <- b$order
   cells$xpos <- match(paste(cells$dataset, cells$sg_unit),
                       paste(o$dataset, o$unit))
-  # Seven rows under registry manuscript_go_themes_v3, in the registry display
-  # order: a molecular-to-cellular progression, fixed and phenotype-independent.
-  # It is never sorted by NES, FDR, direction or number of supported cells.
-  # Mitochondrial respiration is correct again under v3, which excludes the
-  # cytosolic glycolysis sub-DAG that had forced the broader "Energy metabolism".
-  SHORT <- c(rna_processing_splicing_rnp = "RNA processing",
-             ribosome_translation = "Translation / ribosome",
-             chromatin_organization = "Chromatin / epigenetic regulation",
-             mitochondrial_respiration_oxphos = "Mitochondrial respiration",
-             synaptic_signaling_vesicle = "Synaptic signalling / vesicle",
-             neuron_projection_development = "Neuron projection development",
-             autophagy_lysosome_endosome = "Autophagy / endolysosomal")
+  themes <- f9_atlas_themes()
+  SHORT <- stats::setNames(themes$label, themes$theme_id)
   ord <- names(SHORT)[names(SHORT) %in% cells$theme_id]
   cells <- cells[cells$theme_id %in% ord, , drop = FALSE]
   cells$ypos <- match(cells$theme_id, rev(ord))

@@ -450,8 +450,8 @@ figures:
       - id: 3e
         v9_panel_id: v9_card_syn
         description: >-
-          Neuropil CA3-SR synapse and vesicle programme with three constituent
-          terms and all three contrasts.
+          Neuropil CA3-SR synaptic signalling and vesicle programme with three
+          constituent terms and all three contrasts.
         producer_script: figures/final_truth_v9_figure_03.R
         renderer: f3a_exemplar_card
         render_mode: copy_svg
@@ -470,8 +470,8 @@ figures:
       - id: 3f
         v9_panel_id: v9_card_rna
         description: >-
-          Soma CA2 RNA and RNP processing programme with three constituent terms
-          and all three contrasts.
+          Soma CA2 RNA processing programme with three constituent terms and all
+          three contrasts.
         producer_script: figures/final_truth_v9_figure_03.R
         renderer: f3a_exemplar_card
         render_mode: copy_svg
@@ -490,7 +490,7 @@ figures:
       - id: 3g
         v9_panel_id: v9_card_ox
         description: >-
-          Microglia-enriched ROI CA1 mitochondrial and OXPHOS programme with
+          Microglia-enriched ROI CA1 mitochondrial respiration programme with
           three constituent terms and all three contrasts.
         producer_script: figures/final_truth_v9_figure_03.R
         renderer: f3a_exemplar_card

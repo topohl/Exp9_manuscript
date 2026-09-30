@@ -4,49 +4,39 @@
 # protein-level publication-source exports, computes descriptive programme
 # summaries, and renders them. It does not refit enrichment, differential
 # abundance, or any other inferential model.
+#
+# The programmes are the seven manuscript_go_themes_v3 rows read from
+# f9_atlas_themes(), the registry the ED6 atlases also use, so Figure 3b is the
+# same theme aggregation as the SUS-RES atlas it replaced. programme_id keeps
+# the identifiers the frozen figure_03_adaptation selection was exported with.
 
 f3a_programmes <- function() {
+  themes <- f9_atlas_themes()
+  ids <- c(rna_processing_splicing_rnp = "rna_rnp",
+           ribosome_translation = "ribosome_translation",
+           chromatin_organization = "chromatin_nuclear",
+           mitochondrial_respiration_oxphos = "mitochondria_oxphos",
+           synaptic_signaling_vesicle = "synapse_vesicle",
+           neuron_projection_development = "neuron_projection",
+           autophagy_lysosome_endosome = "autophagy_endolysosomal")
+  colours <- c(rna_processing_splicing_rnp = "#6F8FA8",
+               ribosome_translation = "#A9853D",
+               chromatin_organization = "#556B5D",
+               mitochondrial_respiration_oxphos = "#B45F4B",
+               synaptic_signaling_vesicle = "#315B7D",
+               neuron_projection_development = "#8A6A4A",
+               autophagy_lysosome_endosome = "#7B6A91")
+  if (!setequal(themes$theme_id, names(ids)))
+    stop("Figure 3 programme ids do not cover the v3 theme registry.",
+         call. = FALSE)
   data.frame(
-    programme_id = c(
-      "synapse_vesicle", "rna_rnp", "ribosome_translation",
-      "mitochondria_oxphos", "proteostasis_endolysosomal",
-      "chromatin_nuclear", "ecm_adhesion"),
-    source_theme_id = c(
-      "synaptic_signaling_vesicle", "rna_processing_splicing_rnp",
-      "ribosome_translation", "mitochondrial_respiration_oxphos",
-      "autophagy_lysosome_endosome", "chromatin_organization", ""),
-    programme_label = c(
-      "Synapse / vesicle organization", "RNA / RNP processing",
-      "Ribosome / translation", "Mitochondria / OXPHOS / metabolism",
-      "Proteostasis / endolysosomal", "Chromatin / nuclear regulation",
-      "ECM / cell adhesion"),
-    programme_short = c(
-      "Synapse / vesicle", "RNA / RNP", "Ribosome / translation",
-      "Mitochondria / OXPHOS", "Proteostasis / endolysosomal",
-      "Chromatin / nuclear", "ECM / adhesion"),
-    programme_order = seq_len(7L),
-    colour = c("#315B7D", "#6F8FA8", "#A9853D", "#B45F4B",
-               "#7B6A91", "#556B5D", "#8A6A4A"),
+    programme_id = unname(ids[themes$theme_id]),
+    source_theme_id = themes$theme_id,
+    programme_label = themes$label,
+    programme_short = themes$label,
+    programme_order = seq_len(nrow(themes)),
+    colour = unname(colours[themes$theme_id]),
     stringsAsFactors = FALSE)
-}
-
-f3a_extra_go_ids <- function(programme_id) {
-  # Exact-ID additions are a display registry, not a new ontology traversal.
-  # They bring two requested, biologically explicit families into the atlas
-  # from the frozen full GO inventory without changing any stored NES or FDR.
-  switch(programme_id,
-    proteostasis_endolysosomal = c(
-      "GO:0006457", # protein folding
-      "GO:1903332", # regulation of protein folding
-      "GO:0043248", # proteasome assembly
-      "GO:0043161"  # proteasome-mediated ubiquitin-dependent catabolism
-    ),
-    ecm_adhesion = c(
-      "GO:0022617", "GO:0030198", "GO:0085029", "GO:1903053",
-      "GO:0007155", "GO:0098609", "GO:0030155", "GO:0033628",
-      "GO:0007162", "GO:0007156"
-    ),
-    character())
 }
 
 f3a_exemplars <- function() {
@@ -71,19 +61,20 @@ f3a_unit_label <- function(x) {
 
 f3a_programme_terms <- function(inventory) {
   req <- c("dataset", "spatial_unit", "contrast", "GO_ID",
-           "GO_description", "NES", "BH_FDR", "theme_id")
+           "GO_description", "NES", "BH_FDR", "theme_id",
+           "theme_claim_eligible")
   if (!all(req %in% names(inventory)))
     stop("Figure 3 adaptation inventory schema mismatch.", call. = FALSE)
+  # The inventory collapses a term assigned to two themes into one row with
+  # "a;b", so each theme is matched as a whole ;-delimited entry. Claim
+  # eligibility is required as in f9_atlas_cells().
+  eligible <- inventory$theme_claim_eligible %in% TRUE
   programmes <- f3a_programmes()
   out <- lapply(seq_len(nrow(programmes)), function(i) {
     p <- programmes[i, , drop = FALSE]
-    source_id <- p$source_theme_id[[1]]
-    in_theme <- if (nzchar(source_id)) {
-      grepl(paste0("(^|;)", source_id, "($|;)"),
-            as.character(inventory$theme_id))
-    } else rep(FALSE, nrow(inventory))
-    extra <- inventory$GO_ID %in% f3a_extra_go_ids(p$programme_id[[1]])
-    z <- inventory[in_theme | extra, , drop = FALSE]
+    in_theme <- grepl(paste0("(^|;)", p$source_theme_id[[1]], "($|;)"),
+                      as.character(inventory$theme_id))
+    z <- inventory[in_theme & eligible, , drop = FALSE]
     if (!nrow(z)) stop("No terms mapped to programme: ", p$programme_id,
                        call. = FALSE)
     z$programme_id <- p$programme_id[[1]]

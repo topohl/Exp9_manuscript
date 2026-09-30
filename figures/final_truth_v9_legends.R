@@ -61,6 +61,11 @@ f9_eps_floor_disclosure <- function(eps = GSEA_EPS) {
              "chromatin_organization", "mitochondrial_respiration_oxphos",
              "synaptic_signaling_vesicle", "neuron_projection_development",
              "autophagy_lysosome_endosome")
+  # The inventory holds a term assigned to two themes as one "a;b" row; the
+  # atlases count it once per theme, so the rows are split before matching.
+  parts <- strsplit(as.character(th$theme_id), ";", fixed = TRUE)
+  th <- th[rep(seq_len(nrow(th)), lengths(parts)), , drop = FALSE]
+  th$theme_id <- unlist(parts)
   d <- th[th$theme_id %in% seven &
             th$contrast %in% c("RES - CON", "SUS - CON", "SUS - RES"), ,
           drop = FALSE]
@@ -199,19 +204,19 @@ ROLES <- list(
            "missingness audit', not 'passed an additional test'.")),
   R("v9_atlas", "median NES across mapped canonical GO terms", "animal",
     "descriptive aggregation of inferential inputs",
-    "seven declared display programmes; exact theme or GO-ID registry",
+    "claim-eligible themes only; qc_review themes excluded",
     "gene set enrichment on the constituent GO terms",
     "BH within each constituent GO family; the THEME has no family of its own",
     "no",
     paste0("Programme-level SUS-RES enrichment atlas. Colour is the median ",
            "NES across every mapped constituent GO term; dot size is the ",
            "number of constituent terms with BH FDR < 0.05. Both are ",
-           "descriptive programme summaries. The seven-programme display ",
-           "registry uses the existing exact theme assignments plus declared ",
-           "exact GO-ID additions for proteostasis and ECM/adhesion; it does ",
-           "not refit enrichment or create a programme-level p-value or FDR. ",
-           "Numbered outlines identify the three drill-down exemplars. ",
-           GSEA_N)),
+           "descriptive programme summaries. The seven programmes are the ",
+           "claim-eligible themes of the GO theme registry, the same rows as ",
+           "the RES-CON and SUS-CON atlases of Extended Data Fig. 6; theme ",
+           "aggregation does not refit enrichment or create a programme-level ",
+           "p-value or FDR. Numbered outlines identify the three drill-down ",
+           "exemplars. ", GSEA_N, " ", CURATED)),
   R("v9_adaptation_state",
     "paired programme median NES for RES-CON and SUS-CON", "animal",
     "descriptive aggregation and classification of inferential inputs",
@@ -247,7 +252,7 @@ ROLES <- list(
     "fixed curve term plus the two highest-ranked SUS-RES terms by stored BH FDR, absolute NES and GO ID",
     "gene set enrichment", "BH within each GSEA family",
     "no - selected from the same analysis",
-    paste0("Neuropil CA3 SR synapse/vesicle exemplar. The fixed curve term ",
+    paste0("Neuropil CA3 SR synaptic signalling/vesicle exemplar. The fixed curve term ",
            "and two additional programme terms are shown for RES-CON, ",
            "SUS-CON and SUS-RES; an outline marks constituent-term BH FDR < ",
            "0.05. This is a drill-down of the same enrichment analysis, not ",
@@ -257,7 +262,7 @@ ROLES <- list(
     "fixed curve term plus the two highest-ranked SUS-RES terms by stored BH FDR, absolute NES and GO ID",
     "gene set enrichment", "BH within each GSEA family",
     "no - selected from the same analysis",
-    paste0("Soma CA2 RNA/RNP exemplar. The fixed curve term and two ",
+    paste0("Soma CA2 RNA processing exemplar. The fixed curve term and two ",
            "additional programme terms are shown for all three pairwise ",
            "contrasts. This is a same-analysis drill-down, not independent ",
            "validation. ", GSEA_N, " ", ALGEBRA)),
@@ -266,7 +271,7 @@ ROLES <- list(
     "fixed curve term plus the two highest-ranked SUS-RES terms by stored BH FDR, absolute NES and GO ID",
     "gene set enrichment", "BH within each GSEA family",
     "no - selected from the same analysis",
-    paste0("Microglia ROI CA1 mitochondrial/OXPHOS exemplar. The fixed curve ",
+    paste0("Microglia ROI CA1 mitochondrial respiration exemplar. The fixed curve ",
            "term and two additional programme terms are shown for all three ",
            "pairwise contrasts. The ROI is microglia-enriched rather than a ",
            "sorted cell population. This is a same-analysis drill-down, not ",
