@@ -3,11 +3,12 @@
 These are draft legends for author review. They describe the design, measures, models, sample sizes and inferential tier.
 
 **Where the numbers come from**
-- Every statistic on the panels, and every estimate, interval, p, q and count that these legends quote, resolves through `figures/behaviour_v101_s30_annotation_map.csv` to one stored cell of one of two bundles:
+- Every statistic on the panels, and every estimate, interval, p, q and count that these legends quote, resolves through `figures/behaviour_v101_s30_annotation_map.csv` to one stored cell of one of three bundles:
   - the pinned Stage 29 behaviour bundle `ebb_v101_20260929_b2ce507` (Stage 29 characterisation and Stage 09 registered prediction; configuration v1.0.1);
-  - the pinned Stage 30 figure bundle `s30b_v10_20260929_5394f2f` (frozen Stage 30 run `v1.0_be71e2f`, registry v1.0).
+  - the pinned Stage 30 figure bundle `s30b_v10_20260929_5394f2f` (frozen Stage 30 run `v1.0_be71e2f`, registry v1.0);
+  - the pinned figure-support bundle `fsb_v1_20260930_f06552c` (descriptive CON cage means and the CombZ components as they enter CombZ; option 3 only).
 - Numbers quoted here but not drawn have their own map panels (`light_legend`, `cookie_text`, `screen_legend`, and for option 2 (d) the light-phase panels' keys). Each candidate's source data list them with `src_role = legend`.
-- Two kinds of number are not bundle cells: registered settings (windows, clock times, thresholds, bout lengths, bootstrap and permutation counts), and the design facts that the Figure 1 option legends carry over from the canonical Figure 1 legend (recording lag, P25).
+- Some numbers are not bundle cells: registered settings (windows, clock times, thresholds, bout lengths, bootstrap and permutation counts), the design facts that the Figure 1 option legends carry over from the canonical Figure 1 legend (recording lag, P25), and in option 3 the cage-change interval (every 4 days), the three CON cages per sex (checked against the figure-support bundle) and the presentational heatmap cap (±3).
 - Nothing is calculated in this repository. The medians and quartiles on the cookie panel, and the centroid of the cookie regression line, are descriptive summaries computed in MMMSociability and exported in the Stage 30 bundle.
 
 **Figure identities are placeholders:**
@@ -93,6 +94,28 @@ Option 2 redrawn to the journal's figure rules (candidate `figure_01_option2_nat
 - (c) Sex-stratified linear mixed models of SIS animals, `y ~ Batch + group + (1 | cage epoch)`, Kenward–Roger; the female − male difference from the pooled model with `group:sex`. P-CC1 and P-TR were fixed in configuration v1.0.0, hashed before any RES-versus-SUS model was fitted; v1.0.1 leaves them unchanged.
 - (d) Rate: F −0.95 (−1.91 to 0.01), M 0.73 (−0.25 to 1.71), F − M −1.67 (−3.02 to −0.32). Inactivity: F 0.0032 (0.0006 to 0.0058), M −0.0022 (−0.0048 to 0.0005), F − M 0.0054 (0.0017 to 0.0090); models as in (c). Over all 48 screened tests the descriptive BH *q* is 0.22 (F) and 0.21 (F − M), not decision values. The measure is saturated (76 of 87 animals ≥ 0.99); adjusted for the same-window rate (a registered sensitivity), F 0.0009 (0.0002 to 0.0017), F − M 0.0013 (0.000012 to 0.0025). Inactivity tracks the rate (Spearman *ρ* = −0.93 over 444 group-blind animal-windows; residual reliability 0.08); it captures coarse positional inactivity rather than EEG-defined sleep. The Stage 30 registry was hash-frozen before any Stage 30 association but after the null Stage 29 primary results (decision basis: post hoc context).
 - (e) 5,000-sample percentile bootstrap. (f) Permutations refit the full model; the permutation *P* is Holm-adjusted across the two registered behaviour-only models. Validation is internal.
+
+## Figure 1, option 3 (Nature layout)
+
+Option 3 (candidate `figure_01_option3_nature`; OPTION3_SPEC): design and behavioural architecture, CombZ with its six components, the first active phase after CC1 with the CON cage marks, and CC1 → CC4 (an option, also rendered alone as `figure_01_option3_panel_d`), on one vector page. The light phase stays in ED X. The quoted values are stored cells; their map panels are `f1o3n_design_legend`, `f1o3n_combz_legend`, `f1o3n_cc1_contrasts`, `f1o3n_cc1_legend`, `f1o3n_trajectory_legend` and `f1o3n_prediction_legend`.
+
+**Figure 1 | Home-cage RFID behaviour across repeated cage changes in mice later classified resilient or susceptible.**
+
+**a**, Stress-exposed (SIS) mice were regrouped at every cage change (CC1–CC4, every 4 days; CC1, at P25, is the first regrouping); control (CON) groups stayed intact, moved in the same platform-transfer episodes. RFID recorded the active phase (18:30–06:30) after each (111 animals, 444 animal-windows); later composite outcome (CombZ), 117 animals. HMM, hidden Markov model (downstream, exploratory).
+**b**, CombZ per animal, ordered within sex; colour, group (key for b, c, f). Dashed, threshold for susceptible (SUS, below) and resilient (RES) SIS animals (not a test); vertical line, RES/SUS boundary. Heatmap, the components' signed *z* as entering CombZ (higher, more resilient-like), capped at ±3; diagonal, missing.
+**c**, RFID position-change rate (position changes h⁻¹) and shared RFID-position occupancy (social-spatial overlap). Black, RES and SUS model means, 95% confidence intervals (CIs); hollow, CON animals; grey bar and dots, CON descriptive mean and its 3 independent cage means per sex (not a CI). Right, RES − SUS in females (F), males (M) and F − M (diamond): rate −0.7 [−4.8, 3.4], 2.3 [−0.7, 5.3], −2.9 [−8.0, 2.2]; occupancy 0.022 [−0.012, 0.055], 0.009 [−0.042, 0.060], 0.013 [−0.045, 0.070]. *P*, F − M, Holm-adjusted over both primary measures (P-CC1). Within-sex Holm *P* (FU-CC1): rate 0.73, 0.25; occupancy 0.39, 0.72.
+**d**, As c, CC1–CC4 (dashed, CON means). *P*, sex difference in the RES − SUS change from CC1 (Q2b; P-TR Holm).
+**e**, Early rate against later CombZ (all animals); Spearman *ρ*, bootstrap 95% CI; Benjamini–Hochberg (BH) *q* across three registered features.
+**f**, Leave-one-animal-out (LOAO) prediction of CombZ (111 animals; colour, group, not an input); dashed, identity. Right, 1,000 outcome permutations; red, observed *R*²; *P*, Holm-adjusted.
+Sex is nested in batch, so female − male differences do not isolate a sex effect.
+
+**Methods notes (not counted in the legend)**
+- *n*. (c) Females 28 RES, 18 SUS; males 25 RES, 16 SUS (14 for occupancy); CON 12 per sex. Each sex has three batches with one CON cage each (4 CON animals, the same animals at every cage change), so CON contributes 3 independent cages per sex and cage change; its descriptive mean and cage means come from the figure-support bundle (`fsb_v1_20260930_f06552c`, tables F1b and F1; F1b copies the Stage 29 descriptive summaries). CON is not modelled, and no SIS − CON, RES − CON or SUS − CON contrast is drawn.
+- (a) The tier of each metric is the registered Stage 29 tier (primary: position-change rate, shared occupancy; secondary: occupancy dispersion, fragmentation). The HMM states are not part of the figure's data.
+- (b) Components: NOR discrimination, sucrose preference, body-weight change, corticosterone rise, adrenal weight and spleen weight; the last three are sign-inverted after standardisation. The values are the stored canonical component *z*-scores as they enter CombZ (within-sex CON reference, 12 per sex, population SD), carried through from the upstream workbook, not recomputed from raw values; CombZ is their unweighted mean over the components present (117 animals; 1 without corticosterone rise, 1 without adrenal weight). Colour scale, the manuscript's diverging palette; values beyond ±3 take the end colours. The order and the boundary follow the stored ranks and threshold (−0.317 female, −0.437 male).
+- (c) Sex-stratified linear mixed models of SIS animals, `y ~ Batch + group + (1 | cage epoch)`, Kenward–Roger; F − M from the pooled model with `group:sex`. P-CC1 and P-TR were fixed in configuration v1.0.0, hashed before any RES-versus-SUS model was fitted.
+- (d) Trajectory models add cage change as a factor, its interaction with group and an animal random effect. Q2b: rate F(3, 188) = 0.11, occupancy F(3, 233) = 0.40, Holm *P* = 1 for both. Within-sex tests of the RES − SUS change (FU-TR, Holm over sexes): rate 0.92 (F), 0.92 (M); occupancy 0.61 (F), 0.9 (M). No per-cage-change RES − SUS contrast is shown.
+- (e, f) As option 2 (Nature layout); repeated grouped five-fold *R*², 0.168 (0.125–0.193 over repeats; not a CI).
 
 ## Standalone light-phase panel (candidate; used as Extended Data Fig. X d)
 
