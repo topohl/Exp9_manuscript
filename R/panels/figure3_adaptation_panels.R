@@ -252,11 +252,13 @@ f3a_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       colour = "grey12", stroke = 0.3, alpha = 0.9) +
     ggplot2::geom_tile(data = selected, fill = NA, colour = "black",
                        linewidth = 0.65) +
-    ggplot2::geom_point(data = selected, shape = 21, fill = "white",
-                        colour = "black", size = 2.5, stroke = 0.35) +
-    ggplot2::geom_text(data = selected,
+    # The exemplar number sits in the outlined cell's top-left corner, so the
+    # cell's own count dot stays visible and keeps its area meaning.
+    ggplot2::geom_label(data = selected,
       ggplot2::aes(label = exemplar), family = fam, fontface = "bold",
-      size = nf_sz(5.0), colour = "black") +
+      size = nf_sz(4.6), colour = "black", fill = scales::alpha("white", 0.9),
+      linewidth = 0, label.padding = ggplot2::unit(0.08, "mm"),
+      nudge_x = -0.34, nudge_y = 0.24) +
     nv_diverging(limits = c(-lim, lim), name = "Median NES\n(SUS - RES)",
                  breaks = c(-2, 0, 2)) +
     ggplot2::scale_size_area(
