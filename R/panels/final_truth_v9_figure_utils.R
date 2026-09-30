@@ -211,6 +211,23 @@ s9f_build <- function(figure_key, dry_run = FALSE) {
          call. = FALSE)
   }
   message("[final_truth_v9] QA passed for ", figure_key)
+  # Render record: which commit drew these panels and whether that code was
+  # clean, with the hash of every panel and assembled file, so a later promotion
+  # can refuse panels drawn from uncommitted code.
+  code <- git_code_state()
+  drawn <- c(unlist(panel_paths), file.path(paths$assembled,
+    paste0(vapply(figs, function(f) as.character(f$name), ""), c(".svg", ".pdf"))))
+  drawn <- unique(drawn[file.exists(drawn)])
+  record_dir <- path_results("logs", "manuscript_candidates", "final_truth_v9", figure_key)
+  dir_create(record_dir)
+  yaml::write_yaml(list(
+    timestamp = format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z"),
+    figure_key = figure_key, contract_version = s9f_contract_version(),
+    render_git_commit = code$commit, render_code_clean = code$code_clean,
+    render_code_dirty = code$dirty,
+    files = lapply(drawn, function(x) list(path = relative_to(x),
+                                            sha256 = unname(tools::sha256sum(x))))),
+    file.path(record_dir, "render_record.yml"))
   invisible(list(panels = panel_records, variants = assembly_records, qa = qa))
 }
 
