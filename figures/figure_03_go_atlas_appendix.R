@@ -20,8 +20,8 @@ src <- repo_path("source_data", "pRoteomics", "figure_03_go_atlas_appendix")
 files <- c("theme_term_index.csv", "selected_contexts.csv",
            "running_enrichment_curves.csv", "regional_exact_term_inventory.csv",
            "protein_zoom_values.csv", "input_manifest.csv")
-mf <- read.csv(repo_path("source_data", "pRoteomics", "manifest.csv"),
-               stringsAsFactors = FALSE)
+mf_path <- repo_path("source_data", "pRoteomics", "manifest.csv")
+mf <- read.csv(mf_path, stringsAsFactors = FALSE)
 for (name in files) {
   f <- file.path(src, name)
   row <- mf[mf$publication_id == "figure_03_go_atlas_appendix" &
@@ -47,10 +47,7 @@ if (nrow(sup_row) != 1L ||
 sup <- read.csv(sup_path, stringsAsFactors = FALSE)
 sup <- sup[sup$contrast == "SUS - RES" &
              sup$theme_claim_eligible %in% TRUE, , drop = FALSE]
-seven <- c("rna_processing_splicing_rnp", "ribosome_translation",
-           "chromatin_organization", "mitochondrial_respiration_oxphos",
-           "synaptic_signaling_vesicle", "neuron_projection_development",
-           "autophagy_lysosome_endosome")
+seven <- f9_atlas_themes()$theme_id
 expected <- unique(do.call(rbind, lapply(seq_len(nrow(sup)), function(i) {
   ids <- strsplit(sup$theme_id[[i]], ";", fixed = TRUE)[[1]]
   data.frame(theme_id = ids[ids %in% seven], GO_ID = sup$GO_ID[[i]])
@@ -63,9 +60,9 @@ if (anyDuplicated(index[c("theme_id", "GO_ID")]) ||
     !setequal(protein$GO_ID, sel$GO_ID))
   stop("Atlas term/theme coverage mismatch.", call. = FALSE)
 contrast_order <- c("RES - CON", "SUS - CON", "SUS - RES")
-f3 <- read.csv(repo_path("source_data", "pRoteomics", "figure_03",
-                         "figure_03d_source_data.csv"),
-               stringsAsFactors = FALSE)
+f3_path <- repo_path("source_data", "pRoteomics", "figure_03",
+                     "figure_03d_source_data.csv")
+f3 <- read.csv(f3_path, stringsAsFactors = FALSE)
 nes_limit <- f3$shared_NES_strip_limit[[1]]
 if (nrow(f3) != 1L || !is.finite(nes_limit) ||
     any(!is.finite(regional$NES)))

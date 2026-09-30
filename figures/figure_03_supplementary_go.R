@@ -24,8 +24,8 @@ src <- repo_path("source_data", "pRoteomics",
                  "supplementary_go_pathways_candidate")
 names <- c("selection.csv", "running_enrichment_curves.csv",
            "regional_exact_term_inventory.csv", "input_manifest.csv")
-mf <- utils::read.csv(repo_path("source_data", "pRoteomics", "manifest.csv"),
-                      stringsAsFactors = FALSE)
+mf_path <- repo_path("source_data", "pRoteomics", "manifest.csv")
+mf <- utils::read.csv(mf_path, stringsAsFactors = FALSE)
 for (name in names) {
   f <- file.path(src, name)
   row <- mf[mf$publication_id == "supplementary_go_pathways_candidate" &
