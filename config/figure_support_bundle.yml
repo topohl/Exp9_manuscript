@@ -1,7 +1,7 @@
-bundle_id: fsb_v1_20260930_f06552c
-manifest_sha256: a418d0c8655e6d9abd8b32dc9e61e2cefba206e96599e30d1b7eb9e4286df57a
+bundle_id: fsb_v2_20260930_a23d699
+manifest_sha256: c59c500f248fba0873df3b1c2661d3f63ce81b2deec63bb7225e320db608e9c5
 registry_status: FROZEN
-mmm_git_commit: f06552cd691df9784ae9c6ed827562a17a358144
+mmm_git_commit: a23d6996f3c1776eb63ba66274635cf56435534f
 stage29_bundle_id: ebb_v101_20260929_b2ce507
 stage29_bundle_manifest_sha256: ec59aa337fc63511de4aa2bf3e1ee1f4b34b84d6d671565f74e0bb3939f7226c
 combz_table_sha256: 1f6a2a69c6b0781b8de8da50ecdadf309b62bbc9c82106c0fa91d18119a7de54
@@ -10,8 +10,10 @@ scientific_recomputation: none; descriptive cage means and the frozen CombZ stan
   z-scores exactly as they enter CombZ (the upstream within-sex CON standardisation
   is carried through verbatim, not re-derived from raw measures); CombZ is recomposed
   from them by the frozen rule of Analysis/build_later_outcome_combz.R and equals
-  the stored CombZ within 1e-12
-created_at: 2026-09-30T13:41:58+0200
+  the stored CombZ within 1e-12. P1 / P1b / P1c are verbatim copies of the hash-gated
+  post hoc run 29b (registry POSTHOC_CON_CONTRASTS v1.0), whose model was fitted there
+  once; nothing is fitted, tested or adjusted in this bundle
+created_at: 2026-09-30T16:01:37+0200
 producer: topohl/MMMSociability Analysis/16c_figure_support_bundle.R
-imported_at: 2026-09-30T13:57:47+0200
+imported_at: 2026-09-30T16:11:17+0200
 importer: tools/import_figure_support_bundle.R
