@@ -34,10 +34,11 @@ testthat::test_that("exactly one canonical generation is declared per manuscript
     vapply(y$figures[["03"]]$panels, function(p) as.character(p$id), character(1)),
     paste0("3", letters[1:13]))
 
-  # Figure 1 is untouched by the promotion.
+  # Figure 1 was untouched by the v9 promotion. It is now rendered from the pinned
+  # canonical behaviour bundle (six panels, a-f; test-figure-01-renderer.R).
   testthat::expect_identical(
     vapply(y$figures[["01"]]$panels, function(p) as.character(p$id), character(1)),
-    paste0("1", letters[1:4]))
+    paste0("1", letters[1:6]))
 })
 
 testthat::test_that("PB-02: no manuscript figure depends on the superseded export namespace", {

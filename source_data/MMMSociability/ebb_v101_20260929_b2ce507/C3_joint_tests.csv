@@ -1,0 +1,13 @@
+model_id,estimand,rows,F,df1,df2,p_raw,test,df_method,status,construct,sex
+TR_POOLED|crossing_rate,Q2b,g_RS:c2:sex_c; g_RS:c3:sex_c; g_RS:c4:sex_c,0.110185186556885,3,187.573690268164,0.954068768808881,KR joint F,Kenward-Roger,OK,crossing_rate,""
+TR_BY_SEX|crossing_rate|Female,TR_by_sex,g_RS:c2; g_RS:c3; g_RS:c4,0.864874262588323,3,95.2400938598764,0.462196730930815,KR joint F,Kenward-Roger,OK,crossing_rate,Female
+TR_BY_SEX|crossing_rate|Male,TR_by_sex,g_RS:c2; g_RS:c3; g_RS:c4,0.402048813619605,3,91.0939435081423,0.751860281555619,KR joint F,Kenward-Roger,OK,crossing_rate,Male
+TR_POOLED|shared_zone_use,Q2b,g_RS:c2:sex_c; g_RS:c3:sex_c; g_RS:c4:sex_c,0.397156417600624,3,233.431635910936,0.755168768608158,KR joint F,Kenward-Roger,OK,shared_zone_use,""
+TR_BY_SEX|shared_zone_use|Female,TR_by_sex,g_RS:c2; g_RS:c3; g_RS:c4,1.22786380698637,3,119.03352158413,0.302696970300903,KR joint F,Kenward-Roger,OK,shared_zone_use,Female
+TR_BY_SEX|shared_zone_use|Male,TR_by_sex,g_RS:c2; g_RS:c3; g_RS:c4,0.199623437823825,3,110.63980550631,0.896445393899303,KR joint F,Kenward-Roger,OK,shared_zone_use,Male
+TR_POOLED|occupancy_dispersion,Q2b,g_RS:c2:sex_c; g_RS:c3:sex_c; g_RS:c4:sex_c,0.846539502848966,3,247.445859397206,0.469577400539124,KR joint F,Kenward-Roger,OK,occupancy_dispersion,""
+TR_BY_SEX|occupancy_dispersion|Female,TR_by_sex,g_RS:c2; g_RS:c3; g_RS:c4,1.74828902975041,3,130.192989396949,0.160339623491346,KR joint F,Kenward-Roger,OK,occupancy_dispersion,Female
+TR_BY_SEX|occupancy_dispersion|Male,TR_by_sex,g_RS:c2; g_RS:c3; g_RS:c4,0.433658183365038,3,113.218592140634,0.729312848488282,KR joint F,Kenward-Roger,OK,occupancy_dispersion,Male
+TR_POOLED|fragmentation,Q2b,g_RS:c2:sex_c; g_RS:c3:sex_c; g_RS:c4:sex_c,1.04849936325462,3,232.185013670593,0.371851861501202,KR joint F,Kenward-Roger,OK,fragmentation,""
+TR_BY_SEX|fragmentation|Female,TR_by_sex,g_RS:c2; g_RS:c3; g_RS:c4,0.257354566081799,3,121.681862064449,0.855967271156614,KR joint F,Kenward-Roger,OK,fragmentation,Female
+TR_BY_SEX|fragmentation|Male,TR_by_sex,g_RS:c2; g_RS:c3; g_RS:c4,0.691125007650514,3,109.403136683429,0.559371049303696,KR joint F,Kenward-Roger,OK,fragmentation,Male

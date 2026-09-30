@@ -1,0 +1,44 @@
+key,value
+bundle_id,fsb_v2_20260930_a23d699
+status,FROZEN
+generated_at,2026-09-30T16:01:37+0200
+generator,Analysis/16c_figure_support_bundle.R
+mmm_git_commit,a23d6996f3c1776eb63ba66274635cf56435534f
+mmm_branch,refactor/rfid-four-domain-characterization
+mmm_code_clean,TRUE
+run_mode,REAL
+mmm_code_sha256,Analysis/16c_figure_support_bundle.R=b0ef229fe0d6dcfaa73f57f87100d33f82017221f1b845e44c08d50ce58dfe47; Functions/figure_support_bundle.R=6887d7fc7805f665f0a54cb282a00a5905366c8d849783d5c02da53acb97bb87; Functions/stage30_figure_bundle.R=db396fcd456e11e33908ecbb04233d9c4acaec960373d515cdcfba2a8fd0c05c; Analysis/_pipeline_setup.R=dc9b8e921b071010fe7ef6f482dec064a47127554ceeb923c58e98e20612df83; Functions/behavioral_dynamics_helpers.R=01927040a40d00bca6fc088c8a521e0c9e8e0bf5eab9cf1a7d3c8f73c1752c32; Functions/project_paths.R=2796a83cfa15cd974c9138840ed77229d1750cda905a869e7cf5e985cc66b72a; Analysis/build_later_outcome_combz.R=7c23529b9013734d8adaa73d66180a914faae37ccde5f2fbea285931ec5ddd67
+stage29_bundle_id,ebb_v101_20260929_b2ce507
+stage29_bundle_manifest_sha256,ec59aa337fc63511de4aa2bf3e1ee1f4b34b84d6d671565f74e0bb3939f7226c
+stage29_bundle_dir,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/behavior_bundle/ebb_v101_20260929_b2ce507
+combz_table,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/later_outcome_combz/tables/later_outcome_combz_animal_level.csv
+combz_table_sha256,1f6a2a69c6b0781b8de8da50ecdadf309b62bbc9c82106c0fa91d18119a7de54
+combz_component_definition_sha256,af3c273434c7457b7b28ba39bbc231afc5f161435cf04b588c9de820fab6f70f
+combz_classification_thresholds_sha256,e1536f0c6e45a708770b0b78139232ebf9077eed4b884fd3e03524aad861afc9
+labels_sus_sha256,dea3804b71b479f84900f946e5494b204ed0e8801498da459a6fc781beb9f391
+labels_con_sha256,eddd2ee9c3a182f98211b4cbba689e2bb5f72985aeb178f72b25b7d25db1b75d
+combz_definition_code,Analysis/build_later_outcome_combz.R (parsed; only the 7 definition constants and the 4 composite-rule lines are evaluated; never executed)
+combz_definition_code_git_blob,d850859e088de991946f0e9b1f5230b24cccfab7
+combz_definition_id,combz_v1_six_component_unweighted_mean
+combz_reference_population_id,within_sex_control_reference__upstream_workbook_positional_blocks
+combz_upstream_correction_id,upstream_corrections_v1_sucrose_alignment_bottle_zero_or620_cort
+combz_definition_doc,docs/COMBZ_CANONICAL_DEFINITION.md
+posthoc_run_dir,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/pipeline/29b_posthoc_con_contrasts/v1.0_7f1da1f
+posthoc_run_commit,7f1da1f6cea098a97cd0b06e3a37140826dda2f1
+posthoc_output_manifest_sha256,4c079ecfb31db159ea7c28379fac48ac6fbb27e6e7af00762840f7fdf0367faa
+posthoc_registry_sha256,a6435d8d84b164671b59486f7a3eb9af2bff29bd251c58866cd4b777f9fa0604
+posthoc_registry_version,1.0
+posthoc_tier,"POST HOC exploratory (decision basis USER_REQUEST_AFTER_DESCRIPTIVE_INSPECTION, 2026-09-30)"
+posthoc_tables,P1_posthoc_con_contrasts = 29b_posthoc_con_contrasts/v1.0_7f1da1f/tables/estimates.csv; P1b_posthoc_sensitivity = 29b_posthoc_con_contrasts/v1.0_7f1da1f/tables/sensitivity_common_cage_variance.csv; P1c_posthoc_diagnostics = 29b_posthoc_con_contrasts/v1.0_7f1da1f/tables/diagnostics.csv
+combz_recompose_max_abs_diff,0
+con_mean_of_cage_means_max_abs_diff,6.039613253960852e-14
+group_rule,"Group = canonical CombZ-table outcome_group, gated = list rule (CON if con list, else SUS if sus list, else RES) and = ebb_v101 A4 / B1 Group"
+scientific_recomputation,"none; descriptive cage means and the frozen CombZ standardisation reproduced exactly; no model. The standardised values are the stored canonical component z-scores exactly as they enter CombZ (the upstream within-sex CON standardisation is carried through verbatim, not re-derived from raw measures); CombZ is recomposed from them by the frozen rule of Analysis/build_later_outcome_combz.R and equals the stored CombZ within 1e-12. P1 / P1b / P1c are verbatim copies of the hash-gated post hoc run 29b (registry POSTHOC_CON_CONTRASTS v1.0), whose model was fitted there once; nothing is fitted, tested or adjusted in this bundle"
+descriptive_computations,"F1 cage_mean: arithmetic mean of the measure over the CON animals of one cage epoch (Batch|System|CC) in ebb_v101 B1 (values as stored); n_animals = count of those animals || F1b: n and mean copied from ebb_v101 B2_descriptive_summaries (Group CON); nothing computed || gate only (not exported): mean of the 3 cage means per measure x Sex x CC = the F1b / B2 CON mean within 1e-12 (equal cage sizes) || F2 z = direction x signed_z (sign flip, direction -1 where the frozen definition inverts the sign after standardisation); signed_z = the stored component || F2 heatmap_order_within_sex: rank of CombZ within Sex (ascending; ties by AnimalNum), a layout key; below_threshold = CombZ < the stored within-sex susceptibility_threshold || gate only (not exported): CombZ recomposed from signed_z by the frozen producer rule (mean of the present components) = the stored CombZ within 1e-12 || P1 / P1b / P1c: verbatim text copies of the post hoc run tables estimates.csv / sensitivity_common_cage_variance.csv / diagnostics.csv (every cell as stored); source_run, source_file and source_sha256 appended; nothing computed"
+raw_standardisation_columns,"F2 raw_value, reference_mean, reference_sd are NA: the canonical producer carries the upstream component z-scores verbatim (docs/COMBZ_CANONICAL_DEFINITION.md section 4a)"
+value_precision,doubles written as the shortest decimal (15-17 significant digits) that reads back to the identical double; every CSV re-read and compared
+tables,F1_con_cage_means (96 rows); F1b_con_reference_means (32 rows); F2_combz_components (702 rows); F2b_combz_definition (6 rows); P1_posthoc_con_contrasts (24 rows); P1b_posthoc_sensitivity (24 rows); P1c_posthoc_diagnostics (8 rows)
+pre_write_gates_passed,75 of 75
+gate_results,"H3_gate_results.csv (this bundle, listed in 00_manifest): the 75 pre-write gates; the complete gate table (pre-write, post-write and registration gates) is logs/fsb_v2_20260930_a23d699_gate_results.csv beside BUNDLE_REGISTRY.csv, outside the bundle"
+r_version,R version 4.5.1 (2025-06-13 ucrt)
+packages,data.table 1.18.2.1; jsonlite 2.0.0; digest 0.6.39; tibble 3.3.1
