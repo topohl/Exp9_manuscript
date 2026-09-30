@@ -91,6 +91,37 @@ strip_labels <- function(x) { for (p in LABEL_WORDS) x <- gsub(p, " ", x, perl =
 numbers_in <- function(x) regmatches(x, gregexpr(NUMBER, x, perl = TRUE))[[1]]
 panel_svg <- function(s) file.path(FIGROOT, s$candidate, "panels", sprintf("%s_%s.svg", s$candidate, s$id))
 
+# The Nature-layout candidate (NATURE_REDESIGN_SPEC): one vector page, and a text floor of exactly
+# 5.0 pt with no superscript exception (the other candidates keep 6 pt with the plotmath exception).
+NATURE <- "figure_01_option2_nature"
+vector_page <- function(k) identical(CT$candidates[[k]]$assembly, "vector_page")
+TEXT_FLOOR_PT <- c(figure_01_option2_nature = 5.0)
+# Fill and stroke colours an SVG draws (svglite style attributes), upper-case hex.
+svg_colours <- function(path) {
+  txt <- paste(readLines(path, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  hits <- regmatches(txt, gregexpr("(fill|stroke): *#[0-9A-Fa-f]{6}", txt))[[1]]
+  unique(toupper(sub(".*#", "#", hits)))
+}
+# The dictionaries of a PDF as text: through qpdf (object streams expanded) when it is installed,
+# else the raw bytes (a cairo PDF writes its font dictionaries uncompressed; image XObjects are
+# streams, which PDF never puts in object streams, so their dictionaries are always visible).
+pdf_text <- function(path) {
+  qpdf <- Sys.which("qpdf")
+  if (nzchar(qpdf)) {
+    tmp <- tempfile(fileext = ".pdf")
+    on.exit(unlink(tmp), add = TRUE)
+    status <- system2(qpdf, c("--qdf", "--object-streams=disable", shQuote(path), shQuote(tmp)), stdout = FALSE, stderr = FALSE)
+    if (identical(as.integer(status), 0L) && file.exists(tmp)) path <- tmp
+  }
+  b <- readBin(path, "raw", file.size(path))
+  b[b == as.raw(0)] <- as.raw(32)
+  out <- rawToChar(b)
+  Encoding(out) <- "bytes"   # binary streams: every match below is bytewise (useBytes)
+  out
+}
+pdf_hits <- function(pdf, pattern, perl = FALSE)
+  regmatches(pdf, gregexpr(pattern, pdf, perl = perl, useBytes = TRUE))[[1]]
+
 # ================================================================ tests
 test_that("the entry script and the behaviour libraries read only the pinned bundles and compute nothing", {
   expect_true(file.exists(ENTRY))
@@ -128,7 +159,7 @@ test_that("the candidate contract is candidate-only and declares every panel com
   expect_equal(CT$scientific_recomputation, "none")
   expect_equal(CT$entry_point, "figures/behaviour_v101_s30_candidates.R")
   expect_equal(CT$annotation_map, "figures/behaviour_v101_s30_annotation_map.csv")
-  expect_setequal(KEYS, c("figure_01_option1", "figure_01_option2", "light_phase_panel", "light_dependence_ed",
+  expect_setequal(KEYS, c("figure_01_option1", "figure_01_option2", "figure_01_option2_nature", "light_phase_panel", "light_dependence_ed",
                           "cookie_ed", "screen_summary", "ed_behaviour_longitudinal_light", "ed_behaviour_cookie"))
   lib_code <- unlist(lapply(BEHAVIOUR_LIBS, readLines, warn = FALSE))
   JITTERED <- c("f1_panel_combz", "f1_panel_cc1", "s30_panel_light_measure", "s30_panel_light_phase", "s30_panel_cookie_rs")
@@ -144,18 +175,20 @@ test_that("the candidate contract is candidate-only and declares every panel com
     expect_true(all(letters_used %in% letters[1:8]), info = k)
     expect_equal(anyDuplicated(letters_used), 0L, info = k)
     boxes <- lapply(cand$panels, function(s) as.numeric(c(s$x, s$y, s$w, s$h)))
+    margin <- if (is.null(cand$page_margin_mm)) CT$page_margin_mm else cand$page_margin_mm
     for (i in seq_along(cand$panels)) {
       s <- cand$panels[[i]]; b <- boxes[[i]]
       expect_true(nzchar(s$description), info = paste(k, s$id))
       expect_true(any(startsWith(lib_code, paste0(s$builder, " <- function("))), info = paste(k, s$id, "builder", s$builder))
       expect_true(length(s$inputs) > 0 && all(grepl("^(ebb|s30b)/[A-Za-z0-9_]+$", unlist(s$inputs))), info = paste(k, s$id))
-      expect_true(length(s$annotation_panels) > 0, info = paste(k, s$id))
+      # a panel prints map values, or (the Nature-layout design panel) has moved all of them to its legend
+      expect_true(length(s$annotation_panels) > 0 || length(s$annotation_panels_legend) > 0, info = paste(k, s$id))
       if (s$builder %in% JITTERED)
         expect_true(!is.null(s$jitter_seed) && !anyNA(unlist(s$jitter_seed)), info = paste(k, s$id, "needs an explicit jitter seed"))
-      # inside the page with the 5-mm margin
-      expect_true(b[1] >= CT$page_margin_mm && b[2] >= CT$page_margin_mm &&
-                    b[1] + b[3] <= cand$width_mm - CT$page_margin_mm + 1e-9 &&
-                    b[2] + b[4] <= cand$height_mm - CT$page_margin_mm + 1e-9, info = paste(k, s$id, "box leaves the page margin"))
+      # inside the page with the page margin (5 mm; the candidate's own where it declares one)
+      expect_true(b[1] >= margin && b[2] >= margin &&
+                    b[1] + b[3] <= cand$width_mm - margin + 1e-9 &&
+                    b[2] + b[4] <= cand$height_mm - margin + 1e-9, info = paste(k, s$id, "box leaves the page margin"))
       for (j in seq_along(boxes)) if (j > i) {
         o <- boxes[[j]]
         overlap <- b[1] < o[1] + o[3] && o[1] < b[1] + b[3] && b[2] < o[2] + o[4] && o[2] < b[2] + b[4]
@@ -202,9 +235,9 @@ test_that("every annotation key resolves to exactly one stored cell", {
   expect_true(all(c("light_legend", "cookie_text") %in% legend_only))
   # the option-panel keys are copies of the canonical Figure 1 keys (same cell, same format)
   canon <- rd(CANON_MAP_PATH)
-  opt <- m[grepl("^f1o[12]_", m$key), , drop = FALSE]
-  expect_equal(nrow(opt), 2L * nrow(canon[!grepl("^d_", canon$key), ]))
-  i <- match(sub("^f1o[12]_", "", opt$key), canon$key)
+  opt <- m[grepl("^f1o([12]|2n)_", m$key), , drop = FALSE]
+  expect_equal(nrow(opt), 3L * nrow(canon[!grepl("^d_", canon$key), ]))
+  i <- match(sub("^f1o([12]|2n)_", "", opt$key), canon$key)
   expect_false(anyNA(i))
   for (col in c("table", "column", "filters", "format")) expect_identical(opt[[col]], canon[[col]][i], info = col)
   skip_if_not(have_pins, "bundles not pinned")
@@ -281,8 +314,13 @@ test_that("the SVG text uses the manuscript terminology and typography", {
     expect_false(grepl("*", txt, fixed = TRUE), info = paste(s$candidate, s$id, "prints a star"))
     # a sign is the typographic minus U+2212, never a hyphen-minus
     expect_false(grepl("(^|[\\s\\[(,=])-[0-9]", txt, perl = TRUE), info = paste(s$candidate, s$id, "prints a hyphen-minus sign"))
-    # Arial; nothing below 6 pt except plotmath superscripts
+    # Arial; nothing below 6 pt except plotmath superscripts (the Nature layout: nothing below 5.0 pt, no exception)
     expect_true(all(nodes$family == "Arial"), info = paste(s$candidate, s$id))
+    if (s$candidate %in% names(TEXT_FLOOR_PT)) {
+      low <- nodes[nodes$pt < TEXT_FLOOR_PT[[s$candidate]] - 1e-9 & nzchar(trimws(nodes$text)), , drop = FALSE]
+      expect_equal(nrow(low), 0L, info = paste(s$candidate, s$id, "text below 5.0 pt:", paste(low$text, collapse = " | ")))
+      next
+    }
     small <- nodes[nodes$pt < 5.95 & nzchar(trimws(nodes$text)), , drop = FALSE]
     expect_true(all(trimws(small$text) %in% SUPERSCRIPT), info = paste(s$candidate, s$id, "text below 6 pt:", paste(small$text, collapse = " | ")))
   }
@@ -369,14 +407,17 @@ test_that("the outputs exist, are authored at their boxes and equal the receipt"
     outs <- do.call(rbind, lapply(run$outputs, as.data.frame, stringsAsFactors = FALSE))
     expect_setequal(outs$sha256, r$sha256[r$kind != "run_manifest"])
     # panels authored at their boxes; the assembled SVG embeds exactly those panel files and draws the letters
+    # (a vector page embeds nothing: its own test below checks the page)
     asm <- paste(readLines(repo(r$path[r$kind == "assembled_svg"]), warn = FALSE), collapse = "\n")
     embedded <- regmatches(asm, gregexpr("data:image/svg\\+xml;base64,[A-Za-z0-9+/=]+", asm))[[1]]
-    expect_equal(length(embedded), n, info = k)
-    got <- vapply(embedded, function(u) digest::digest(base64enc::base64decode(sub("^.*base64,", "", u)), algo = "sha256", serialize = FALSE), "")
-    expect_setequal(unname(got), r$sha256[r$kind == "panel_svg"])
-    drawn <- regmatches(asm, gregexpr('font-weight="bold">[a-z]*</text>', asm))[[1]]
-    expect_setequal(sub('font-weight="bold">([a-z]*)</text>', "\\1", drawn),
-                    vapply(CT$candidates[[k]]$panels, function(s) s$letter, ""))
+    expect_equal(length(embedded), if (vector_page(k)) 0L else n, info = k)
+    if (!vector_page(k)) {
+      got <- vapply(embedded, function(u) digest::digest(base64enc::base64decode(sub("^.*base64,", "", u)), algo = "sha256", serialize = FALSE), "")
+      expect_setequal(unname(got), r$sha256[r$kind == "panel_svg"])
+      drawn <- regmatches(asm, gregexpr('font-weight="bold">[a-z]*</text>', asm))[[1]]
+      expect_setequal(sub('font-weight="bold">([a-z]*)</text>', "\\1", drawn),
+                      vapply(CT$candidates[[k]]$panels, function(s) s$letter, ""))
+    }
     for (s in CT$candidates[[k]]$panels) {
       head <- paste(readLines(panel_svg(c(s, list(candidate = k))), n = 3, warn = FALSE), collapse = " ")
       w_pt <- as.numeric(sub(".*width='([0-9.]+)pt'.*", "\\1", head)); h_pt <- as.numeric(sub(".*height='([0-9.]+)pt'.*", "\\1", head))
@@ -387,6 +428,65 @@ test_that("the outputs exist, are authored at their boxes and equal the receipt"
     for (s in CT$candidates[[k]]$panels)
       expect_setequal(strsplit(pm$inputs[pm$panel == s$id], ";", fixed = TRUE)[[1]], unlist(s$inputs))
   }
+})
+
+test_that("the Nature-layout candidate is one vector page with live text, embedded Arial and the option 2 inks", {
+  cand <- CT$candidates[[NATURE]]
+  expect_true(vector_page(NATURE))
+  expect_equal(c(cand$width_mm, cand$height_mm), c(183, 160))
+  expect_lte(cand$height_mm, 170)
+  expect_equal(c(cand$page_margin_mm, cand$panel_gap_mm), c(4, 3))
+  expect_equal(unname(vapply(cand$panels, function(s) s$letter, "")), letters[1:6])
+  for (s in cand$panels) expect_identical(s$args$style, "nature", info = s$id)
+  skip_if_not(have_pins, "bundles not pinned")
+  skip_if_not(rendered, "candidates not rendered")
+  skip_if_not_installed("xml2")
+  rc <- rd(RECEIPT)
+  r <- rc[rc$candidate == NATURE, , drop = FALSE]
+  page_svg <- repo(r$path[r$kind == "assembled_svg"]); page_pdf <- repo(r$path[r$kind == "assembled_pdf"])
+  # the SVG: no embedded image, live text only, nothing below 5.0 pt, Arial
+  svg_src <- paste(readLines(page_svg, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  expect_false(grepl("<image", svg_src, fixed = TRUE))
+  expect_false(grepl("base64", svg_src, fixed = TRUE))
+  page <- svg_text_nodes(page_svg)
+  expect_true(all(page$family == "Arial"))
+  expect_equal(sum(page$pt < 5.0 - 1e-9 & nzchar(trimws(page$text))), 0L)
+  # the letters: 8 pt bold, at each box's x, baseline 0.92 letter heights below the box top
+  doc <- xml2::xml_ns_strip(xml2::read_xml(page_svg))
+  tn <- xml2::xml_find_all(doc, "//text")
+  bold <- grepl("font-weight: bold", xml2::xml_attr(tn, "style"), fixed = TRUE)
+  expect_setequal(xml2::xml_text(tn[bold]), letters[1:6])
+  for (s in cand$panels) {
+    node <- tn[bold & xml2::xml_text(tn) == s$letter]
+    expect_equal(as.numeric(xml2::xml_attr(node, "x")), s$x / 25.4 * 72, tolerance = 0.02, info = s$letter)
+    expect_equal(as.numeric(xml2::xml_attr(node, "y")), (s$y + 8 * 25.4 / 72 * 0.92) / 25.4 * 72, tolerance = 0.02, info = s$letter)
+    expect_true(grepl("font-size: 8.00px", xml2::xml_attr(node, "style"), fixed = TRUE), info = s$letter)
+  }
+  # the page draws exactly the panels' text (so the value-for-value test on the panels holds for the page)
+  panel_txt <- unlist(lapply(cand$panels, function(s) svg_text_nodes(panel_svg(c(s, list(candidate = NATURE))))$text))
+  page_txt <- page$text[!(page$pt == 8 & page$text %in% letters[1:6])]
+  expect_identical(sort(trimws(page_txt)), sort(trimws(panel_txt)))
+  # the PDF: one page, vector (no image XObject), every font an embedded Arial
+  pdf <- pdf_text(page_pdf)
+  expect_true(grepl("^%PDF-", pdf, useBytes = TRUE))
+  expect_length(pdf_hits(pdf, "/Subtype\\s*/Image"), 0L)
+  expect_length(pdf_hits(pdf, "/Type\\s*/Page(?![a-z])", perl = TRUE), 1L)
+  fonts <- unique(pdf_hits(pdf, "/BaseFont\\s*/[A-Za-z0-9+-]+"))
+  expect_gt(length(fonts), 0L)
+  expect_true(all(grepl("/[A-Z]{6}\\+Arial", fonts)), info = paste(fonts, collapse = ", "))
+  expect_true(any(grepl("Arial-BoldMT", fonts)))
+  # every font descriptor carries its embedded font program
+  n_desc <- length(pdf_hits(pdf, "/Type\\s*/FontDescriptor"))
+  expect_gt(n_desc, 0L)
+  expect_equal(length(pdf_hits(pdf, "/FontFile[23]?\\s+[0-9]+\\s+[0-9]+\\s+R")), n_desc)
+  # no new ink: every fill and stroke colour of the Nature-layout panels is one option 2 already draws
+  o2 <- CT$candidates$figure_01_option2$panels
+  o2_ink <- unique(unlist(lapply(o2, function(s) svg_colours(panel_svg(c(s, list(candidate = "figure_01_option2")))))))
+  for (s in cand$panels) {
+    ink <- svg_colours(panel_svg(c(s, list(candidate = NATURE))))
+    expect_equal(setdiff(ink, o2_ink), character(0), info = paste(NATURE, s$id, "draws a colour option 2 does not"))
+  }
+  expect_equal(setdiff(svg_colours(page_svg), o2_ink), character(0))
 })
 
 test_that("the tracked receipt copy records every candidate output of the current generation", {
