@@ -463,7 +463,9 @@ manuscript_figure_records_as_list <- function(x) {
 
 manuscript_figure_write_manifest <- function(
     figure_id, figure, paths, panel_manifest, input_manifest, outputs,
-    incomplete_panels = character(), deferred_panels = character()) {
+    incomplete_panels = character(), deferred_panels = character(),
+    assembled_pdf_contract =
+      "raster_backed_PDF_from_assembled_SVG_via_magick_at_300_dpi") {
   fig_label <- manuscript_figure_label(figure_id, figure)
   dir_create(paths$reports)
   dir_create(paths$logs)
@@ -493,7 +495,7 @@ manuscript_figure_write_manifest <- function(
     deferred_panels = as.list(deferred_panels),
     assembled_svg_contract = "self_contained_vector_svg_with_embedded_automated_panel_SVGs_deferred_panels_excluded",
     assembled_png_contract = "rasterized_from_assembled_SVG_via_magick_at_300_dpi",
-    assembled_pdf_contract = "raster_backed_PDF_from_assembled_SVG_via_magick_at_300_dpi",
+    assembled_pdf_contract = assembled_pdf_contract,
     notes = paste(
       "Explicit manuscript rendering/materialization layer.",
       "Primary statistical models, p-values, FDRs, module identities, and enrichment results are not recomputed."
@@ -530,6 +532,23 @@ manuscript_figure_main <- function(figure_id) {
 
   validation <- lapply(panels, manuscript_figure_validate_panel)
   input_manifest <- unique(do.call(rbind, lapply(validation, `[[`, "inputs")))
+  vector_pdf_rel <- as.character(figure$assembled_pdf_source %||% "")
+  if (is.null(args$panel) && nzchar(vector_pdf_rel)) {
+    vector_pdf <- manuscript_figure_resolve(vector_pdf_rel)
+    vector_exists <- file.exists(vector_pdf)
+    vector_info <- if (vector_exists) file.info(vector_pdf) else NULL
+    input_manifest <- unique(rbind(input_manifest, data.frame(
+      panel = "assembled",
+      role = "vector_pdf_source",
+      input_relative_path = vector_pdf_rel,
+      input_resolved_path = vector_pdf,
+      exists = vector_exists,
+      size_bytes = if (vector_exists) as.numeric(vector_info$size) else NA_real_,
+      mtime = if (vector_exists)
+        format(vector_info$mtime, "%Y-%m-%d %H:%M:%S %z") else NA_character_,
+      sha256 = file_hash_sha256(vector_pdf),
+      stringsAsFactors = FALSE)))
+  }
   missing_rows <- input_manifest[!input_manifest$exists, , drop = FALSE]
   missing_panels <- unique(missing_rows$panel)
   externally_incomplete <- vapply(panels, function(panel) {
@@ -635,12 +654,23 @@ manuscript_figure_main <- function(figure_id) {
   }
 
   outputs <- unname(panel_paths)
+  pdf_contract <- "raster_backed_PDF_from_assembled_SVG_via_magick_at_300_dpi"
   if (is.null(args$panel)) {
     assembled_svg <- file.path(paths$assembled, paste0(fig_stub, ".svg"))
     assembled_png <- file.path(paths$assembled, paste0(fig_stub, ".png"))
     assembled_pdf <- file.path(paths$assembled, paste0(fig_stub, ".pdf"))
     manuscript_figure_assemble_svg(panel_paths, panels, figure, assembled_svg)
     companions <- manuscript_figure_raster_companions(assembled_svg, assembled_png, assembled_pdf)
+    if (nzchar(vector_pdf_rel)) {
+      vector_pdf <- manuscript_figure_resolve(vector_pdf_rel)
+      if (!file.copy(vector_pdf, assembled_pdf, overwrite = TRUE))
+        stop("Could not materialize declared vector PDF source: ",
+             vector_pdf_rel, call. = FALSE)
+      companions <- unique(c(companions, assembled_pdf))
+      pdf_contract <- paste0(
+        "vector_PDF_copied_from_declared_producing_layer_asset: ",
+        vector_pdf_rel)
+    }
     outputs <- c(outputs, assembled_svg, companions)
   }
   if (is.null(args$panel) && length(deferred_panels)) {
@@ -674,7 +704,8 @@ manuscript_figure_main <- function(figure_id) {
     incomplete_panels = incomplete,
     deferred_panels = if (is.null(args$panel)) {
       vapply(deferred_panels, function(x) as.character(x$id), character(1))
-    } else character()
+    } else character(),
+    assembled_pdf_contract = pdf_contract
   )
   message(
     fig_label, " materialized under ", paths$figures,

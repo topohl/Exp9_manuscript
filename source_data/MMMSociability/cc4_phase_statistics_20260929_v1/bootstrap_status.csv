@@ -1,0 +1,9 @@
+Sex,Phase,Type,Status,Requested,Attempted,Successful,Used,Failed,Boundary,Seed
+Female,Inactive,null,PASS,4999,5000,5000,4999,0,114,20261930
+Female,Inactive,full,PASS,4999,5000,5000,4999,0,67,20261931
+Male,Inactive,null,PASS,4999,5200,5086,4999,114,503,20262930
+Male,Inactive,full,PASS,4999,5200,5094,4999,106,294,20262931
+Female,Active,null,PASS,4999,5000,5000,4999,0,5,20263930
+Female,Active,full,PASS,4999,5000,4999,4999,1,2,20263931
+Male,Active,null,PASS,4999,5200,5131,4999,69,0,20264930
+Male,Active,full,PASS,4999,5200,5158,4999,42,0,20264931

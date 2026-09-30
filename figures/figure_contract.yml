@@ -1,4 +1,4 @@
-contract_version: manuscript_figures_v3_final_truth_v9_promoted
+contract_version: manuscript_figures_v4_figure3_adaptation
 
 figures:
   "01":
@@ -359,196 +359,272 @@ figures:
     canonical_generation: final_truth_v9
     canonical_generation_promoted_in_phase: "5B"
     producing_entry_point: figures/final_truth_v9_figure_03.R
+    assembled_pdf_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/assembled/F3_NATURE_FINAL_V9.pdf
     superseded_generation: manuscript_figures_v2_grid
     superseded_status: SUPERSEDED_FOR_MANUSCRIPT
     rendering_repository_computes_statistics: false
     question: >-
-      What molecular programs distinguish later resilient and susceptible
-      outcomes, where do they occur, and which proteins carry them?
+      Do resilience and susceptibility represent distinct spatial modes of
+      molecular adaptation to social instability stress?
     panels:
       - id: 3a
         v9_panel_id: v9_dap_track
         description: >-
-          the premise the figure rests on: individual-protein differential abundance
-          is sparse. Two numeric rows aligned column-for-column with the atlas below
-          it: canonical FDR-supported SUS-RES count, and the robustness-qualified
-          count. Numeric rather than bars so the CA2-SLM canonical value cannot
-          dominate the panel.
+          spatial differential-abundance burden, retaining the existing canonical
+          and robustness-qualified SUS-RES counts.
         producer_script: figures/final_truth_v9_figure_03.R
-        renderer: f9_dap_track
+        renderer: f3a_dap_burden
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_dap_track.svg
         primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_dap_track_source_data.csv
         input_dependencies:
-          - results/tables/11_spatial_systems/atlas/protein_spatial_cell_affinity.csv
+          - source_data/pRoteomics/figure_03/figure_03a_source_data.csv
         scientific_contract: sparse_single_protein_da
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
         x: 4
         "y": 4
         w: 175
-        h: 13
+        h: 10
       - id: 3b
         v9_panel_id: v9_atlas
         description: >-
-          the central quantitative panel. Claim-eligible themes only; the two
-          qc_review themes are excluded. Shares its column geometry exactly with the
-          DAP track above so the two read as one block.
+          seven-programme spatial atlas using SUS-RES median NES as the primary
+          contrast and dot area for the number of FDR-supported constituent terms.
         producer_script: figures/final_truth_v9_figure_03.R
-        renderer: f9_gsea_atlas
+        renderer: f3a_atlas
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_atlas.svg
         primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_atlas_source_data.csv
         input_dependencies:
-          - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
+          - source_data/pRoteomics/supplementary_selection_inventories/pathway_enrichment_inventory.csv
         scientific_contract: program_atlas
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
         x: 4
-        "y": 17
+        "y": 15
         w: 175
-        h: 44
+        h: 34
       - id: 3c
-        v9_panel_id: v9_bridge
+        v9_panel_id: v9_adaptation_state
         description: >-
-          ONE shared hippocampal schematic with three anchored callouts, replacing
-          three repeated miniature maps. Each callout carries a compact
-          three-contrast strip. Wording stays conservative: the two exemplars whose
-          RES-CON arm is not FDR-supported are called susceptibility-associated,
-          never divergent.
+          programme-context adaptation-state map: RES-CON median NES on x and
+          SUS-CON median NES on y, with constituent-term support retained.
         producer_script: figures/final_truth_v9_figure_03.R
-        renderer: f9_anatomy_bridge
+        renderer: f3a_state_map
         render_mode: copy_svg
         source_data_mode: copy_csv
-        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_bridge.svg
-        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_bridge_source_data.csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_adaptation_state.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_adaptation_state_source_data.csv
         input_dependencies:
-          - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
-        scientific_contract: anatomical_program_bridge
+          - source_data/pRoteomics/supplementary_selection_inventories/pathway_enrichment_inventory.csv
+        scientific_contract: descriptive_adaptation_state_map
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
         x: 4
-        "y": 64
-        w: 175
-        h: 32
+        "y": 51
+        w: 110
+        h: 34
       - id: 3d
+        v9_panel_id: v9_adaptation_burden
+        description: >-
+          count and fraction of the five adaptation patterns within each
+          compartment.
+        producer_script: figures/final_truth_v9_figure_03.R
+        renderer: f3a_pattern_burden
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_adaptation_burden.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_adaptation_burden_source_data.csv
+        input_dependencies:
+          - source_data/pRoteomics/supplementary_selection_inventories/pathway_enrichment_inventory.csv
+        scientific_contract: descriptive_adaptation_pattern_burden
+        biological_unit: animal
+        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
+        x: 117
+        "y": 51
+        w: 62
+        h: 34
+      - id: 3e
+        v9_panel_id: v9_card_syn
+        description: >-
+          Neuropil CA3-SR synapse and vesicle programme with three constituent
+          terms and all three contrasts.
+        producer_script: figures/final_truth_v9_figure_03.R
+        renderer: f3a_exemplar_card
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_card_syn.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_card_syn_source_data.csv
+        input_dependencies:
+          - source_data/pRoteomics/supplementary_selection_inventories/pathway_enrichment_inventory.csv
+        scientific_contract: exemplar_constituent_term_summary
+        biological_unit: animal
+        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
+        x: 4
+        "y": 87
+        w: 56
+        h: 24
+      - id: 3f
+        v9_panel_id: v9_card_rna
+        description: >-
+          Soma CA2 RNA and RNP processing programme with three constituent terms
+          and all three contrasts.
+        producer_script: figures/final_truth_v9_figure_03.R
+        renderer: f3a_exemplar_card
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_card_rna.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_card_rna_source_data.csv
+        input_dependencies:
+          - source_data/pRoteomics/supplementary_selection_inventories/pathway_enrichment_inventory.csv
+        scientific_contract: exemplar_constituent_term_summary
+        biological_unit: animal
+        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
+        x: 64
+        "y": 87
+        w: 56
+        h: 24
+      - id: 3g
+        v9_panel_id: v9_card_ox
+        description: >-
+          Microglia-enriched ROI CA1 mitochondrial and OXPHOS programme with
+          three constituent terms and all three contrasts.
+        producer_script: figures/final_truth_v9_figure_03.R
+        renderer: f3a_exemplar_card
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_card_ox.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_card_ox_source_data.csv
+        input_dependencies:
+          - source_data/pRoteomics/supplementary_selection_inventories/pathway_enrichment_inventory.csv
+        scientific_contract: exemplar_constituent_term_summary
+        biological_unit: animal
+        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
+        x: 124
+        "y": 87
+        w: 55
+        h: 24
+      - id: 3h
         v9_panel_id: v9_curve_syn
         description: >-
-          neuropil CA3-SR synaptic signalling, exact reconstructed running
-          enrichment.
+          exact reconstructed running enrichment for GO:0099536 at Neuropil
+          CA3-SR.
         producer_script: figures/final_truth_v9_figure_03.R
-        renderer: f9_gsea_curve
+        renderer: f3a_curve
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_curve_syn.svg
         primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_curve_syn_source_data.csv
         input_dependencies:
-          - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
-        scientific_contract: direct_evidence
+          - source_data/pRoteomics/figure_03_adaptation/selection.csv
+          - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
+        scientific_contract: direct_enrichment_evidence
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
         x: 4
-        "y": 99
+        "y": 113
         w: 56
-        h: 37
-      - id: 3e
+        h: 27
+      - id: 3i
         v9_panel_id: v9_curve_rna
         description: >-
-          neuronal soma CA2-SP mRNA processing.
+          exact reconstructed running enrichment for GO:0006397 at Soma CA2.
         producer_script: figures/final_truth_v9_figure_03.R
-        renderer: f9_gsea_curve
+        renderer: f3a_curve
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_curve_rna.svg
         primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_curve_rna_source_data.csv
         input_dependencies:
-          - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
-        scientific_contract: direct_evidence
+          - source_data/pRoteomics/figure_03_adaptation/selection.csv
+          - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
+        scientific_contract: direct_enrichment_evidence
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
         x: 64
-        "y": 99
+        "y": 113
         w: 56
-        h: 37
-      - id: 3f
+        h: 27
+      - id: 3j
         v9_panel_id: v9_curve_ox
         description: >-
-          microglia-enriched CA1 oxidative phosphorylation, the only exemplar whose
-          three-group ordering is fully FDR-supported.
+          exact reconstructed running enrichment for GO:0006119 at the
+          Microglia-enriched ROI CA1 context.
         producer_script: figures/final_truth_v9_figure_03.R
-        renderer: f9_gsea_curve
+        renderer: f3a_curve
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_curve_ox.svg
         primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_curve_ox_source_data.csv
         input_dependencies:
-          - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
-        scientific_contract: direct_evidence
+          - source_data/pRoteomics/figure_03_adaptation/selection.csv
+          - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
+        scientific_contract: direct_enrichment_evidence
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
         x: 124
-        "y": 99
+        "y": 113
         w: 55
-        h: 37
-      - id: 3g
+        h: 27
+      - id: 3k
         v9_panel_id: v9_prot_syn
-        description: >-
-          the proteins carrying the CA3-SR synaptic program.
+        description: top stored leading-edge proteins for GO:0099536 at Neuropil CA3-SR.
         producer_script: figures/final_truth_v9_figure_03.R
-        renderer: f9_protein_zoom
+        renderer: f3a_proteins
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_prot_syn.svg
         primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_prot_syn_source_data.csv
         input_dependencies:
-          - results/tables/11_spatial_systems/atlas/protein_sus_res_fdr_supported_atlas.csv
-        scientific_contract: leading_edge_proteins
+          - source_data/pRoteomics/figure_03_adaptation/protein_zoom_values.csv
+        scientific_contract: selected_leading_edge_proteins
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
         x: 4
-        "y": 139
+        "y": 142
         w: 56
-        h: 29
-      - id: 3h
+        h: 26
+      - id: 3l
         v9_panel_id: v9_prot_rna
-        description: >-
-          the proteins carrying the CA2 neuronal-soma mRNA-processing program.
+        description: top stored leading-edge proteins for GO:0006397 at Soma CA2.
         producer_script: figures/final_truth_v9_figure_03.R
-        renderer: f9_protein_zoom
+        renderer: f3a_proteins
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_prot_rna.svg
         primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_prot_rna_source_data.csv
         input_dependencies:
-          - results/tables/11_spatial_systems/atlas/protein_sus_res_fdr_supported_atlas.csv
-        scientific_contract: leading_edge_proteins
+          - source_data/pRoteomics/figure_03_adaptation/protein_zoom_values.csv
+        scientific_contract: selected_leading_edge_proteins
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
         x: 64
-        "y": 139
+        "y": 142
         w: 56
-        h: 29
-      - id: 3i
+        h: 26
+      - id: 3m
         v9_panel_id: v9_prot_ox
         description: >-
-          the proteins carrying the CA1 microglia-enriched OXPHOS program.
+          top stored leading-edge proteins for GO:0006119 at the
+          Microglia-enriched ROI CA1 context.
         producer_script: figures/final_truth_v9_figure_03.R
-        renderer: f9_protein_zoom
+        renderer: f3a_proteins
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_prot_ox.svg
         primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_prot_ox_source_data.csv
         input_dependencies:
-          - results/tables/11_spatial_systems/atlas/protein_sus_res_fdr_supported_atlas.csv
-        scientific_contract: leading_edge_proteins
+          - source_data/pRoteomics/figure_03_adaptation/protein_zoom_values.csv
+        scientific_contract: selected_leading_edge_proteins
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
         x: 124
-        "y": 139
+        "y": 142
         w: 55
-        h: 29
+        h: 26
 
   # PROTEOMICS EXTENDED DATA, promoted in Phase 6A.
   #

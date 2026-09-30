@@ -1,0 +1,127 @@
+source(testthat::test_path("..", "..", "R", "paths.R"))
+source(repo_path("R", "figure3_adaptation_panels.R"))
+
+f3a_inventory_for_test <- function() {
+  utils::read.csv(repo_path(
+    "source_data", "pRoteomics", "supplementary_selection_inventories",
+    "pathway_enrichment_inventory.csv"), stringsAsFactors = FALSE,
+    check.names = FALSE)
+}
+
+testthat::test_that("Figure 3 adaptation registry has the requested seven programmes", {
+  p <- f3a_programmes()
+  testthat::expect_identical(p$programme_order, 1:7)
+  testthat::expect_identical(p$programme_label, c(
+    "Synapse / vesicle organization", "RNA / RNP processing",
+    "Ribosome / translation", "Mitochondria / OXPHOS / metabolism",
+    "Proteostasis / endolysosomal", "Chromatin / nuclear regulation",
+    "ECM / cell adhesion"))
+  z <- f3a_programme_terms(f3a_inventory_for_test())
+  testthat::expect_true(all(c("GO:0030198", "GO:0007155") %in%
+                              z$GO_ID[z$programme_id == "ecm_adhesion"]))
+  testthat::expect_true("GO:0006457" %in%
+                          z$GO_ID[z$programme_id ==
+                                    "proteostasis_endolysosomal"])
+})
+
+testthat::test_that("programme summaries cover every context and contrast once", {
+  cells <- f3a_programme_cells(f3a_inventory_for_test())
+  testthat::expect_identical(nrow(cells), 7L * 18L * 3L)
+  testthat::expect_false(anyDuplicated(cells[
+    c("programme_id", "dataset", "spatial_unit", "contrast")]) > 0L)
+  testthat::expect_identical(sort(unique(cells$contrast)),
+    sort(c("RES - CON", "SUS - CON", "SUS - RES")))
+  testthat::expect_true(all(cells$n_constituent_terms > 0L))
+  testthat::expect_true(all(is.finite(cells$median_NES)))
+})
+
+testthat::test_that("five-state adaptation classification is exhaustive and transparent", {
+  z <- f3a_adaptation_states(f3a_inventory_for_test())
+  testthat::expect_identical(nrow(z), 7L * 18L)
+  expected <- c(
+    "resilience-specific remodeling", "susceptibility-specific remodeling",
+    "shared / parallel", "divergent / opposing",
+    "little detectable adaptation")
+  testthat::expect_setequal(z$adaptation_pattern, expected)
+  observed <- table(factor(z$adaptation_pattern, levels = expected))
+  testthat::expect_identical(as.integer(observed), c(25L, 27L, 11L, 3L, 60L))
+
+  res <- z$RES_CON_n_fdr > 0L
+  sus <- z$SUS_CON_n_fdr > 0L
+  testthat::expect_true(all(z$adaptation_pattern[!res & !sus] ==
+                              "little detectable adaptation"))
+  testthat::expect_true(all(z$adaptation_pattern[res & !sus] ==
+                              "resilience-specific remodeling"))
+  testthat::expect_true(all(z$adaptation_pattern[!res & sus] ==
+                              "susceptibility-specific remodeling"))
+  both <- res & sus
+  same <- sign(z$RES_CON_median_NES) == sign(z$SUS_CON_median_NES)
+  testthat::expect_true(all(z$adaptation_pattern[both & same] ==
+                              "shared / parallel"))
+  testthat::expect_true(all(z$adaptation_pattern[both & !same] ==
+                              "divergent / opposing"))
+  testthat::expect_true(all(grepl("never passive", z$classification_rule,
+                                  fixed = TRUE)))
+})
+
+testthat::test_that("exemplar cards and frozen exact-context drill-downs agree", {
+  inv <- f3a_inventory_for_test()
+  ex <- f3a_exemplars()
+  selection <- utils::read.csv(repo_path(
+    "source_data", "pRoteomics", "figure_03_adaptation", "selection.csv"),
+    stringsAsFactors = FALSE)
+  curves <- utils::read.csv(repo_path(
+    "source_data", "pRoteomics", "figure_03_adaptation",
+    "running_enrichment_curves.csv"), stringsAsFactors = FALSE)
+  proteins <- utils::read.csv(repo_path(
+    "source_data", "pRoteomics", "figure_03_adaptation",
+    "protein_zoom_values.csv"), stringsAsFactors = FALSE)
+  testthat::expect_identical(selection$exemplar, 1:3)
+  testthat::expect_identical(selection$dataset, ex$dataset)
+  testthat::expect_identical(selection$spatial_unit, ex$spatial_unit)
+  testthat::expect_identical(selection$GO_ID, ex$term_id)
+  for (i in 1:3) {
+    card <- f3a_card_data(inv, i)
+    testthat::expect_identical(nrow(card), 9L)
+    testthat::expect_setequal(card$contrast,
+      c("RES - CON", "SUS - CON", "SUS - RES"))
+    testthat::expect_identical(unique(card$GO_ID[card$term_order == 1L]),
+                               ex$term_id[[i]])
+    curve <- curves[curves$exemplar == i, , drop = FALSE]
+    testthat::expect_identical(nrow(curve), selection$n_ranked[[i]])
+    testthat::expect_identical(sum(curve$peak), 1L)
+    protein <- proteins[proteins$exemplar == i, , drop = FALSE]
+    testthat::expect_identical(nrow(protein),
+                              3L * length(unique(protein$gene)))
+    testthat::expect_setequal(protein$contrast,
+      c("RES - CON", "SUS - CON", "SUS - RES"))
+  }
+})
+
+testthat::test_that("canonical Figure 3 contract is a through m", {
+  testthat::skip_if_not_installed("yaml")
+  producing <- yaml::read_yaml(repo_path(
+    "figures", "figure_final_truth_v9_contract.yml"))
+  f <- Filter(function(x) x$figure_key == "figure_03", producing$figures)[[1]]
+  testthat::expect_identical(
+    vapply(f$layout, function(x) as.character(x$label), character(1)),
+    letters[1:13])
+  manuscript <- yaml::read_yaml(repo_path("figures", "figure_contract.yml"))
+  testthat::expect_identical(
+    as.character(manuscript$figures[["03"]]$assembled_pdf_source),
+    paste0("results/figures/manuscript_candidates/final_truth_v9/figure_03/",
+           "assembled/F3_NATURE_FINAL_V9.pdf"))
+  testthat::expect_identical(
+    vapply(manuscript$figures[["03"]]$panels,
+           function(x) as.character(x$id), character(1)),
+    paste0("3", letters[1:13]))
+
+  final_pdf <- repo_path("results", "figures", "manuscript", "figure_03",
+                         "assembled", "figure_03.pdf")
+  producer_pdf <- repo_path(
+    "results", "figures", "manuscript_candidates", "final_truth_v9",
+    "figure_03", "assembled", "F3_NATURE_FINAL_V9.pdf")
+  if (file.exists(final_pdf) && file.exists(producer_pdf))
+    testthat::expect_identical(unname(tools::sha256sum(final_pdf)),
+                               unname(tools::sha256sum(producer_pdf)))
+})

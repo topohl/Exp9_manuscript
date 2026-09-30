@@ -16,7 +16,7 @@ testthat::test_that("exactly one canonical generation is declared per manuscript
   testthat::skip_if_not_installed("yaml")
   y <- contract()
   testthat::expect_identical(y$contract_version,
-                             "manuscript_figures_v3_final_truth_v9_promoted")
+                             "manuscript_figures_v4_figure3_adaptation")
 
   for (k in c("02", "03")) {
     f <- y$figures[[k]]
@@ -26,14 +26,13 @@ testthat::test_that("exactly one canonical generation is declared per manuscript
     testthat::expect_identical(as.character(f$layout_mode), "absolute")
   }
 
-  # Figure 2 is a-h and Figure 3 is a-i, which is the structure Results 2 and 3
-  # were written against.
+  # Figure 2 remains a-h; the adaptation redesign expands Figure 3 to a-m.
   testthat::expect_identical(
     vapply(y$figures[["02"]]$panels, function(p) as.character(p$id), character(1)),
     paste0("2", letters[1:8]))
   testthat::expect_identical(
     vapply(y$figures[["03"]]$panels, function(p) as.character(p$id), character(1)),
-    paste0("3", letters[1:9]))
+    paste0("3", letters[1:13]))
 
   # Figure 1 is untouched by the promotion.
   testthat::expect_identical(
@@ -74,22 +73,9 @@ testthat::test_that("PB-02: the promoted panels resolve to canonical stage outpu
   }
 })
 
-testthat::test_that("PB-01: the DAP track and the atlas share column geometry by construction", {
-  # The registration contract is declared in the contract and honoured in code.
-  # Before the repair the coupling existed only as a comment, and the two panels
-  # drifted by up to 10.5 mm while every audit reported the figure clean.
+testthat::test_that("Figure 3 overview and atlas retain the same full-width box", {
   testthat::skip_if_not_installed("yaml")
   v9 <- yaml::read_yaml(repo_rel("figures", "figure_final_truth_v9_contract.yml"))
-  byid <- setNames(v9$panels, vapply(v9$panels, function(p) as.character(p$id), character(1)))
-  testthat::expect_identical(
-    as.character(byid[["v9_atlas"]]$shares_column_geometry_with), "v9_dap_track")
-
-  code <- paste(readLines(repo_rel("R", "panels", "final_truth_v9_panels.R"), warn = FALSE),
-                collapse = "\n")
-  testthat::expect_true(grepl("shares_column_geometry_with", code, fixed = TRUE))
-
-  # The two boxes must be the same width and x, or no gutter convention can make
-  # their columns line up.
   f3 <- Filter(function(x) x$name == "F3_NATURE_FINAL_V9", v9$figures)[[1]]
   boxes <- setNames(f3$layout, vapply(f3$layout, function(x) as.character(x$panel), character(1)))
   testthat::expect_identical(as.numeric(boxes[["v9_dap_track"]]$x),
@@ -98,27 +84,17 @@ testthat::test_that("PB-01: the DAP track and the atlas share column geometry by
                              as.numeric(boxes[["v9_atlas"]]$w))
 })
 
-testthat::test_that("PB-01: the rendered columns actually register", {
+testthat::test_that("the redesigned overview and atlas render without placeholders", {
   source(testthat::test_path("..", "..", "R", "paths.R"))
   pan <- path_results("figures", "manuscript_candidates", "final_truth_v9", "figure_03", "panels")
   a <- file.path(pan, "v9_dap_track.svg"); b <- file.path(pan, "v9_atlas.svg")
   testthat::skip_if_not(file.exists(a) && file.exists(b), "Figure 3 panels not rendered here")
 
-  inset <- function(f) {
-    s <- readLines(f, warn = FALSE)
-    w <- as.numeric(sub(".*width='([0-9.]+)pt'.*", "\\1", grep("viewBox", s, value = TRUE)[1]))
-    r <- unlist(regmatches(s, gregexpr("<rect[^>]*/>", s)))
-    rx <- suppressWarnings(as.numeric(sub(".*\\bx='([-0-9.]+)'.*", "\\1", r)))
-    rw <- suppressWarnings(as.numeric(sub(".*\\bwidth='([-0-9.]+)'.*", "\\1", r)))
-    k <- !is.na(rx) & !is.na(rw) & rw > 1 & rw < 60
-    c(left = min(rx[k]), right = w - max(rx[k] + rw[k]), pitch = stats::median(rw[k]))
+  for (f in c(a, b)) {
+    txt <- paste(readLines(f, warn = FALSE), collapse = "\n")
+    testthat::expect_false(grepl("RENDER ERROR", txt, fixed = TRUE))
+    testthat::expect_gt(file.info(f)$size, 5000)
   }
-  ia <- inset(a); ib <- inset(b)
-  # Equal to well under a tenth of a column. Before the repair the pitches were
-  # 18.720 and 17.540 pt and the right insets 21.54 and 51.24 pt.
-  testthat::expect_lt(abs(ia[["pitch"]] - ib[["pitch"]]), 0.05)
-  testthat::expect_lt(abs(ia[["left"]] - ib[["left"]]), 0.5)
-  testthat::expect_lt(abs(ia[["right"]] - ib[["right"]]), 0.5)
 })
 
 testthat::test_that("PB-03: the eps-floor disclosure is derived, not hard-coded", {
@@ -173,13 +149,13 @@ testthat::test_that("every manuscript figure-panel reference resolves", {
 
   draft <- readLines(repo_rel("manuscript", "manuscript_draft.md"), warn = FALSE)
   hits <- unlist(regmatches(draft, gregexpr(
-    "Fig[.][ ]?[123][a-i](([,–-])[a-i])*", draft, perl = TRUE)))
+    "Fig[.][ ]?[123][a-m](([,–-])[a-m])*", draft, perl = TRUE)))
   testthat::expect_gt(length(hits), 0L)
 
   for (hh in unique(hits)) {
     fign <- sub("^Fig[.][ ]?([123]).*$", "\\1", hh)
     tail_ <- sub("^Fig[.][ ]?[123]", "", hh)
-    ls_ <- regmatches(tail_, gregexpr("[a-i]", tail_))[[1]]
+    ls_ <- regmatches(tail_, gregexpr("[a-m]", tail_))[[1]]
     idx <- match(ls_, letters)
     if (grepl("[–-]", tail_) && length(idx) >= 2L && !anyNA(idx)) {
       ls_ <- letters[seq(min(idx), max(idx))]

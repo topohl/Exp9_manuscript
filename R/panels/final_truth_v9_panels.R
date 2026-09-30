@@ -381,17 +381,20 @@ f9_prot_values <- function(program_key, top_n = 7L) {
   z[!is.na(z$log2FC), , drop = FALSE]
 }
 
-f9_protein_zoom <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+f9_protein_zoom_plot <- function(z, lim, show_legend = FALSE,
+                                 contrast_raw = c("RES−CON", "SUS−CON", "SUS−RES"),
+                                 contrast_display = contrast_raw,
+                                 axis_breaks = c(-0.8, 0, 0.8),
+                                 panel_scope = "three",
+                                 fdr_min = min(z$BH_FDR, na.rm = TRUE),
+                                 mark_significant = FALSE,
+                                 legend_position = "inside") {
   fam <- nf_fam()
-  key <- as.character(panel$program_key)
-  show_legend <- isTRUE(as.logical(panel$show_legend %||% FALSE))
-  z <- f9_prot_values(key)
   z$contrast <- factor(z$contrast,
-                       levels = c("RES−CON", "SUS−CON", "SUS−RES"))
+                       levels = contrast_raw, labels = contrast_display)
   ordg <- unique(z$gene[order(-abs(z$rank_statistic))])
   z$gene <- factor(z$gene, levels = rev(ordg))
   z$sig <- is.finite(z$BH_FDR) & z$BH_FDR < 0.05
-  lim <- f9_prot_limit()
 
   # Part-26. The tile grid encoded a signed magnitude in colour for only 21
   # cells: the modal |log2FC| is 0.12-0.44 against a +/-0.95 ramp, so a 0.10
@@ -402,13 +405,12 @@ f9_protein_zoom <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   # carried redundantly by colour AND shape, so the panel survives greyscale
   # printing and the common colourblindness forms.
   #
-  # The FDR overlay is removed rather than restyled: every BH_FDR in all three
-  # programs is >= 0.52, so geom_point(data = z[z$sig, ]) drew zero marks and
-  # the sentence explaining it described something that was never on the page.
-  # The absence of FDR support is stated once in the figure legend instead.
-  COL <- c("RES−CON" = "#C0442C", "SUS−CON" = "#7C8A93",
-           "SUS−RES" = "#2C6E9B")
-  SHP <- c("RES−CON" = 16, "SUS−CON" = 17, "SUS−RES" = 15)
+  # The FDR overlay is omitted in the three main Figure 3 programs: every
+  # BH_FDR there is >= 0.52. The optional ring is for broader source sets
+  # where supported proteins may occur.
+  COL <- stats::setNames(c("#C0442C", "#7C8A93", "#2C6E9B"),
+                         contrast_display)
+  SHP <- stats::setNames(c(16, 17, 15), contrast_display)
 
   p <- ggplot2::ggplot(z, ggplot2::aes(log2FC, gene)) +
     ggplot2::geom_vline(xintercept = 0, linewidth = nv_lw("reference_pt"),
@@ -417,19 +419,25 @@ f9_protein_zoom <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                        linewidth = 0.26) +
     ggplot2::geom_point(ggplot2::aes(colour = contrast, shape = contrast),
                         size = 1.05) +
+    { if (mark_significant)
+        ggplot2::geom_point(data = z[z$sig, , drop = FALSE],
+                            shape = 21, fill = NA, colour = "black",
+                            stroke = 0.45, size = 2.05)
+      else NULL } +
     ggplot2::scale_colour_manual(values = COL, name = "Contrast",
                                  guide = ggplot2::guide_legend(order = 1)) +
     ggplot2::scale_shape_manual(values = SHP, name = "Contrast",
                                 guide = ggplot2::guide_legend(order = 1)) +
-    ggplot2::scale_x_continuous(limits = c(-lim, lim), breaks = c(-0.8, 0, 0.8)) +
+    ggplot2::scale_x_continuous(limits = c(-lim, lim), breaks = axis_breaks) +
     ggplot2::labs(x = "log2 fold change", y = NULL) +
     nf_theme(grid = "y") +
     ggplot2::theme(
       axis.text.x = ggplot2::element_text(size = NF_MIN_PT),
       axis.title.x = ggplot2::element_text(size = nf_pt(5.4)),
       axis.text.y = ggplot2::element_text(size = NF_MIN_PT, face = "italic"),
-      legend.position = if (show_legend) "inside" else "none",
-      legend.position.inside = c(0.80, 0.74),
+      legend.position = if (show_legend) legend_position else "none",
+      legend.position.inside = if (identical(legend_position, "inside"))
+        c(0.80, 0.74) else NULL,
       legend.background = ggplot2::element_rect(fill = "white", colour = NA),
       legend.margin = ggplot2::margin(0.5, 0.5, 0.5, 0.5, "mm"),
       legend.title = ggplot2::element_text(size = nf_pt(5.4)),
@@ -437,25 +445,40 @@ f9_protein_zoom <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       legend.key.size = ggplot2::unit(2.6, "mm"),
       plot.margin = ggplot2::margin(1, 1, 1, 1, "mm"))
   z$shared_scale_note <- sprintf(paste0(
-    "one symmetric log2 fold-change axis shared by all three protein panels, ",
+    "one symmetric log2 fold-change axis shared by all %s protein panels, ",
     "limit +/-%.2f derived from the combined selected-protein values; contrast ",
-    "is encoded by colour and shape together"), lim)
-  z$fdr_note <- sprintf(paste0(
-    "no protein in any of the three programs is FDR-supported (smallest BH ",
+    "is encoded by colour and shape together"), panel_scope, lim)
+  z$fdr_note <- if (mark_significant)
+    sprintf("black ring marks protein BH FDR < 0.05; smallest BH FDR = %.2g",
+            fdr_min)
+  else sprintf(paste0(
+    "no protein in any of the %s programs is FDR-supported (smallest BH ",
     "FDR = %.2f), so no significance marking is drawn"),
-    min(z$BH_FDR, na.rm = TRUE))
-  write_csv_safe(z, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+    panel_scope, fdr_min)
+  list(plot = p, source_data = z)
+}
+
+f9_protein_zoom <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+  key <- as.character(panel$program_key)
+  z <- f9_prot_values(key)
+  result <- f9_protein_zoom_plot(
+    z, f9_prot_limit(),
+    show_legend = isTRUE(as.logical(panel$show_legend %||% FALSE)))
+  write_csv_safe(result$source_data, csv_path)
+  nv_save_panel(result$plot, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
 # ---- GSEA curve carrying the COLUMN HEADER -------------------------------
-f9_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+f9_gsea_curve_plot <- function(prog, ev, tr, lim, idx,
+                               x_expand = c(0, 0),
+                               contrast_short_labels = NULL,
+                               column_role = paste0(
+                                 "carries the shared column header for this program; ",
+                                 "the protein panel directly below shows the ",
+                                 "leading-edge proteins of the same program and ",
+                                 "repeats no context")) {
   fam <- nf_fam()
-  pr <- s4_programs()
-  prog <- pr[pr$key == as.character(panel$program_key), , drop = FALSE]
-  if (!nrow(prog)) stop("f9_gsea_curve: unknown program key", call. = FALSE)
-  ev <- s4_gsea_scores(prog)
   acc <- prog$accent[1]
   N <- ev$N
   curve <- data.frame(rank = seq_len(N), es = as.numeric(ev$runes))
@@ -469,7 +492,7 @@ f9_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::annotate("segment", x = ev$peak, xend = ev$peak, y = 0,
                       yend = ev$ES, linewidth = nv_lw("reference_pt"),
                       colour = "grey55", linetype = "22") +
-    ggplot2::scale_x_continuous(expand = c(0, 0), limits = c(1, N),
+    ggplot2::scale_x_continuous(expand = x_expand, limits = c(1, N),
                                 breaks = c(1, N), labels = c("SUS", "RES")) +
     ggplot2::labs(x = NULL, y = "ES") +
     nf_theme() +
@@ -478,7 +501,7 @@ f9_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   mid <- ggplot2::ggplot(ticks, ggplot2::aes(rank)) +
     ggplot2::geom_segment(ggplot2::aes(x = rank, xend = rank, y = 0, yend = 1),
                           colour = acc, linewidth = 0.12) +
-    ggplot2::scale_x_continuous(expand = c(0, 0), limits = c(1, N)) +
+    ggplot2::scale_x_continuous(expand = x_expand, limits = c(1, N)) +
     ggplot2::scale_y_continuous(expand = c(0, 0)) +
     ggplot2::labs(x = NULL, y = NULL) +
     nf_theme() +
@@ -487,17 +510,15 @@ f9_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                    axis.ticks = ggplot2::element_blank(),
                    plot.margin = ggplot2::margin(0, 1, 0, 1, "mm"))
 
-  th <- nv_read_csv(repo_path(as.character(unlist(panel$input_dependencies))[1]))
-  tr <- th[th$dataset == prog$dataset[1] & th$spatial_unit == prog$unit[1] &
-             th$GO_ID == prog$term[1], , drop = FALSE]
   tr <- tr[match(c("RES - CON", "SUS - CON", "SUS - RES"), tr$contrast), ]
   tr <- tr[!is.na(tr$contrast), ]
   tr$short <- c("R−C", "S−C", "S−R")[seq_len(nrow(tr))]
+  if (!is.null(contrast_short_labels))
+    tr$short <- contrast_short_labels[seq_len(nrow(tr))]
   tr$short <- factor(tr$short, levels = tr$short)
   tr$sig <- is.finite(tr$GSEA_FDR) & tr$GSEA_FDR < 0.05
   # ONE limit for every three-contrast NES strip in the family (F3 d/e/f and
   # ED6 c/d/e), so the same colour means the same NES everywhere
-  lim <- f9_nes_strip_limit(th)
   bot <- ggplot2::ggplot(tr, ggplot2::aes(short, 1, fill = NES)) +
     ggplot2::geom_tile(colour = "white", linewidth = nv_lw("tile_border_pt")) +
     ggplot2::geom_text(ggplot2::aes(label = sprintf("%.1f", NES)), family = fam,
@@ -517,7 +538,7 @@ f9_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   # protein panel below carries no title of its own
   comp <- sg_compartment_label(prog$dataset[1])
   unit <- sg_unit_label(prog$unit[1], prog$dataset[1])
-  idx <- as.character(panel$column_index %||% "")
+  idx <- as.character(idx)
   hdr <- ggplot2::ggplot() +
     ggplot2::annotate("segment", x = 0, xend = 1, y = 1.05, yend = 1.05,
                       colour = acc, linewidth = 0.5) +
@@ -544,13 +565,23 @@ f9_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     NES = ev$NES, FDR = ev$FDR,
     RES_CON_NES = tr$NES[1], SUS_CON_NES = tr$NES[2], SUS_RES_NES = tr$NES[3],
     shared_NES_strip_limit = lim,
-    column_role = paste0(
-      "carries the shared column header for this program; the protein panel ",
-      "directly below shows the leading-edge proteins of the same program and ",
-      "repeats no context"),
+    column_role = column_role,
     stringsAsFactors = FALSE)
-  write_csv_safe(out, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  list(plot = p, source_data = out)
+}
+
+f9_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+  pr <- s4_programs()
+  prog <- pr[pr$key == as.character(panel$program_key), , drop = FALSE]
+  if (!nrow(prog)) stop("f9_gsea_curve: unknown program key", call. = FALSE)
+  ev <- s4_gsea_scores(prog)
+  th <- nv_read_csv(repo_path(as.character(unlist(panel$input_dependencies))[1]))
+  tr <- th[th$dataset == prog$dataset[1] & th$spatial_unit == prog$unit[1] &
+             th$GO_ID == prog$term[1], , drop = FALSE]
+  result <- f9_gsea_curve_plot(prog, ev, tr, f9_nes_strip_limit(th),
+                               panel$column_index %||% "")
+  write_csv_safe(result$source_data, csv_path)
+  nv_save_panel(result$plot, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
