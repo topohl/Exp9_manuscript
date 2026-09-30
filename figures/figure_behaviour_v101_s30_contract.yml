@@ -11,7 +11,9 @@
 # through R/behaviour_bundle.R, R/stage30_bundle.R and R/figure_support_bundle.R:
 # the Stage 29 v1.0.1 behaviour bundle (ebb), the Stage 30 figure bundle (s30b) and
 # the figure-support bundle (fsb: descriptive CON cage means and the CombZ
-# components as they enter CombZ; figure_01_option3_*). Every printed
+# components as they enter CombZ, figure_01_option3_*; from fsb_v2 also the
+# verbatim rows of the MMM post hoc CON/RES/SUS run 29b, figure_01_option3b_nature
+# panel c, fitted upstream once and labelled post hoc). Every printed
 # number resolves through the annotation map to exactly one stored cell
 # (bundle_cell). Nothing is fitted, tested, adjusted or summarised here.
 #
@@ -101,6 +103,7 @@ libraries:
   - R/panels/behaviour_s30_screen_panels.R
   - R/panels/behaviour_figure1_nature_panels.R
   - R/panels/behaviour_figure1_option3_panels.R
+  - R/panels/behaviour_figure1_option3b_panels.R
 output_roots:
   figures: results/figures/manuscript_candidates/behaviour_v101_s30
   source_data: results/source_data/manuscript_candidates/behaviour_v101_s30
@@ -571,6 +574,119 @@ candidates:
         "y": 4
         w: 62
         h: 53
+
+  # ------------------------------------------------------------------ 2d
+  figure_01_option3b_nature:
+    title: Figure 1, option 3b (Nature layout; option 3 with c showing the post hoc CON, RES and SUS means and contrasts and a simplified CC1 to CC4 panel d)
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: main-figure candidate (Figure 1); OPTION3B_SPEC (2026-09-30), beside figure_01_option3_nature for comparison
+    width_mm: 183
+    height_mm: 170
+    layout_mode: absolute
+    assembly: vector_page
+    page_margin_mm: 4
+    panel_gap_mm: 3
+    layout_notes: >-
+      OPTION3B_SPEC: option 3's page (183 x 170 mm, 4-mm margins, 3-mm gutters, one vector page) with a,
+      b, e and f exactly as option 3 (same builders, arguments and boxes, so the same panel SVGs) and c
+      and d rebuilt at option 3's boxes. c (110 x 53): per measure (position-change rate; social-spatial
+      overlap) and sex, the animals as circles coloured by group, the post hoc three-group means and 95%
+      CIs (fsb P1, verbatim from the MMM post hoc run 29b; registry POSTHOC_CON_CONTRASTS v1.0), and
+      under each sex a forest of RES - CON, SUS - CON and SUS - RES with the Holm P (m = 3) of each row;
+      no CON cage means and no female - male row. Group-mean intervals beyond the presentational y
+      limits end in an arrowhead at the limit (the CON means; Kenward-Roger df below 2). d (62 x 53):
+      three lines per measure and sex, the CON descriptive mean dashed (fsb F1b; no interval, no cage
+      marks) and the RES / SUS TR_BY_SEX means with 95% CIs (ebb C2) offset either side of each cage
+      change, and one P-TR line under the header. Row 3 frame: plot tops 7.95 mm and x-axis lines
+      47.5 mm below the box top (c's forest x-axis carries its title below it).
+    panels:
+      - id: a
+        letter: a
+        builder: f1o3n_panel_design
+        description: As figure_01_option3_nature a (same builder, arguments, inputs and box)
+        args: {key_prefix: f1o3n_}
+        jitter_seed: null
+        inputs: [ebb/A0_design_timeline, fsb/F1_con_cage_means]
+        annotation_panels: []
+        annotation_panels_legend: [f1o3n_design_legend]
+        x: 4
+        "y": 4
+        w: 175
+        h: 25
+      - id: b
+        letter: b
+        builder: f1o3n_panel_combz
+        description: As figure_01_option3_nature b (same builder, arguments, inputs and box)
+        args: {key_prefix: f1o3n_}
+        jitter_seed: null
+        inputs: [ebb/A2b_combz_thresholds, fsb/F2_combz_components, fsb/F2b_combz_definition]
+        annotation_panels: [f1o3n_combz]
+        annotation_panels_legend: [f1o3n_combz_legend]
+        x: 4
+        "y": 32
+        w: 175
+        h: 35
+      - id: c
+        letter: c
+        builder: f1o3b_panel_cc1
+        description: >-
+          First active phase after CC1, per measure and sex: animals as circles by group (ebb A1), the post
+          hoc batch-balanced CON / RES / SUS means with 95% CIs, and under each sex the post hoc RES - CON,
+          SUS - CON and SUS - RES contrasts with their Holm P (fsb P1, primary model; registry
+          POSTHOC_CON_CONTRASTS v1.0); the legend quotes the registered FU-CC1 and P-CC1 results (ebb C2,
+          E_multiplicity), the n, the Kenward-Roger df and the one sensitivity disagreement (fsb P1, P1b)
+        args: {key_prefix: f1o3b_, plot_top_mm: 7.95, axis_mm: 47.5}
+        jitter_seed: [2, 2]
+        inputs: [ebb/A1_animal_cc1, ebb/C2_estimates, ebb/E_multiplicity, fsb/P1_posthoc_con_contrasts, fsb/P1b_posthoc_sensitivity]
+        annotation_panels: [f1o3b_cc1]
+        annotation_panels_legend: [f1o3b_cc1_legend]
+        x: 4
+        "y": 70
+        w: 110
+        h: 53
+      - id: d
+        letter: d
+        builder: f1o3b_panel_trajectory
+        description: >-
+          CC1 -> CC4: the CON descriptive mean (dashed grey; fsb F1b), the registered RES / SUS TR_BY_SEX
+          means and 95% CIs (ebb C2), offset, and one line under the header with the P-TR Holm P of both
+          measures (ebb E_multiplicity); the legend quotes the Q2b F tests and the FU-TR Holm P (ebb C3, E)
+        args: {key_prefix: f1o3b_, plot_top_mm: 7.95, axis_mm: 47.5}
+        jitter_seed: null
+        inputs: [ebb/C2_estimates, ebb/C3_joint_tests, ebb/E_multiplicity, fsb/F1b_con_reference_means]
+        annotation_panels: [f1o3b_trajectory]
+        annotation_panels_legend: [f1o3b_trajectory_legend]
+        x: 117
+        "y": 70
+        w: 62
+        h: 53
+      - id: e
+        letter: e
+        builder: f1_panel_association
+        description: As figure_01_option3_nature e (same builder, arguments, inputs and box)
+        args: {key_prefix: f1o3n_, typography: candidate, style: nature, plot_top_mm: 3.4, axis_mm: 34.3}
+        jitter_seed: null
+        inputs: [ebb/A2_prediction_animals, ebb/C2_estimates, ebb/E_multiplicity]
+        annotation_panels: [f1o3n_association]
+        x: 4
+        "y": 126
+        w: 58
+        h: 40
+      - id: f
+        letter: f
+        builder: f1_panel_prediction
+        description: As figure_01_option3_nature f (same builder, arguments, inputs and box)
+        args: {key_prefix: f1o3n_, typography: candidate, style: nature, plot_top_mm: 3.4, axis_mm: 34.3}
+        jitter_seed: null
+        inputs: [ebb/A2_prediction_animals, ebb/A3_permutation_draws, ebb/C2_estimates, ebb/E_multiplicity]
+        annotation_panels: [f1o3n_prediction]
+        annotation_panels_legend: [f1o3n_prediction_legend]
+        x: 65
+        "y": 126
+        w: 114
+        h: 40
+
 
   # ------------------------------------------------------------------ 3
   light_phase_panel:
