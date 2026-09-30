@@ -51,6 +51,10 @@ S30_SCREEN_DF1_KEY <- "scr_l_df1"      # the numerator df of every L joint F (su
 # Width (mm) of the p/q text column of one cell, by print style; the class letter sits at its right.
 S30_SCREEN_TEXT_MM <- c(stacked = 16.5, inline = 27, compact = 21)
 S30_SCREEN_PAD_MM <- c(text_left = 1.2, class_right = 2.2, label_right = 2.2, axis_title_down = 1.2)
+# The last (Female - male) cell has no forest to its right, so its class letters need no pad from
+# one: they sit 0.3 mm from the cell edge, and the cell is narrower by the difference (the three
+# forests share the width it frees), so the page's right margin matches its left.
+S30_SCREEN_LAST_CLASS_RIGHT_MM <- 0.3
 # Gap (mm) after the Female and Male cells, so each class letter sits nearer its own p/q text than
 # the next column's forest.
 S30_SCREEN_COL_GAP_MM <- 2.5
@@ -171,14 +175,16 @@ s30_panel_screen <- function(s30, an, w_mm = S30_SCREEN_BOX[["w"]], h_mm = S30_S
                   compact = paste0(p_txt, " | ", q_txt))
 
   # ---- widths (mm): row labels | forest, p/q text, gap | forest, p/q text, gap | forest, p/q text
-  text_mm <- S30_SCREEN_TEXT_MM[[pq_style]]
   PAD <- S30_SCREEN_PAD_MM
+  # per cell: the p/q text column and the class letter's distance from its right edge
+  class_right <- c(PAD[["class_right"]], PAD[["class_right"]], S30_SCREEN_LAST_CLASS_RIGHT_MM)
+  text_mm <- S30_SCREEN_TEXT_MM[[pq_style]] - (PAD[["class_right"]] - class_right)
   gap_mm <- S30_SCREEN_COL_GAP_MM
   inner_w <- w_mm - 2 * 3 * 25.4 / 72                       # plot.margin 3 pt left and right
-  forest_mm <- (inner_w - label_mm - 3 * text_mm - 2 * gap_mm) / 3
+  forest_mm <- (inner_w - label_mm - sum(text_mm) - 2 * gap_mm) / 3
   if (forest_mm < 16) stop("s30_panel_screen: the box is too narrow for ", pq_style, " cells (forest ",
                            format(round(forest_mm, 1)), " mm).", call. = FALSE)
-  widths <- c(label_mm, forest_mm, text_mm, gap_mm, forest_mm, text_mm, gap_mm, forest_mm, text_mm)
+  widths <- c(label_mm, forest_mm, text_mm[1], gap_mm, forest_mm, text_mm[2], gap_mm, forest_mm, text_mm[3])
   col_forest <- function(s) 3L * s - 1L                      # grid columns of cell s: forest, then text
   col_text <- function(s) 3L * s
   cell_mm <- forest_mm + text_mm
@@ -205,9 +211,9 @@ s30_panel_screen <- function(s30, an, w_mm = S30_SCREEN_BOX[["w"]], h_mm = S30_S
     add(s30_screen_strip(label_mm, paste0(b, " \u00b7 ", d$question_label[1]), height_mm = head_mm, baseline_mm = base_mm),
         grid_row, 1L)
     for (s in 1:3) {
-      heads <- if (s == 3L) list(list(x = cell_mm - PAD[["class_right"]], label = "class", hjust = 1)) else list()
+      heads <- if (s == 3L) list(list(x = cell_mm[s] - class_right[s], label = "class", hjust = 1)) else list()
       if (pq_style == "compact") heads <- c(heads, list(list(x = forest_mm + PAD[["text_left"]], label = "p | q", hjust = 0)))
-      add(s30_screen_strip(cell_mm, COL_LAB[s], face = "italic", heads, height_mm = head_mm, baseline_mm = base_mm),
+      add(s30_screen_strip(cell_mm[s], COL_LAB[s], face = "italic", heads, height_mm = head_mm, baseline_mm = base_mm),
           grid_row, col_forest(s), col_text(s))
     }
 
@@ -266,10 +272,11 @@ s30_panel_screen <- function(s30, an, w_mm = S30_SCREEN_BOX[["w"]], h_mm = S30_S
               axis.title = element_blank(), plot.margin = margin(0, 0, 0, 0))
       add(pf, grid_row, col_forest(s))
 
-      pt <- s30_screen_void(ds, text_mm, ylim) +
+      pt <- s30_screen_void(ds, text_mm[s], ylim) +
         geom_text(aes(x = PAD[["text_left"]], y = y, label = pq), hjust = 0, vjust = 0.5, lineheight = 1,
                   size = NOTE_PT / .pt, colour = INK) +
-        geom_text(aes(x = text_mm - PAD[["class_right"]], y = y, label = classification), hjust = 1, vjust = 0.5,
+        # !!: the cell's position is taken now, not when the plot is built (after the loop)
+        geom_text(aes(x = !!(text_mm[s] - class_right[s]), y = y, label = classification), hjust = 1, vjust = 0.5,
                   size = NOTE_PT / .pt, colour = MUTED)
       add(pt, grid_row, col_text(s))
     }

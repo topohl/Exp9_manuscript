@@ -70,10 +70,16 @@ S30_FOREST_COMPACT <- utils::modifyList(BH_FOREST, list(point_size = 1.4, point_
 # B3 rate-strip axis: a tick per unit, the -1 tick unlabelled (presentational breaks only).
 S30_COMPACT_RATE_BREAKS <- c(-2, -1, 0, 1)
 S30_COMPACT_RATE_LABELS <- c("−2", "", "0", "1")
+# B3 inactivity-strip axis: a labelled tick on each side of zero, as the rate strip above it.
+S30_COMPACT_INACT_BREAKS <- c(-0.005, 0, 0.005)
 
 # The per-hour unit as plotmath (Arial has no superscript-minus glyph), as in Figure 1.
 S30_RS_RATE_X <- expression("RES − SUS (position changes h"^-1 * ")")
 S30_RS_INACT_X <- "RES − SUS (fraction of light phase)"
+# Top margin (pt) of the plain inactivity strip x title: the inherited 1.75 pt (half_line / 2 at
+# base 7) plus 1.95 pt, the extra depth the rate title's plotmath superscript gives its grob, so
+# the two titles of B2 sit on one baseline.
+S30_RS_INACT_X_TOP_PT <- 1.75 + 1.95
 # Two lines (one would be wider than the 49-mm ED X box), as F1_EARLY_RATE_X; the light phase
 # is named in the subtitle.
 S30_DEP_X <- expression(textstyle(atop(displaystyle("position-change rate"), displaystyle("(position changes h"^-1 * ")"))))
@@ -251,7 +257,10 @@ s30_light_measure_parts <- function(measure, tabs, an, jitter_seed, standalone) 
     top <- top + annotate("text", x = 2.36, y = S30_INACT_LIMITS[1] + 0.0006, label = note, hjust = 1, vjust = 0,
                           size = NOTE_PT / .pt, colour = "grey25", lineheight = 1.0)
   }
-  list(top = top, strip = s30_light_strip(rows, x_title), animals = pts, estimates = rows)
+  strip <- s30_light_strip(rows, x_title)
+  if (measure == "inactivity")
+    strip <- strip + theme(axis.title.x = element_text(margin = margin(t = S30_RS_INACT_X_TOP_PT)))
+  list(top = top, strip = strip, animals = pts, estimates = rows)
 }
 
 #' B1. One light-phase measure: the SIS animals at CC1 (top) over the stored RES - SUS
@@ -332,18 +341,22 @@ s30_panel_light_compact <- function(an, w_mm = S30_LIGHT_BOX$compact[1], h_mm = 
                        plot.subtitle = element_text(size = NOTE_PT, colour = "grey25", lineheight = 1.0, margin = margin(b = 1)),
                        plot.title.position = "plot")
   # Rate ticks every unit, labelled at -2, 0 and 1 (at the 35-mm box five labels -3 to 1 touch), so
-  # the positive male estimate has a labelled tick on its side; the inactivity strip keeps 0 and
-  # 0.005 (its data run -0.0048 to 0.0090; the zero line marks 0). The rate unit is a 6-pt grey
-  # note, as the inactivity unit in its subtitle, so neither unit outweighs the strip labels.
+  # the positive male estimate has a labelled tick on its side; the inactivity strip likewise labels
+  # -0.005, 0 and 0.005 (its data run -0.0048 to 0.0090), so its negative male estimate has one on
+  # its side. The rate unit is a 6-pt grey note, as the inactivity unit in its subtitle, so neither
+  # unit outweighs the strip labels. The inactivity subtitle keeps 3 pt (not 1) above its panel, so
+  # the dashed zero line does not start just under its last line; the rate strip gives up the same
+  # 2 pt of bottom margin, so both strip panels keep their height and the last axis stays level with b.
   s_rate <- s30_light_strip(rate, F1_UNIT_PER_H, right_text = NULL, title = "position-change rate",
                             subtitle = "Stage 29 secondary estimate;\nnot tested",
                             x_breaks = S30_COMPACT_RATE_BREAKS, x_labels = S30_COMPACT_RATE_LABELS,
-                            marks = S30_FOREST_COMPACT) + strip_theme +
+                            marks = S30_FOREST_COMPACT, plot_margin = margin(2, 3, 0, 3)) + strip_theme +
     theme(axis.title.x = element_text(size = NOTE_PT, colour = "grey25", margin = margin(t = 1)))
   s_inact <- s30_light_strip(inact, NULL, right_text = inact$q_text,
                              title = "positional inactivity (≥40 s)",
                              subtitle = paste0("fraction of light phase;\n", s30_tier_s30(an, "lc_family_m", sep = "\n")),
-                             x_breaks = c(0, 0.005), marks = S30_FOREST_COMPACT, plot_margin = margin(2, 3, 3, 3)) + strip_theme
+                             x_breaks = S30_COMPACT_INACT_BREAKS, marks = S30_FOREST_COMPACT, plot_margin = margin(2, 3, 3, 3)) +
+    strip_theme + theme(plot.subtitle = element_text(margin = margin(b = 3)))
   p <- patchwork::wrap_plots(s_rate, s_inact, ncol = 1) +
     patchwork::plot_annotation(title = "Light phase (exploratory)", subtitle = "RES − SUS after CC1; SIS only",
                                theme = theme(plot.title = element_text(size = BASE_PT, colour = INK, margin = margin(b = 0.5)),

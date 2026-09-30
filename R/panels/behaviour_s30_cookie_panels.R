@@ -176,7 +176,7 @@ s30_panel_cookie_prepost <- function(tab, an, w_mm = S30_COOKIE_BOX$prepost[1], 
 #' (F, M, F - M) with "estimate [lo, hi]" and "p = ...; q = ..." (local BH) per row.
 #' `jitter_seed` is the seed of the presentational jitter (explicit, so the SVG does
 #' not depend on the global RNG stream or the build order).
-#' Keys: ckrs_{f,m,int}{,_lo,_hi,_p,_q}.
+#' Keys: ckrs_{f,m,int}{,_lo,_hi,_p,_q}, ckrs_family_m (the local family size in the subtitle).
 s30_panel_cookie_rs <- function(tab, an, w_mm = S30_COOKIE_BOX$rs[1], h_mm = S30_COOKIE_BOX$rs[2], jitter_seed = 30L) {
   fa <- an$fa
   S3 <- tab("S3_cookie_animals")
@@ -193,8 +193,11 @@ s30_panel_cookie_rs <- function(tab, an, w_mm = S30_COOKIE_BOX$rs[1], h_mm = S30
     guides(fill = guide_legend(override.aes = list(size = 1.3, alpha = 0.9, stroke = 0.25))) +
     scale_x_continuous(breaks = 1:2, labels = S30CK_SEX, limits = c(0.6, 2.4), expand = c(0, 0)) +
     scale_y_continuous(limits = c(0, NA), expand = expansion(mult = c(0.02, 0.05)), labels = s30ck_ticks) +
+    # The q printed per row is local to the registered cookie-group family (its m from the map),
+    # as the light panels say of theirs; the subtitle names it, so it is not read as the 48-test q.
+    # One line, so the animal panel keeps its height (longer than its two-line y title).
     labs(x = NULL, y = S30CK_DELTA_2, title = "Response by later group",
-         subtitle = "registered exploratory test; SIS, CON not modelled") +
+         subtitle = sprintf("registered exploratory test (local BH q, m = %s); SIS only", fa("ckrs_family_m"))) +
     s30ck_theme() +
     # The house legend (Figure 1, B1/B2): above the plot, left-justified, no title; placed
     # against the plot edge (legend.location), so the key sits under the flush-left title.
@@ -202,6 +205,11 @@ s30_panel_cookie_rs <- function(tab, an, w_mm = S30_COOKIE_BOX$rs[1], h_mm = S30
           legend.box.spacing = unit(1, "pt"), plot.margin = margin(11.5, 3, 1.5, 3))
 
   keys <- c("ckrs_f", "ckrs_m", "ckrs_int")
+  # The one printed m stands for the family of all three printed q values: check that it does.
+  q_ids <- sub("^id=", "", vapply(paste0(keys, "_q"), function(k) an$row(k)$filters, ""))
+  S3c <- tab("S3c_cookie_estimates")
+  if (anyNA(match(q_ids, S3c$id)) || any(S3c$family_m[match(q_ids, S3c$id)] != an$ann("ckrs_family_m")))
+    s30ck_stop("panel b: the printed q values do not share the printed family size m.")
   row_text <- vapply(keys, function(k) sprintf("%s\np = %s; q = %s", an$ci(k), fa(paste0(k, "_p")), fa(paste0(k, "_q"))), "")
   st <- s30ck_strip(an, keys, row_text, S30CK_RS_X)
 
