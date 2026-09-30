@@ -9,14 +9,17 @@
 #   a  f1n_panel_design       boxes 6 mm tall, 5.5-pt labels, 0.49-pt brackets, no timeline rule
 #                             and dots, the n footer quoted by the legend;
 #   b  f1n_panel_combz        no title; upright 5.5-pt strips; 5-pt threshold labels; 0.3-pt CON
-#                             mean rule; the one figure group key on the header line;
+#                             mean rule; the one figure group key on row 2's second line (the
+#                             baseline of c's Holm P line), left-aligned at the plot panel;
 #   c  f1n_panel_cc1          one header over both constructs; b's grammar (facet by sex, x = CON /
 #                             RES / SUS); the model mean and its capless 95% CI just right of each
-#                             RES / SUS cloud; one "Holm P" line per construct; the contrast CIs are
-#                             quoted by the legend;
+#                             RES / SUS cloud; one line per construct, centred over both sexes, that
+#                             names its contrast ("Female − male: Holm P = ..."); the contrast CIs
+#                             are quoted by the legend;
 #   d  s30n_panel_light_compact  two strips of one width, zero at one x, symmetric presentational
 #                             limits, units in the x titles, one right-aligned BH q column;
-#   e  f1n_panel_association  no title; one-line x title; two statistics lines;
+#   e  f1n_panel_association  no title; one-line x title; two statistics lines, the q as
+#                             "2.61 × 10^−5" (f1n_sci_parts: three text nodes, the exponent at 5 pt);
 #   f  f1n_panel_prediction   group shapes (no sex shapes, no key); square scatter; direct labels
 #                             by the observed line and the null bars; the resampling range and the
 #                             permutation count quoted by the legend.
@@ -48,7 +51,10 @@ F1N_RS_INACT_X <- "RES − SUS (fraction of light phase)"
 # below the box top, as the assembler draws the 8-pt letter), indented past the letter.
 F1N_LETTER_BASELINE_MM <- 8 * 25.4 / 72 * 0.92
 F1N_HEADER_TOP_PT <- 3.35         # top margin that puts a 5.5-pt header's baseline there (measured)
-F1N_KEY_TOP_PT <- 3.15            # the same for the 5-pt group key of b (measured)
+# Row 2's second line: c's Holm P line has its baseline 7.0 pt below the letter baseline (measured on
+# the page). b's 5-pt group key sits on it: 3.15 pt of top margin would put the key's baseline on the
+# letter baseline (measured), so the key takes 3.15 + 7.0.
+F1N_KEY_TOP_PT <- 3.15 + 7.0
 F1N_INDENT_PT <- F1N$header_indent_mm * 72 / 25.4
 
 # b and c: animal clouds, and in c the model mean just right of each RES / SUS cloud (group units).
@@ -79,6 +85,15 @@ f1n_expr <- function(template, ...) {
   if (any(grepl("'", vals, fixed = TRUE))) stop("f1n_expr: a value contains a single quote.", call. = FALSE)
   txt <- if (length(vals)) do.call(sprintf, c(list(template), as.list(sprintf("'%s'", vals)))) else template
   parse(text = txt, keep.source = FALSE)
+}
+#' The mantissa and exponent of a stored value printed in e-notation ("2.61e−5", as bh_sci_minus
+#' writes it), for the Nature form 2.61 × 10^−5: the mantissa, "× 10" and the exponent are drawn as
+#' three text nodes (the exponent in textstyle, i.e. at the line's 5 pt, not the 3.5-pt script size),
+#' and the value-for-value test reads them back as the one stored string. No number is computed.
+f1n_sci_parts <- function(x) {
+  m <- regmatches(x, regexec("^(−?[0-9]+(?:\\.[0-9]+)?)e([−+]?[0-9]+)$", x))[[1]]
+  if (length(m) != 3L) stop("f1n_sci_parts: '", x, "' is not an e-notation value.", call. = FALSE)
+  c(mantissa = m[2], exponent = sub("^\\+", "", m[3]))
 }
 #' A text grob of a plotmath label (f1n_expr) for annotation_custom (5 pt, INK).
 f1n_math_grob <- function(label, x, y, hjust, vjust = 0, colour = INK) {
@@ -191,8 +206,8 @@ f1n_panel_combz <- function(tab, an, w_mm, h_mm, jitter_seed, frame = NULL) {
       scale_y_continuous(labels = f1_minus_labels) +
       labs(x = NULL, y = "Later CombZ") +
       theme_f1(style = "nature") +
-      theme(legend.position = "top", legend.justification = "left", legend.location = "plot",
-            legend.margin = margin(F1N_KEY_TOP_PT, 0, 0, F1N_INDENT_PT), legend.box.spacing = unit(top_pad, "pt"),
+      theme(legend.position = "top", legend.justification = "left", legend.location = "panel",
+            legend.margin = margin(F1N_KEY_TOP_PT, 0, 0, 0), legend.box.spacing = unit(top_pad, "pt"),
             legend.key.spacing.x = unit(3.5, "pt"), panel.spacing = unit(4, "pt"),
             plot.margin = margin(0, 1, 1 + bottom_pad, 1))
   }
@@ -212,7 +227,8 @@ f1n_panel_cc1 <- function(tab, an, w_mm, h_mm, jitter_seed = c(NA, NA), frame = 
     if (nrow(mm) != 4L) stop("panel c: expected 4 model means for ", k, call. = FALSE)
     mm$Sex <- factor(mm$sex, levels = c("Female", "Male")); mm$Group <- factor(mm$Group, levels = GROUP_LEV)
     mm$x <- match(as.character(mm$Group), GROUP_LEV) + F1N_MEAN_OFFSET
-    holm <- f1n_expr("'Holm ' * italic('P ') * '= ' * %s", fa(paste0("c_", key, "_q1_holm")))
+    # the P-CC1 Holm P of Q1, the female - male difference in RES - SUS: named, over both sexes
+    holm <- f1n_expr("'Female − male: Holm ' * italic('P ') * '= ' * %s", fa(paste0("c_", key, "_q1_holm")))
     ggplot(pts, aes(x, y)) +
       geom_point(aes(fill = Group, shape = Group, colour = Group == "CON"),
                  position = position_jitter(width = F1N$jitter_width, height = 0, seed = seed),
@@ -229,7 +245,7 @@ f1n_panel_cc1 <- function(tab, an, w_mm, h_mm, jitter_seed = c(NA, NA), frame = 
       labs(x = NULL, y = F1N_CONSTRUCT_Y[[k]], title = holm) +
       theme_f1(style = "nature") +
       theme(axis.title.y = f1n_markdown(), panel.spacing = unit(4, "pt"),
-            plot.title = element_text(size = F1N$text_pt, colour = INK, hjust = 1, margin = margin(b = 1 + top_pad)),
+            plot.title = element_text(size = F1N$text_pt, colour = INK, hjust = 0.5, margin = margin(b = 1 + top_pad)),
             plot.title.position = "panel",
             plot.margin = margin(0, right_pt, 1 + bottom_pad, 1))
   }
@@ -315,15 +331,18 @@ f1n_panel_association <- function(tab, an, w_mm, h_mm, typography = "candidate",
   cand <- f1_candidate_typography(typography)
   fa <- an$fa
   A2 <- tab("A2_prediction_animals")
-  e_q <- if (cand) bh_sci_minus(fa("e_q")) else fa("e_q")
   l1 <- f1n_expr("'Spearman ' * italic('ρ ') * '= ' * %s * %s", paste0(fa("e_rho"), " "), sprintf("[%s, %s]", fa("e_rho_lo"), fa("e_rho_hi")))
-  l2 <- f1n_expr("'BH ' * italic('q ') * '= ' * %s * ', ' * italic('n ') * '= ' * %s", e_q, fa("e_n"))
+  l2 <- if (cand) {
+    q <- f1n_sci_parts(bh_sci_minus(fa("e_q")))
+    f1n_expr("'BH ' * italic('q ') * '= ' * %s * '× 10'^textstyle(%s) * ', ' * italic('n ') * '= ' * %s",
+             paste0(q[["mantissa"]], " "), q[["exponent"]], fa("e_n"))
+  } else f1n_expr("'BH ' * italic('q ') * '= ' * %s * ', ' * italic('n ') * '= ' * %s", fa("e_q"), fa("e_n"))
   right <- grid::unit(1, "npc") - grid::unit(0.6, "mm")
   build <- function(top_pad, bottom_pad) {
     ggplot(A2, aes(crossing_rate_equiv_per_h, observed_CombZ)) +
       geom_point(size = F1N$point_size, stroke = F1N$point_stroke, shape = 21, colour = F1N$point_colour, fill = "#6E8B99") +
       annotation_custom(f1n_math_grob(l1, x = right, y = grid::unit(1, "npc") - grid::unit(2.3, "mm"), hjust = 1)) +
-      annotation_custom(f1n_math_grob(l2, x = right, y = grid::unit(1, "npc") - grid::unit(4.5, "mm"), hjust = 1)) +
+      annotation_custom(f1n_math_grob(l2, x = right, y = grid::unit(1, "npc") - grid::unit(4.9, "mm"), hjust = 1)) +  # 0.4 mm lower than f's second line: room for the 5-pt exponent
       scale_y_continuous(expand = expansion(mult = c(0.04, 0.16)), labels = f1_minus_labels) +
       labs(x = F1N_EARLY_RATE_X, y = "Later CombZ") +
       theme_f1(style = "nature") +

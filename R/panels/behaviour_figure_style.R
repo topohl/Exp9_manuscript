@@ -18,7 +18,8 @@
 #   bh_minus(), bh_sci_minus()                                    typographic minus (U+2212)
 #   bh_annotation()                                               multi-bundle annotation-map resolver
 #   bh_panel(), bh_save_svg()                                     panel box and SVG device
-#   bh_save_page()                                                one vector page (SVG + PDF) of placed panels
+#   bh_save_page(), bh_pdf_mediabox()                             one vector page (SVG + PDF) of placed panels;
+#                                                                 the PDF page at its exact (fractional) size
 
 suppressPackageStartupMessages(library(ggplot2))
 
@@ -251,7 +252,105 @@ bh_save_page <- function(panels, width_mm, height_mm, svg_path, pdf_path, letter
   tryCatch(draw(), finally = grDevices::dev.off())
   grDevices::cairo_pdf(pdf_path, width = width_mm / 25.4, height = height_mm / 25.4, family = "Arial", bg = "white")
   tryCatch(draw(), finally = grDevices::dev.off())
+  bh_pdf_mediabox(pdf_path, width_mm / 25.4 * 72, height_mm / 25.4 * 72)
   c(svg = svg_path, pdf = pdf_path)
+}
+
+#' Give a one-page PDF its exact page size. R's cairo device authors the page at whole points (it
+#' truncates the size: 183 x 160 mm = 518.74 x 453.54 pt is written as a 518 x 453 MediaBox), while
+#' bh_save_page places every box from the page's bottom-left corner in mm, so only the top and right
+#' edges lose the fraction. This appends one incremental update (ISO 32000-1, 7.5.6) that redefines
+#' the page object with /MediaBox [0 0 width_pt height_pt]; the bytes cairo wrote are kept, and the
+#' drawing is unchanged. Handles a page object stored plainly or in a compressed object stream, and
+#' a cross-reference stream (cairo >= 1.17.6) or a classic cross-reference table. Layout only.
+bh_pdf_mediabox <- function(path, width_pt, height_pt) {
+  fail <- function(...) stop("bh_pdf_mediabox (", basename(path), "): ", ..., call. = FALSE)
+  raw <- readBin(path, "raw", file.size(path))
+  bytes_text <- function(r) { r[r == as.raw(0)] <- as.raw(32); s <- rawToChar(r); Encoding(s) <- "bytes"; s }
+  txt <- bytes_text(raw)
+  find <- function(pattern, x) { m <- regexpr(pattern, x, perl = TRUE, useBytes = TRUE); if (m < 0) NA_character_ else regmatches(x, m) }
+  # the dictionary that opens at byte `at` (1-based; balanced << >>)
+  dict_at <- function(s, at) {
+    depth <- 0L; i <- at; n <- nchar(s, type = "bytes")
+    while (i < n) {
+      two <- substr(s, i, i + 1L)
+      if (identical(two, "<<")) { depth <- depth + 1L; i <- i + 2L; next }
+      if (identical(two, ">>")) { depth <- depth - 1L; i <- i + 2L; if (depth == 0L) return(substr(s, at, i - 1L)); next }
+      i <- i + 1L
+    }
+    fail("an unterminated dictionary")
+  }
+  num <- function(pattern, s) as.numeric(sub(pattern, "\\1", find(pattern, s), perl = TRUE))
+  # the last cross-reference section and its trailer
+  prev <- num("(?s)startxref\\s+([0-9]+)\\s+%%EOF\\s*$", txt)
+  if (is.na(prev)) fail("no startxref")
+  sec <- substr(txt, prev + 1, nchar(txt, type = "bytes"))
+  stream_xref <- !startsWith(sec, "xref")
+  trailer <- if (stream_xref) dict_at(sec, regexpr("<<", sec, fixed = TRUE, useBytes = TRUE)) else
+    dict_at(sec, regexpr("trailer\\s*<<", sec, perl = TRUE, useBytes = TRUE) + 7L)
+  if (stream_xref && !grepl("/Type\\s*/XRef", trailer, useBytes = TRUE)) fail("the last section is neither a table nor a stream")
+  size <- num("/Size\\s+([0-9]+)", trailer)
+  keep <- na.omit(c(find("/Root\\s+[0-9]+\\s+[0-9]+\\s+R", trailer), find("/Info\\s+[0-9]+\\s+[0-9]+\\s+R", trailer),
+                    find("/ID\\s*\\[[^]]*\\]", trailer)))
+  # every object's dictionary, plain or in an object stream: the one page object
+  objs <- list()
+  starts <- gregexpr("(?<![0-9])[0-9]+\\s+[0-9]+\\s+obj\\s*<<", txt, perl = TRUE, useBytes = TRUE)[[1]]
+  for (st in starts[starts > 0]) {
+    head <- find("^[0-9]+\\s+[0-9]+\\s+obj", substr(txt, st, st + 40L))
+    ids <- as.numeric(strsplit(trimws(sub("obj$", "", head)), "\\s+")[[1]])
+    at <- st + regexpr("<<", substr(txt, st, st + 60L), fixed = TRUE, useBytes = TRUE) - 1L
+    d <- dict_at(txt, at)
+    objs[[length(objs) + 1L]] <- list(num = ids[1], gen = ids[2], dict = d)
+    if (!grepl("/Type\\s*/ObjStm", d, useBytes = TRUE)) next
+    len <- find("/Length\\s+[0-9]+(\\s+[0-9]+\\s+R)?", d)
+    len <- as.numeric(strsplit(sub("\\s+R$", "", sub("^/Length\\s+", "", len)), "\\s+")[[1]])
+    if (length(len) == 2L)   # an indirect length "n g R": the integer object n g
+      len <- num(sprintf("(?<![0-9])%.0f\\s+%.0f\\s+obj\\s*([0-9]+)\\s*endobj", len[1], len[2]), txt)
+    e <- at + nchar(d, type = "bytes")   # the byte after the dictionary
+    kw <- regexpr("^\\s*stream\r?\n", substr(txt, e, e + 20L), perl = TRUE, useBytes = TRUE)
+    if (kw < 0) fail("an object stream without its stream keyword")
+    s0 <- e + attr(kw, "match.length")   # the first data byte (1-based)
+    if (!grepl("/Filter\\s*/FlateDecode", d, useBytes = TRUE) || grepl("/DecodeParms", d, useBytes = TRUE))
+      fail("an object stream that is not plain FlateDecode")
+    dec <- memDecompress(raw[s0:(s0 + len - 1)], type = "gzip")
+    first <- num("/First\\s+([0-9]+)", d); n_obj <- num("/N\\s+([0-9]+)", d)
+    pairs <- as.numeric(strsplit(trimws(rawToChar(dec[seq_len(first)])), "\\s+")[[1]])
+    if (length(pairs) != 2 * n_obj) fail("an object stream header that does not list /N objects")
+    off <- c(pairs[c(FALSE, TRUE)], length(dec) - first)
+    for (k in seq_len(n_obj)) {
+      body <- bytes_text(dec[(first + off[k] + 1):(first + off[k + 1])])
+      if (grepl("<<", body, fixed = TRUE))
+        objs[[length(objs) + 1L]] <- list(num = pairs[2 * k - 1], gen = 0, dict = dict_at(body, regexpr("<<", body, fixed = TRUE, useBytes = TRUE)))
+    }
+  }
+  page <- Filter(function(o) grepl("/Type\\s*/Page(?![a-zA-Z])", o$dict, perl = TRUE, useBytes = TRUE), objs)
+  page <- page[!duplicated(vapply(page, function(o) o$num, 0))]
+  if (length(page) != 1L) fail("expected one page object, found ", length(page))
+  page <- page[[1]]
+  box <- sprintf("/MediaBox [ 0 0 %s %s ]", formatC(width_pt, format = "f", digits = 4), formatC(height_pt, format = "f", digits = 4))
+  dict <- if (grepl("/MediaBox", page$dict, fixed = TRUE)) sub("/MediaBox\\s*\\[[^]]*\\]", box, page$dict, perl = TRUE, useBytes = TRUE) else
+    sub(">>$", paste0(" ", box, " >>"), page$dict, useBytes = TRUE)
+  # the update: the page object, then its cross-reference section and trailer
+  out <- raw
+  if (out[length(out)] != as.raw(10)) out <- c(out, as.raw(10))
+  add <- function(s) out <<- c(out, charToRaw(s))
+  page_off <- length(out)
+  add(sprintf("%d %d obj\n%s\nendobj\n", page$num, page$gen, dict))
+  xref_off <- length(out)
+  if (stream_xref) {
+    be <- function(v, n) as.raw(rev(vapply(seq_len(n) - 1L, function(i) (v %/% 256^i) %% 256, 0)))
+    data <- c(as.raw(1), be(page_off, 4), be(page$gen, 2), as.raw(1), be(xref_off, 4), be(0, 2))
+    add(sprintf("%d 0 obj\n<< /Type /XRef /Size %d /Index [ %d 1 %d 1 ] /W [ 1 4 2 ] %s /Prev %.0f /Length %d >>\nstream\n",
+                size, size + 1, page$num, size, paste(keep, collapse = " "), prev, length(data)))
+    out <- c(out, data)
+    add("\nendstream\nendobj\n")
+  } else {
+    add(sprintf("xref\n%d 1\n%010.0f %05.0f n \ntrailer\n<< /Size %d %s /Prev %.0f >>\n", page$num, page_off, page$gen,
+                max(size, page$num + 1), paste(keep, collapse = " "), prev))
+  }
+  add(sprintf("startxref\n%.0f\n%%%%EOF\n", xref_off))
+  writeBin(out, path)
+  invisible(path)
 }
 
 #' The review PNG of a vector page: the page SVG rasterised by magick (librsvg) at `dpi`, on white.

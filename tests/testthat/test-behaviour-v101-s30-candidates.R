@@ -71,6 +71,20 @@ svg_text_nodes <- function(path) {
              pt = as.numeric(sub(".*font-size: *([0-9.]+)px.*", "\\1", style)),
              family = sub('.*font-family: *"?([^";]+)"?;.*', "\\1", style), stringsAsFactors = FALSE)
 }
+# The Nature layout prints an e-notation value in the form 2.61 × 10^−5: three consecutive text
+# nodes (the mantissa, "× 10" and the exponent, f1n_sci_parts). They are read back as the one string
+# the map resolves ("2.61e−5"), so the value is checked value for value like any other.
+join_sci_nodes <- function(nodes) {
+  t <- trimws(nodes$text); keep <- rep(TRUE, nrow(nodes))
+  for (i in seq_len(max(nrow(nodes) - 2L, 0L))) {
+    if (!keep[i]) next
+    if (grepl("^−?[0-9]+(\\.[0-9]+)?$", t[i]) && identical(t[i + 1L], "× 10") && grepl("^[−+]?[0-9]+$", t[i + 2L])) {
+      nodes$text[i] <- paste0(t[i], "e", t[i + 2L])
+      keep[i + 1:2] <- FALSE
+    }
+  }
+  nodes[keep, , drop = FALSE]
+}
 # Label words and registered constants that carry digits but are not printed values. Each is
 # removed from a text node before its numbers are compared with the resolved annotation values.
 LABEL_WORDS <- c(
@@ -233,9 +247,15 @@ test_that("every annotation key resolves to exactly one stored cell", {
   drawn <- unique(unlist(lapply(all_panels(), function(s) c(s$annotation_panels, s$annotation_panels_plotted))))
   legend_only <- setdiff(unique(unlist(lapply(all_panels(), function(s) s$annotation_panels_legend))), drawn)
   expect_true(all(c("light_legend", "cookie_text") %in% legend_only))
-  # the option-panel keys are copies of the canonical Figure 1 keys (same cell, same format)
+  # the option-panel keys are copies of the canonical Figure 1 keys (same cell, same format), except
+  # the Nature layout's own legend keys (the n its legend quotes): they say so in their meaning, and
+  # they are only quoted, in the Nature candidate's legend map panels, never drawn
   canon <- rd(CANON_MAP_PATH)
-  opt <- m[grepl("^f1o([12]|2n)_", m$key), , drop = FALSE]
+  nature_only <- grepl("^f1o2n_", m$key) & grepl("(Nature layout only; no canonical Figure 1 key)", m$meaning, fixed = TRUE)
+  expect_true(all(grepl("^f1o2n_(c_n_|f_n$)", m$key[nature_only])))
+  nature_legend <- unique(unlist(lapply(CT$candidates[[NATURE]]$panels, function(s) s$annotation_panels_legend)))
+  expect_true(all(m$panel[nature_only] %in% setdiff(nature_legend, drawn)))
+  opt <- m[grepl("^f1o([12]|2n)_", m$key) & !nature_only, , drop = FALSE]
   expect_equal(nrow(opt), 3L * nrow(canon[!grepl("^d_", canon$key), ]))
   i <- match(sub("^f1o([12]|2n)_", "", opt$key), canon$key)
   expect_false(anyNA(i))
@@ -258,7 +278,7 @@ test_that("every number printed on a panel is a resolved annotation value, and e
     path <- panel_svg(s)
     expect_true(file.exists(path), info = where)
     if (!file.exists(path)) next
-    nodes <- svg_text_nodes(path)
+    nodes <- join_sci_nodes(svg_text_nodes(path))
     V <- unname(value[m$panel %in% unlist(s$annotation_panels)])
     pm <- rd(file.path(repo("results", "reports", "manuscript_candidates", GEN, s$candidate), "panel_manifest.csv"))
     ticks <- strsplit(pm$axis_tick_labels[pm$panel == s$id], "|", fixed = TRUE)[[1]]
@@ -471,6 +491,16 @@ test_that("the Nature-layout candidate is one vector page with live text, embedd
   expect_true(grepl("^%PDF-", pdf, useBytes = TRUE))
   expect_length(pdf_hits(pdf, "/Subtype\\s*/Image"), 0L)
   expect_length(pdf_hits(pdf, "/Type\\s*/Page(?![a-z])", perl = TRUE), 1L)
+  # the page is the contract's page to within 0.01 pt (cairo_pdf writes whole points; bh_pdf_mediabox
+  # appends the exact MediaBox as an incremental update, the last one in the file), and the file is
+  # well formed after the update (qpdf --check, when qpdf is installed)
+  box <- pdf_hits(pdf, "/MediaBox\\s*\\[[^]]*\\]")
+  expect_gte(length(box), 1L)
+  box <- as.numeric(regmatches(box[length(box)], gregexpr("[0-9]+(\\.[0-9]+)?", box[length(box)]))[[1]])
+  expect_length(box, 4L)
+  expect_lt(max(abs(box - c(0, 0, cand$width_mm, cand$height_mm) / 25.4 * 72)), 0.01)
+  qpdf <- Sys.which("qpdf")
+  if (nzchar(qpdf)) expect_identical(as.integer(system2(qpdf, c("--check", shQuote(page_pdf)), stdout = FALSE, stderr = FALSE)), 0L)
   fonts <- unique(pdf_hits(pdf, "/BaseFont\\s*/[A-Za-z0-9+-]+"))
   expect_gt(length(fonts), 0L)
   expect_true(all(grepl("/[A-Z]{6}\\+Arial", fonts)), info = paste(fonts, collapse = ", "))
