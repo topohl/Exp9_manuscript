@@ -52,11 +52,10 @@ testthat::test_that("canonical figures reproduce the frozen artefact hashes", {
   checked <- 0L
   for (i in seq_len(nrow(canon))) {
     pid <- canon$publication_id[i]
-    # Identities backed by the pinned MMMSociability behaviour bundle publish their
-    # promoted, manuscript-owned render (tools/promote_manuscript_render.R).
-    bundle_backed <- identical(canon$originating_analysis[i], "topohl/MMMSociability") &&
-      grepl("^source_data/MMMSociability/ebb_", canon$canonical_source_data[i])
-    svg <- if (bundle_backed) repo_path(canon$rendered_artifact[i]) else file.path(bundle, pid, "assembled", paste0(pid, ".svg"))
+    # Identities with a promoted, tracked render (tools/promote_manuscript_render.R)
+    # publish it from figures/main/ or figures/extended_data/.
+    promoted <- grepl("^figures/(main|extended_data)/", canon$rendered_artifact[i])
+    svg <- if (promoted) repo_path(canon$rendered_artifact[i]) else file.path(bundle, pid, "assembled", paste0(pid, ".svg"))
     if (!file.exists(svg)) next
     testthat::expect_identical(unname(tools::sha256sum(svg)), canon$hash[i],
                                info = paste("assembled artefact changed:", pid))
