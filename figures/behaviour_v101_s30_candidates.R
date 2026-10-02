@@ -245,16 +245,22 @@ layer_blocks <- function(panel_plot) {
   blocks
 }
 
-# Primary-axis tick labels as drawn (NA and blank axes dropped); recorded so the value-for-value
-# test can tell axis breaks from printed values. Presentational layout only.
+# Primary-axis tick labels as drawn (NA and blank axes dropped), plus any literal identity text
+# drawn through geom_text/geom_label (e.g. a per-animal ID row): a free-x facet clones one shared
+# scale per panel verbatim, so distinct facets cannot carry distinct tick labels at the same x
+# position, and such a row's labels have to be a text layer instead. Recorded so the value-for-
+# value test can tell these structural labels from printed values. Presentational layout only.
 axis_labels <- function(panel_plot) {
   labs_of <- function(leaf) {
     th <- ggplot2::complete_theme(leaf$theme)
     blank <- function(el) inherits(ggplot2::calc_element(el, th), "element_blank")
     b <- ggplot2::ggplot_build(leaf)
-    unlist(lapply(b$layout$panel_params, function(pp) c(
+    axis <- unlist(lapply(b$layout$panel_params, function(pp) c(
       if (!blank("axis.text.x.bottom")) pp$x$get_labels(),
       if (!blank("axis.text.y.left")) pp$y$get_labels())))
+    is_text <- vapply(b$plot$layers, function(l) inherits(l$geom, "GeomText") || inherits(l$geom, "GeomLabel"), logical(1))
+    literal <- unlist(lapply(b$data[is_text], function(d) if ("label" %in% names(d)) d$label else NULL))
+    c(axis, literal)
   }
   out <- unlist(lapply(plot_leaves(panel_plot), labs_of))
   out <- unique(as.character(out[!is.na(out)]))

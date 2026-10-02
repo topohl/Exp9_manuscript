@@ -20,9 +20,10 @@
 #                             downstream, exploratory box (not a fifth domain);
 #   b  f1o3n_panel_combz      CombZ per animal at its stored rank within sex (fsb F2), circles coloured
 #                             by group, the stored threshold and CON-mean lines (ebb A2b), the group
-#                             strip, and the six components' signed z as they enter CombZ as a heatmap
-#                             on the manuscript diverging palette (config/manuscript_palette.yml),
-#                             symmetric limits capped at F1O3N_Z_CAP; the RES/SUS boundary is marked;
+#                             strip, a row of rotated AnimalNum labels, and the six components' signed
+#                             z as they enter CombZ as a heatmap on the manuscript diverging palette
+#                             (config/manuscript_palette.yml), symmetric limits capped at F1O3N_Z_CAP;
+#                             the RES/SUS boundary is marked;
 #   c  f1o3n_panel_cc1        first active phase after CC1: animals as circles by group (CON hollow),
 #                             the RES/SUS model means and 95% CIs (ebb C2, CC1_BY_SEX), the CON
 #                             descriptive mean (fsb F1b) and the three CON cage means per sex (fsb F1);
@@ -275,6 +276,15 @@ f1o3n_panel_combz <- function(tab, fsb, an, w_mm, h_mm) {
     theme_f1(style = "nature") + no_x +
     theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), strip.text = element_blank(),
           panel.spacing = unit(4, "pt"), plot.margin = margin(0, 1, 0.6, 1))
+  p_animal <- ggplot(ani, aes(x, 1)) +
+    geom_blank(data = edges, aes(x = x, y = 1), inherit.aes = FALSE) +
+    geom_text(aes(label = AnimalNum), angle = 90, size = f1n_text(), colour = INK, hjust = 0.5, vjust = 0.5) +
+    vline + cols + xs +
+    scale_y_continuous(breaks = 1, labels = "Animal ID", expand = c(0, 0)) +
+    labs(y = NULL) +
+    theme_f1(style = "nature") + no_x +
+    theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), strip.text = element_blank(),
+          panel.spacing = unit(4, "pt"), plot.margin = margin(0, 1, 0.6, 1))
   p_heat <- ggplot(hm, aes(x, row)) +
     geom_blank(data = edges, aes(x = x), inherit.aes = FALSE) +
     geom_tile(aes(fill = signed_z), colour = "white", linewidth = 0.12) +
@@ -297,9 +307,9 @@ f1o3n_panel_combz <- function(tab, fsb, an, w_mm, h_mm) {
     theme(axis.line = element_blank(), axis.ticks.x = element_blank(), axis.text.x = element_blank(),
           axis.title.y.right = f1n_markdown(angle = 90, margin = margin(l = 1.5)),
           plot.margin = margin(0, 1, 1, 3))
-  design <- "A#\nB#\nCD"
-  pb <- patchwork::wrap_plots(A = p_dots, B = p_strip, C = p_heat, D = p_bar, design = design,
-                              heights = c(12.5, 1.9, 12.6), widths = grid::unit(c(1, 2.2), c("null", "mm"))) +
+  design <- "A#\nB#\nE#\nCD"
+  pb <- patchwork::wrap_plots(A = p_dots, B = p_strip, E = p_animal, C = p_heat, D = p_bar, design = design,
+                              heights = c(12.5, 1.9, 4.2, 12.6), widths = grid::unit(c(1, 2.2), c("null", "mm"))) +
     patchwork::plot_annotation(title = "Later CombZ and its six components, animals ordered by CombZ within sex",
                                theme = theme(plot.title = element_text(size = F1N$title_pt, colour = INK, hjust = 0,
                                                                        margin = margin(F1N_HEADER_TOP_PT, 0, 1.2, F1N_INDENT_PT)),
