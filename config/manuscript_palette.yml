@@ -36,9 +36,9 @@ dataset_label:
 # (NES, log2FC, model effect). Blue = lower in the stressed group of the
 # contrast, vermillion = higher. Midpoint is always zero.
 diverging:
-  low: "#2C6E9B"
-  mid: "#F7F7F5"
-  high: "#C0442C"
+  low: "#4C566A"
+  mid: "#D8D2C7"
+  high: "#D98B3A"
 
 # ------------------------------------------------------------ evidence
 # Interpretation status. Supported evidence is saturated; descriptive,
