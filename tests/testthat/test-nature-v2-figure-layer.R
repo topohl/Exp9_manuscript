@@ -52,7 +52,7 @@ testthat::test_that("panel labels are lowercase, never uppercase", {
 testthat::test_that("the palette contract exists and is semantic", {
   testthat::expect_true(have(nv_palette_path()))
   p <- nv_palette()
-  testthat::expect_identical(p$palette_version, "manuscript_palette_v1")
+  testthat::expect_identical(p$palette_version, "manuscript_palette_v2")
   testthat::expect_setequal(names(p$group), c("CON", "RES", "SUS"))
   testthat::expect_setequal(names(p$dataset),
                             c("neuron_neuropil", "neuron_soma", "microglia"))

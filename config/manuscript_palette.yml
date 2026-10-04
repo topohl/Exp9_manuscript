@@ -6,17 +6,17 @@
 # quieter than inferentially supported information.
 #
 # No red-vs-green contrast is used anywhere. The diverging scale is
-# colour-blind safe (blue / warm vermillion, not red / green).
+# colour-blind safe (blue-grey / dark orange, not red / green).
 
-palette_version: manuscript_palette_v1
+palette_version: manuscript_palette_v2
 
 # ---------------------------------------------------------------- groups
-# Experimental group identity. CON is deliberately neutral so that the two
-# stress groups carry the only chromatic weight.
+# Experimental group identity, the colours of Figure 1 (v2, 2026-10-05). RES is
+# light, so group must never be shown by colour alone: shape or position too.
 group:
-  CON: "#8A8A8A"      # neutral grey
-  RES: "#2E7D91"      # cool teal
-  SUS: "#D1543A"      # muted vermillion
+  CON: "#3E3C6F"      # navy
+  RES: "#C6C3BB"      # beige
+  SUS: "#E63A48"      # red
 
 # ------------------------------------------------------------- datasets
 # Compartment identity. Used for annotation strips and dataset grouping,
@@ -33,12 +33,14 @@ dataset_label:
 
 # ------------------------------------------------- signed molecular effect
 # ONE diverging scale for every signed molecular quantity in the manuscript
-# (NES, log2FC, model effect). Blue = lower in the stressed group of the
-# contrast, vermillion = higher. Midpoint is always zero.
+# (NES, log2FC, model effect). Blue-grey = lower in the stressed group of the
+# contrast, dark orange = higher. Midpoint is always zero. Both ends lie at the
+# same perceptual distance from the midpoint (CIEDE2000 44.8 and 44.6; v2), so
+# positive and negative effects of equal size look equally strong.
 diverging:
   low: "#4C566A"
   mid: "#D8D2C7"
-  high: "#D98B3A"
+  high: "#96460A"
 
 # ------------------------------------------------------------ evidence
 # Interpretation status. Supported evidence is saturated; descriptive,
