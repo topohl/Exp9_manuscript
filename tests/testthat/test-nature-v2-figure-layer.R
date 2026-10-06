@@ -52,18 +52,23 @@ testthat::test_that("panel labels are lowercase, never uppercase", {
 testthat::test_that("the palette contract exists and is semantic", {
   testthat::expect_true(have(nv_palette_path()))
   p <- nv_palette()
-  testthat::expect_identical(p$palette_version, "manuscript_palette_v1")
+  testthat::expect_identical(p$palette_version, "manuscript_palette_v3.2")
   testthat::expect_setequal(names(p$group), c("CON", "RES", "SUS"))
   testthat::expect_setequal(names(p$dataset),
                             c("neuron_neuropil", "neuron_soma", "microglia"))
-  # one diverging scale for every signed molecular effect
+  # one diverging scale for every signed molecular effect, white at zero (v3)
   testthat::expect_setequal(names(p$diverging), c("low", "mid", "high"))
+  testthat::expect_identical(toupper(p$diverging$mid), "#FFFFFF")
   # no red-green contrast: the diverging ends must not both be green-ish
   testthat::expect_false(grepl("^#0", p$diverging$high))
-  # CON is neutral grey: r, g and b within a narrow band of each other
+  # one fixed colour limit per signed measure (v3.1, v3.2)
+  testthat::expect_true(all(c("smd", "correlation", "nes", "z", "z_set_mean") %in%
+                              names(p$diverging_limits)))
+  # RES is the light, near-grey group (v3): r, g and b within a narrow band of
+  # each other, so group is never shown by colour alone
   rgb_of <- function(h) as.integer(grDevices::col2rgb(h))
-  con <- rgb_of(p$group$CON)
-  testthat::expect_lt(max(con) - min(con), 12L)
+  res <- rgb_of(p$group$RES)
+  testthat::expect_lt(max(res) - min(res), 12L)
   # typography floor
   testthat::expect_gte(nv_pt("axis_text_pt"), 5)
   testthat::expect_lte(nv_pt("axis_text_pt"), 7)

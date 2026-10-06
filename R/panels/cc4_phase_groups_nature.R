@@ -18,8 +18,9 @@ cc4_nature_theme <- function() {
 }
 
 cc4_nature_plots <- function(data) {
-  palette <- nature_palette("group")
-  if (!identical(palette,c(CON="#3E3C6F",RES="#C6C3BB",SUS="#E63A48")))
+  # group colours: the manuscript palette (config/manuscript_palette.yml group, v3)
+  palette <- unlist(yaml::read_yaml(repo_path("config","manuscript_palette.yml"))$group)[c("CON","RES","SUS")]
+  if (anyNA(palette) || !all(grepl("^#[0-9A-Fa-f]{6}$",palette)))
     stop("Unexpected behavioural palette.",call.=FALSE)
   shapes <- c(CON=21,RES=24,SUS=22)
   line_types <- c(CON="solid",RES="longdash",SUS="dotdash")

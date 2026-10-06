@@ -6,17 +6,19 @@
 # quieter than inferentially supported information.
 #
 # No red-vs-green contrast is used anywhere. The diverging scale is
-# colour-blind safe (blue / warm vermillion, not red / green).
+# colour-blind safe (blue / yellow, not red / green).
 
-palette_version: manuscript_palette_v1
+palette_version: manuscript_palette_v3.2
 
 # ---------------------------------------------------------------- groups
-# Experimental group identity. CON is deliberately neutral so that the two
-# stress groups carry the only chromatic weight.
+# Experimental group identity (v3, 2026-10-06): slate blue CON, warm grey RES,
+# red SUS. RES is light and nearly grey, so group must never be shown by colour
+# alone: shape or position too. Every figure, the behavioural ones included,
+# reads its group colours from here.
 group:
-  CON: "#8A8A8A"      # neutral grey
-  RES: "#2E7D91"      # cool teal
-  SUS: "#D1543A"      # muted vermillion
+  CON: "#6B7296"      # slate blue
+  RES: "#BFBCB4"      # warm grey
+  SUS: "#C74C56"      # red
 
 # ------------------------------------------------------------- datasets
 # Compartment identity. Used for annotation strips and dataset grouping,
@@ -34,11 +36,27 @@ dataset_label:
 # ------------------------------------------------- signed molecular effect
 # ONE diverging scale for every signed molecular quantity in the manuscript
 # (NES, log2FC, model effect). Blue = lower in the stressed group of the
-# contrast, vermillion = higher. Midpoint is always zero.
+# contrast, yellow = higher. Midpoint is always zero and white (v3), so a
+# missing value needs a fill other than white. The yellow end is the lighter
+# one: its arm is weaker than the blue arm (CIEDE2000 from white 28.4 vs 41.5).
 diverging:
-  low: "#4C566A"
-  mid: "#D8D2C7"
-  high: "#D98B3A"
+  low: "#6679D9"
+  mid: "#FFFFFF"
+  high: "#F2CA4E"
+
+# Fixed colour limits of the diverging scale, by measure (v3.1, 2026-10-06): every figure of a measure uses the same
+# limit, so a colour means the same value everywhere. Full colour is reached just beyond Cohen's "large" (d 0.8,
+# r 0.5); values beyond the limit take full colour and the legend ends read "<=" / ">=". A measure that no other
+# figure shares may take its own symmetric limit. Bars show their value by length: flat fill by sign, no gradient.
+# v3.2 (2026-10-06) adds the manuscript's own signed measures, each at the limit beyond which a value is clearly
+# strong on its scale; colours and the v3.1 limits are unchanged. Renderers read these through nv_diverging(measure =).
+# The <= / >= end labels are unconditional: they say where full colour begins, whether or not a value reaches it.
+diverging_limits:
+  smd: 1              # standardized mean difference (Hedges g, Cohen's d)
+  correlation: 0.6    # Spearman rho, Pearson r
+  nes: 2              # GSEA normalised enrichment score of a GO term, or the median NES over a GO programme's terms
+  z: 2                # z-score of one protein or one measure against its reference distribution (two SD)
+  z_set_mean: 1       # mean of such z-scores over a set of proteins (a signature score)
 
 # ------------------------------------------------------------ evidence
 # Interpretation status. Supported evidence is saturated; descriptive,
@@ -50,10 +68,11 @@ evidence:
   not_audited: "#E6E4DF"
   qc_context: "#B08968"
 
+# not_claimable takes the QC-context tan (v3.2): the former vermillion read as the SUS group red.
 claimability:
   claimable: "#1F3D52"
   claimable_with_caveat: "#5B7C93"
-  not_claimable: "#D1543A"
+  not_claimable: "#B08968"
   not_evaluable: "#D8D6D0"
   not_audited: "#E6E4DF"
 

@@ -87,16 +87,14 @@ if (!all(unique(paste(regional$dataset, regional$spatial_unit, sep = "|")) %in%
 display <- c("Translation", "Chromatin organization",
              "Neuron projection development", "Autophagy")
 
-# Figure 3 d-f records the limit shared by its three NES strips. Keep the
-# candidate's strips on that same colour scale; fail if their data exceed it.
-figure3_source <- repo_path("source_data", "pRoteomics", "figure_03",
-                            "figure_03d_source_data.csv")
-f3 <- utils::read.csv(figure3_source, stringsAsFactors = FALSE)
-if (nrow(f3) != 1L || !is.finite(f3$shared_NES_strip_limit[[1]]))
-  stop("Figure 3 strip scale source is missing or malformed.", call. = FALSE)
-nes_limit <- f3$shared_NES_strip_limit[[1]]
-if (max(abs(regional$NES), na.rm = TRUE) > nes_limit)
-  stop("Candidate NES exceeds the Figure 3 shared colour limit.", call. = FALSE)
+# The strips and the regional matrix use the manuscript's fixed NES colour
+# limit (config/manuscript_palette.yml diverging_limits$nes, palette v3.2), the
+# one Figure 3 uses (Extended Data 6 follows when it is re-rendered), so a
+# colour means the same NES here as there. A value beyond it takes full colour;
+# the strips print every NES and the regional source data keep them uncapped.
+nes_limit <- nv_diverging_limit("nes")
+if (anyNA(regional$NES))
+  stop("Regional exact-term inventory carries a missing NES.", call. = FALSE)
 make_curve <- function(i) {
   s <- sel[i, ]
   z <- curve[curve$GO_ID == s$GO_ID, , drop = FALSE]
@@ -180,7 +178,7 @@ unit_labels <- c("CA1 SLM", "CA1 SO", "CA1 SR", "CA2 SLM", "CA2 SO",
                  "CA1", "CA2", "CA3", "DG")
 regions_plot <- ggplot2::ggplot(regional,
                                 ggplot2::aes(unit_index, term, fill = NES)) +
-  ggplot2::geom_tile(colour = "white",
+  ggplot2::geom_tile(colour = nv_tile_border(),
                      linewidth = nv_lw("tile_border_pt")) +
   ggplot2::geom_point(data = regional[regional$supported, , drop = FALSE],
                       colour = "grey10", size = 0.45) +
@@ -188,8 +186,7 @@ regions_plot <- ggplot2::ggplot(regional,
                       linewidth = nv_lw("reference_pt"),
                       colour = "grey55") +
   ggplot2::facet_grid(contrast ~ ., switch = "y") +
-  nv_diverging(limits = c(-nes_limit, nes_limit), name = "GO-term NES",
-               breaks = c(-2, 0, 2)) +
+  nv_diverging(measure = "nes", name = "GO-term NES") +
   ggplot2::scale_x_continuous(breaks = 1:18, labels = unit_labels,
                               limits = c(0.5, 18.5), expand = c(0, 0)) +
   ggplot2::labs(x = NULL, y = NULL) + nf_theme_tile() +
@@ -202,7 +199,11 @@ regions_plot <- ggplot2::ggplot(regional,
     strip.background = ggplot2::element_rect(fill = "grey95", colour = NA),
     strip.text.y.left = ggplot2::element_text(angle = 0, face = "bold",
                                               size = NF_MIN_PT),
-    legend.position = "bottom")
+    legend.position = "bottom",
+    # wide enough for the five labels of the fixed NES scale (<= -2 ... >= 2),
+    # with the title above the bar so it cannot run into the end label
+    legend.key.width = ggplot2::unit(14, "mm"),
+    legend.title.position = "top")
 
 dir.create(out, recursive = TRUE, showWarnings = FALSE)
 panel_stems <- c("translation", "chromatin", "neuron_projection", "autophagy")

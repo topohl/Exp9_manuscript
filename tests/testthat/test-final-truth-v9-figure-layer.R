@@ -397,12 +397,15 @@ testthat::test_that("no heatmap clips silently", {
   h <- rd(p)
   testthat::expect_gt(nrow(h), 0L)
   testthat::expect_identical(sum(h$status == "SILENT_CLIP"), 0L)
-  # a panel that saturates must disclose it on the colourbar AND keep the
-  # uncapped values in its source data
+  # a panel that saturates must disclose it - on the colourbar, or for a panel
+  # without one (the Figure 3 cards) by the value printed in every tile - AND
+  # keep the uncapped values in its source data
   sat <- h[h$n_above_colour_max + h$n_below_colour_min > 0L, , drop = FALSE]
   if (nrow(sat)) {
+    printed <- if ("disclosed_by_printed_values" %in% names(sat))
+      sat$disclosed_by_printed_values else FALSE
     testthat::expect_true(all(sat$intentional_saturation))
-    testthat::expect_true(all(sat$disclosed_on_colourbar))
+    testthat::expect_true(all(sat$disclosed_on_colourbar | printed))
     testthat::expect_true(all(sat$uncapped_source_values_present))
   }
   # out-of-range values would be painted grey50 by the ggplot2 default oob

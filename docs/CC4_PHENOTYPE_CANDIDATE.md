@@ -39,7 +39,7 @@ Existing import and figure output directories are refused.
 Eight panels at 183 x 230 mm, Arial, editable SVG text and vector PDF:
 
 - a-d: frozen equal-batch trajectories for I2-I5 and A2-A5; small points are batch
-  means. CON #3E3C6F; RES #C6C3BB; SUS #E63A48. Shapes/line types also distinguish groups.
+  means. CON #6B7296; RES #BFBCB4; SUS #C74C56 (manuscript palette v3). Shapes/line types also distinguish groups.
 - e-h: all three modelled ratios of rate ratios with pointwise 95% bootstrap
   intervals, adjusted P values and the context's overall adjusted P value.
 - Matched female/male y scales within phase and one common log effect scale.

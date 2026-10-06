@@ -25,12 +25,15 @@ testthat::test_that("supplementary GO candidate is selection-disclosed and sourc
                                                   "spatial_unit", "contrast")]) > 0)
   testthat::expect_setequal(unique(regions$contrast),
                            c("RES - CON", "SUS - CON", "SUS - RES"))
-  f3 <- lapply(c("d", "e", "f"), function(p) utils::read.csv(repo_path(
-    "source_data", "pRoteomics", "figure_03",
-    paste0("figure_03", p, "_source_data.csv"))))
-  f3_limits <- vapply(f3, function(x) x$shared_NES_strip_limit[[1]], numeric(1))
-  testthat::expect_equal(length(unique(f3_limits)), 1L)
-  testthat::expect_lte(max(abs(regions$NES), na.rm = TRUE), f3_limits[[1]])
+  # the strips and the regional matrix use the manuscript's fixed NES colour limit
+  # (config/manuscript_palette.yml diverging_limits, palette v3.2), the one Figure 3
+  # and Extended Data 6 use; a value beyond it takes full colour and stays uncapped
+  # in the regional source data
+  testthat::expect_false(anyNA(regions$NES))
+  code <- readLines(repo_path("figures", "figure_03_supplementary_go.R"), warn = FALSE)
+  code <- code[!grepl("^\\s*#", code)]
+  testthat::expect_true(any(grepl('nes_limit <- nv_diverging_limit("nes")', code, fixed = TRUE)))
+  testthat::expect_true(any(grepl('nv_diverging(measure = "nes"', code, fixed = TRUE)))
   testthat::expect_identical(nrow(protein), 84L)
   testthat::expect_false(anyDuplicated(protein[c("GO_ID", "gene",
                                                   "contrast")]) > 0)

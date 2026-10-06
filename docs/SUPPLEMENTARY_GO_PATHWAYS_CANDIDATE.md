@@ -45,8 +45,9 @@ The candidate calls `f9_gsea_curve_plot()` in
 used for panels d-f through `f9_gsea_curve()` (the current curves, 3h-j, are
 drawn by `f3a_curve()`). This shares that design's header, running ES, hit
 ticks, three-contrast strip, palette, typography, and recorded NES colour
-limit. The candidate reads the frozen a-i Figure 3d source-data row to verify
-that limit. It also calls `f9_protein_zoom_plot()`, the same drawing function
+limit, which is now the manuscript's fixed NES limit (`config/manuscript_palette.yml`
+`diverging_limits`, palette v3.2) shared with Figure 3 (Extended Data 6 follows
+once it is re-rendered) rather than the frozen a-i Figure 3d value. It also calls `f9_protein_zoom_plot()`, the same drawing function
 used by Figure 3 k-m through `f3a_proteins()`. The seven genes per term follow Figure 3's
 leading-edge, absolute-ranked-statistic selection rule. Their log2 fold
 changes and BH FDRs come from stored mapped protein-level DA files. None of

@@ -79,7 +79,7 @@ F1_CONSTRUCT_Y <- list(crossing_rate = F1_UNIT_PER_H, shared_zone_use = "fractio
 # Figure 1d: the annotation-key stem of each construct (keys <stem>_q2b_{df1,df2,f,holm}),
 # the overall title, and the panel b subtitle.
 F1_TRAJECTORY_KEYS <- c(crossing_rate = "d_cr", shared_zone_use = "d_sz")
-F1_TRAJECTORY_TITLE <- "Active phase after each cage change: sex-stratified model estimates ± 95% CI (CON descriptive means, grey)"
+F1_TRAJECTORY_TITLE <- "Active phase after each cage change: sex-stratified model estimates ± 95% CI (CON descriptive means, dashed)"
 F1_COMBZ_SUBTITLE <- "dashed threshold defines RES/SUS; not a test"
 
 #' Tick labels exactly as ggplot2's default continuous formatter writes them, but with the
@@ -221,7 +221,7 @@ f1_panel_cc1_one <- function(A1, C2, an, k, key, jitter_seed = NA, text_position
     geom_errorbar(data = mm, aes(x = x, ymin = ci_low, ymax = ci_high), inherit.aes = FALSE, width = 0.07, linewidth = 0.4, colour = "black") +
     geom_point(data = mm, aes(x = x, y = estimate), inherit.aes = FALSE, size = 1.2, colour = "black") +
     scale_fill_manual(values = c(CON = "white", GROUP_COL[c("RES", "SUS")]), drop = FALSE) +
-    scale_colour_manual(values = c(`TRUE` = CON_GREY, `FALSE` = "grey20"), guide = "none") +
+    scale_colour_manual(values = c(`TRUE` = CON_MARK, `FALSE` = "grey20"), guide = "none") +
     scale_shape_manual(values = GROUP_SHAPE, drop = FALSE) +
     scale_x_continuous(breaks = 1:2, labels = c("Female", "Male"), limits = c(0.6, 2.5)) +
     labs(x = NULL, y = C_Y[[k]], title = C_TITLE[[k]], caption = cap) +
@@ -247,7 +247,7 @@ f1_panel_cc1 <- function(tab, an, w_mm = F1_BOX$c[1], h_mm = F1_BOX$c[2], jitter
   C2 <- tab("C2_estimates")
   parts <- list(f1_panel_cc1_one(A1, C2, an, "crossing_rate", "cr", jitter_seed[1], text_position, typography),
                 f1_panel_cc1_one(A1, C2, an, "shared_zone_use", "sz", jitter_seed[length(jitter_seed)], text_position, typography))
-  ann <- patchwork::plot_annotation(title = "First active phase after CC1 (SIS; CON hollow grey, not modelled)",
+  ann <- patchwork::plot_annotation(title = "First active phase after CC1 (SIS; CON hollow, not modelled)",
                                     theme = theme(plot.title = element_text(size = BASE_PT, colour = INK)))
   pc <- if (identical(text_position, "plot")) {
     parts[[1]] <- parts[[1]] + theme(legend.position = "top", legend.justification = "left", legend.location = "plot")
@@ -283,8 +283,8 @@ f1_panel_trajectory_one <- function(C2, B2, an, k, key, family = "P-TR", show_co
     if (nrow(con) != 8L) stop("panel d: expected 8 CON descriptive means for ", k, call. = FALSE)
     con$CC <- as.integer(sub("CC", "", con$CC)); con$Sex <- factor(con$Sex, levels = c("Female", "Male"))
     con_layers <- list(
-      geom_line(data = con, aes(CC, mean, group = 1), inherit.aes = FALSE, colour = CON_GREY, linetype = "22", linewidth = 0.4),
-      geom_point(data = con, aes(CC, mean), inherit.aes = FALSE, colour = CON_GREY, fill = "white", shape = 21, size = 1.1, stroke = 0.35))
+      geom_line(data = con, aes(CC, mean, group = 1), inherit.aes = FALSE, colour = CON_MARK, linetype = "22", linewidth = 0.4),
+      geom_point(data = con, aes(CC, mean), inherit.aes = FALSE, colour = CON_MARK, fill = "white", shape = 21, size = 1.1, stroke = 0.35))
   }
   sub_txt <- sprintf("Q2b F(%s, %s) = %s, %s Holm p = %s", fa(paste0(key, "_q2b_df1")), fa(paste0(key, "_q2b_df2")),
                      fa(paste0(key, "_q2b_f")), family, fa(paste0(key, "_q2b_holm")))
@@ -310,7 +310,7 @@ f1_panel_trajectory_one <- function(C2, B2, an, k, key, family = "P-TR", show_co
 #' family      the Holm family printed after the Q2b test: one value, or one per construct
 #'             ("P-TR" for the primary constructs, "S-TR-ORG" for the secondary ones);
 #' title       overall title (NULL: none); caption  overall caption (NULL: none);
-#' show_con    draw CON's stored descriptive means in grey (Figure 1d: TRUE);
+#' show_con    draw CON's stored descriptive means, dashed in the CON colour (Figure 1d: TRUE);
 #' compact_header  TRUE: no patchwork outer margin at the top and sides (the 5.5-pt default)
 #'             and 1 pt between the collected legend and the plots, so the first title sits at
 #'             the Figure 1 top margin under the panel letter; the bottom keeps 3 pt under the
@@ -373,7 +373,7 @@ f1_panel_association <- function(tab, an, w_mm = F1_BOX$e[1], h_mm = F1_BOX$e[2]
   e_q <- if (cand) bh_sci_minus(fa("e_q")) else fa("e_q")
   e_lab <- sprintf("Spearman ρ = %s\n95%% CI [%s, %s]\nBH q = %s, n = %s", fa("e_rho"), fa("e_rho_lo"), fa("e_rho_hi"), e_q, fa("e_n"))
   pe <- ggplot(A2, aes(crossing_rate_equiv_per_h, observed_CombZ)) +
-    geom_point(size = 1.05, stroke = 0.2, alpha = 0.9, shape = 21, colour = "grey20", fill = "#6E8B99") +
+    geom_point(size = 1.05, stroke = 0.2, alpha = 0.9, shape = 21, colour = "grey20", fill = POOLED_FILL) +
     annotate("text", x = Inf, y = Inf, label = e_lab, hjust = 1.04, vjust = 1.15, size = NOTE_PT / .pt, colour = INK, lineheight = 1.08) +
     scale_y_continuous(expand = expansion(mult = c(0.05, 0.22)), labels = if (isTRUE(minus_ticks)) f1_minus_labels else waiver()) +
     labs(x = F1_EARLY_RATE_X, y = "Later CombZ",

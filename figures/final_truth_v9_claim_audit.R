@@ -256,37 +256,59 @@ lim_prot <- unique(unlist(lapply(c("syn", "rna", "ox"), function(k) {
   z <- nv_read_csv(file.path(D3, sprintf("v9_prot_%s_source_data.csv", k)))
   as.numeric(sub(".*limit [+]/-([0-9.]+).*", "\\1", z$shared_scale_note[1]))
 })))
-lim_strip <- unique(unlist(lapply(
-  c(file.path(D3, paste0("v9_curve_", c("syn", "rna", "ox"), "_source_data.csv")),
-    file.path(SD, "extended_data",
-              paste0("v9_ed_gsea_curve_", c("syn", "rna", "ox"),
-                     "_source_data.csv"))),
-  function(p) nv_read_csv(p)$shared_NES_strip_limit[1])))
-lim_atlas <- unique(unlist(lapply(
-  c(file.path(D3, "v9_atlas_source_data.csv"),
-    file.path(SD, "extended_data",
-              paste0("v9_ed_atlas_", c("rescon", "suscon"), "_source_data.csv"))),
-  function(p) nv_read_csv(p)$shared_NES_scale_limit[1])))
+# Every listed NES panel must RECORD the colour limit it drew: a sidecar without
+# the column fails the audit instead of being skipped. Since palette v3.2 the
+# renderers draw the manuscript's fixed NES limit; a panel whose record differs
+# was drawn before it (Extended Data 6 needs upstream inputs that this
+# repository records as provenance only) and breaks the shared scale until it
+# is re-rendered.
+rec_limit <- function(p, col) {
+  if (!file.exists(p)) { FAIL(paste0("S13: missing source data ", p)); return(NA_real_) }
+  z <- nv_read_csv(p)
+  if (!col %in% names(z)) {
+    FAIL(paste0("S13: ", basename(p), " does not record its colour limit (", col, ")"))
+    return(NA_real_)
+  }
+  as.numeric(z[[col]][1])
+}
+by_panel <- function(x) paste(sprintf("%s %.4g",
+  sub("_source_data[.]csv$", "", basename(names(x))), x), collapse = "; ")
+strip_files <- c(file.path(D3, paste0("v9_card_", c("syn", "rna", "ox"), "_source_data.csv")),
+                 file.path(SD, "extended_data", paste0("v9_ed_gsea_curve_",
+                           c("syn", "rna", "ox"), "_source_data.csv")))
+atlas_files <- c(file.path(D3, "v9_atlas_source_data.csv"),
+                 file.path(SD, "extended_data", paste0("v9_ed_atlas_",
+                           c("rescon", "suscon"), "_source_data.csv")))
+lim_strip_by <- vapply(stats::setNames(strip_files, strip_files), rec_limit,
+                       numeric(1), col = "shared_NES_strip_limit")
+lim_atlas_by <- vapply(stats::setNames(atlas_files, atlas_files), rec_limit,
+                       numeric(1), col = "shared_NES_scale_limit")
+lim_strip <- unique(round(lim_strip_by, 9))
+lim_atlas <- unique(round(lim_atlas_by, 9))
 scal <- data.frame(
-  quantity = c("protein log2 fold change", "three-contrast NES strip",
+  quantity = c("protein log2 fold change", "three-contrast GO-term NES",
                "theme atlas median NES", "baseline CON z-score",
                "module-member CON z-score", "spatial similarity"),
-  panels = c("F3 g/h/i", "F3 d/e/f + ED6 c/d/e", "F3b + ED6 a/b", "F2d",
+  panels = c("F3 k/l/m", "F3 e/f/g cards + ED6 c/d/e strips", "F3b + ED6 a/b", "F2d",
              "ED_WGCNA a", "ED8a"),
   n_distinct_limits = c(length(lim_prot), length(lim_strip), length(lim_atlas),
                         1L, 1L, 1L),
   shared_limit = c(lim_prot[1], lim_strip[1], lim_atlas[1], NA, NA, NA),
+  limits_by_panel = c(NA, by_panel(lim_strip_by), by_panel(lim_atlas_by), NA, NA, NA),
   same_quantity_shared_scale = c(length(lim_prot) == 1L, length(lim_strip) == 1L,
                                  length(lim_atlas) == 1L, TRUE, TRUE, TRUE),
   midpoint_zero = TRUE,
   justification = c("same quantity, same contrasts, direct comparison intended",
-                    "same nine NES values drawn twice",
+                    "the exemplar terms' NES, drawn in the cards and the ED6 strips",
                     "one three-group trajectory across three atlases",
                     "single panel", "single panel",
                     "one metric and one zero reference across three blocks"),
   stringsAsFactors = FALSE)
-if (any(!scal$same_quantity_shared_scale))
-  FAIL("a quantity drawn more than once does not share one scale")
+for (i in which(!scal$same_quantity_shared_scale))
+  FAIL(paste0("a quantity drawn more than once does not share one scale: ",
+              scal$quantity[i], " (", scal$limits_by_panel[i], "). A panel ",
+              "recording a limit other than the palette's (", nv_diverging_limit("nes"),
+              ") was drawn before palette v3.2; re-render it."))
 write_csv_safe(scal, file.path(OUT, "final_scale_consistency_audit.csv"))
 
 # ===================================================== report

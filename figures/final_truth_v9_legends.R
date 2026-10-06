@@ -118,10 +118,43 @@ MICROGLIA <- paste0(
   "not a sorted or single-cell microglial population, so this panel ",
   "cannot establish a cell-intrinsic microglial property.")
 STRIPKEY <- paste0(
-  "The three-cell strip is keyed by its printed numbers, not by the atlas ",
-  "colourbar: strip colour uses the NES range shared by all six ",
-  "ranked-enrichment panels, which is wider than the theme-summary range ",
-  "of the atlas.")
+  "The three-cell strip prints its NES; its colour uses the same fixed NES ",
+  "scale as the atlas colourbar (limit ", format(nv_diverging_limit("nes")),
+  "), and a value beyond the limit takes full colour.")
+# Where a heatmap's colour saturates: the manuscript's fixed limit of its measure
+# (config/manuscript_palette.yml diverging_limits, palette v3.2), read from the
+# palette so a legend cannot drift from its panel.
+SATURATES <- function(measure, what) paste0(
+  "Colour saturates at ", what, " ", format(nv_diverging_limit(measure)),
+  " in either direction; values beyond take full colour, and the source data ",
+  "keep every value.")
+# The Figure 3 cards print every NES; their colour follows the same fixed scale.
+CARDKEY <- paste0(
+  "Tile colour uses the manuscript's fixed NES scale and saturates at ",
+  format(nv_diverging_limit("nes")), " in either direction; every tile prints ",
+  "its NES.")
+# Extended Data 6 is drawn from upstream inputs this repository records as
+# provenance only, so its panels can predate palette v3.2. Its legends state the
+# limit the panel's source data record, not the one the renderer would draw now.
+drawn_nes_limit <- function(id, col) {
+  d <- sidecar("extended_data", id)
+  if (is.null(d) || !col %in% names(d)) return(NA_real_)
+  suppressWarnings(as.numeric(d[[col]][1]))
+}
+DRAWN_ATLAS <- function(id) {
+  lim <- drawn_nes_limit(id, "shared_NES_scale_limit")
+  if (!is.finite(lim) || isTRUE(all.equal(lim, nv_diverging_limit("nes"))))
+    return(SATURATES("nes", "a median NES of"))
+  sprintf(paste0("Colour uses one symmetric NES scale to %.2f in either ",
+                 "direction, shared by the three contrast atlases."), lim)
+}
+DRAWN_STRIP <- function(id) {
+  lim <- drawn_nes_limit(id, "shared_NES_strip_limit")
+  if (!is.finite(lim) || isTRUE(all.equal(lim, nv_diverging_limit("nes"))))
+    return(STRIPKEY)
+  sprintf(paste0("The three-cell strip prints its NES; its colour uses one ",
+                 "symmetric NES scale to %.2f, shared by the three strips."), lim)
+}
 
 # ------------------------------------------------------- per-panel declaration
 #
@@ -161,7 +194,10 @@ ROLES <- list(
            "(n = 3). Rows are top-RANKED proteins from prespecified CON-only ",
            "anatomical contrasts, not significance-filtered hits, and no ",
            "stress information enters either the selection or the row order. ",
-           "Rows are ordered by baseline peak spatial unit. ", DESCRIPTIVE)),
+           "Rows are ordered by baseline peak spatial unit. Each protein is ",
+           "standardised across the units of its own compartment, so in the ",
+           "four-unit soma and microglia-enriched blocks a z-score cannot exceed ",
+           "1.5. ", SATURATES("z", "a z-score of"), " ", DESCRIPTIVE)),
   R("v9_compartment", "baseline abundance of marker proteins (CON z-score)",
     "animal (CON only)", "descriptive", "prespecified marker panel", "none",
     "none", "no",
@@ -216,7 +252,8 @@ ROLES <- list(
            "the RES-CON and SUS-CON atlases of Extended Data Fig. 6; theme ",
            "aggregation does not refit enrichment or create a programme-level ",
            "p-value or FDR. Numbered outlines identify the three drill-down ",
-           "exemplars. ", GSEA_N, " ", CURATED)),
+           "exemplars. ", SATURATES("nes", "a median NES of"), " ", GSEA_N, " ",
+           CURATED)),
   R("v9_adaptation_state",
     "paired programme median NES for RES-CON and SUS-CON", "animal",
     "descriptive aggregation and classification of inferential inputs",
@@ -258,7 +295,7 @@ ROLES <- list(
            "and two additional programme terms are shown for RES-CON, ",
            "SUS-CON and SUS-RES; an outline marks constituent-term BH FDR < ",
            "0.05. This is a drill-down of the same enrichment analysis, not ",
-           "independent validation. ", GSEA_N, " ", ALGEBRA)),
+           "independent validation. ", CARDKEY, " ", GSEA_N, " ", ALGEBRA)),
   R("v9_card_rna", "constituent-term NES in all three pairwise contrasts",
     "animal", "inferential inputs displayed descriptively",
     "fixed curve term plus the two highest-ranked SUS-RES terms by stored BH FDR, absolute NES and GO ID",
@@ -267,7 +304,7 @@ ROLES <- list(
     paste0("Soma CA2 RNA processing exemplar. The fixed curve term and two ",
            "additional programme terms are shown for all three pairwise ",
            "contrasts. This is a same-analysis drill-down, not independent ",
-           "validation. ", GSEA_N, " ", ALGEBRA)),
+           "validation. ", CARDKEY, " ", GSEA_N, " ", ALGEBRA)),
   R("v9_card_ox", "constituent-term NES in all three pairwise contrasts",
     "animal", "inferential inputs displayed descriptively",
     "fixed curve term plus the two highest-ranked SUS-RES terms by stored BH FDR, absolute NES and GO ID",
@@ -277,7 +314,8 @@ ROLES <- list(
            "term and two additional programme terms are shown for all three ",
            "pairwise contrasts. The ROI is microglia-enriched rather than a ",
            "sorted cell population. This is a same-analysis drill-down, not ",
-           "independent validation. ", GSEA_N, " ", MICROGLIA, " ", ALGEBRA)),
+           "independent validation. ", CARDKEY, " ", GSEA_N, " ", MICROGLIA, " ",
+           ALGEBRA)),
   R("v9_curve_syn", "running enrichment score", "animal", "inferential",
     "fixed exemplar constituent term", "gene set enrichment", "BH within the GSEA family",
     "no", paste0("Ranked SUS-RES enrichment evidence for the fixed constituent ",
@@ -325,8 +363,8 @@ ROLES <- list(
            "mapped canonical GO terms and are DESCRIPTIVE. Support markers ",
            "indicate that at least one constituent canonical GO term passed ",
            "its prespecified FDR threshold. Theme aggregation does not ",
-           "constitute an additional multiple-testing family. ", CURATED,
-           " ", ALGEBRA)),
+           "constitute an additional multiple-testing family. ",
+           DRAWN_ATLAS("v9_ed_atlas_rescon"), " ", CURATED, " ", ALGEBRA)),
   R("v9_ed_atlas_suscon", "median NES across mapped canonical GO terms",
     "animal", "descriptive aggregation of inferential inputs",
     "claim-eligible themes only",
@@ -338,7 +376,8 @@ ROLES <- list(
            "Theme colours are a DESCRIPTIVE median of mapped canonical GO ",
            "terms; support markers indicate at least one FDR-supported ",
            "constituent term. Theme aggregation does not constitute an ",
-           "additional multiple-testing family. ", CURATED, " ", ALGEBRA))
+           "additional multiple-testing family. ",
+           DRAWN_ATLAS("v9_ed_atlas_suscon"), " ", CURATED, " ", ALGEBRA))
 )
 
 ED_DEFAULT_LEGEND <- list(
@@ -352,10 +391,12 @@ ED_DEFAULT_LEGEND <- list(
   # This panel is the CON-only spatial fingerprint, not an external inventory.
   # The old text was copied from its neighbour and described the wrong analysis.
   v9_ed_fingerprint_full = paste0(
-    "Complete CON-only spatial fingerprint across all spatial units: the genes ",
-    "selected by the prespecified control-only anatomical contrasts, shown as ",
-    "within-protein standardised control abundance. Main Figure 2d shows a ",
-    "subset of these rows. ", DESCRIPTIVE),
+    "Complete CON-only spatial fingerprint of external prespecified signatures ",
+    "across all spatial units. Each value is a signature score: the mean ",
+    "within-protein standardised control abundance (z) of the signature's ",
+    "measured member proteins. Main Figure 2d shows named proteins from the ",
+    "CON-only anatomical contrasts instead. ",
+    SATURATES("z_set_mean", "a mean z-score of"), " ", DESCRIPTIVE),
   # Two corrections here. The grid is 63 cells and 30 pairings were tested, so
   # "every contrast against every signature" overstated it; and the significance
   # statistic is signature_FDR, the signature-family correction, NOT the column
@@ -408,9 +449,14 @@ ED_DEFAULT_LEGEND <- list(
     "Worked example for one module. The active historical label is unchanged ",
     "and the proposed oligodendrocyte / myelin label is NOT activated; the ",
     "external evidence is context only. ", DESCRIPTIVE),
-  v9_ed_gsea_curve_syn = paste0("Detailed ranked enrichment. ", GSEA_N, " ", ALGEBRA),
-  v9_ed_gsea_curve_rna = paste0("Detailed ranked enrichment. ", GSEA_N, " ", ALGEBRA),
-  v9_ed_gsea_curve_ox = paste0("Detailed ranked enrichment. ", GSEA_N, " ",
+  v9_ed_gsea_curve_syn = paste0("Detailed ranked enrichment. ",
+                                DRAWN_STRIP("v9_ed_gsea_curve_syn"), " ", GSEA_N,
+                                " ", ALGEBRA),
+  v9_ed_gsea_curve_rna = paste0("Detailed ranked enrichment. ",
+                                DRAWN_STRIP("v9_ed_gsea_curve_rna"), " ", GSEA_N,
+                                " ", ALGEBRA),
+  v9_ed_gsea_curve_ox = paste0("Detailed ranked enrichment. ",
+                               DRAWN_STRIP("v9_ed_gsea_curve_ox"), " ", GSEA_N, " ",
                                MICROGLIA, " ", ALGEBRA),
   v9_ed_atlas_rescon = paste0(
     "RES vs CON theme atlas. Theme colours are a descriptive median of ",
@@ -444,10 +490,17 @@ ED_DEFAULT_LEGEND <- list(
     "profiles are centred within protein, so the mean similarity of a block ",
     "of u units is fixed at about -1/(u-1), which is -0.11 for the ten ",
     "neuropil units and -0.33 for the four soma and four microglia units. ",
-    "Neither region-level block contains a positive value, so the neutral ",
-    "mid-colour never appears in them; the soma block nevertheless holds ",
-    "the largest absolute value in the panel and sets the shared limit. ",
-    DESCRIPTIVE),
+    "Neither region-level block contains a positive value. The colour limit ",
+    "is the manuscript's fixed correlation limit of ",
+    format(nv_diverging_limit("correlation")), ", ",
+    local({
+      d <- sidecar("extended_data", "v9_ed_similarity")
+      v <- if (is.null(d)) NA_real_ else suppressWarnings(as.numeric(d$median_similarity))
+      if (length(v) && all(is.finite(v)) &&
+          max(abs(v)) <= nv_diverging_limit("correlation"))
+        "inside which every value of the panel lies" else
+        "and a value beyond it takes full colour"
+    }), "; the omitted diagonal is grey. ", DESCRIPTIVE),
   v9_ed_network_distance = paste0(
     "Animal-level network distance from the CON consensus. For each CON ",
     "animal the distance was computed to a LEAVE-ONE-CON-ANIMAL-OUT ",

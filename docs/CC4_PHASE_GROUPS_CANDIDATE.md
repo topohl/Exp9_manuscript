@@ -15,12 +15,15 @@ Panel library: `R/panels/cc4_phase_groups_candidate.R`.
 Output: a new directory under `results/figures/manuscript_candidates/`, with
 three figures in PNG/PDF/SVG and render input/output hashes.
 
-The candidate uses the established behavioural identity palette from
-`R/vendor/plotting_nature.R`: CON blue-purple #3E3C6F, RES warm grey #C6C3BB,
-SUS red #E63A48. These agree with the upstream publication theme. The conflicting
-`config/manuscript_palette.yml` values are deliberately not propagated into
-this behavioural figure; other figure families are unchanged. Shapes and line
-styles redundantly identify groups, and the light RES symbols have dark edges.
+The candidate uses the manuscript group palette, `config/manuscript_palette.yml`
+(v3, 2026-10-06): CON slate blue #6B7296, RES warm grey #BFBCB4, SUS red
+#C74C56. Every figure family reads it, and the upstream publication theme
+(MMMSociability `Functions/manuscript_palette.R`) pins the same values. Until
+v3 this candidate used the older behavioural trio of `R/vendor/plotting_nature.R`
+(#3E3C6F / #C6C3BB / #E63A48) because the palette file then held conflicting
+values; the vendored file stays byte-identical and is no longer read for group
+colour. Shapes and line styles redundantly identify groups, and the light RES
+symbols have dark edges.
 
 1. `cc4_group_activity`: I2-I5 and A1-A5 absolute activity. Small symbols are
    batch estimates; large symbols are equal-batch means. Absolute panels show
