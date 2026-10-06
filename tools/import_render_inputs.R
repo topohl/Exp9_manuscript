@@ -102,8 +102,11 @@ for (cf in c("figures/figure_contract.yml",
   ## Figures this repository renders itself are skipped for the same reason. The
   ## a-m Figure 3 is produced here by figures/final_truth_v9_figure_03.R from
   ## source_data/pRoteomics, while pRoteomics still holds the superseded a-i
-  ## panels at the same results/ paths.
-  LOCALLY_RENDERED <- c("figure_03")
+  ## panels at the same results/ paths. Figure 2 and the proteomics Extended
+  ## Data pages are rendered here too (figures/final_truth_v9_figure_02.R and
+  ## figures/final_truth_v9_extended_data.R) and promoted from those renders.
+  LOCALLY_RENDERED <- c("figure_02", "figure_03", "extended_data_01", "extended_data_02",
+                        "extended_data_03", "extended_data_06", "extended_data_08")
   if (!is.null(y$figures))
     y$figures <- Filter(function(f)
       (!identical(f$analysis_repository, "topohl/MMMSociability") ||
