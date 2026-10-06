@@ -6,17 +6,18 @@
 # quieter than inferentially supported information.
 #
 # No red-vs-green contrast is used anywhere. The diverging scale is
-# colour-blind safe (blue-grey / dark orange, not red / green).
+# colour-blind safe (blue / yellow, not red / green).
 
-palette_version: manuscript_palette_v2
+palette_version: manuscript_palette_v3
 
 # ---------------------------------------------------------------- groups
-# Experimental group identity, the colours of Figure 1 (v2, 2026-10-05). RES is
-# light, so group must never be shown by colour alone: shape or position too.
+# Experimental group identity (v3, 2026-10-06): slate blue CON, warm grey RES,
+# red SUS. RES is light and nearly grey, so group must never be shown by colour
+# alone: shape or position too.
 group:
-  CON: "#3E3C6F"      # navy
-  RES: "#C6C3BB"      # beige
-  SUS: "#E63A48"      # red
+  CON: "#6B7296"      # slate blue
+  RES: "#BFBCB4"      # warm grey
+  SUS: "#C74C56"      # red
 
 # ------------------------------------------------------------- datasets
 # Compartment identity. Used for annotation strips and dataset grouping,
@@ -33,14 +34,14 @@ dataset_label:
 
 # ------------------------------------------------- signed molecular effect
 # ONE diverging scale for every signed molecular quantity in the manuscript
-# (NES, log2FC, model effect). Blue-grey = lower in the stressed group of the
-# contrast, dark orange = higher. Midpoint is always zero. Both ends lie at the
-# same perceptual distance from the midpoint (CIEDE2000 44.8 and 44.6; v2), so
-# positive and negative effects of equal size look equally strong.
+# (NES, log2FC, model effect). Blue = lower in the stressed group of the
+# contrast, yellow = higher. Midpoint is always zero and white (v3), so a
+# missing value needs a fill other than white. The yellow end is the lighter
+# one: its arm is weaker than the blue arm (CIEDE2000 from white 28.4 vs 41.5).
 diverging:
-  low: "#4C566A"
-  mid: "#D8D2C7"
-  high: "#96460A"
+  low: "#6679D9"
+  mid: "#FFFFFF"
+  high: "#F2CA4E"
 
 # ------------------------------------------------------------ evidence
 # Interpretation status. Supported evidence is saturated; descriptive,
