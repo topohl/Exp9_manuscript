@@ -185,6 +185,7 @@ f9_external_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                  "CA1 laminar identity" = "#C2A878"), name = NULL) +
     ggplot2::scale_y_continuous(breaks = k$ypos, labels = k$lab,
                                 expand = ggplot2::expansion(add = 0.8)) +
+    ggplot2::scale_x_continuous(labels = nv_minus_labels) +
     ggplot2::labs(x = "NES vs external hippocampal signature", y = NULL) +
     nf_theme(grid = "x") +
     ggplot2::theme(axis.text.y = ggplot2::element_text(size = NF_MIN_PT),
@@ -408,7 +409,11 @@ f9_protein_zoom_plot <- function(z, lim, show_legend = FALSE,
   # The FDR overlay is omitted in the three main Figure 3 programs: every
   # BH_FDR there is >= 0.52. The optional ring is for broader source sets
   # where supported proteins may occur.
-  COL <- stats::setNames(c("#C0442C", "#7C8A93", "#2C6E9B"),
+  # Contrast colours follow the group palette (v3): RES - CON a darker RES grey
+  # (the light RES itself is too faint for small points), SUS - CON the SUS red,
+  # SUS - RES neutral ink. The old red-orange RES - CON read as SUS.
+  gc <- nv_group_colours()
+  COL <- stats::setNames(c(nv_darken(gc[["RES"]]), gc[["SUS"]], "grey20"),
                          contrast_display)
   SHP <- stats::setNames(c(16, 17, 15), contrast_display)
 
@@ -428,7 +433,8 @@ f9_protein_zoom_plot <- function(z, lim, show_legend = FALSE,
                                  guide = ggplot2::guide_legend(order = 1)) +
     ggplot2::scale_shape_manual(values = SHP, name = "Contrast",
                                 guide = ggplot2::guide_legend(order = 1)) +
-    ggplot2::scale_x_continuous(limits = c(-lim, lim), breaks = axis_breaks) +
+    ggplot2::scale_x_continuous(limits = c(-lim, lim), breaks = axis_breaks,
+                                labels = nv_minus_labels) +
     ggplot2::labs(x = "log2 fold change", y = NULL) +
     nf_theme(grid = "y") +
     ggplot2::theme(
@@ -494,6 +500,7 @@ f9_gsea_curve_plot <- function(prog, ev, tr, lim, idx,
                       colour = "grey55", linetype = "22") +
     ggplot2::scale_x_continuous(expand = x_expand, limits = c(1, N),
                                 breaks = c(1, N), labels = c("SUS", "RES")) +
+    ggplot2::scale_y_continuous(labels = nv_minus_labels) +
     ggplot2::labs(x = NULL, y = "ES") +
     nf_theme() +
     ggplot2::theme(plot.margin = ggplot2::margin(0.5, 1, 0, 1, "mm"),
@@ -518,15 +525,21 @@ f9_gsea_curve_plot <- function(prog, ev, tr, lim, idx,
   tr$short <- factor(tr$short, levels = tr$short)
   tr$sig <- is.finite(tr$GSEA_FDR) & tr$GSEA_FDR < 0.05
   # ONE limit for every three-contrast NES strip in the family (F3 d/e/f and
-  # ED6 c/d/e), so the same colour means the same NES everywhere
+  # ED6 c/d/e), so the same colour means the same NES everywhere: the
+  # manuscript's fixed NES limit. A value beyond it takes full colour, and the
+  # tile prints its NES. `lim` is recorded in the source data and must be that
+  # limit, because a strip has no colourbar to disclose any other
+  if (!isTRUE(all.equal(as.numeric(lim), nv_diverging_limit("nes"))))
+    stop("f9_gsea_curve_plot: lim must be the manuscript's fixed NES limit (",
+         nv_diverging_limit("nes"), "), got ", lim, call. = FALSE)
   bot <- ggplot2::ggplot(tr, ggplot2::aes(short, 1, fill = NES)) +
-    ggplot2::geom_tile(colour = "white", linewidth = nv_lw("tile_border_pt")) +
+    ggplot2::geom_tile(colour = nv_tile_border(), linewidth = nv_lw("tile_border_pt")) +
     ggplot2::geom_text(ggplot2::aes(label = sprintf("%.1f", NES)), family = fam,
                        size = nf_sz(5.0)) +
     ggplot2::geom_point(data = tr[tr$sig, , drop = FALSE],
                         ggplot2::aes(short, 1.44), size = 0.4, colour = "black",
                         inherit.aes = FALSE) +
-    nv_diverging(limits = c(-lim, lim), name = NULL, guide = "none") +
+    nv_diverging(measure = "nes", name = NULL, guide = "none") +
     ggplot2::scale_y_continuous(limits = c(0.5, 1.62), expand = c(0, 0)) +
     ggplot2::labs(x = NULL, y = NULL) +
     nf_theme_tile() +
@@ -766,19 +779,19 @@ f9_anatomy_bridge <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # three atlases is nearly identical (0.378 / 0.386 / 0.451), so no atlas is
 # compressed into a flat field. The common scale is adopted. The underlying NES
 # is unchanged - only the mapping from NES to colour.
+#
+# Palette v3.2 (2026-10-06). The common limit is no longer the data maximum
+# (2.713, set by two SUS-CON OXPHOS cells, which left most cells pale) but the
+# manuscript's fixed NES limit, +/-2 (config/manuscript_palette.yml
+# diverging_limits$nes), shared with the Figure 3 atlas, the cards and every
+# GO-term NES strip. Values beyond it take full colour (on the data of
+# 2026-10-06: 2 of 126 SUS-RES cells in Figure 3b, 6 of 126 SUS-CON cells in
+# ED6b, none in the RES-CON atlas) and the colourbar ends read <= / >=; the
+# sidecar keeps every median NES.
 
-# the limit, computed once across ALL cells displayed in any of the three
-f9_atlas_limit <- local({
-  cache <- NULL
-  function(th) {
-    if (!is.null(cache)) return(cache)
-    v <- unlist(lapply(c("RES - CON", "SUS - CON", "SUS - RES"), function(ct) {
-      f9_atlas_cells(th, ct)$median_NES
-    }))
-    cache <<- max(abs(v), na.rm = TRUE)
-    cache
-  }
-})
+# the limit shared by the three atlases: the manuscript's fixed NES limit. `th`
+# is unused and kept for the callers.
+f9_atlas_limit <- function(th = NULL) nv_diverging_limit("nes")
 
 # the cell aggregation, identical to the frozen v7 rule
 f9_atlas_cells <- function(th, contrast) {
@@ -841,16 +854,14 @@ f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   y_comp <- ny + 2.3; y_reg <- ny + 1.05
   lab_w <- as.numeric(panel$label_units %||% NF_LAB)
   shared <- f9_atlas_limit(th)
-  lim <- shared * c(-1, 1)
 
   p <- ggplot2::ggplot(cells, ggplot2::aes(xpos, ypos)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = median_NES), colour = "white",
+    ggplot2::geom_tile(ggplot2::aes(fill = median_NES), colour = nv_tile_border(),
                        linewidth = 0.1) +
     ggplot2::geom_point(data = cells[cells$n_fdr > 0, , drop = FALSE],
                         ggplot2::aes(xpos, ypos), size = 0.45,
                         colour = "grey10") +
-    nv_diverging(limits = lim, name = "Median normalised\nenrichment score",
-                 breaks = c(-2, 0, 2)) +
+    nv_diverging(measure = "nes", name = "Median normalised\nenrichment score") +
     ggplot2::geom_text(
       data = data.frame(y = seq_len(ny), l = unname(SHORT[rev(ord)])),
       ggplot2::aes(x = 0.5 - lab_w + 0.2, y = y, label = l),
@@ -879,9 +890,10 @@ f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                     "support is, which is tabulated per cell in ",
                     "atlas_support_breadth_audit.csv.
 ",
-                    "Colour scale is shared by all three ",
-                    "contrast atlases (", sprintf("\u00b1%.2f", shared),
-                    "), so they can be compared directly.")) +
+                    "Colour scale is the manuscript's fixed NES scale (",
+                    sprintf("\u00b1%g", shared), "; values beyond it take full ",
+                    "colour), shared by all three contrast atlases, so they can ",
+                    "be compared directly.")) +
     nf_theme_tile() +
     ggplot2::theme(
       axis.text.x = ggplot2::element_text(size = NF_MIN_PT, colour = "grey25"),
@@ -932,9 +944,10 @@ f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     linewidth = 0.18, colour = "grey72")
   cells$shared_NES_scale_limit <- shared
   cells$shared_scale_note <- paste0(
-    "one symmetric NES colour scale shared by RES-CON, SUS-CON and SUS-RES, ",
-    "derived from the maximum absolute median NES across all cells displayed ",
-    "in any of the three atlases")
+    "one symmetric NES colour scale shared by RES-CON, SUS-CON and SUS-RES: the ",
+    "manuscript's fixed NES colour limit +/-", shared, " (config/manuscript_",
+    "palette.yml diverging_limits), shared by every GO-term NES panel; a median ",
+    "NES beyond it takes full colour and is kept here uncapped")
   write_csv_safe(cells, csv_path)
   nv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))

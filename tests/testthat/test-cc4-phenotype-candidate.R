@@ -62,7 +62,8 @@ testthat::test_that("eight panels use frozen values, shared scales and the behav
     sex<-if(i%%2==1)"Female" else "Male";phase<-if(i<=2)"Inactive" else "Active"
     expected<-subset(d$summary,Sex==sex&Phase==phase&Measure=="Rate"&PhaseLabel!="A1")
     testthat::expect_equal(p[[i]]$data$Estimate,expected$Estimate)
-    testthat::expect_equal(p[[i]]$scales$get_scales("fill")$palette(3),nature_palette("group"))
+    testthat::expect_equal(p[[i]]$scales$get_scales("fill")$palette(3),
+                           unlist(yaml::read_yaml(repo_path("config","manuscript_palette.yml"))$group)[c("CON","RES","SUS")])
     testthat::expect_equal(p[[i+4]]$data$Estimate,subset(s$contrasts,Sex==sex&Phase==phase)$Estimate)
   }
   testthat::expect_equal(p[[1]]$scales$get_scales("y")$limits,p[[2]]$scales$get_scales("y")$limits)

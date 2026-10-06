@@ -44,7 +44,7 @@ shows how the groups were defined, not a test of them.
 changes per observed hour, h⁻¹), an index of cage-scale relocation. Right,
 shared RFID-position occupancy: the fraction of co-assigned dyadic time an animal
 was assigned to the same RFID position as its current tracked cage-mates, an
-index of spatial overlap with cage-mates. Points, animals; hollow grey points, CON, shown for
+index of spatial overlap with cage-mates. Points, animals; hollow points in the CON colour, CON, shown for
 reference and not modelled. Black points and bars, model-based RES and SUS means
 with 95% confidence intervals from sex-stratified linear mixed models of SIS
 animals (`y ~ Batch + group + (1 | cage epoch)`, Kenward–Roger). Printed:
@@ -58,8 +58,8 @@ CC1.
 **(d)** Active phase after each of CC1–CC4. Lines, model-based RES and SUS means
 with 95% confidence intervals from sex-stratified mixed models with cage change
 as a categorical factor, animal and cage-epoch random intercepts, and, for
-the position-change rate, an uncorrelated random slope over cage changes; grey dashed
-lines, descriptive CON means. Printed: the joint Kenward–Roger F test of whether
+the position-change rate, an uncorrelated random slope over cage changes; dashed lines
+in the CON colour, descriptive CON means. Printed: the joint Kenward–Roger F test of whether
 the RES − SUS trajectory differs between sexes (three group × cage change × sex
 terms in the pooled SIS model) with its Holm-adjusted p across the two primary
 measures (family P-TR, m = 2). The cage-change-averaged sex moderation is a

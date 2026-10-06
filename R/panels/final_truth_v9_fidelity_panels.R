@@ -13,7 +13,8 @@
 #     "colour scale is shared by all three contrast atlases". Measured: -1.716
 #     rendered at 99.8% of the ramp in one panel while the larger -1.775
 #     rendered at 64.3% in another, so the weaker effect was drawn darker.
-#     f9_nes_strip_limit() computes ONE limit across all three programs.
+#     f9_nes_strip_limit() computes ONE limit across all three programs
+#     (palette v3.2: the manuscript's fixed NES limit, shared with the atlases).
 #
 #  2. ED8c TICK OVERPRINT. With a 31.6 mm plot width and a linear 0-1.05 axis,
 #     the "0" tick sits at 0.0 mm and "0.05" at 1.5 mm while their combined
@@ -41,30 +42,21 @@
 # ==========================================================================
 #
 # F3 d/e/f and ED6 c/d/e draw the same nine numbers: three programs x three
-# contrasts. They must therefore share one mapping. The limit is the maximum
-# absolute NES over all nine, computed once and cached.
-f9_nes_strip_limit <- local({
-  cache <- NULL
-  function(th) {
-    if (!is.null(cache)) return(cache)
-    pr <- s4_programs()
-    v <- unlist(lapply(seq_len(nrow(pr)), function(i) {
-      z <- th[th$dataset == pr$dataset[i] & th$spatial_unit == pr$unit[i] &
-                th$GO_ID == pr$term[i], , drop = FALSE]
-      z$NES[z$contrast %in% c("RES - CON", "SUS - CON", "SUS - RES")]
-    }))
-    cache <<- max(abs(v), na.rm = TRUE)
-    cache
-  }
-})
+# contrasts. They must therefore share one mapping. Palette v3.2: the mapping is
+# the manuscript's fixed NES limit (config/manuscript_palette.yml
+# diverging_limits$nes), the same one the atlases and the Figure 3 cards use,
+# so one colour means one NES in every NES panel. A value beyond it takes full
+# colour; every strip prints its NES, so nothing is hidden. `th` is unused and
+# kept for the callers.
+f9_nes_strip_limit <- function(th = NULL) nv_diverging_limit("nes")
 
 # ==========================================================================
 # ED6 c/d/e. The detailed GSEA curve, on the shared strip limit
 # ==========================================================================
 #
 # Derived from the frozen s4_gsea_curve. Two changes only: the NES strip uses
-# f9_nes_strip_limit() instead of a per-panel maximum, and the theme is nf_theme
-# so every label clears the 5 pt floor.
+# the shared fixed NES limit (f9_nes_strip_limit()) instead of a per-panel
+# maximum, and the theme is nf_theme so every label clears the 5 pt floor.
 f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   fam <- nf_fam()
   pr <- s4_programs()
@@ -86,6 +78,7 @@ f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                       colour = "grey55", linetype = "22") +
     ggplot2::scale_x_continuous(expand = c(0, 0), limits = c(1, N),
                                 breaks = c(1, N), labels = c("SUS", "RES")) +
+    ggplot2::scale_y_continuous(labels = nv_minus_labels) +
     ggplot2::labs(x = NULL, y = "enrichment score") +
     nf_theme() +
     ggplot2::theme(plot.margin = ggplot2::margin(1, 1, 0, 1, "mm"),
@@ -113,13 +106,13 @@ f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   lim <- f9_nes_strip_limit(th)
 
   bot <- ggplot2::ggplot(tr, ggplot2::aes(short, 1, fill = NES)) +
-    ggplot2::geom_tile(colour = "white", linewidth = nv_lw("tile_border_pt")) +
+    ggplot2::geom_tile(colour = nv_tile_border(), linewidth = nv_lw("tile_border_pt")) +
     ggplot2::geom_text(ggplot2::aes(label = sprintf("%.1f", NES)), family = fam,
                        size = nf_sz(5.0)) +
     ggplot2::geom_point(data = tr[tr$sig, , drop = FALSE],
                         ggplot2::aes(short, 1.44), size = 0.4, colour = "black",
                         inherit.aes = FALSE) +
-    nv_diverging(limits = c(-lim, lim), name = NULL, guide = "none") +
+    nv_diverging(measure = "nes", name = NULL, guide = "none") +
     ggplot2::scale_y_continuous(limits = c(0.5, 1.62), expand = c(0, 0)) +
     ggplot2::labs(x = NULL, y = NULL) +
     nf_theme_tile() +
@@ -149,9 +142,10 @@ f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     RES_CON_NES = tr$NES[1], SUS_CON_NES = tr$NES[2], SUS_RES_NES = tr$NES[3],
     shared_NES_strip_limit = lim,
     shared_scale_note = paste0(
-      "the three-contrast NES strip uses ONE symmetric colour limit shared by ",
-      "Figure 3 d/e/f and ED6 c/d/e, so the same colour means the same NES in ",
-      "every strip in the family"),
+      "the three-contrast NES strip uses the manuscript's fixed NES colour ",
+      "limit +/-", lim, " (config/manuscript_palette.yml diverging_limits), shared ",
+      "by every GO-term NES panel, so the same colour means the same NES in every ",
+      "strip; a value beyond it takes full colour and the tile prints its NES"),
     stringsAsFactors = FALSE)
   write_csv_safe(out, csv_path)
   nv_save_panel(p, svg_path, w_mm, h_mm)
@@ -179,8 +173,9 @@ f9_ed_nulls <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   lo <- 10^floor(log10(min(z$floor, na.rm = TRUE)))
 
   p <- ggplot2::ggplot(z, ggplot2::aes(p, lab)) +
+    # a neutral reference line (palette v3: red would read as the SUS group)
     ggplot2::geom_vline(xintercept = 0.05, linetype = "22",
-                        linewidth = nv_lw("reference_pt"), colour = "#D1543A") +
+                        linewidth = nv_lw("reference_pt"), colour = "grey35") +
     ggplot2::geom_segment(ggplot2::aes(x = floor, xend = p, yend = lab),
                           colour = "grey85", linewidth = nv_lw("reference_pt")) +
     ggplot2::geom_point(ggplot2::aes(x = floor), colour = "grey60", size = 1,
@@ -439,12 +434,12 @@ f9_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   cen <- d[d$censored, , drop = FALSE]
 
   p <- ggplot2::ggplot(d, ggplot2::aes(xpos, ypos)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = val), colour = "white",
+    ggplot2::geom_tile(ggplot2::aes(fill = val), colour = nv_tile_border(),
                        linewidth = 0.15) +
     # only the tail that actually saturates is marked, so the colourbar
     # never implies an overflow bin that does not exist
     nv_diverging(limits = lim, name = NULL, labels = function(b) {
-      s <- format(b, trim = TRUE)
+      s <- nv_minus(format(b, trim = TRUE))
       hi <- any(is.finite(d$true_val) & d$true_val > lim[2] + 1e-9)
       lo <- any(is.finite(d$true_val) & d$true_val < lim[1] - 1e-9)
       ok <- which(is.finite(b))
@@ -476,12 +471,14 @@ f9_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                            hjust = 0))
   if (nrow(cen)) {
     # a censored tile is marked and its true value printed, so the colour ramp
-    # never silently equates values it cannot separate
+    # never silently equates values it cannot separate. Dark ink: the
+    # saturated ends are the palette's light yellow and mid blue (v3), where
+    # white text would not read
     p <- p +
       ggplot2::geom_text(data = cen,
                          ggplot2::aes(xpos, ypos,
                                       label = sprintf("%.1f", true_val)),
-                         family = fam, size = nf_sz(5.0), colour = "white",
+                         family = fam, size = nf_sz(5.0), colour = "grey10",
                          fontface = "bold") +
       ggplot2::labs(caption = sprintf(paste0(
         "Colour mapping saturates at %.1f for display; %d cells exceed this ",
@@ -609,9 +606,7 @@ f9_ed_ca2_sensitivity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   z$col_id <- rep(c(1L, 2L), times = c(half, n - half))
   z$row <- c(seq_len(half), seq_len(n - half))
   z$ypos <- -z$row
-  COL <- c(robust_to_missingness_and_QC = "#1F3D52",
-           not_claimable_due_to_QC = "#D1543A",
-           insufficient_observed_data = "#B9B6AF")
+  COL <- f9_qc_class_colours()
 
   p <- ggplot2::ggplot(z) +
     ggplot2::geom_vline(xintercept = 0, linewidth = nv_lw("reference_pt"),
@@ -630,7 +625,7 @@ f9_ed_ca2_sensitivity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                  labels = f9_qc_class_label,
                                  guide = ggplot2::guide_legend(order = 1)) +
     ggplot2::scale_x_continuous(limits = c(-3.2, 2.1), breaks = c(-2, -1, 0, 1, 2),
-                                expand = c(0, 0)) +
+                                labels = nv_minus_labels, expand = c(0, 0)) +
     ggplot2::facet_wrap(~col_id, nrow = 1) +
     ggplot2::labs(
       x = "log2FC (SUS − RES):  filled = canonical,  open = QC-failed hemispheres dropped",
@@ -699,12 +694,13 @@ f9_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   z$ypos <- match(z$gene, rev(lev))
   n <- nrow(o); ny <- length(lev)
   y_comp <- ny + 2.3; y_reg <- ny + 1.05
-  lim <- max(abs(z$con_z), na.rm = TRUE) * c(-1, 1)
 
+  # the manuscript's fixed z limit (palette v3.2, two SD): a single-protein z
+  # beyond it takes full colour, and the sidecar keeps the uncapped con_z
   p <- ggplot2::ggplot(z, ggplot2::aes(xpos, ypos)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = con_z), colour = "white",
+    ggplot2::geom_tile(ggplot2::aes(fill = con_z), colour = nv_tile_border(),
                        linewidth = 0.1) +
-    nv_diverging(limits = lim, name = "Baseline abundance\n(CON z-score)") +
+    nv_diverging(measure = "z", name = "Baseline abundance\n(CON z-score)") +
     ggplot2::scale_x_continuous(breaks = seq_len(n),
                                 labels = sg_axis_labels(b),
                                 limits = c(0.5, n + 0.5), expand = c(0, 0)) +
@@ -757,6 +753,7 @@ Each gene ",
     "rows are seriated by baseline peak spatial unit, taken from CON-only ",
     "con_z; no phenotype information enters the ordering. Ties break on gene ",
     "symbol, so the order is deterministic")
+  out$colour_limit <- nv_diverging_limit("z")   # the limit the tiles draw
   write_csv_safe(out, csv_path)
   nv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
@@ -781,6 +778,17 @@ f9_qc_class_label <- function(x) {
   out <- unname(f9_qc_class_labels[x])
   out[is.na(out)] <- gsub("_", " ", x[is.na(out)])
   out
+}
+
+# The colours of the robustness classes, one source for ED3 d and e: the
+# palette's claimability family (robust = claimable, QC-sensitive = not
+# claimable) and a mid neutral grey for insufficient data. Palette v3: the old
+# vermillion read as the SUS red and the old light warm grey as the RES grey.
+f9_qc_class_colours <- function() {
+  cl <- nv_claim_colours()
+  c(robust_to_missingness_and_QC = unname(cl[["claimable"]]),
+    not_claimable_due_to_QC = unname(cl[["not_claimable"]]),
+    insufficient_observed_data = "grey60")
 }
 
 # ==========================================================================
@@ -924,12 +932,16 @@ f9_ed_coupling <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                        yend = ypos, colour = excludes_zero),
                           linewidth = nv_lw("reference_pt")) +
     ggplot2::geom_point(ggplot2::aes(colour = excludes_zero), size = 0.7) +
-    ggplot2::scale_colour_manual(values = c("TRUE" = "#C0442C", "FALSE" = "#9E9A92"),
+    # an interval excluding zero in the palette's 'supported' ink, the rest grey
+    # (palette v3: the old red would read as the SUS group)
+    ggplot2::scale_colour_manual(values = c("TRUE" = unname(nv_evidence_colours()[["supported"]]),
+                                            "FALSE" = "grey60"),
                                  guide = "none") +
     ggplot2::scale_y_continuous(
       breaks = seq_along(unique(u$edge_lab)),
       labels = rev(sort(unique(u$edge_lab))), expand = ggplot2::expansion(add = 0.6)) +
-    ggplot2::scale_x_continuous(limits = c(-1, 1), breaks = c(-1, -0.5, 0, 0.5, 1)) +
+    ggplot2::scale_x_continuous(limits = c(-1, 1), breaks = c(-1, -0.5, 0, 0.5, 1),
+                                labels = nv_minus_labels) +
     ggplot2::facet_wrap(~out_lab, nrow = 1) +
     ggplot2::labs(x = "Pearson r (95% CI), n = 9 animals", y = NULL,
                   subtitle = sprintf(paste0(
@@ -975,11 +987,12 @@ f9_ed_ca2_classes <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                      stringsAsFactors = FALSE)
   z$lab <- f9_qc_class_label(z$cls)
   z$lab <- factor(z$lab, levels = z$lab[order(z$Freq)])
-  z$col <- c(robust_to_missingness_and_QC = "#1F3D52",
-             not_claimable_due_to_QC = "#D1543A",
-             insufficient_observed_data = "#C9C6BF")[z$cls]
+  z$col <- unname(f9_qc_class_colours()[z$cls])
+  # a constant fill vector is applied in row order: z$col is already aligned with
+  # the rows of z (reordering it by Freq swapped the robust and insufficient
+  # colours relative to ED3e)
   p <- ggplot2::ggplot(z, ggplot2::aes(Freq, lab)) +
-    ggplot2::geom_col(fill = z$col[order(z$Freq)], width = 0.6) +
+    ggplot2::geom_col(fill = z$col, width = 0.6) +
     ggplot2::geom_text(ggplot2::aes(label = Freq), hjust = -0.35,
                        family = fam, size = nv_size(5.4)) +
     ggplot2::scale_x_continuous(limits = c(0, max(z$Freq) * 1.22),

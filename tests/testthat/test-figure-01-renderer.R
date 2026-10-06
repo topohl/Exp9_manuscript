@@ -153,21 +153,26 @@ test_that("the figure contract registers the six bundle-backed panels", {
   }
 })
 
+# The manuscript group palette (config/manuscript_palette.yml group, v3): every figure reads it, the vendored
+# R/vendor/plotting_nature.R keeps its older trio byte-identical to pRoteomics and is not used for group colour.
+GROUP_V3 <- unlist(yaml::read_yaml(repo("config", "manuscript_palette.yml"))$group)[c("CON", "RES", "SUS")]
+
 test_that("Figure 1 uses the same group palette as Figures 2 and 3", {
-  source(repo("R", "vendor", "plotting_nature.R"))
-  expect_equal(unname(NATURE_SEMANTIC_PALETTES$group[c("CON", "RES", "SUS")]), c("#3E3C6F", "#C6C3BB", "#E63A48"))
+  expect_equal(unname(GROUP_V3), c("#6B7296", "#BFBCB4", "#C74C56"))
   # GROUP_COL is defined in R/panels/behaviour_figure_style.R, which the renderer sources.
   code <- unlist(lapply(c(RENDERER, BEHAVIOUR_LIBS), code_of))
-  expect_true(any(grepl("NATURE_SEMANTIC_PALETTES$group", code, fixed = TRUE)))
+  expect_true(any(grepl("GROUP_COL <- unlist(yaml::read_yaml(repo_path(\"config\", \"manuscript_palette.yml\"))$group)",
+                        code, fixed = TRUE)))
+  expect_false(any(grepl("NATURE_SEMANTIC_PALETTES$group", code, fixed = TRUE)))
   skip_if_not(dir.exists(PANELS), "figure 1 panels not rendered")
   ink <- paste(readLines(file.path(PANELS, "figure_01f.svg"), warn = FALSE), collapse = "")
-  for (h in c("#3E3C6F", "#C6C3BB", "#E63A48")) expect_true(grepl(h, ink, fixed = TRUE), info = paste("missing group ink", h))
+  for (h in GROUP_V3) expect_true(grepl(h, ink, fixed = TRUE), info = paste("missing group ink", h))
 })
 
 test_that("the association panel is not coloured by outcome group", {
   skip_if_not(dir.exists(PANELS), "figure 1 panels not rendered")
   ink <- paste(readLines(file.path(PANELS, "figure_01e.svg"), warn = FALSE), collapse = "")
-  for (h in c("#3E3C6F", "#C6C3BB", "#E63A48")) expect_false(grepl(h, ink, fixed = TRUE), info = paste("panel e carries group ink", h))
+  for (h in GROUP_V3) expect_false(grepl(h, ink, fixed = TRUE), info = paste("panel e carries group ink", h))
 })
 
 test_that("the legend avoids prohibited wording", {

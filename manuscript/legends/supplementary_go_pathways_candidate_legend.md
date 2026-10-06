@@ -20,7 +20,9 @@ axis; none of their displayed protein/contrast rows has BH FDR below 0.05.
 The regional page shows those four exact terms across the ten neuropil
 region-layer units, four neuronal-soma regions and four microglia-enriched
 ROIs, separately for each contrast. Tile colour is the stored exact-term NES
-on one shared scale; dots retain the same term-level FDR meaning. The
+on the manuscript's fixed NES scale, the one of Figure 3, which saturates at an
+NES of 2 in either direction; the source data keep every value. Dots retain the
+same term-level FDR meaning. The
 microglia-enriched ROI is a measurement context, not a purified cell
 population.
 

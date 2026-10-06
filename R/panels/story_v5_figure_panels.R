@@ -199,10 +199,14 @@ s5_ed_ca2_displacement <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   b$flag <- ifelse(b$qc_flag == "PASS", "", b$qc_flag)
   p <- ggplot2::ggplot(b, ggplot2::aes(fraction_missing_preimputation,
                                        mean_centred_value_of_always_observed_proteins)) +
-    ggplot2::geom_point(ggplot2::aes(colour = StressGroup), size = 1.1) +
+    # group by shape as well as fill, with a dark rim: the palette's RES (v3) is
+    # light and nearly grey, so colour alone must not carry group
+    ggplot2::geom_point(ggplot2::aes(fill = StressGroup, shape = StressGroup),
+                        size = 1.3, colour = "grey20", stroke = 0.3) +
     ggplot2::geom_text(ggplot2::aes(label = flag), family = fam, size = nv_size(5),
                        vjust = -0.9, colour = "grey25") +
-    ggplot2::scale_colour_manual(values = nv_group_colours(), name = NULL) +
+    ggplot2::scale_fill_manual(values = nv_group_colours(), name = NULL) +
+    ggplot2::scale_shape_manual(values = c(CON = 21, RES = 24, SUS = 22), name = NULL) +
     ggplot2::labs(x = "fraction missing before imputation",
                   y = "centred value of proteins\nobserved in every sample") +
     nv_theme(grid = "y") +
@@ -465,8 +469,10 @@ s5_ed_network_distance <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::stat_summary(ggplot2::aes(x = as.integer(Group)), fun = mean,
                           geom = "crossbar", width = 0.5, linewidth = 0.2,
                           colour = "grey55") +
-    ggplot2::geom_point(ggplot2::aes(colour = Group), size = 1.1) +
-    ggplot2::scale_colour_manual(values = grp, guide = "none") +
+    # a dark rim keeps the light RES grey (palette v3) visible on white
+    ggplot2::geom_point(ggplot2::aes(fill = Group), shape = 21, size = 1.3,
+                        colour = "grey20", stroke = 0.3) +
+    ggplot2::scale_fill_manual(values = grp, guide = "none") +
     ggplot2::scale_x_continuous(breaks = 1:3, labels = c("CON", "RES", "SUS"),
                                 limits = c(0.5, 3.5)) +
     ggplot2::facet_wrap(~lab, nrow = 1, scales = "free_y") +

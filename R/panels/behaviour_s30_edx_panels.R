@@ -63,22 +63,22 @@ EDX_SECONDARY <- c("occupancy_dispersion", "fragmentation")
 # one-line caption that says what the marks are (the split a/b panels have no room for the
 # Figure 1d overall title, and c follows them so the ED page reads as one grammar).
 # Each caption has a with-CON and a without-CON form; the builders pick by show_con.
-EDX_CAPTION_PRIMARY <- c(con = "Active phase after each cage change: sex-stratified model estimates ± 95% CI; CON descriptive means (grey, dashed)",
+EDX_CAPTION_PRIMARY <- c(con = "Active phase after each cage change: sex-stratified model estimates ± 95% CI; CON descriptive means (dashed)",
                          no_con = "Active phase after each cage change: sex-stratified model estimates ± 95% CI (SIS; CON not shown)")
 # The split a/b captions name their tier, as c does (85.5-mm boxes: the shortest full wording).
-EDX_CAPTION_SPLIT <- c(con = "Stage 29 primary: sex-stratified estimates ± 95% CI; CON descriptive (grey, dashed)",
+EDX_CAPTION_SPLIT <- c(con = "Stage 29 primary: sex-stratified estimates ± 95% CI; CON descriptive (dashed)",
                        no_con = "Stage 29 primary: sex-stratified estimates ± 95% CI (SIS; CON not shown)")
 # c in the a/b wording (the window, the active phase after each cage change, is stated once in
 # the ED X legend for a-c).
-EDX_CAPTION_SECONDARY <- c(con = "Stage 29 secondary: sex-stratified estimates ± 95% CI; CON descriptive (grey, dashed)",
+EDX_CAPTION_SECONDARY <- c(con = "Stage 29 secondary: sex-stratified estimates ± 95% CI; CON descriptive (dashed)",
                            no_con = "Stage 29 secondary: sex-stratified estimates ± 95% CI (SIS; CON not shown)")
 edx_caption <- function(captions, show_con) unname(captions[[if (isTRUE(show_con)) "con" else "no_con"]])
 # One title anchor on the ED X page: a-c start their titles and legend at the plot edge, under the
 # panel letter, as d (B2) and e (B4) do.
 EDX_TITLE_POSITION <- "plot"
 # The Figure 1d-style overall titles, for callers that prefer a title over the caption.
-EDX_TITLE_PRIMARY <- "Primary constructs, active phase after each cage change: sex-stratified model estimates ± 95% CI (CON descriptive means, grey)"
-EDX_TITLE_SECONDARY <- "Secondary constructs, active phase after each cage change: sex-stratified model estimates ± 95% CI (CON descriptive means, grey)"
+EDX_TITLE_PRIMARY <- "Primary constructs, active phase after each cage change: sex-stratified model estimates ± 95% CI (CON descriptive means, dashed)"
+EDX_TITLE_SECONDARY <- "Secondary constructs, active phase after each cage change: sex-stratified model estimates ± 95% CI (CON descriptive means, dashed)"
 # The Figure 1b subtitle broken after the semicolon, for a narrow panel-anchored box (contract arg
 # subtitle_line_break); at the plot edge the one-line subtitle fits option 2's 50-mm b.
 F1OPT_COMBZ_SUBTITLE_NARROW <- "dashed threshold defines RES/SUS;\nnot a test"
