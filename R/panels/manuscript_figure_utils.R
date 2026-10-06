@@ -438,14 +438,71 @@ manuscript_figure_assemble_svg <- function(panel_paths, panels, figure, target) 
   invisible(target)
 }
 
+# Rasterise an assembled page at `dpi`, on white. The assembler embeds each
+# panel as an <image> data URI, and librsvg (magick) rasterises such an image at
+# the panel's intrinsic size and then scales it, so a raster of the assembled
+# SVG read as one document is blurred (the behaviour candidates work around the
+# same thing with inline_for_raster()). Here each embedded panel is rasterised
+# on its own at the resolution of its box and placed as the <image> places it
+# (preserveAspectRatio "xMidYMid meet"); the rest of the page - panel letters
+# and their white boxes - is the page rendered without its images, drawn on top.
+# A page with no embedded SVG panels is read as one document, as before.
+manuscript_figure_rasterize <- function(svg_path, dpi = 300) {
+  x <- readLines(svg_path, warn = FALSE, encoding = "UTF-8")
+  embedded <- grepl('^<image .*href="data:image/svg\\+xml;base64,', x)
+  if (!any(embedded)) {
+    image <- magick::image_read(svg_path, density = dpi)
+    return(magick::image_background(image, "white", flatten = TRUE))
+  }
+  at <- function(a, n) as.numeric(sub(paste0('.*\\s', n, '="([-0-9.]+)".*'), "\\1", a))
+  px <- function(mm) as.integer(round(mm * dpi / 25.4))
+  # the assembler's viewBox is the page in millimetres
+  view <- as.numeric(strsplit(sub('.*viewBox="([^"]+)".*', "\\1", x[grep("^<svg ", x)[1]]), " ")[[1]])
+  tmp <- tempfile(fileext = ".svg")
+  on.exit(unlink(tmp), add = TRUE)
+  draw <- function(lines) {
+    writeLines(lines, tmp, useBytes = TRUE)
+    image <- magick::image_background(magick::image_read(tmp, density = dpi), "white", flatten = TRUE)
+    if (!identical(as.integer(unlist(magick::image_info(image)[c("width", "height")])),
+                   px(view[3:4])))
+      image <- magick::image_resize(image, sprintf("%dx%d!", px(view[3]), px(view[4])))
+    image
+  }
+  # the empty page, drawn like the rest so it carries the same resolution
+  page <- draw(x[grepl("^(<\\?xml|<svg |</svg>)", x)])
+  for (a in x[embedded]) {
+    box <- c(at(a, "x"), at(a, "y"), at(a, "width"), at(a, "height"))
+    writeBin(base64enc::base64decode(sub('.*href="data:image/svg\\+xml;base64,([^"]+)".*', "\\1", a)), tmp)
+    panel <- magick::image_read(tmp, density = dpi)
+    natural <- unlist(magick::image_info(panel)[c("width", "height")])
+    fit <- min(px(box[3]) / natural[1], px(box[4]) / natural[2])
+    # a panel authored at another size is re-read at the density that fits it
+    if (abs(fit - 1) > 0.005) panel <- magick::image_read(tmp, density = dpi * fit)
+    size <- pmax(1L, as.integer(round(natural * fit)))
+    if (!identical(as.integer(unlist(magick::image_info(panel)[c("width", "height")])), size))
+      panel <- magick::image_resize(panel, sprintf("%dx%d!", size[1], size[2]))
+    page <- magick::image_composite(page, panel, offset = sprintf("+%d+%d",
+      px(box[1]) + (px(box[3]) - size[1]) %/% 2L, px(box[2]) + (px(box[4]) - size[2]) %/% 2L))
+  }
+  # librsvg as called by magick always paints an opaque background, so the rest
+  # is rendered on white (W) and on black (B): drawn over the panels it is
+  # exactly B + page * (W - B)
+  rest <- x[!embedded & x != '<rect width="100%" height="100%" fill="white"/>']
+  on_white <- draw(rest)
+  on_black <- draw(append(rest, '<rect width="100%" height="100%" fill="black"/>',
+                          after = grep("^<svg ", rest)[1]))
+  page <- magick::image_composite(page, operator = "Multiply",
+    magick::image_composite(on_white, on_black, operator = "Difference"))
+  magick::image_composite(page, on_black, operator = "Plus")
+}
+
 manuscript_figure_raster_companions <- function(svg_path, png_path, pdf_path) {
   if (!requireNamespace("magick", quietly = TRUE)) {
     warning("Package 'magick' is unavailable; assembled PNG/PDF were not written.", call. = FALSE)
     return(character())
   }
   result <- tryCatch({
-    image <- magick::image_read(svg_path, density = 300)
-    image <- magick::image_background(image, "white", flatten = TRUE)
+    image <- manuscript_figure_rasterize(svg_path, dpi = 300)
     magick::image_write(image, path = png_path, format = "png")
     magick::image_write(image, path = pdf_path, format = "pdf")
     c(png_path, pdf_path)

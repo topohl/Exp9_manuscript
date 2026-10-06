@@ -1,0 +1,11 @@
+internal_contrast,external_signature,level,NES,p_adjust,legend_text_moved
+CA1_SO_vs_CA3_SO,CA2/3,Regional identity,-1.91825885366278,6.6812439261418e-4,"expected pairings only; filled point = FDR < 0.05; the complete specificity inventory is in ED2 - stated in the figure legend, not on the artwork"
+CA1_SO_vs_CA3_SO,CA1,Regional identity,2.30599852803019,3.33416636073019e-8,"expected pairings only; filled point = FDR < 0.05; the complete specificity inventory is in ED2 - stated in the figure legend, not on the artwork"
+CA2_vs_mean_other_soma_regions,CA2/3,Regional identity,2.43206044188955,1e-10,"expected pairings only; filled point = FDR < 0.05; the complete specificity inventory is in ED2 - stated in the figure legend, not on the artwork"
+DG_neuropil_vs_mean_non_DG_regions,DG,Regional identity,2.93807928387244,1e-10,"expected pairings only; filled point = FDR < 0.05; the complete specificity inventory is in ED2 - stated in the figure legend, not on the artwork"
+CA1_vs_mean_other_soma_regions,CA1,Regional identity,3.09765063222406,1e-10,"expected pairings only; filled point = FDR < 0.05; the complete specificity inventory is in ED2 - stated in the figure legend, not on the artwork"
+CA3_vs_mean_other_soma_regions,CA2/3,Regional identity,3.31622838044165,1e-10,"expected pairings only; filled point = FDR < 0.05; the complete specificity inventory is in ED2 - stated in the figure legend, not on the artwork"
+DG_vs_mean_other_soma_regions,DG,Regional identity,3.68973924854974,1e-10,"expected pairings only; filled point = FDR < 0.05; the complete specificity inventory is in ED2 - stated in the figure legend, not on the artwork"
+CA1_SO_vs_mean_other_CA1_strata,SO,CA1 laminar identity,1.95238030374319,2.7902272291299e-4,"expected pairings only; filled point = FDR < 0.05; the complete specificity inventory is in ED2 - stated in the figure legend, not on the artwork"
+CA1_SLM_vs_mean_other_CA1_strata,SLM,CA1 laminar identity,2.90299039653814,1e-10,"expected pairings only; filled point = FDR < 0.05; the complete specificity inventory is in ED2 - stated in the figure legend, not on the artwork"
+CA1_SR_vs_mean_other_CA1_strata,SR,CA1 laminar identity,2.95098757145277,1e-10,"expected pairings only; filled point = FDR < 0.05; the complete specificity inventory is in ED2 - stated in the figure legend, not on the artwork"

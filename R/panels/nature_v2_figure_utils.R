@@ -55,6 +55,13 @@ nv_palette <- local({
 })
 
 nv_group_colours <- function() unlist(nv_palette()$group)
+# A darker shade of a palette colour (mixed with black), for marks too small to
+# carry the light original, e.g. RES points.
+nv_darken <- function(col, amount = 0.35)
+  grDevices::colorRampPalette(c(col, "black"))(101)[round(amount * 100) + 1]
+# The outline of a tile in a white-midpoint heatmap (palette v3): light grey, so
+# a tile at zero (white) still reads as a tile and not as a gap in the page.
+nv_tile_border <- function() "grey85"
 nv_dataset_colours <- function() unlist(nv_palette()$dataset)
 nv_dataset_label <- function(x) {
   l <- unlist(nv_palette()$dataset_label)
@@ -69,10 +76,64 @@ nv_lw <- function(key) as.numeric(nv_palette()$line[[key]]) * 0.75  # pt -> ggpl
 # ggplot2 sizes are in mm for text; 1 pt = 0.3527 mm
 nv_size <- function(pt) pt * 0.3527777
 
-nv_diverging <- function(limits = NULL, name = "NES", ...) {
+# The fixed colour limit of a signed measure (config/manuscript_palette.yml
+# diverging_limits): every figure of a measure uses it, so one colour means one
+# value everywhere.
+nv_diverging_limit <- function(measure) {
+  l <- nv_palette()$diverging_limits[[measure]]
+  if (is.null(l)) stop("no fixed diverging limit for measure '", measure, "' in ",
+                       nv_palette_path(), call. = FALSE)
+  as.numeric(l)
+}
+
+# Colourbar breaks and labels of a fixed limit L. Values beyond the limit take
+# full colour, so the ends read "<=-L" and ">=L" whether or not a value reaches
+# them (the source data keep the uncapped values). Signs are the typographic
+# minus. nv_diverging_label_fun() labels any breaks, so a caller may pass its own.
+nv_minus <- function(x) sub("^-", "\u2212", x)
+# Axis labels with the typographic minus: ggplot's own default formatting of the
+# breaks, with U+2212 for a negative sign (2026-10-07: one minus glyph per page)
+nv_minus_labels <- function(x) {
+  out <- nv_minus(format(x, trim = TRUE, justify = "left"))
+  out[is.na(x)] <- NA
+  out
+}
+nv_diverging_breaks <- function(limit) c(-limit, -limit / 2, 0, limit / 2, limit)
+nv_diverging_label_fun <- function(limit) function(b) {
+  num <- function(v) sub("[.]?0+$", "", formatC(v, format = "f", digits = 2))
+  s <- nv_minus(num(b))
+  s[is.finite(b) & abs(b) < 1e-12] <- "0"
+  s[is.finite(b) & abs(b - limit) < 1e-9] <- paste0("\u2265", num(limit))
+  s[is.finite(b) & abs(b + limit) < 1e-9] <- paste0("\u2264\u2212", num(limit))
+  s
+}
+nv_diverging_labels <- function(limit)
+  nv_diverging_label_fun(limit)(nv_diverging_breaks(limit))
+
+# The manuscript's one diverging fill. With `measure`, the scale takes that
+# measure's fixed limit, squishes values beyond it to full colour and labels the
+# colourbar ends <= / >= (palette v3.1; the v3.2 measures alike). Without it, `limits` are the caller's
+# own (a declared display cap, or a measure that no other figure shares) and
+# ggplot's default oob = censor stays, so a value outside them shows as a grey50
+# tile instead of passing silently. na.value stays grey50: never white, which
+# means zero.
+nv_diverging <- function(limits = NULL, name = "NES", measure = NULL, ...) {
   d <- nv_palette()$diverging
-  ggplot2::scale_fill_gradient2(low = d$low, mid = d$mid, high = d$high,
-                                midpoint = 0, limits = limits, name = name, ...)
+  if (is.null(measure))
+    return(ggplot2::scale_fill_gradient2(low = d$low, mid = d$mid, high = d$high,
+                                         midpoint = 0, limits = limits, name = name, ...))
+  if (!is.null(limits))
+    stop("nv_diverging(): give `limits` or `measure`, not both", call. = FALSE)
+  lim <- nv_diverging_limit(measure)
+  args <- list(...)
+  if ("oob" %in% names(args))
+    stop("nv_diverging(measure =) always squishes values beyond the fixed limit; ",
+         "do not pass `oob`", call. = FALSE)
+  if (!"breaks" %in% names(args)) args[["breaks"]] <- nv_diverging_breaks(lim)
+  if (!"labels" %in% names(args)) args[["labels"]] <- nv_diverging_label_fun(lim)
+  do.call(ggplot2::scale_fill_gradient2,
+          c(list(low = d$low, mid = d$mid, high = d$high, midpoint = 0,
+                 limits = c(-lim, lim), oob = scales::squish, name = name), args))
 }
 
 # --------------------------------------------------------------- theme

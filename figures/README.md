@@ -51,11 +51,9 @@ Use an isolated candidate root during review:
 Rscript "figures/figure_03.R" --output-root "C:\path\to\candidate"
 ```
 
-Figure 2a is intentionally deferred to Illustrator. It is retained in the
-panel contract for provenance, but it is not a repository input and is excluded
-from automated validation, materialization, and assembly. The automated Figure
-2 output therefore contains panels 2b-2f and leaves the declared 2a layout slot
-empty for final Illustrator composition.
+Figure 2a, the anatomy schematic, is rendered (`f9_schematic`) and validated,
+materialized and assembled like every other panel; it is no longer deferred to
+Illustrator.
 
 The authoring outputs intentionally remain separate from the journal export
 package under `results/manuscript/`. See `docs/OUTPUT_CONTRACTS.md` and run
@@ -67,7 +65,11 @@ Each entry point writes four linked artifact families:
 
 - `results/figures/manuscript/figure_02|03/panels/`: canonical panel SVGs.
 - `results/figures/manuscript/figure_02|03/assembled/`: self-contained vector
-  SVG plus 300-dpi PNG and raster-backed PDF companions.
+  SVG, a 300-dpi PNG with each panel rasterised at the page resolution, and a
+  PDF: the producing layer's vector page where the contract declares
+  `assembled_pdf_source` (Figures 2 and 3, Extended Data 1, 3, 6 and 8),
+  otherwise a raster-backed PDF of the same page (Extended Data 2, which omits
+  the producer page's panel c).
 - `results/source_data/manuscript/figure_02|03/`: exact displayed source-data
   snapshots.
 - `results/reports/manuscript_figures/figure_02|03/`: panel and input manifests.
@@ -87,6 +89,25 @@ from the frozen imports in `source_data/pRoteomics/`, grouped by the single
 `manuscript_go_themes_v3` registry in `f9_atlas_themes()`, and promoted with
 `tools/promote_manuscript_render.R figure_03`. (In the superseded v2 grid,
 Figure 3e was a WGCNA_m12 filter of the three-module display source.)
+
+Figure 2 and the proteomics Extended Data (1, 2, 3, 6 and 8) are rendered here
+too, by `figures/final_truth_v9_figure_02.R` and
+`figures/final_truth_v9_extended_data.R`, and published from `figures/main/`
+and `figures/extended_data/`. Identities rendered at one commit are promoted
+together, in one call:
+
+```powershell
+Rscript "tools/promote_manuscript_render.R" figure_02 figure_03 extended_data_01 extended_data_02 extended_data_03 extended_data_06 extended_data_08
+```
+
+The three inputs recorded as PROVENANCE_ONLY (above the import size ceiling)
+are materialised by hash before rendering, with
+`PROTEOMICS_ROOT=<pRoteomics checkout> Rscript tools/import_render_inputs.R --materialize-provenance-only`.
+Extended Data 4 (WGCNA) also reads a WGCNA shortlist table this workspace does
+not hold, so the Extended Data producer is run with
+`--pages=ED1_FINAL_V9,ED2_FINAL_V9,ED3_FINAL_V9,ED6_FINAL_V9,ED7_FINAL_V9,ED8_FINAL_V9`;
+its render record names the pages it drew, and the promotion refuses a page
+whose panels that record does not cover.
 
 The hemisphere contracts intentionally differ by panel and are declared in the
 contract and panel manifest. Technical QC and exploratory PCA remain

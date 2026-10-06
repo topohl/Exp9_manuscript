@@ -9,7 +9,11 @@ testthat::test_that("CC4 source is complete and hash verified", {
   testthat::expect_equal(nrow(d$summary),108L)
   testthat::expect_true(all(d$summary$Batches==3L))
   testthat::expect_setequal(unique(d$summary$PhaseLabel),c(paste0("I",2:5),paste0("A",1:5)))
-  testthat::expect_identical(nature_palette("group"),c(CON="#3E3C6F",RES="#C6C3BB",SUS="#E63A48"))
+  # CC4 draws the manuscript group palette (v3), not the vendored trio
+  testthat::expect_identical(unlist(yaml::read_yaml(repo_path("config","manuscript_palette.yml"))$group)[c("CON","RES","SUS")],
+                             c(CON="#6B7296",RES="#BFBCB4",SUS="#C74C56"))
+  code<-readLines(repo_path("R","panels","cc4_phase_groups_candidate.R")); code<-code[!grepl("^\\s*#",code)]
+  testthat::expect_true(any(grepl("manuscript_palette.yml",code,fixed=TRUE)))
   p <- cc4_candidate_plots(d)
   testthat::expect_named(p,c("cc4_group_activity","cc4_group_changes","cc4_group_differences"))
   # Use the production Cairo device; the default PostScript device cannot

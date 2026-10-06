@@ -28,9 +28,11 @@ cc4_read_bundle <- function(src) {
 }
 
 cc4_candidate_plots <- function(data) {
-  palette <- nature_palette("group")
-  expected <- c(CON = "#3E3C6F", RES = "#C6C3BB", SUS = "#E63A48")
-  if (!identical(palette, expected)) stop("Behavioural group palette changed; review the CC4 contract.", call. = FALSE)
+  # group colours: the manuscript palette (config/manuscript_palette.yml group, v3), the one CON/RES/SUS palette
+  # of every figure and the one MMMSociability pins
+  palette <- unlist(yaml::read_yaml(repo_path("config", "manuscript_palette.yml"))$group)[c("CON", "RES", "SUS")]
+  if (anyNA(palette) || !all(grepl("^#[0-9A-Fa-f]{6}$", palette)))
+    stop("Manuscript group palette is incomplete; review the CC4 contract.", call. = FALSE)
   shapes <- c(CON = 21, RES = 24, SUS = 22)
   lines <- c(CON = "solid", RES = "longdash", SUS = "dotdash")
   style <- function() theme_nature_manuscript_panel(base_size = 7, base_family = "Arial", publication_legible = TRUE) +

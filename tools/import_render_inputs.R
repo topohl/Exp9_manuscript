@@ -33,8 +33,16 @@
 # scientific tables here to satisfy an existence check on a provenance field
 # would be the wrong trade, so their hashes are recorded instead.
 #
+# A workspace that renders the panels reading those three tables (the ED4
+# module panels and the ED6 atlases; Figure 2f and ED6 also check that they
+# exist) materialises them with --materialize-provenance-only. Each is copied
+# only if its bytes at PROTEOMICS_ROOT are exactly the bytes the tracked
+# manifest records, and nothing else happens: the manifest is not rewritten, no
+# other asset is touched, and no disposition or source commit changes.
+#
 # Usage:
 #   PROTEOMICS_ROOT=/path/to/proteomics Rscript tools/import_render_inputs.R
+#   PROTEOMICS_ROOT=/path/to/proteomics Rscript tools/import_render_inputs.R --materialize-provenance-only
 
 suppressWarnings(source(file.path("R", "paths.R")))
 library(yaml)
@@ -48,6 +56,33 @@ SIZE_CEILING_MB <- 8
 MANIFEST <- repo_path("provenance", "source_manifests", "render_inputs_manifest.csv")
 
 sha <- function(p) unname(tools::sha256sum(p))
+
+if ("--materialize-provenance-only" %in% commandArgs(trailingOnly = TRUE)) {
+  man <- utils::read.csv(MANIFEST, stringsAsFactors = FALSE)
+  po <- man[man$disposition == "PROVENANCE_ONLY", , drop = FALSE]
+  for (i in seq_len(nrow(po))) {
+    rel <- po$declared_path[i]
+    src <- file.path(PR, rel)
+    dst <- repo_path(rel)
+    if (!file.exists(src)) stop("absent at PROTEOMICS_ROOT: ", rel, call. = FALSE)
+    if (!identical(sha(src), po$sha256[i])) {
+      stop("not the recorded bytes (sha256 differs from the manifest): ", rel,
+           call. = FALSE)
+    }
+    if (file.exists(dst) && identical(sha(dst), po$sha256[i])) {
+      cat("present          ", rel, "\n")
+      next
+    }
+    dir_create(dirname(dst))
+    if (!file.copy(src, dst, overwrite = TRUE, copy.date = TRUE) ||
+        !identical(sha(dst), po$sha256[i])) {
+      stop("copy failed or changed the bytes: ", rel, call. = FALSE)
+    }
+    cat(sprintf("copied %7.1f MB  %s\n", po$size_mb[i], rel))
+  }
+  cat("manifest unchanged:", sub(paste0(repo_root(), "/"), "", MANIFEST), "\n")
+  quit(save = "no", status = 0L)
+}
 commit <- system2("git", c("-C", shQuote(PR), "rev-parse", "HEAD"), stdout = TRUE)[1]
 
 FIELDS <- c("figure_source", "primary_source", "input_dependencies",
@@ -67,8 +102,11 @@ for (cf in c("figures/figure_contract.yml",
   ## Figures this repository renders itself are skipped for the same reason. The
   ## a-m Figure 3 is produced here by figures/final_truth_v9_figure_03.R from
   ## source_data/pRoteomics, while pRoteomics still holds the superseded a-i
-  ## panels at the same results/ paths.
-  LOCALLY_RENDERED <- c("figure_03")
+  ## panels at the same results/ paths. Figure 2 and the proteomics Extended
+  ## Data pages are rendered here too (figures/final_truth_v9_figure_02.R and
+  ## figures/final_truth_v9_extended_data.R) and promoted from those renders.
+  LOCALLY_RENDERED <- c("figure_02", "figure_03", "extended_data_01", "extended_data_02",
+                        "extended_data_03", "extended_data_06", "extended_data_08")
   if (!is.null(y$figures))
     y$figures <- Filter(function(f)
       (!identical(f$analysis_repository, "topohl/MMMSociability") ||

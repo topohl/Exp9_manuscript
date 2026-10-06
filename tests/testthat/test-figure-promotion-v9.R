@@ -167,3 +167,62 @@ testthat::test_that("every manuscript figure-panel reference resolves", {
     }
   }
 })
+
+testthat::test_that("Figure 2 and the proteomics Extended Data are registered from their promoted renders", {
+  # Tracked files only. Like Figure 3, each identity is published from figures/
+  # with its per-panel source data, rendered at one commit on clean code.
+  source(testthat::test_path("..", "..", "R", "paths.R"))
+  reg <- utils::read.csv(repo_path("provenance", "publication_registry",
+                                   "canonical_publication_registry.csv"),
+                         stringsAsFactors = FALSE, colClasses = "character")
+  sha <- function(p) unname(tools::sha256sum(p))
+  panels <- list(figure_02 = paste0("2", letters[1:8]),
+                 extended_data_01 = paste0("01", letters[1:2]),
+                 extended_data_02 = paste0("02", letters[1:2]),
+                 extended_data_03 = paste0("03", letters[1:5]),
+                 extended_data_06 = paste0("06", letters[1:5]),
+                 extended_data_08 = paste0("08", letters[1:4]))
+  for (pid in names(panels)) {
+    r <- reg[reg$publication_id == pid, , drop = FALSE]
+    testthat::expect_identical(nrow(r), 1L, info = pid)
+    testthat::expect_identical(r$status, "CANONICAL", info = pid)
+    testthat::expect_identical(r$panels, paste(panels[[pid]], collapse = ","), info = pid)
+    dir <- if (startsWith(pid, "figure_")) "main" else "extended_data"
+    testthat::expect_identical(r$rendered_artifact,
+                               paste0("figures/", dir, "/", pid, ".svg"), info = pid)
+    testthat::expect_identical(r$canonical_source_data,
+                               paste0("figures/", dir, "/source_data/", pid), info = pid)
+    for (ext in c(".svg", ".pdf", ".png"))
+      testthat::expect_true(file.exists(repo_path("figures", dir, paste0(pid, ext))),
+                            info = paste0(pid, ext))
+    testthat::expect_identical(sha(repo_path(r$rendered_artifact)), r$hash, info = pid)
+    testthat::expect_true(grepl("^[0-9a-f]{40}$", r$source_commit), info = pid)
+    sd <- repo_path(r$canonical_source_data)
+    man <- utils::read.csv(file.path(sd, "00_manifest.csv"), stringsAsFactors = FALSE,
+                           colClasses = "character")
+    testthat::expect_identical(man$file, paste0(pid, sub("^[0-9]+", "", panels[[pid]]),
+                                                "_source_data.csv"), info = pid)
+    testthat::expect_setequal(list.files(sd), c(man$file, "00_manifest.csv"))
+    testthat::expect_identical(sha(file.path(sd, man$file)), man$sha256, info = pid)
+    testthat::expect_identical(unique(man$render_git_commit), r$source_commit, info = pid)
+  }
+  # one producer per key and one render commit, so one promotion
+  testthat::expect_length(unique(reg$source_commit[reg$publication_id %in% names(panels)]), 1L)
+
+  # the published source data carry the fixed colour limits the panels were drawn with
+  rd <- function(pid, panel) utils::read.csv(repo_path(
+    "figures", if (startsWith(pid, "figure_")) "main" else "extended_data", "source_data", pid,
+    paste0(pid, panel, "_source_data.csv")), stringsAsFactors = FALSE)
+  testthat::expect_equal(unique(rd("figure_02", "d")$colour_limit), 2)
+  testthat::expect_equal(unique(rd("extended_data_02", "a")$colour_limit), 1)
+  testthat::expect_equal(unique(rd("extended_data_08", "a")$colour_limit), 0.6)
+  for (p in c("a", "b"))
+    testthat::expect_equal(unique(rd("extended_data_06", p)$shared_NES_scale_limit), 2)
+  # ED6 c-e: the curves of the frozen Figure 3 export, on the shared strip limit
+  curves <- do.call(rbind, lapply(c("c", "d", "e"), function(p) rd("extended_data_06", p)))
+  testthat::expect_equal(curves$shared_NES_strip_limit, c(2, 2, 2))
+  testthat::expect_identical(unique(curves$curve_source),
+    "source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv")
+  testthat::expect_identical(curves$set_size, c(507L, 297L, 105L))
+  testthat::expect_identical(curves$leading_edge_n, c(255L, 112L, 48L))
+})

@@ -15,6 +15,11 @@
 #      ED = complete audit, more information, not merely more millimetres.
 #   3. ONE SCALE PER QUANTITY. Where the same quantity is plotted in more than
 #      one panel it carries one shared symmetric scale and one colour bar.
+#      Since palette v3.2 that scale is the measure's fixed colour limit
+#      (config/manuscript_palette.yml diverging_limits: NES, z, set-mean z,
+#      correlation, SMD), drawn by nv_diverging(measure = ...): values beyond
+#      it take full colour, the colour bar ends read <= / >=, and the source
+#      data keep every value uncapped.
 #   4. VECTOR EXPORT. The delivered PDF must contain embedded fonts and real
 #      text-showing operators and must contain no page-sized raster.
 #
@@ -419,8 +424,12 @@ panels:
     main_or_ed: ed_deepens
     narrative: detailed curve with set size, leading-edge counts and reconstruction provenance.
     primary_source: null
+    # the theme table (the three-contrast strip) stays first; the curve is the
+    # frozen Figure 3 export of the same exemplar (f9_frozen_curve)
     input_dependencies:
       - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
+      - source_data/pRoteomics/figure_03_adaptation/selection.csv
+      - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
   - id: v9_ed_gsea_curve_rna
     renderer: f9_ed_gsea_curve
     role: gsea_support_detailed
@@ -432,6 +441,8 @@ panels:
     primary_source: null
     input_dependencies:
       - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
+      - source_data/pRoteomics/figure_03_adaptation/selection.csv
+      - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
   - id: v9_ed_gsea_curve_ox
     renderer: f9_ed_gsea_curve
     role: gsea_support_detailed
@@ -443,6 +454,8 @@ panels:
     primary_source: null
     input_dependencies:
       - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
+      - source_data/pRoteomics/figure_03_adaptation/selection.csv
+      - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
   - id: v9_ed_atlas_rescon
     renderer: f9_gsea_atlas
     label_units: 3.5

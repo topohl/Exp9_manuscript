@@ -7,7 +7,7 @@
 # printed number, formatted by the sprintf format the annotation map declares.
 #
 # Contents
-#   GROUP_COL / GROUP_LEV / GROUP_SHAPE / SEX_SHAPE / CON_GREY   group and sex encoding
+#   GROUP_COL / GROUP_LEV / GROUP_SHAPE / SEX_SHAPE / CON_MARK   group and sex encoding
 #   INK / MUTED / RULE / GREEN_* / NEUTRAL_BOX                    inks
 #   BASE_PT / BODY_PT / NOTE_PT                                   type sizes (pt)
 #   BH_NATURE, bh_style_nature()                                  the opt-in Nature style profile
@@ -24,17 +24,24 @@
 suppressPackageStartupMessages(library(ggplot2))
 
 # ---------------------------------------------------------------- house style
-# Group colours from R/plotting_nature.R (byte-identical to MMM_GROUP_COLOURS
-# upstream). Shape carries group redundantly.
+# Group colours from the manuscript palette (config/manuscript_palette.yml group, v3: slate blue CON, warm grey RES,
+# red SUS), the one CON/RES/SUS palette of every figure; MMMSociability pins the same values
+# (Functions/manuscript_palette.R). The vendored R/plotting_nature.R stays byte-identical to pRoteomics and its older
+# group trio is not used. Shape carries group redundantly.
 source(repo_path("R", "plotting_nature.R"))
-GROUP_COL <- NATURE_SEMANTIC_PALETTES$group[c("CON", "RES", "SUS")]
+GROUP_COL <- unlist(yaml::read_yaml(repo_path("config", "manuscript_palette.yml"))$group)[c("CON", "RES", "SUS")]
 GROUP_LEV <- c("CON", "RES", "SUS")
 GROUP_SHAPE <- c(CON = 21L, RES = 24L, SUS = 22L)
 # Circles for every group: the candidate figures draw group by colour alone (user directive 2026-09-30).
 # Opt-in; the canonical Figure 1 keeps GROUP_SHAPE.
 GROUP_CIRCLE <- c(CON = 21L, RES = 21L, SUS = 21L)
 SEX_SHAPE <- c(Female = 21L, Male = 24L)
-CON_GREY <- "grey45"   # CON is descriptive: hollow grey marks and dashed lines (RES is the light group ink)
+# CON is descriptive: hollow marks and dashed lines, drawn in the CON group colour (palette v3; until 2026-10-07 grey45,
+# which no longer matched the CON colour of every other panel and figure)
+CON_MARK <- GROUP_COL[["CON"]]
+# A scatter that is deliberately NOT coloured by group (Figure 1e and its Stage 30 / option twins) takes a neutral grey:
+# the former blue-grey #6E8B99 read as the v3 CON slate blue.
+POOLED_FILL <- "grey55"
 
 INK <- "#2B2B2B"; MUTED <- "#6E6E6E"; RULE <- "#B5B5B5"
 GREEN_DARK <- "#2F6F62"; GREEN_MID <- "#6FA79B"; GREEN_LIGHT <- "#A8D5CF"; NEUTRAL_BOX <- "#EDEDED"

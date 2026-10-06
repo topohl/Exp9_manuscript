@@ -16,7 +16,7 @@
 # bundle_cell(); a number that is not in the bundle cannot reach the figure.
 # Plotted group means and intervals are the bundle's model-based estimates from
 # the sex-stratified fits (per-sex means come only from stratified fits); points
-# are the bundle's animal values; CON is shown in grey as description only.
+# are the bundle's animal values; CON is shown hollow and dashed, as description only.
 #
 # Panels (builders in R/panels/behaviour_figure1_panels.R; house style, annotation
 # resolver and SVG device in R/panels/behaviour_figure_style.R):

@@ -9,14 +9,21 @@
 # THE HARD RULE (Part-28 section 21). No heatmap may map two different numbers
 # to the same endpoint colour without saying so. A panel fails if any plotted
 # value lies outside its colour limits UNLESS the saturation is intentional,
-# disclosed on the colourbar, and the uncapped values are still in the source
-# data. This script hard-stops on a failure.
+# disclosed (on the colourbar, or for a panel without one by the value printed
+# in every tile), and the uncapped values are still in the source data. This
+# script hard-stops on a failure.
 #
-# WHAT "OUTSIDE THE LIMITS" MEANS HERE. nv_diverging() wraps
-# scale_fill_gradient2(), which inherits the ggplot2 default oob = censor: an
-# out-of-range value is NOT squished to the endpoint, it becomes NA and is
-# painted na.value (grey50). So a silent clip in this layer would show up as a
-# grey tile, and the audit checks both the numbers and the rendered SVG.
+# WHAT "OUTSIDE THE LIMITS" MEANS HERE. Two kinds of colour limit exist since
+# palette v3.2 (config/manuscript_palette.yml diverging_limits):
+#  * a FIXED limit by measure, drawn by nv_diverging(measure = ...): values
+#    beyond it are squished to full colour on purpose, the colourbar ends read
+#    <= / >=, and the sidecar keeps the uncapped value. Such a panel is audited
+#    against the fixed limit it actually draws, as intentional saturation.
+#  * a panel's own limit (a declared display cap, or the data maximum):
+#    nv_diverging(limits = ...) keeps the ggplot2 default oob = censor, so an
+#    out-of-range value is NOT squished, it becomes NA and is painted na.value
+#    (grey50). A silent clip there would show up as a grey tile, and the audit
+#    checks both the numbers and the rendered SVG.
 
 source(file.path("R", "paths.R"))
 source(repo_path("R", "null_coalescing.R"))
@@ -53,8 +60,10 @@ TOKENS <- c("geom_tile", "geom_raster", "Heatmap\\(", "scale_fill_gradient2",
             "nv_diverging", "limits *=", "oob *=", "squish", "scales::squish",
             "pmin\\(", "pmax\\(", "cut\\(", "winsor", "truncate", "\\bcap\\b",
             "clamp", "censor")
-SRC <- list.files(repo_path("R"), pattern = "[.]R$", full.names = TRUE)
-SRC <- c(SRC[grepl("final_truth_v9|nature_v2_figure_utils|nature_final_v7",
+# recursive: the panel libraries live under R/panels
+SRC <- list.files(repo_path("R"), pattern = "[.]R$", full.names = TRUE,
+                  recursive = TRUE)
+SRC <- c(SRC[grepl("final_truth_v9|nature_v2_figure_utils|nature_final_v7|figure3_adaptation",
                    basename(SRC))],
          list.files(repo_path("figures"), pattern = "^final_truth_v9.*[.]R$",
                     full.names = TRUE),
@@ -74,7 +83,8 @@ code <- do.call(rbind, lapply(sort(unique(SRC)), function(f) {
     if (!length(i)) return(NULL)
     data.frame(file = sub(".*proteomics[/\\]", "", f), line = i, token = tk,
                code = trimws(substr(ln[i], 1, 160)),
-               is_v9_renderer = grepl("final_truth_v9", basename(f)),
+               is_v9_renderer = grepl("final_truth_v9|figure3_adaptation",
+                                      basename(f)),
                stringsAsFactors = FALSE)
   }))
 }))
@@ -89,34 +99,53 @@ write_csv_safe(code, file.path(OUT, "heatmap_scale_code_search.csv"))
 # Declared once, from the renderers, because a colourbar's name and the identity
 # of a shared-scale group are editorial facts about the design and cannot be
 # read out of a CSV.
+#
+# `measure` names a panel drawn on a FIXED limit by measure (palette v3.2,
+# config/manuscript_palette.yml diverging_limits): its limit is read from the
+# palette, saturation beyond it is intentional and disclosed by the colourbar's
+# <= / >= ends, and the plotted column itself is the uncapped value (the scale
+# squishes the colour, never the number). NA means the panel's own limit.
+# `disclosure` says how saturation is disclosed: on the colourbar (its <= / >=
+# ends), or by the value printed in every tile (the Figure 3 cards, which carry
+# no colourbar).
 H <- function(panel_id, quantity, value_col, limit_fun, shared_group,
               zero_meaningful, intentional_saturation, uncapped_col = NA,
-              colourbar = NA)
+              colourbar = NA, measure = NA, disclosure = "colourbar")
   data.frame(panel_id = panel_id, quantity = quantity, value_col = value_col,
              limit_rule = limit_fun, shared_scale_group = shared_group,
              zero_meaningful = zero_meaningful,
              intentional_saturation = intentional_saturation,
              uncapped_col = uncapped_col, colourbar_name = colourbar,
-             stringsAsFactors = FALSE)
+             measure = measure, disclosure = disclosure, stringsAsFactors = FALSE)
 
 SPEC <- rbind(
   H("v9_fingerprint", "baseline abundance, CON z-score", "con_z",
-    "max(abs(plotted)) symmetric", "none", TRUE, FALSE, NA,
-    "Baseline abundance (CON z-score)"),
+    "fixed z limit (palette diverging_limits$z)", "none", TRUE, TRUE, "con_z",
+    "Baseline abundance (CON z-score)", "z"),
   H("v9_compartment", "marker abundance, median centred log2",
     "displayed_value", "declared display cap from the source table", "none",
     TRUE, TRUE, "true_value", "unnamed"),
-  H("v9_atlas", "median NES across a theme's GO terms", "median_NES",
-    "f9_atlas_limit: max(abs) over all three contrast atlases",
-    "atlas_NES", TRUE, FALSE, NA, "Median normalised enrichment score"),
+  H("v9_atlas", "median NES across a programme's GO terms", "median_NES",
+    "fixed NES limit (palette diverging_limits$nes)", "atlas_NES", TRUE, TRUE,
+    "median_NES", "Median NES (SUS - RES)", "nes"),
+  H("v9_card_syn", "constituent-term NES in three contrasts", "NES",
+    "fixed NES limit (palette diverging_limits$nes)", "card_NES", TRUE, TRUE,
+    "NES", "none (every tile prints its NES)", "nes", "printed"),
+  H("v9_card_rna", "constituent-term NES in three contrasts", "NES",
+    "fixed NES limit (palette diverging_limits$nes)", "card_NES", TRUE, TRUE,
+    "NES", "none (every tile prints its NES)", "nes", "printed"),
+  H("v9_card_ox", "constituent-term NES in three contrasts", "NES",
+    "fixed NES limit (palette diverging_limits$nes)", "card_NES", TRUE, TRUE,
+    "NES", "none (every tile prints its NES)", "nes", "printed"),
   H("v9_ed_atlas_rescon", "median NES across a theme's GO terms", "median_NES",
-    "f9_atlas_limit: max(abs) over all three contrast atlases",
-    "atlas_NES", TRUE, FALSE, NA, "Median normalised enrichment score"),
+    "fixed NES limit (palette diverging_limits$nes)", "atlas_NES", TRUE, TRUE,
+    "median_NES", "Median normalised enrichment score", "nes"),
   H("v9_ed_atlas_suscon", "median NES across a theme's GO terms", "median_NES",
-    "f9_atlas_limit: max(abs) over all three contrast atlases",
-    "atlas_NES", TRUE, FALSE, NA, "Median normalised enrichment score"),
-  H("v9_ed_fingerprint_full", "external signature score, CON z-score", "score",
-    "max(abs(plotted)) symmetric", "none", TRUE, FALSE, NA, "CON z-score"),
+    "fixed NES limit (palette diverging_limits$nes)", "atlas_NES", TRUE, TRUE,
+    "median_NES", "Median normalised enrichment score", "nes"),
+  H("v9_ed_fingerprint_full", "signature score, mean of member CON z-scores",
+    "score", "fixed set-mean z limit (palette diverging_limits$z_set_mean)",
+    "none", TRUE, TRUE, "score", "Signature score (CON z-score)", "z_set_mean"),
   H("v9_ed_module_fingerprint", "mean module-member CON z-score", "mean_con_z",
     "max(abs(plotted)) symmetric", "none", TRUE, FALSE, NA,
     "Mean module-member abundance (CON z-score)"),
@@ -124,8 +153,10 @@ SPEC <- rbind(
     "max(abs(plotted)) symmetric", "none", TRUE, FALSE, NA,
     "Module eigengene difference"),
   H("v9_ed_similarity", "median CON profile correlation between two units",
-    "median_similarity", "max(abs(plotted)) symmetric, one global scale",
-    "ed8_similarity", TRUE, FALSE, NA, "Median profile correlation (CON)"))
+    "median_similarity",
+    "fixed correlation limit (palette diverging_limits$correlation), one global scale",
+    "none", TRUE, TRUE, "median_similarity", "Median profile correlation (CON)",
+    "correlation"))
 
 num <- function(x) suppressWarnings(as.numeric(x))
 sidecar <- function(pid) {
@@ -149,9 +180,22 @@ rows <- do.call(rbind, lapply(seq_len(nrow(SPEC)), function(i) {
   uc <- SPEC$uncapped_col[i]
   tv <- if (!is.na(uc) && uc %in% names(d)) num(d[[uc]]) else v
   tv <- tv[is.finite(tv)]
-  lim <- max(abs(v))
-  # a shared-scale group takes the group's limit, not this panel's own
-  if (SPEC$shared_scale_group[i] != "none") {
+  fixed <- !is.na(SPEC$measure[i])
+  # The audit measures what a panel DRAWS. A fixed-limit panel draws the
+  # palette's limit for its measure - unless its sidecar records another limit:
+  # then it was drawn before palette v3.2 and not re-rendered since (the ED6
+  # atlases and strips need upstream inputs this repository does not import), so
+  # it still carries its old data-maximum limit and ggplot's censor.
+  pal_lim <- if (fixed) nv_diverging_limit(SPEC$measure[i]) else NA_real_
+  rec <- intersect(c("colour_limit", "shared_NES_scale_limit",
+                     "shared_NES_strip_limit"), names(d))[1]
+  rec_lim <- if (!is.na(rec)) num(d[[rec]][1]) else NA_real_
+  stale <- fixed && is.finite(rec_lim) && abs(rec_lim - pal_lim) > 1e-9
+  drawn_fixed <- fixed && !stale
+  lim <- if (drawn_fixed) pal_lim else if (stale) rec_lim else max(abs(v))
+  # a shared-scale group of own-limit panels takes the group's limit, not this
+  # panel's own (a fixed-limit group already shares the palette's limit)
+  if (!fixed && SPEC$shared_scale_group[i] != "none") {
     grp <- SPEC$panel_id[SPEC$shared_scale_group ==
                            SPEC$shared_scale_group[i]]
     lim <- max(vapply(grp, function(q) {
@@ -165,6 +209,13 @@ rows <- do.call(rbind, lapply(seq_len(nrow(SPEC)), function(i) {
     paste(readLines(sv, warn = FALSE, encoding = "UTF-8"), collapse = " ") else ""
   labs <- sub(".*>([^<]*)</text>", "\\1",
               unlist(regmatches(txt, gregexpr("<text[^>]*>[^<]*</text>", txt))))
+  # a panel drawn at a fixed limit must show exactly that limit's end labels;
+  # an own-limit panel discloses with any <= / >= mark (Figure 2e)
+  on_bar <- if (drawn_fixed)
+    all(nv_diverging_labels(pal_lim)[c(1, 5)] %in% labs) else
+    any(grepl("≥|≤", labs))
+  printed <- identical(SPEC$disclosure[i], "printed") &&
+    all(sprintf("%.1f", v) %in% labs)
   data.frame(
     figure = fig_of$figure[match(pid, fig_of$panel_id)],
     panel = fig_of$panel_label[match(pid, fig_of$panel_id)],
@@ -173,23 +224,34 @@ rows <- do.call(rbind, lapply(seq_len(nrow(SPEC)), function(i) {
     colour_min = -lim, colour_max = lim,
     n_below_colour_min = sum(tv < -lim - 1e-9),
     n_above_colour_max = sum(tv > lim + 1e-9),
-    oob_handling = "scales::censor (ggplot2 default); an out-of-range value would be painted grey50",
+    oob_handling = if (drawn_fixed)
+      "scales::squish at the fixed limit by measure: values beyond take full colour, the colourbar ends read <= / >=, the sidecar keeps the uncapped value" else
+      "scales::censor (ggplot2 default); an out-of-range value would be painted grey50",
     shared_scale_group = SPEC$shared_scale_group[i],
     scale_symmetric = TRUE, zero_meaningful = SPEC$zero_meaningful[i],
-    intentional_saturation = SPEC$intentional_saturation[i],
-    disclosed_on_colourbar = any(grepl("≥|≤", labs)),
+    intentional_saturation = if (fixed) drawn_fixed else SPEC$intentional_saturation[i],
+    disclosed_on_colourbar = on_bar,
+    disclosed_by_printed_values = printed,
     disclosed_in_legend = any(grepl("saturat", labs, ignore.case = TRUE)),
     uncapped_source_values_present = !is.na(uc) && uc %in% names(d),
     grey50_pixels_in_svg = grepl("grey50|#7F7F7F|#808080", txt,
                                  ignore.case = TRUE),
     colourbar_name = SPEC$colourbar_name[i],
     limit_rule = SPEC$limit_rule[i],
+    colour_limit_measure = SPEC$measure[i],
+    colour_limit_source = if (drawn_fixed) "palette diverging_limits" else
+      if (stale) paste0("sidecar ", rec, " (drawn before palette v3.2)") else
+      "the panel's own limit",
+    colour_limit_recorded = is.finite(rec_lim),
+    drawn_before_palette_v3_2 = stale,
     stringsAsFactors = FALSE)
 }))
 
+# disclosed = on the colourbar, or by the value printed in every tile
 rows$status <- with(rows, ifelse(
   n_below_colour_min + n_above_colour_max == 0L, "FAITHFUL",
-  ifelse(intentional_saturation & disclosed_on_colourbar &
+  ifelse(intentional_saturation &
+           (disclosed_on_colourbar | disclosed_by_printed_values) &
            uncapped_source_values_present, "DISCLOSED_SATURATION",
          "SILENT_CLIP")))
 rows <- rows[order(rows$figure, rows$panel), , drop = FALSE]
@@ -216,31 +278,64 @@ cat("section 21 PASSES: no heatmap clips a value without disclosure\n")
 cat("\nwritten to:", OUT, "\n")
 
 # ------------------------------------------------------- S27 decisions, prose
-sat <- rows[rows$intentional_saturation, , drop = FALSE]
+fx <- rows[!is.na(rows$colour_limit_measure) & !rows$drawn_before_palette_v3_2, ,
+           drop = FALSE]
+old <- rows[rows$drawn_before_palette_v3_2, , drop = FALSE]
+cap <- rows[rows$panel_id == "v9_compartment", , drop = FALSE]
 md <- c(
 "# Heatmap scale decisions (Part 28)",
 "",
 sprintf("%d colour-encoded matrix panels were audited. %d represent every value",
         nrow(rows), sum(rows$status == "FAITHFUL")),
-sprintf("faithfully; %d saturates deliberately and discloses it. None clips silently.",
+sprintf("faithfully; %d saturate deliberately and disclose it. None clips silently.",
         sum(rows$status == "DISCLOSED_SATURATION")),
 "",
 "## Why a clip here would be visible rather than silent",
 "",
-"nv_diverging() wraps scale_fill_gradient2(), which inherits the ggplot2",
-"default oob = scales::censor. An out-of-range value is therefore NOT squished",
-"to the endpoint colour - it becomes NA and is painted grey50. The audit checks",
-sprintf("the rendered SVGs for that colour as well as the numbers: %d panels contain",
+"A panel on its own limit (a declared display cap or its data maximum) draws",
+"through nv_diverging(limits = ...), which keeps the ggplot2 default",
+"oob = scales::censor. An out-of-range value is therefore NOT squished to the",
+"endpoint colour - it becomes NA and is painted grey50. The audit checks the",
+sprintf("rendered SVGs for that colour as well as the numbers: %d panels contain",
         sum(rows$grey50_pixels_in_svg)),
 "a grey50 tile.",
 "",
-"## The one saturating panel",
+"## Fixed colour limits by measure (palette v3.2)",
+"",
+"Since palette v3.2 (config/manuscript_palette.yml diverging_limits) every panel",
+"of a measure draws one fixed limit, so a colour means the same value in every",
+"figure: full colour at |z| 2 for a single-protein z-score, at 1 for a mean of",
+"z-scores over a protein set, at |NES| 2 and at |r| 0.6. A value beyond the",
+"limit is squished to full colour on purpose: the colourbar ends read <= / >=,",
+"and the sidecar keeps the uncapped value. For the GO NES and z-score panels the",
+"data maxima these limits replace left most cells pale; the correlation limit is",
+"close to that panel's data maximum. The Figure 3 cards carry no colourbar: every",
+"tile prints its NES, which is their disclosure.",
+"",
+"| panel | measure | limit | cells beyond the limit |",
+"|---|---|---|---|")
+for (i in seq_len(nrow(fx)))
+  md <- c(md, sprintf("| %s %s (%s) | %s | +/-%g | %d of the cells (raw %.3f to %.3f) |",
+                      fx$figure[i], fx$panel[i], fx$panel_id[i],
+                      fx$colour_limit_measure[i], fx$colour_max[i],
+                      fx$n_above_colour_max[i] + fx$n_below_colour_min[i],
+                      fx$raw_min[i], fx$raw_max[i]))
+if (nrow(old)) md <- c(md, "",
+  "Drawn before palette v3.2 and not re-rendered since, so audited at the limit",
+  "their sidecars record (the renderers now draw the fixed limit; these panels",
+  "need upstream inputs that this repository records as provenance only):",
+  "",
+  sprintf("- %s %s (%s): drawn at +/-%.3f, %d of the cells beyond it", old$figure,
+          old$panel, old$panel_id, old$colour_max,
+          old$n_above_colour_max + old$n_below_colour_min))
+md <- c(md, "",
+"## The declared display cap (Figure 2e)",
 "")
-if (nrow(sat)) md <- c(md,
+if (nrow(cap)) md <- c(md,
   sprintf("%s panel %s (%s) maps colour to +/-%.1f while the true values run",
-          sat$figure[1], sat$panel[1], sat$panel_id[1], sat$colour_max[1]),
-  sprintf("%.3f to %.3f. %d cells exceed the cap.", sat$raw_min[1], sat$raw_max[1],
-          sat$n_above_colour_max[1]),
+          cap$figure[1], cap$panel[1], cap$panel_id[1], cap$colour_max[1]),
+  sprintf("%.3f to %.3f. %d cells exceed the cap.", cap$raw_min[1], cap$raw_max[1],
+          cap$n_above_colour_max[1]),
   "",
   "Retained, because three extreme cells would otherwise compress the colour",
   "discrimination of the whole remaining matrix. The saturation is disclosed",
@@ -261,32 +356,36 @@ if (nrow(sat)) md <- c(md,
 md <- c(md,
 "## Shared scales",
 "",
-"| group | panels | limit | why shared |",
+"| group | limit drawn by each panel | shared now | why shared |",
 "|---|---|---|---|")
 for (g in setdiff(unique(rows$shared_scale_group), "none")) {
   z <- rows[rows$shared_scale_group == g, ]
-  md <- c(md, sprintf("| %s | %s | +/-%.6f | same quantity, intended for direct comparison |",
-                      g, paste(z$panel_id, collapse = ", "), z$colour_max[1]))
+  md <- c(md, sprintf("| %s | %s | %s | same quantity, intended for direct comparison |",
+                      g, paste(sprintf("%s +/-%.3f", z$panel_id, z$colour_max),
+                               collapse = "; "),
+                      if (length(unique(round(z$colour_max, 9))) == 1L) "yes" else
+                        "NO - a member was drawn before palette v3.2"))
 }
 md <- c(md, "",
 "Quantities that are NOT forced onto a common scale, correctly: NES against",
 "log2FC, CON z-score against module eigengene difference, and profile",
 "correlation against any of them. Each carries its own named colourbar.",
 "",
-"## Known residual, recorded rather than fixed",
+"## The NES strip residual",
 "",
-"The three-cell NES strips in Figure 3 d-f and ED6 c-e carry no colour key, and",
-"the atlas on the same page carries an NES colourbar at a different limit",
-"(theme-summary +/-2.479 against single-term +/-2.761). The strips print their",
-"NES numerically in every tile, and the legend now states that the strip is",
-"keyed by its numbers rather than by the atlas bar. The two limits are not",
-"reconciled because they summarise different quantities: a median across a",
-"theme cannot share a scale with a single term without one of them being",
-"rescaled away from its own range.",
-"",
-"The atlas colourbar is ticked -2, 0, 2 against limits +/-2.479, so the",
-"outermost labelled tick understates the endpoint. Nothing is clipped; the",
-"caption states the limit numerically.")
+"The three-cell NES strips in ED6 c-e and the Figure 3 e-g cards carry no colour",
+"key; they print their NES in every tile. Until palette v3.2 they used a",
+"different limit from the atlas on the same page (theme-summary +/-2.479, later",
+"2.713, against single-term 2.761 and 3.0). The renderers now give strips, cards",
+"and atlases the one fixed NES limit, and the atlas colourbar ends at that limit",
+"(ticks -2, -1, 0, 1, 2, ends marked <= / >=), so no labelled tick understates",
+"the endpoint.",
+"")
+md <- c(md, if (nrow(old))
+  c("NOT YET RESOLVED in these outputs: the panels listed above as drawn before",
+    "palette v3.2 keep their old limit until they are re-rendered, so Figure 3 and",
+    "those panels do not yet share one NES scale.") else
+  "Resolved in these outputs: every NES panel audited here draws the fixed limit.")
 writeLines(md, file.path(REP, "heatmap_scale_decisions.md"))
 cat("heatmap decisions doc written
 ")

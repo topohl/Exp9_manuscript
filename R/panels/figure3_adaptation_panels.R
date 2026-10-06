@@ -174,10 +174,6 @@ f3a_adaptation_states <- function(inventory) {
   states
 }
 
-f3a_nes_limit <- function(inventory) {
-  max(abs(f3a_programme_cells(inventory)$median_NES), na.rm = TRUE)
-}
-
 f3a_dap_burden <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   z <- nv_read_csv(repo_path(panel$primary_source))
   need <- c("dataset", "unit", "display", "canonical", "claimable", "xpos")
@@ -239,13 +235,12 @@ f3a_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       cells$spatial_unit == ex$spatial_unit[[i]]
     cells$exemplar[hit] <- ex$exemplar[[i]]
   }
-  lim <- f3a_nes_limit(inv)
   supported <- cells[cells$n_fdr_supported > 0, , drop = FALSE]
   selected <- cells[!is.na(cells$exemplar), , drop = FALSE]
   fam <- nf_fam()
   p <- ggplot2::ggplot(cells,
       ggplot2::aes(spatial_unit_label, programme_label)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = median_NES), colour = "white",
+    ggplot2::geom_tile(ggplot2::aes(fill = median_NES), colour = nv_tile_border(),
                        linewidth = 0.15) +
     ggplot2::geom_point(data = supported,
       ggplot2::aes(size = n_fdr_supported), shape = 21, fill = "white",
@@ -259,12 +254,20 @@ f3a_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       size = nf_sz(4.6), colour = "black", fill = scales::alpha("white", 0.9),
       linewidth = 0, label.padding = ggplot2::unit(0.08, "mm"),
       nudge_x = -0.34, nudge_y = 0.24) +
-    nv_diverging(limits = c(-lim, lim), name = "Median NES\n(SUS - RES)",
-                 breaks = c(-2, 0, 2)) +
+    # the manuscript's fixed NES limit (palette v3.2), shared with ED6 and the
+    # cards: a median NES beyond it takes full colour, the sidecar keeps it
+    nv_diverging(measure = "nes", name = "Median NES\n(SUS - RES)") +
     ggplot2::scale_size_area(
       name = "FDR-supported\nconstituent GO terms",
       breaks = c(1, 5, 10, 20), limits = c(1, max(supported$n_fdr_supported)),
       max_size = 2.5) +
+    # colourbar above the dot-size key, pinned: unpinned, ggplot orders the two
+    # guides by a hash of their content, so a label change can swap them
+    # (a shorter bar leaves room between the two keys)
+    ggplot2::guides(fill = ggplot2::guide_colourbar(
+                      order = 1,
+                      theme = ggplot2::theme(legend.key.height = grid::unit(26, "pt"))),
+                    size = ggplot2::guide_legend(order = 2)) +
     ggplot2::facet_grid(. ~ compartment, scales = "free_x", space = "free_x") +
     ggplot2::labs(x = NULL, y = NULL) + nf_theme_tile() +
     ggplot2::theme(
@@ -276,10 +279,19 @@ f3a_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       legend.position = "right",
       legend.title = ggplot2::element_text(size = NF_MIN_PT),
       legend.text = ggplot2::element_text(size = NF_MIN_PT),
+      # the two stacked keys are taller than the tile area they were centred
+      # on, which pushed the top title line out of the box: hang them from the
+      # top, with tight spacing
+      legend.justification = "top",
+      legend.margin = ggplot2::margin(0, 0, 0, 0),
+      legend.spacing.y = ggplot2::unit(4, "pt"),
       plot.margin = ggplot2::margin(0.5, 1, 0.5, 1, "mm"))
   cells$atlas_summary <- paste0(
     "median NES across mapped constituent terms; dot size is the number with ",
     "BH FDR < 0.05; outlined 1-3 cells link to exemplar cards")
+  # the colour limit this panel draws, recorded so the audits compare it with
+  # the other NES panels (ED6 a/b record theirs the same way)
+  cells$shared_NES_scale_limit <- nv_diverging_limit("nes")
   write_csv_safe(cells, csv_path)
   nv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
@@ -354,6 +366,8 @@ f3a_state_map <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::scale_shape_manual(values = c(16, 17, 15), name = "Compartment") +
     ggplot2::scale_alpha_manual(values = c("FALSE" = 0.28, "TRUE" = 0.88),
       guide = "none") +
+    ggplot2::scale_x_continuous(labels = nv_minus_labels) +
+    ggplot2::scale_y_continuous(labels = nv_minus_labels) +
     ggplot2::coord_equal(xlim = c(-lim, lim), ylim = c(-lim, lim),
                          expand = FALSE) +
     ggplot2::labs(x = "Median NES (RES - CON)",
@@ -365,6 +379,10 @@ f3a_state_map <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       legend.title = ggplot2::element_text(size = NF_MIN_PT),
       legend.text = ggplot2::element_text(size = NF_MIN_PT),
       legend.key.height = ggplot2::unit(2.4, "mm"),
+      # hung from the top: centred, the two keys pushed the 'GO programme'
+      # title above the panel box (as in 3b)
+      legend.justification = "top",
+      legend.margin = ggplot2::margin(0, 0, 0, 0),
       plot.margin = ggplot2::margin(0.5, 1, 0.5, 1, "mm"))
   write_csv_safe(z, csv_path)
   nv_save_panel(p, svg_path, w_mm, h_mm)
@@ -399,14 +417,22 @@ f3a_pattern_burden <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   out$pattern_short <- factor(out$pattern_short, levels = short)
   out$compartment <- factor(out$compartment, levels = rev(compartments))
   out$classification_rule <- unique(z$classification_rule)[[1]]
-  cols <- c("#315B7D", "#B45F4B", "#708A75", "#7B6A91", "#D4D4D4")
+  # Pattern fills follow the group palette (v3): an arm that remodels in one
+  # stressed group takes that group's colour; the shared and the opposing arm
+  # take neutral hues that no group or GO programme (panel c) uses; "little
+  # detectable" is an empty circle. A dark rim keeps the light RES grey visible.
+  gc <- nv_group_colours()
+  fills <- c(gc[["RES"]], gc[["SUS"]], "#708A75", "#3D3D3D", "white")
+  ink <- c("black", "black", "black", "white", "black")
+  out$count_ink <- ink[match(out$adaptation_pattern, patterns)]
   p <- ggplot2::ggplot(out, ggplot2::aes(pattern_short, compartment)) +
-    ggplot2::geom_point(ggplot2::aes(size = fraction,
-                                    colour = adaptation_pattern), alpha = 0.9) +
-    ggplot2::geom_text(ggplot2::aes(label = n), family = nf_fam(),
-                       size = nf_sz(4.7), colour = "black") +
-    ggplot2::scale_colour_manual(values = stats::setNames(cols, patterns),
-                                 guide = "none") +
+    ggplot2::geom_point(ggplot2::aes(size = fraction, fill = adaptation_pattern),
+                        shape = 21, colour = "grey25", stroke = 0.3, alpha = 0.9) +
+    ggplot2::geom_text(ggplot2::aes(label = n, colour = count_ink),
+                       family = nf_fam(), size = nf_sz(4.7)) +
+    ggplot2::scale_fill_manual(values = stats::setNames(fills, patterns),
+                               guide = "none") +
+    ggplot2::scale_colour_identity() +
     ggplot2::scale_size_area(max_size = 7, limits = c(0, 1),
       breaks = c(0.25, 0.5, 0.75), labels = scales::percent,
       name = "Fraction") +
@@ -422,7 +448,7 @@ f3a_pattern_burden <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       legend.key.width = ggplot2::unit(3, "mm"),
       legend.box.spacing = ggplot2::unit(0.5, "mm"),
       plot.margin = ggplot2::margin(1, 0.5, 0.5, 0.5, "mm"))
-  write_csv_safe(out, csv_path)
+  write_csv_safe(out[, setdiff(names(out), "count_ink"), drop = FALSE], csv_path)
   nv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
@@ -452,16 +478,6 @@ f3a_card_data <- function(inventory, exemplar_id, n_terms = 3L) {
   out
 }
 
-f3a_card_nes_limit <- local({
-  cache <- NULL
-  function(inventory) {
-    if (!is.null(cache)) return(cache)
-    z <- do.call(rbind, lapply(1:3, function(i) f3a_card_data(inventory, i)))
-    cache <<- ceiling(max(abs(z$NES), na.rm = TRUE) / 0.25) * 0.25
-    cache
-  }
-})
-
 f3a_exemplar_card <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   inv <- nv_read_csv(repo_path(panel$primary_source))
   idx <- as.integer(panel$exemplar)
@@ -481,16 +497,18 @@ f3a_exemplar_card <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   z$term_label <- desc$term_label[match(z$GO_ID, desc$GO_ID)]
   z$term_label <- factor(z$term_label, levels = rev(desc$term_label))
   z$supported <- is.finite(z$BH_FDR) & z$BH_FDR < 0.05
-  lim <- f3a_card_nes_limit(inv)
   title <- paste0(idx, "  ", ex$location_label, "\n", prog$programme_label)
   p <- ggplot2::ggplot(z, ggplot2::aes(contrast, term_label)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = NES), colour = "white",
+    ggplot2::geom_tile(ggplot2::aes(fill = NES), colour = nv_tile_border(),
                        linewidth = 0.2) +
     ggplot2::geom_tile(data = z[z$supported, , drop = FALSE], fill = NA,
                        colour = "black", linewidth = 0.55) +
+    # black: at least 5:1 also on the saturated blue end
     ggplot2::geom_text(ggplot2::aes(label = sprintf("%.1f", NES)),
-                       family = nf_fam(), size = nf_sz(4.8), colour = "grey10") +
-    nv_diverging(limits = c(-lim, lim), name = "NES", breaks = c(-2, 0, 2)) +
+                       family = nf_fam(), size = nf_sz(4.8), colour = "black") +
+    # the same fixed NES limit as the atlas (palette v3.2): a term beyond it
+    # takes full colour, and every tile prints its NES
+    nv_diverging(measure = "nes", name = "NES") +
     ggplot2::labs(title = title, x = NULL, y = NULL,
                   caption = "outlined = constituent GO FDR < 0.05") +
     nf_theme_tile() +
@@ -502,6 +520,8 @@ f3a_exemplar_card <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       axis.text.y = ggplot2::element_text(size = NF_MIN_PT, lineheight = 0.85),
       legend.position = "none",
       plot.margin = ggplot2::margin(0.5, 1, 0.5, 1, "mm"))
+  # the colour limit the tiles draw (no colourbar: the printed NES disclose it)
+  z$shared_NES_strip_limit <- nv_diverging_limit("nes")
   write_csv_safe(z, csv_path)
   nv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
@@ -532,6 +552,7 @@ f3a_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::scale_x_continuous(limits = c(1, s$n_ranked),
       breaks = c(1, s$n_ranked), labels = c("SUS", "RES"),
       expand = c(0, 0)) +
+    ggplot2::scale_y_continuous(labels = nv_minus_labels) +
     ggplot2::labs(title = paste0(s$GO_description, "  (", s$GO_ID, ")"),
       subtitle = sprintf("NES %.2f; FDR %.2g", s$NES, s$BH_FDR),
       x = NULL, y = "Running ES") + nf_theme(grid = "none") +

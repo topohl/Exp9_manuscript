@@ -242,7 +242,7 @@ f1n_panel_cc1 <- function(tab, an, w_mm, h_mm, jitter_seed = c(NA, NA), frame = 
                  size = F1N$mean_size, stroke = F1N$mean_stroke, colour = "black", fill = "black") +
       facet_wrap(~ Sex, nrow = 1) +
       scale_fill_manual(values = c(CON = "white", GROUP_COL[c("RES", "SUS")]), guide = "none") +
-      scale_colour_manual(values = c(`TRUE` = CON_GREY, `FALSE` = F1N$point_colour), guide = "none") +
+      scale_colour_manual(values = c(`TRUE` = CON_MARK, `FALSE` = F1N$point_colour), guide = "none") +
       scale_shape_manual(values = F1N_GROUP_SHAPE, guide = "none") +
       scale_x_continuous(breaks = seq_along(GROUP_LEV), labels = GROUP_LEV, limits = c(0.6, 3.48), expand = c(0, 0)) +
       labs(x = NULL, y = F1N_CONSTRUCT_Y[[k]], title = holm) +
@@ -343,7 +343,7 @@ f1n_panel_association <- function(tab, an, w_mm, h_mm, typography = "candidate",
   right <- grid::unit(1, "npc") - grid::unit(0.6, "mm")
   build <- function(top_pad, bottom_pad) {
     ggplot(A2, aes(crossing_rate_equiv_per_h, observed_CombZ)) +
-      geom_point(size = F1N$point_size, stroke = F1N$point_stroke, shape = 21, colour = F1N$point_colour, fill = "#6E8B99") +
+      geom_point(size = F1N$point_size, stroke = F1N$point_stroke, shape = 21, colour = F1N$point_colour, fill = POOLED_FILL) +
       annotation_custom(f1n_math_grob(l1, x = right, y = grid::unit(1, "npc") - grid::unit(2.3, "mm"), hjust = 1)) +
       annotation_custom(f1n_math_grob(l2, x = right, y = grid::unit(1, "npc") - grid::unit(4.9, "mm"), hjust = 1)) +  # 0.4 mm lower than f's second line: room for the 5-pt exponent
       scale_y_continuous(expand = expansion(mult = c(0.04, 0.16)), labels = f1_minus_labels) +

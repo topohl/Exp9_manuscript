@@ -45,8 +45,9 @@ The candidate calls `f9_gsea_curve_plot()` in
 used for panels d-f through `f9_gsea_curve()` (the current curves, 3h-j, are
 drawn by `f3a_curve()`). This shares that design's header, running ES, hit
 ticks, three-contrast strip, palette, typography, and recorded NES colour
-limit. The candidate reads the frozen a-i Figure 3d source-data row to verify
-that limit. It also calls `f9_protein_zoom_plot()`, the same drawing function
+limit, which is now the manuscript's fixed NES limit (`config/manuscript_palette.yml`
+`diverging_limits`, palette v3.2) shared with Figure 3 (Extended Data 6 follows
+once it is re-rendered) rather than the frozen a-i Figure 3d value. It also calls `f9_protein_zoom_plot()`, the same drawing function
 used by Figure 3 k-m through `f3a_proteins()`. The seven genes per term follow Figure 3's
 leading-edge, absolute-ranked-statistic selection rule. Their log2 fold
 changes and BH FDRs come from stored mapped protein-level DA files. None of
@@ -74,7 +75,9 @@ Rscript --vanilla figures/figure_03_supplementary_go.R
 ```
 
 By default the renderer writes only to the ignored candidate namespace
-`results/figures/manuscript_candidates/supplementary_go_pathways_appendix/`.
+`results/figures/manuscript_candidates/supplementary_go_pathways_appendix_v2/`
+(palette v3.2 with the darkened protein-contrast colours; the unsuffixed
+`supplementary_go_pathways_appendix/` is the first palette v3.2 render).
 Pass a new output directory as its sole argument for a separate review copy.
 It refuses an existing output directory. Outputs are four individual curve
 SVGs, four individual protein SVGs, two paired pages, a review contact sheet

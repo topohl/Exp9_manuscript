@@ -126,3 +126,33 @@ testthat::test_that("the figure entry points live here and fit no models", {
                                      code, perl = TRUE)), label = s)
   }
 })
+
+testthat::test_that("an assembled page is rasterised with each panel drawn at the page resolution", {
+  source(testthat::test_path("..", "..", "R", "paths.R"))
+  source(repo_path("R", "manuscript_figure_utils.R"))
+  testthat::skip_if_not_installed("magick")
+  testthat::skip_if_not_installed("base64enc")
+  dir <- tempfile("raster_")
+  dir.create(dir)
+  on.exit(unlink(dir, recursive = TRUE), add = TRUE)
+  panel <- file.path(dir, "panel.svg")
+  writeLines(c('<svg xmlns="http://www.w3.org/2000/svg" width="40mm" height="20mm" viewBox="0 0 40 20">',
+               '<rect width="100%" height="100%" fill="white"/>',
+               '<rect x="10" y="5" width="20" height="10" fill="black"/>', '</svg>'), panel)
+  page <- file.path(dir, "page.svg")
+  manuscript_figure_assemble_svg(list("9a" = panel), list(list(id = "9a", x = 5, y = 5, w = 40, h = 20)),
+                                 list(width_mm = 50, height_mm = 30, layout_mode = "absolute"), page)
+  img <- manuscript_figure_rasterize(page, dpi = 300)
+  grey <- as.integer(magick::image_data(magick::image_convert(img, colorspace = "gray"), "gray"))[, , 1]
+  testthat::expect_identical(dim(grey), c(354L, 591L))
+  # The black box spans x = 15-35 mm of the page (pixels 177.2-413.4) and the
+  # row is its middle. Read as one document, the embedded panel was scaled up
+  # from a low-resolution raster and this edge smeared over about 12 pixels.
+  row <- grey[178, ]
+  testthat::expect_lt(row[181], 30)
+  testthat::expect_gt(row[175], 225)
+  testthat::expect_lt(row[412], 30)
+  testthat::expect_gt(row[416], 225)
+  # the panel letter is drawn over the panel's top-left corner
+  testthat::expect_lt(min(grey[60:95, 59:95]), 60)
+})
