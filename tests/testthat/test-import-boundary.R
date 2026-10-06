@@ -88,6 +88,23 @@ testthat::test_that("the render-input bridge is a closed historical record", {
   testthat::expect_identical(sum(d$disposition == "PROVENANCE_ONLY"), 3L)
 })
 
+testthat::test_that("a materialised provenance-only input is exactly the recorded bytes", {
+  # tools/import_render_inputs.R --materialize-provenance-only copies the three
+  # tables into the workspace only when they match the manifest. A copy that
+  # does not is a different input under the recorded name.
+  ri <- repo_path("provenance", "source_manifests", "render_inputs_manifest.csv")
+  testthat::skip_if(!file.exists(ri))
+  d <- utils::read.csv(ri, stringsAsFactors = FALSE)
+  po <- d[d$disposition == "PROVENANCE_ONLY", , drop = FALSE]
+  local <- vapply(po$declared_path, function(p) repo_path(p), character(1))
+  present <- file.exists(local)
+  testthat::skip_if(!any(present), "no provenance-only input is materialised")
+  for (i in which(present)) {
+    testthat::expect_identical(unname(tools::sha256sum(local[[i]])), po$sha256[i],
+                               info = po$declared_path[i])
+  }
+})
+
 testthat::test_that("every imported row carries frozen-release provenance", {
   # Section 9 of the Phase 6I.1 brief: an import must originate from a frozen,
   # manifest-backed release, not from an ad-hoc copy. A row without a

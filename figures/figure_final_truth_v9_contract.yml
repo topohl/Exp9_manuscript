@@ -424,8 +424,12 @@ panels:
     main_or_ed: ed_deepens
     narrative: detailed curve with set size, leading-edge counts and reconstruction provenance.
     primary_source: null
+    # the theme table (the three-contrast strip) stays first; the curve is the
+    # frozen Figure 3 export of the same exemplar (f9_frozen_curve)
     input_dependencies:
       - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
+      - source_data/pRoteomics/figure_03_adaptation/selection.csv
+      - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
   - id: v9_ed_gsea_curve_rna
     renderer: f9_ed_gsea_curve
     role: gsea_support_detailed
@@ -437,6 +441,8 @@ panels:
     primary_source: null
     input_dependencies:
       - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
+      - source_data/pRoteomics/figure_03_adaptation/selection.csv
+      - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
   - id: v9_ed_gsea_curve_ox
     renderer: f9_ed_gsea_curve
     role: gsea_support_detailed
@@ -448,6 +454,8 @@ panels:
     primary_source: null
     input_dependencies:
       - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
+      - source_data/pRoteomics/figure_03_adaptation/selection.csv
+      - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
   - id: v9_ed_atlas_rescon
     renderer: f9_gsea_atlas
     label_units: 3.5

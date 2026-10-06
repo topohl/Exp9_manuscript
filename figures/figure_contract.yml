@@ -1012,6 +1012,8 @@ figures:
         primary_source: results/source_data/manuscript_candidates/final_truth_v9/extended_data/v9_ed_gsea_curve_syn_source_data.csv
         input_dependencies:
           - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
+          - source_data/pRoteomics/figure_03_adaptation/selection.csv
+          - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
         scientific_contract: gsea_support_detailed
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
@@ -1031,6 +1033,8 @@ figures:
         primary_source: results/source_data/manuscript_candidates/final_truth_v9/extended_data/v9_ed_gsea_curve_rna_source_data.csv
         input_dependencies:
           - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
+          - source_data/pRoteomics/figure_03_adaptation/selection.csv
+          - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
         scientific_contract: gsea_support_detailed
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
@@ -1050,6 +1054,8 @@ figures:
         primary_source: results/source_data/manuscript_candidates/final_truth_v9/extended_data/v9_ed_gsea_curve_ox_source_data.csv
         input_dependencies:
           - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
+          - source_data/pRoteomics/figure_03_adaptation/selection.csv
+          - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
         scientific_contract: gsea_support_detailed
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
