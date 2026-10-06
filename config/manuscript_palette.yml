@@ -8,7 +8,7 @@
 # No red-vs-green contrast is used anywhere. The diverging scale is
 # colour-blind safe (blue / yellow, not red / green).
 
-palette_version: manuscript_palette_v3
+palette_version: manuscript_palette_v3.1
 
 # ---------------------------------------------------------------- groups
 # Experimental group identity (v3, 2026-10-06): slate blue CON, warm grey RES,
@@ -42,6 +42,14 @@ diverging:
   low: "#6679D9"
   mid: "#FFFFFF"
   high: "#F2CA4E"
+
+# Fixed colour limits of the diverging scale, by measure (v3.1, 2026-10-06): every figure of a measure uses the same
+# limit, so a colour means the same value everywhere. Full colour is reached just beyond Cohen's "large" (d 0.8,
+# r 0.5); values beyond the limit take full colour and the legend ends read "<=" / ">=". A measure that no other
+# figure shares may take its own symmetric limit. Bars show their value by length: flat fill by sign, no gradient.
+diverging_limits:
+  smd: 1              # standardized mean difference (Hedges g, Cohen's d)
+  correlation: 0.6    # Spearman rho, Pearson r
 
 # ------------------------------------------------------------ evidence
 # Interpretation status. Supported evidence is saturated; descriptive,
