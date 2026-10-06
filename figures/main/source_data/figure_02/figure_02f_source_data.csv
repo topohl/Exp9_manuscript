@@ -1,0 +1,16 @@
+contrast,level,r
+DG_vs_mean_other_soma_regions,Regional identity,0.9182188978965644
+DG_neuropil_vs_mean_non_DG_regions,Regional identity,0.8530906440536474
+CA3_vs_mean_other_soma_regions,Regional identity,0.8447342360523047
+CA2_vs_mean_other_soma_regions,Regional identity,0.759554333937081
+DG_vs_mean_other_microglia_regions,Regional identity,0.7570468210774048
+CA1_vs_mean_other_soma_regions,Regional identity,0.7185427744335262
+CA1_SO_vs_CA3_SO,Regional identity,0.581198134589126
+CA3_vs_mean_other_microglia_regions,Regional identity,0.5792595021965777
+CA1_vs_mean_other_microglia_regions,Regional identity,0.5381026579660667
+CA2_vs_mean_other_microglia_regions,Regional identity,0.49513155623905186
+DG_MO_vs_mean_other_DG_layers,Fine / laminar identity,0.8144723139761696
+DG_PO_vs_mean_other_DG_layers,Fine / laminar identity,0.8144723139761696
+CA1_SLM_vs_mean_other_CA1_strata,Fine / laminar identity,0.7382635371585472
+CA1_SR_vs_mean_other_CA1_strata,Fine / laminar identity,0.4867794778052986
+CA1_SO_vs_mean_other_CA1_strata,Fine / laminar identity,0.3811259109420058
