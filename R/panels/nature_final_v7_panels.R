@@ -277,6 +277,9 @@ nf_pca_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                sg_compartments()$short), name = NULL) +
     ggplot2::guides(colour = ggplot2::guide_legend(
       nrow = 1, override.aes = list(size = 1.1))) +
+    # typographic minus on both PC axes (2026-10-07), as on every v9 axis
+    ggplot2::scale_x_continuous(labels = nv_minus_labels) +
+    ggplot2::scale_y_continuous(labels = nv_minus_labels) +
     ggplot2::labs(x = pc(1), y = pc(2),
                   caption = "compartment only; region is not encoded at this size") +
     nf_theme() +

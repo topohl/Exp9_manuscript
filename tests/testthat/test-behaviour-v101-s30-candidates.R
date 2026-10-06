@@ -101,7 +101,11 @@ LABEL_WORDS <- c(
   "\\b5-fold\\b",              # the registered cross-validation design (Figure 1f text)
   "F = 1\\b",                  # the L reference line of the screen (always an axis break)
   "every 4 days",              # the registered cage-change interval (option 3 a)
-  "3 cages/sex")               # option 3 c: one CON cage per batch, three batches per sex (a design constant the builders check against fsb F1)
+  "3 cages/sex",               # option 3 c: one CON cage per batch, three batches per sex (a design constant the builders check against fsb F1)
+  # option 3 / 3b b: the heatmap colourbar ends, at the manuscript's fixed z limit (config/manuscript_palette.yml
+  # diverging_limits$z, palette v3.2); values beyond it take the end colours
+  local({ z <- format(yaml::read_yaml(repo("config", "manuscript_palette.yml"))$diverging_limits$z)
+          paste0("^(\u2264\u2212", z, "|\u2265", z, ")$") }))
 NUMBER <- "(?<![A-Za-z0-9.])\u2212?[0-9]+(?:\\.[0-9]+)?(?:e[-+\u2212]?[0-9]+)?"
 PURE_NUMBER <- "^\u2212?[0-9]+(\\.[0-9]+)?$"
 SUPERSCRIPT <- c("\u2212", "1", "2", "\u22121")   # plotmath h^-1 and R^2, drawn below 6 pt

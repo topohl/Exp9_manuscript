@@ -441,7 +441,8 @@ candidates:
       f 114 (option 2 Nature's builders at option 3's boxes). Row frames: plot tops 9.54 mm (row 3) and
       3.4 mm (row 4) below the box top, x-axis lines at 50.0 and 34.3 mm (plot_top_mm, axis_mm). The
       heatmap uses the manuscript's diverging palette (config/manuscript_palette.yml; symmetric limits
-      capped at +/-3); every other ink is one option 2 draws. CON cage marks and the CON reference come
+      capped at the manuscript's fixed z limit, +/-2, colourbar ends <= / >=; a missing cell is the
+      neutral box grey with a diagonal); every other ink is one option 2 draws. CON cage marks and the CON reference come
       from the figure-support bundle (fsb F1, F1b); "3 cages/sex" is a design constant the builders check
       against F1 (three CON cages of four animals per sex and cage change). The PDF page is exactly
       183 x 170 mm (bh_pdf_mediabox).
@@ -471,7 +472,7 @@ candidates:
         description: >-
           Later CombZ per animal at its stored rank within sex (fsb F2) with the stored threshold and
           CON-mean lines (ebb A2b), the group strip, and the six components' signed z as they enter
-          CombZ (fsb F2; diverging palette, capped at +/-3), the RES/SUS boundary marked; the figure's
+          CombZ (fsb F2; diverging palette, capped at +/-2), the RES/SUS boundary marked; the figure's
           group key
         args: {key_prefix: f1o3n_}
         jitter_seed: null
@@ -649,7 +650,7 @@ candidates:
         letter: d
         builder: f1o3b_panel_trajectory
         description: >-
-          CC1 -> CC4: the CON descriptive mean (dashed grey; fsb F1b), the registered RES / SUS TR_BY_SEX
+          CC1 -> CC4: the CON descriptive mean (dashed, CON colour; fsb F1b), the registered RES / SUS TR_BY_SEX
           means and 95% CIs (ebb C2), offset, and one line under the header with the P-TR Holm P of both
           measures (ebb E_multiplicity); the legend quotes the Q2b F tests and the FU-TR Holm P (ebb C3, E)
         args: {key_prefix: f1o3b_, plot_top_mm: 7.95, axis_mm: 47.5}

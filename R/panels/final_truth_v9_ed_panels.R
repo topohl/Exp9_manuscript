@@ -105,16 +105,18 @@ f9_ed_external_full <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   ord <- unique(k$ic[order(k$level, k$ic)])
   k$ypos <- match(k$ic, rev(ord))
   k$xpos <- match(k$external_signature, sort(unique(k$external_signature)))
+  # External-signature NES is a measure no other panel colours, and every pairing
+  # is a strong enrichment (|NES| 1.25-3.69): nothing sits near zero, so it keeps
+  # its own symmetric limit (the data maximum, nothing cut) instead of the GO NES
+  # limit, which would saturate most points
   lim <- max(abs(k$NES), na.rm = TRUE) * c(-1, 1)
 
   p <- ggplot2::ggplot(k, ggplot2::aes(xpos, ypos)) +
     ggplot2::geom_point(ggplot2::aes(fill = NES, size = kind, shape = kind,
                                      colour = sig)) +
-    ggplot2::scale_fill_gradient2(low = nv_palette()$diverging$low,
-                                  mid = nv_palette()$diverging$mid,
-                                  high = nv_palette()$diverging$high,
-                                  midpoint = 0, limits = lim, name = "Normalised\nenrichment score",
-                                  guide = ggplot2::guide_colourbar(order = 2)) +
+    nv_diverging(limits = lim, name = "Normalised\nenrichment score",
+                 labels = function(b) nv_minus(format(b, trim = TRUE)),
+                 guide = ggplot2::guide_colourbar(order = 2)) +
     ggplot2::scale_shape_manual(values = c("expected pairing" = 21,
                                            "specificity comparison" = 22),
                                 name = NULL,
@@ -353,7 +355,7 @@ f9_ed_wgcna_phenotype <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ink = c("grey35", "#B03A24", "#B03A24"),
     stringsAsFactors = FALSE)
   p <- ggplot2::ggplot(z, ggplot2::aes(xpos, ypos)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = val), colour = "white",
+    ggplot2::geom_tile(ggplot2::aes(fill = val), colour = nv_tile_border(),
                        linewidth = 0.16) +
     nv_diverging(limits = lim,
                  name = "Module eigengene
@@ -440,7 +442,8 @@ f9_ed_m11 <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                        colour = "#4E7288", fontface = "bold") +
     ggplot2::scale_x_continuous(breaks = seq_len(nrow(u)), labels = u$display,
                                 expand = c(0, 0.6)) +
-    ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0.05, 0.16))) +
+    ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0.05, 0.16)),
+                                labels = nv_minus_labels) +
     ggplot2::labs(
       x = NULL, y = "mean CON z",
       title = paste0("neuropil ", lab,
@@ -518,7 +521,10 @@ f9_ed_similarity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   hdr <- do.call(rbind, lapply(blocks, function(b) data.frame(
     x = b$x0 - GUT + 0.2, t = b$title, c = b$count, stringsAsFactors = FALSE)))
 
-  lim <- max(abs(tile$v), na.rm = TRUE) * c(-1, 1)
+  # The omitted diagonal is drawn as grey tiles: under the white-zero palette
+  # (v3) a blank diagonal would read as a correlation of zero.
+  diag <- do.call(rbind, lapply(blocks, function(b) data.frame(
+    x = b$x0 + seq_len(b$n), y = -seq_len(b$n), stringsAsFactors = FALSE)))
   x_end <- 30.0
   ybot <- -(nmax + 0.65 + 1.85)
   # the notes column: line pitch is set in cell units, so it stays tight
@@ -529,13 +535,15 @@ f9_ed_similarity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   # each block and would destroy exactly the cross-compartment comparison the
   # panel exists to support. The consequence - that the two region-level blocks
   # occupy a narrower part of the range than neuropil - is a property of the
-  # data and is stated here rather than engineered away.
+  # data and is stated here rather than engineered away. The scale is the
+  # manuscript's fixed correlation limit (palette v3.1, +/-0.6), inside which
+  # every value of this panel lies.
   notes <- data.frame(
     l = c("A value is the correlation between",
           "two units' protein profiles, not a",
           "projection.",
           "CON animals only (n = 3); median",
-          "across animals. Diagonal omitted.",
+          "across animals; diagonal in grey.",
           "Rows and columns of a block carry",
           "the same units in the same order.",
           "One scale centred on zero for all",
@@ -548,8 +556,11 @@ f9_ed_similarity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 
   p <- ggplot2::ggplot() +
     ggplot2::geom_tile(data = tile, ggplot2::aes(x, y, fill = v),
-                       colour = "white", linewidth = 0.12) +
-    nv_diverging(limits = lim, name = "Median profile\ncorrelation (CON)") +
+                       colour = nv_tile_border(), linewidth = 0.12) +
+    ggplot2::geom_tile(data = diag, ggplot2::aes(x, y), fill = "grey85",
+                       colour = nv_tile_border(), linewidth = 0.12) +
+    nv_diverging(measure = "correlation",
+                 name = "Median profile\ncorrelation (CON)") +
     ggplot2::geom_text(data = rlab, ggplot2::aes(x, y, label = l), hjust = 1,
                        family = fam, size = nf_sz(5.0), colour = "grey30") +
     ggplot2::geom_text(data = clab, ggplot2::aes(x, y, label = l), hjust = 1,
@@ -586,6 +597,7 @@ f9_ed_similarity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   out$reading <- paste0(
     "similarity between spatial proteomic profiles, NOT anatomical ",
     "connectivity; one cell is the same physical square in all three blocks")
+  out$colour_limit <- nv_diverging_limit("correlation")   # the limit drawn
   write_csv_safe(out, csv_path)
   nv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
@@ -616,12 +628,14 @@ f9_ed_fingerprint_full <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   z$ypos <- match(z$row_label, rev(lev))
   n <- nrow(o); ny <- length(lev)
   y_comp <- ny + 2.3; y_reg <- ny + 1.05
-  lim <- max(abs(z$score), na.rm = TRUE) * c(-1, 1)
 
+  # a signature score is a MEAN of member z-scores, so it takes the
+  # manuscript's fixed set-mean z limit (palette v3.2, +/-1), not the
+  # single-protein limit of Figure 2d; a score beyond it takes full colour
   p <- ggplot2::ggplot(z, ggplot2::aes(xpos, ypos)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = score), colour = "white",
+    ggplot2::geom_tile(ggplot2::aes(fill = score), colour = nv_tile_border(),
                        linewidth = 0.1) +
-    nv_diverging(limits = lim, name = "Signature score\n(CON z-score)") +
+    nv_diverging(measure = "z_set_mean", name = "Signature score\n(CON z-score)") +
     ggplot2::scale_x_continuous(breaks = seq_len(n), labels = sg_axis_labels(b),
                                 limits = c(0.5, n + 0.5), expand = c(0, 0)) +
     ggplot2::scale_y_continuous(breaks = seq_len(ny), labels = rev(lev),
@@ -650,6 +664,7 @@ f9_ed_fingerprint_full <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   if (length(cend)) p <- p + ggplot2::annotate(
     "segment", x = cend + 0.5, xend = cend + 0.5, y = 0.5, yend = y_comp - 0.32,
     linewidth = 0.42, colour = "grey25")
+  z$colour_limit <- nv_diverging_limit("z_set_mean")   # the limit the tiles draw
   write_csv_safe(z, csv_path)
   nv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
@@ -720,7 +735,7 @@ f9_ed_module_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 
   p <- ggplot2::ggplot() +
     ggplot2::geom_tile(data = tile, ggplot2::aes(x, y, fill = v),
-                       colour = "white", linewidth = 0.1) +
+                       colour = nv_tile_border(), linewidth = 0.1) +
     nv_diverging(limits = lim,
                  name = "Mean module-member\nabundance (CON z-score)") +
     ggplot2::geom_text(data = rlab, ggplot2::aes(x, y, label = l), hjust = 1,

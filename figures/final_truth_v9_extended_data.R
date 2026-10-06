@@ -23,7 +23,10 @@ source(repo_path("R", "final_truth_v9_figure_utils.R"))
 suppressPackageStartupMessages({ library(readr); library(dplyr); library(ggplot2); library(patchwork); library(scales); library(grid) })
 Sys.setenv(PROTEOMICS_SCRIPT_ID = "figures/final_truth_v9_extended_data.R")
 args <- commandArgs(trailingOnly = TRUE)
-res <- s9f_build("extended_data", dry_run = "--dry-run" %in% args || is_dry_run())
+# --pages=ED1_FINAL_V9,ED2_FINAL_V9 draws only those pages (s9f_build)
+pages <- sub("^--pages=", "", grep("^--pages=", args, value = TRUE))
+res <- s9f_build("extended_data", dry_run = "--dry-run" %in% args || is_dry_run(),
+                 pages = if (length(pages)) strsplit(pages, ",", fixed = TRUE)[[1]] else NULL)
 if (!is.null(res)) {
   cat("\n===== Editorial-v8 extended_data =====\n")
   print(res$panels[, c("panel_id", "box_w_mm", "box_h_mm", "status")], row.names = FALSE)

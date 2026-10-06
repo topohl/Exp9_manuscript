@@ -14,7 +14,7 @@ if (length(args) > 1L || (length(args) == 1L && !nzchar(args[[1]])))
   stop("Usage: Rscript figures/figure_03_go_atlas_appendix.R [output_directory]",
        call. = FALSE)
 out <- if (length(args)) args[[1]] else repo_path(
-  "results", "figures", "manuscript_candidates", "figure_03_go_atlas_appendix_v4")
+  "results", "figures", "manuscript_candidates", "figure_03_go_atlas_appendix_v6")
 if (file.exists(out)) stop("Output already exists: ", out, call. = FALSE)
 src <- repo_path("source_data", "pRoteomics", "figure_03_go_atlas_appendix")
 files <- c("theme_term_index.csv", "selected_contexts.csv",
@@ -60,17 +60,15 @@ if (anyDuplicated(index[c("theme_id", "GO_ID")]) ||
     !setequal(protein$GO_ID, sel$GO_ID))
   stop("Atlas term/theme coverage mismatch.", call. = FALSE)
 contrast_order <- c("RES - CON", "SUS - CON", "SUS - RES")
-f3_path <- repo_path("source_data", "pRoteomics", "figure_03",
-                     "figure_03d_source_data.csv")
-f3 <- read.csv(f3_path, stringsAsFactors = FALSE)
-nes_limit <- f3$shared_NES_strip_limit[[1]]
-if (nrow(f3) != 1L || !is.finite(nes_limit) ||
-    any(!is.finite(regional$NES)))
-  stop("Figure 3/atlas NES source is malformed.", call. = FALSE)
-# The full atlas spans a wider NES range than the three printed exemplars.
-# Keep one common scale across every appendix strip without clipping values.
-nes_limit <- max(nes_limit,
-                 ceiling(max(abs(regional$NES)) / 0.05) * 0.05)
+if (any(!is.finite(regional$NES)))
+  stop("Atlas NES source is malformed.", call. = FALSE)
+# Every appendix strip uses the manuscript's fixed NES colour limit
+# (config/manuscript_palette.yml diverging_limits$nes, palette v3.2), the one
+# Figure 3 uses (Extended Data 6 follows when it is re-rendered), so appendix
+# colours read like Figure 3e-g.
+# The full atlas spans a wider NES range: a term beyond the limit takes full
+# colour, and each strip prints its NES, which the sidecars keep uncapped.
+nes_limit <- nv_diverging_limit("nes")
 regional_key <- paste(regional$GO_ID, regional$dataset,
                       regional$spatial_unit, regional$contrast)
 if (anyDuplicated(regional_key) ||

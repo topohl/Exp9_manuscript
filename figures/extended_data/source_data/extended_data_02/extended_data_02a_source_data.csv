@@ -1,0 +1,253 @@
+signature,signature_family,dataset,spatial_unit,n_measured_members,score,sg_unit,sg_compartment,sg_compartment_label,sg_region,sg_layer,sg_layer_display,sg_layer_is_resolution,sg_unit_label,sg_unit_f,row_label,xpos,ypos,colour_limit
+Astrocyte,external curated cell-class reference panel,microglia,CA1,60,-0.13604856380586935,CA1,microglia,Microglia ROI,CA1,,,FALSE,CA1,CA1,Astrocyte,15,4,1
+Astrocyte,external curated cell-class reference panel,microglia,CA2,60,-0.4885188838313381,CA2,microglia,Microglia ROI,CA2,,,FALSE,CA2,CA2,Astrocyte,16,4,1
+Astrocyte,external curated cell-class reference panel,microglia,CA3,60,-0.4463826059032918,CA3,microglia,Microglia ROI,CA3,,,FALSE,CA3,CA3,Astrocyte,17,4,1
+Astrocyte,external curated cell-class reference panel,microglia,DG,60,1.0709500535404994,DG,microglia,Microglia ROI,DG,,,FALSE,DG,DG,Astrocyte,18,4,1
+Astrocyte,external curated cell-class reference panel,neuron_neuropil,CA1_slm,60,0.7889075476914587,CA1_slm,neuron_neuropil,Neuropil,CA1,slm,SLM,TRUE,CA1 SLM,CA1_slm,Astrocyte,3,4,1
+Astrocyte,external curated cell-class reference panel,neuron_neuropil,CA1_so,60,-0.30320200594998536,CA1_so,neuron_neuropil,Neuropil,CA1,so,SO,TRUE,CA1 SO,CA1_so,Astrocyte,1,4,1
+Astrocyte,external curated cell-class reference panel,neuron_neuropil,CA1_sr,60,-0.7903511378607269,CA1_sr,neuron_neuropil,Neuropil,CA1,sr,SR,TRUE,CA1 SR,CA1_sr,Astrocyte,2,4,1
+Astrocyte,external curated cell-class reference panel,neuron_neuropil,CA2_slm,60,0.9399007912463508,CA2_slm,neuron_neuropil,Neuropil,CA2,slm,SLM,TRUE,CA2 SLM,CA2_slm,Astrocyte,6,4,1
+Astrocyte,external curated cell-class reference panel,neuron_neuropil,CA2_so,60,-0.3278577499601568,CA2_so,neuron_neuropil,Neuropil,CA2,so,SO,TRUE,CA2 SO,CA2_so,Astrocyte,4,4,1
+Astrocyte,external curated cell-class reference panel,neuron_neuropil,CA2_sr,60,-0.6381335663554484,CA2_sr,neuron_neuropil,Neuropil,CA2,sr,SR,TRUE,CA2 SR,CA2_sr,Astrocyte,5,4,1
+Astrocyte,external curated cell-class reference panel,neuron_neuropil,CA3_so,60,-0.08827734418712739,CA3_so,neuron_neuropil,Neuropil,CA3,so,SO,TRUE,CA3 SO,CA3_so,Astrocyte,7,4,1
+Astrocyte,external curated cell-class reference panel,neuron_neuropil,CA3_sr,60,-0.5166124272663877,CA3_sr,neuron_neuropil,Neuropil,CA3,sr,SR,TRUE,CA3 SR,CA3_sr,Astrocyte,8,4,1
+Astrocyte,external curated cell-class reference panel,neuron_neuropil,DG_mo,60,1.0249624943772009,DG_mo,neuron_neuropil,Neuropil,DG,mo,MO,TRUE,DG MO,DG_mo,Astrocyte,9,4,1
+Astrocyte,external curated cell-class reference panel,neuron_neuropil,DG_po,60,-0.0893366017351786,DG_po,neuron_neuropil,Neuropil,DG,po,PO,TRUE,DG PO,DG_po,Astrocyte,10,4,1
+Astrocyte,external curated cell-class reference panel,neuron_soma,CA1_sp,60,-0.6761510479950418,CA1_sp,neuron_soma,Soma,CA1,sp,SP,FALSE,CA1,CA1_sp,Astrocyte,11,4,1
+Astrocyte,external curated cell-class reference panel,neuron_soma,CA2_sp,60,0.3898633448591851,CA2_sp,neuron_soma,Soma,CA2,sp,SP,FALSE,CA2,CA2_sp,Astrocyte,12,4,1
+Astrocyte,external curated cell-class reference panel,neuron_soma,CA3_sp,60,0.10056590585367738,CA3_sp,neuron_soma,Soma,CA3,sp,SP,FALSE,CA3,CA3_sp,Astrocyte,13,4,1
+Astrocyte,external curated cell-class reference panel,neuron_soma,DG_sg,60,0.18572179728217905,DG_sg,neuron_soma,Soma,DG,sg,SG,FALSE,DG,DG_sg,Astrocyte,14,4,1
+Excitatory neuron,external curated cell-class reference panel,microglia,CA1,27,0.4512832481609895,CA1,microglia,Microglia ROI,CA1,,,FALSE,CA1,CA1,Excitatory neuron,15,7,1
+Excitatory neuron,external curated cell-class reference panel,microglia,CA2,27,-0.2817920338598501,CA2,microglia,Microglia ROI,CA2,,,FALSE,CA2,CA2,Excitatory neuron,16,7,1
+Excitatory neuron,external curated cell-class reference panel,microglia,CA3,27,0.3338799491283672,CA3,microglia,Microglia ROI,CA3,,,FALSE,CA3,CA3,Excitatory neuron,17,7,1
+Excitatory neuron,external curated cell-class reference panel,microglia,DG,27,-0.5033711634295063,DG,microglia,Microglia ROI,DG,,,FALSE,DG,DG,Excitatory neuron,18,7,1
+Excitatory neuron,external curated cell-class reference panel,neuron_neuropil,CA1_slm,28,-0.5117028648572716,CA1_slm,neuron_neuropil,Neuropil,CA1,slm,SLM,TRUE,CA1 SLM,CA1_slm,Excitatory neuron,3,7,1
+Excitatory neuron,external curated cell-class reference panel,neuron_neuropil,CA1_so,28,0.6070013756077957,CA1_so,neuron_neuropil,Neuropil,CA1,so,SO,TRUE,CA1 SO,CA1_so,Excitatory neuron,1,7,1
+Excitatory neuron,external curated cell-class reference panel,neuron_neuropil,CA1_sr,28,0.5127073028198992,CA1_sr,neuron_neuropil,Neuropil,CA1,sr,SR,TRUE,CA1 SR,CA1_sr,Excitatory neuron,2,7,1
+Excitatory neuron,external curated cell-class reference panel,neuron_neuropil,CA2_slm,28,-0.6980953180207734,CA2_slm,neuron_neuropil,Neuropil,CA2,slm,SLM,TRUE,CA2 SLM,CA2_slm,Excitatory neuron,6,7,1
+Excitatory neuron,external curated cell-class reference panel,neuron_neuropil,CA2_so,28,0.4092951115302583,CA2_so,neuron_neuropil,Neuropil,CA2,so,SO,TRUE,CA2 SO,CA2_so,Excitatory neuron,4,7,1
+Excitatory neuron,external curated cell-class reference panel,neuron_neuropil,CA2_sr,28,0.02751397585511148,CA2_sr,neuron_neuropil,Neuropil,CA2,sr,SR,TRUE,CA2 SR,CA2_sr,Excitatory neuron,5,7,1
+Excitatory neuron,external curated cell-class reference panel,neuron_neuropil,CA3_so,28,0.2263363328189981,CA3_so,neuron_neuropil,Neuropil,CA3,so,SO,TRUE,CA3 SO,CA3_so,Excitatory neuron,7,7,1
+Excitatory neuron,external curated cell-class reference panel,neuron_neuropil,CA3_sr,28,0.2162371104100241,CA3_sr,neuron_neuropil,Neuropil,CA3,sr,SR,TRUE,CA3 SR,CA3_sr,Excitatory neuron,8,7,1
+Excitatory neuron,external curated cell-class reference panel,neuron_neuropil,DG_mo,28,-0.4145406519186759,DG_mo,neuron_neuropil,Neuropil,DG,mo,MO,TRUE,DG MO,DG_mo,Excitatory neuron,9,7,1
+Excitatory neuron,external curated cell-class reference panel,neuron_neuropil,DG_po,28,-0.3747523742453665,DG_po,neuron_neuropil,Neuropil,DG,po,PO,TRUE,DG PO,DG_po,Excitatory neuron,10,7,1
+Excitatory neuron,external curated cell-class reference panel,neuron_soma,CA1_sp,29,0.20477626901552023,CA1_sp,neuron_soma,Soma,CA1,sp,SP,FALSE,CA1,CA1_sp,Excitatory neuron,11,7,1
+Excitatory neuron,external curated cell-class reference panel,neuron_soma,CA2_sp,29,0.00567779558278266,CA2_sp,neuron_soma,Soma,CA2,sp,SP,FALSE,CA2,CA2_sp,Excitatory neuron,12,7,1
+Excitatory neuron,external curated cell-class reference panel,neuron_soma,CA3_sp,29,0.05299417244892306,CA3_sp,neuron_soma,Soma,CA3,sp,SP,FALSE,CA3,CA3_sp,Excitatory neuron,13,7,1
+Excitatory neuron,external curated cell-class reference panel,neuron_soma,DG_sg,29,-0.26344823704722575,DG_sg,neuron_soma,Soma,DG,sg,SG,FALSE,DG,DG_sg,Excitatory neuron,14,7,1
+Inhibitory interneuron,external curated cell-class reference panel,microglia,CA1,40,-0.02582235280676544,CA1,microglia,Microglia ROI,CA1,,,FALSE,CA1,CA1,Inhibitory interneuron,15,6,1
+Inhibitory interneuron,external curated cell-class reference panel,microglia,CA2,40,-0.2542163666997996,CA2,microglia,Microglia ROI,CA2,,,FALSE,CA2,CA2,Inhibitory interneuron,16,6,1
+Inhibitory interneuron,external curated cell-class reference panel,microglia,CA3,40,-0.1138976525128628,CA3,microglia,Microglia ROI,CA3,,,FALSE,CA3,CA3,Inhibitory interneuron,17,6,1
+Inhibitory interneuron,external curated cell-class reference panel,microglia,DG,40,0.39393637201942777,DG,microglia,Microglia ROI,DG,,,FALSE,DG,DG,Inhibitory interneuron,18,6,1
+Inhibitory interneuron,external curated cell-class reference panel,neuron_neuropil,CA1_slm,40,0.2586101944633501,CA1_slm,neuron_neuropil,Neuropil,CA1,slm,SLM,TRUE,CA1 SLM,CA1_slm,Inhibitory interneuron,3,6,1
+Inhibitory interneuron,external curated cell-class reference panel,neuron_neuropil,CA1_so,40,-0.3553121363903272,CA1_so,neuron_neuropil,Neuropil,CA1,so,SO,TRUE,CA1 SO,CA1_so,Inhibitory interneuron,1,6,1
+Inhibitory interneuron,external curated cell-class reference panel,neuron_neuropil,CA1_sr,40,-0.2398123930687139,CA1_sr,neuron_neuropil,Neuropil,CA1,sr,SR,TRUE,CA1 SR,CA1_sr,Inhibitory interneuron,2,6,1
+Inhibitory interneuron,external curated cell-class reference panel,neuron_neuropil,CA2_slm,40,0.17327283351195266,CA2_slm,neuron_neuropil,Neuropil,CA2,slm,SLM,TRUE,CA2 SLM,CA2_slm,Inhibitory interneuron,6,6,1
+Inhibitory interneuron,external curated cell-class reference panel,neuron_neuropil,CA2_so,40,-0.4052062266853148,CA2_so,neuron_neuropil,Neuropil,CA2,so,SO,TRUE,CA2 SO,CA2_so,Inhibitory interneuron,4,6,1
+Inhibitory interneuron,external curated cell-class reference panel,neuron_neuropil,CA2_sr,40,-0.03252454978028497,CA2_sr,neuron_neuropil,Neuropil,CA2,sr,SR,TRUE,CA2 SR,CA2_sr,Inhibitory interneuron,5,6,1
+Inhibitory interneuron,external curated cell-class reference panel,neuron_neuropil,CA3_so,40,-0.12148834400056192,CA3_so,neuron_neuropil,Neuropil,CA3,so,SO,TRUE,CA3 SO,CA3_so,Inhibitory interneuron,7,6,1
+Inhibitory interneuron,external curated cell-class reference panel,neuron_neuropil,CA3_sr,40,0.05592706330118113,CA3_sr,neuron_neuropil,Neuropil,CA3,sr,SR,TRUE,CA3 SR,CA3_sr,Inhibitory interneuron,8,6,1
+Inhibitory interneuron,external curated cell-class reference panel,neuron_neuropil,DG_mo,40,0.3624743709670151,DG_mo,neuron_neuropil,Neuropil,DG,mo,MO,TRUE,DG MO,DG_mo,Inhibitory interneuron,9,6,1
+Inhibitory interneuron,external curated cell-class reference panel,neuron_neuropil,DG_po,40,0.30405918768170365,DG_po,neuron_neuropil,Neuropil,DG,po,PO,TRUE,DG PO,DG_po,Inhibitory interneuron,10,6,1
+Inhibitory interneuron,external curated cell-class reference panel,neuron_soma,CA1_sp,42,0.12162642787534912,CA1_sp,neuron_soma,Soma,CA1,sp,SP,FALSE,CA1,CA1_sp,Inhibitory interneuron,11,6,1
+Inhibitory interneuron,external curated cell-class reference panel,neuron_soma,CA2_sp,42,0.0779721122738028,CA2_sp,neuron_soma,Soma,CA2,sp,SP,FALSE,CA2,CA2_sp,Inhibitory interneuron,12,6,1
+Inhibitory interneuron,external curated cell-class reference panel,neuron_soma,CA3_sp,42,-0.02579144940885148,CA3_sp,neuron_soma,Soma,CA3,sp,SP,FALSE,CA3,CA3_sp,Inhibitory interneuron,13,6,1
+Inhibitory interneuron,external curated cell-class reference panel,neuron_soma,DG_sg,42,-0.1738070907403006,DG_sg,neuron_soma,Soma,DG,sg,SG,FALSE,DG,DG_sg,Inhibitory interneuron,14,6,1
+Kaulich CA1,external hippocampal subregion signature,microglia,CA1,327,0.9442491898936344,CA1,microglia,Microglia ROI,CA1,,,FALSE,CA1,CA1,CA1,15,14,1
+Kaulich CA1,external hippocampal subregion signature,microglia,CA2,327,-0.46392680379650697,CA2,microglia,Microglia ROI,CA2,,,FALSE,CA2,CA2,CA1,16,14,1
+Kaulich CA1,external hippocampal subregion signature,microglia,CA3,327,-0.3723805083259109,CA3,microglia,Microglia ROI,CA3,,,FALSE,CA3,CA3,CA1,17,14,1
+Kaulich CA1,external hippocampal subregion signature,microglia,DG,327,-0.10794187777121668,DG,microglia,Microglia ROI,DG,,,FALSE,DG,DG,CA1,18,14,1
+Kaulich CA1,external hippocampal subregion signature,neuron_neuropil,CA1_slm,328,0.4867898894447325,CA1_slm,neuron_neuropil,Neuropil,CA1,slm,SLM,TRUE,CA1 SLM,CA1_slm,CA1,3,14,1
+Kaulich CA1,external hippocampal subregion signature,neuron_neuropil,CA1_so,328,0.7273711044281783,CA1_so,neuron_neuropil,Neuropil,CA1,so,SO,TRUE,CA1 SO,CA1_so,CA1,1,14,1
+Kaulich CA1,external hippocampal subregion signature,neuron_neuropil,CA1_sr,328,0.7136869465269856,CA1_sr,neuron_neuropil,Neuropil,CA1,sr,SR,TRUE,CA1 SR,CA1_sr,CA1,2,14,1
+Kaulich CA1,external hippocampal subregion signature,neuron_neuropil,CA2_slm,328,-0.08389358076593113,CA2_slm,neuron_neuropil,Neuropil,CA2,slm,SLM,TRUE,CA2 SLM,CA2_slm,CA1,6,14,1
+Kaulich CA1,external hippocampal subregion signature,neuron_neuropil,CA2_so,328,0.03483699228424937,CA2_so,neuron_neuropil,Neuropil,CA2,so,SO,TRUE,CA2 SO,CA2_so,CA1,4,14,1
+Kaulich CA1,external hippocampal subregion signature,neuron_neuropil,CA2_sr,328,-0.2481237190565668,CA2_sr,neuron_neuropil,Neuropil,CA2,sr,SR,TRUE,CA2 SR,CA2_sr,CA1,5,14,1
+Kaulich CA1,external hippocampal subregion signature,neuron_neuropil,CA3_so,328,-0.21208135406424736,CA3_so,neuron_neuropil,Neuropil,CA3,so,SO,TRUE,CA3 SO,CA3_so,CA1,7,14,1
+Kaulich CA1,external hippocampal subregion signature,neuron_neuropil,CA3_sr,328,-0.30015248767348635,CA3_sr,neuron_neuropil,Neuropil,CA3,sr,SR,TRUE,CA3 SR,CA3_sr,CA1,8,14,1
+Kaulich CA1,external hippocampal subregion signature,neuron_neuropil,DG_mo,328,-0.04283159034862272,DG_mo,neuron_neuropil,Neuropil,DG,mo,MO,TRUE,DG MO,DG_mo,CA1,9,14,1
+Kaulich CA1,external hippocampal subregion signature,neuron_neuropil,DG_po,328,-1.0756022007752917,DG_po,neuron_neuropil,Neuropil,DG,po,PO,TRUE,DG PO,DG_po,CA1,10,14,1
+Kaulich CA1,external hippocampal subregion signature,neuron_soma,CA1_sp,330,0.6773170605864398,CA1_sp,neuron_soma,Soma,CA1,sp,SP,FALSE,CA1,CA1_sp,CA1,11,14,1
+Kaulich CA1,external hippocampal subregion signature,neuron_soma,CA2_sp,330,0.17501977618340725,CA2_sp,neuron_soma,Soma,CA2,sp,SP,FALSE,CA2,CA2_sp,CA1,12,14,1
+Kaulich CA1,external hippocampal subregion signature,neuron_soma,CA3_sp,330,-0.16250100197377612,CA3_sp,neuron_soma,Soma,CA3,sp,SP,FALSE,CA3,CA3_sp,CA1,13,14,1
+Kaulich CA1,external hippocampal subregion signature,neuron_soma,DG_sg,330,-0.689835834796071,DG_sg,neuron_soma,Soma,DG,sg,SG,FALSE,DG,DG_sg,CA1,14,14,1
+Kaulich CA2/3,external hippocampal subregion signature,microglia,CA1,269,0.01445684078349291,CA1,microglia,Microglia ROI,CA1,,,FALSE,CA1,CA1,CA2/3,15,13,1
+Kaulich CA2/3,external hippocampal subregion signature,microglia,CA2,269,-0.08189530128042245,CA2,microglia,Microglia ROI,CA2,,,FALSE,CA2,CA2,CA2/3,16,13,1
+Kaulich CA2/3,external hippocampal subregion signature,microglia,CA3,269,0.8590846835159084,CA3,microglia,Microglia ROI,CA3,,,FALSE,CA3,CA3,CA2/3,17,13,1
+Kaulich CA2/3,external hippocampal subregion signature,microglia,DG,269,-0.791646223018979,DG,microglia,Microglia ROI,DG,,,FALSE,DG,DG,CA2/3,18,13,1
+Kaulich CA2/3,external hippocampal subregion signature,neuron_neuropil,CA1_slm,271,-0.40615497298319514,CA1_slm,neuron_neuropil,Neuropil,CA1,slm,SLM,TRUE,CA1 SLM,CA1_slm,CA2/3,3,13,1
+Kaulich CA2/3,external hippocampal subregion signature,neuron_neuropil,CA1_so,271,0.01587123059338374,CA1_so,neuron_neuropil,Neuropil,CA1,so,SO,TRUE,CA1 SO,CA1_so,CA2/3,1,13,1
+Kaulich CA2/3,external hippocampal subregion signature,neuron_neuropil,CA1_sr,271,-0.08223417056154067,CA1_sr,neuron_neuropil,Neuropil,CA1,sr,SR,TRUE,CA1 SR,CA1_sr,CA2/3,2,13,1
+Kaulich CA2/3,external hippocampal subregion signature,neuron_neuropil,CA2_slm,271,-0.44406280140611915,CA2_slm,neuron_neuropil,Neuropil,CA2,slm,SLM,TRUE,CA2 SLM,CA2_slm,CA2/3,6,13,1
+Kaulich CA2/3,external hippocampal subregion signature,neuron_neuropil,CA2_so,271,0.11470828419139972,CA2_so,neuron_neuropil,Neuropil,CA2,so,SO,TRUE,CA2 SO,CA2_so,CA2/3,4,13,1
+Kaulich CA2/3,external hippocampal subregion signature,neuron_neuropil,CA2_sr,271,0.34827101521910203,CA2_sr,neuron_neuropil,Neuropil,CA2,sr,SR,TRUE,CA2 SR,CA2_sr,CA2/3,5,13,1
+Kaulich CA2/3,external hippocampal subregion signature,neuron_neuropil,CA3_so,271,1.034367994101868,CA3_so,neuron_neuropil,Neuropil,CA3,so,SO,TRUE,CA3 SO,CA3_so,CA2/3,7,13,1
+Kaulich CA2/3,external hippocampal subregion signature,neuron_neuropil,CA3_sr,271,0.621342705147554,CA3_sr,neuron_neuropil,Neuropil,CA3,sr,SR,TRUE,CA3 SR,CA3_sr,CA2/3,8,13,1
+Kaulich CA2/3,external hippocampal subregion signature,neuron_neuropil,DG_mo,271,-0.7259281143711023,DG_mo,neuron_neuropil,Neuropil,DG,mo,MO,TRUE,DG MO,DG_mo,CA2/3,9,13,1
+Kaulich CA2/3,external hippocampal subregion signature,neuron_neuropil,DG_po,271,-0.4761811699313504,DG_po,neuron_neuropil,Neuropil,DG,po,PO,TRUE,DG PO,DG_po,CA2/3,10,13,1
+Kaulich CA2/3,external hippocampal subregion signature,neuron_soma,CA1_sp,275,-0.2361880648351113,CA1_sp,neuron_soma,Soma,CA1,sp,SP,FALSE,CA1,CA1_sp,CA2/3,11,13,1
+Kaulich CA2/3,external hippocampal subregion signature,neuron_soma,CA2_sp,275,0.1852248614295111,CA2_sp,neuron_soma,Soma,CA2,sp,SP,FALSE,CA2,CA2_sp,CA2/3,12,13,1
+Kaulich CA2/3,external hippocampal subregion signature,neuron_soma,CA3_sp,275,0.8907589416228326,CA3_sp,neuron_soma,Soma,CA3,sp,SP,FALSE,CA3,CA3_sp,CA2/3,13,13,1
+Kaulich CA2/3,external hippocampal subregion signature,neuron_soma,DG_sg,275,-0.8397957382172324,DG_sg,neuron_soma,Soma,DG,sg,SG,FALSE,DG,DG_sg,CA2/3,14,13,1
+Kaulich DG,external hippocampal subregion signature,microglia,CA1,752,0.0965275648153858,CA1,microglia,Microglia ROI,CA1,,,FALSE,CA1,CA1,DG,15,12,1
+Kaulich DG,external hippocampal subregion signature,microglia,CA2,752,-0.5249483448210012,CA2,microglia,Microglia ROI,CA2,,,FALSE,CA2,CA2,DG,16,12,1
+Kaulich DG,external hippocampal subregion signature,microglia,CA3,752,-0.3104362470121307,CA3,microglia,Microglia ROI,CA3,,,FALSE,CA3,CA3,DG,17,12,1
+Kaulich DG,external hippocampal subregion signature,microglia,DG,752,0.7388570270177459,DG,microglia,Microglia ROI,DG,,,FALSE,DG,DG,DG,18,12,1
+Kaulich DG,external hippocampal subregion signature,neuron_neuropil,CA1_slm,620,-0.12896183879317982,CA1_slm,neuron_neuropil,Neuropil,CA1,slm,SLM,TRUE,CA1 SLM,CA1_slm,DG,3,12,1
+Kaulich DG,external hippocampal subregion signature,neuron_neuropil,CA1_so,620,-0.2100753500611178,CA1_so,neuron_neuropil,Neuropil,CA1,so,SO,TRUE,CA1 SO,CA1_so,DG,1,12,1
+Kaulich DG,external hippocampal subregion signature,neuron_neuropil,CA1_sr,620,-0.33878012384731593,CA1_sr,neuron_neuropil,Neuropil,CA1,sr,SR,TRUE,CA1 SR,CA1_sr,DG,2,12,1
+Kaulich DG,external hippocampal subregion signature,neuron_neuropil,CA2_slm,620,-0.22663643296180352,CA2_slm,neuron_neuropil,Neuropil,CA2,slm,SLM,TRUE,CA2 SLM,CA2_slm,DG,6,12,1
+Kaulich DG,external hippocampal subregion signature,neuron_neuropil,CA2_so,620,-0.31512305318052736,CA2_so,neuron_neuropil,Neuropil,CA2,so,SO,TRUE,CA2 SO,CA2_so,DG,4,12,1
+Kaulich DG,external hippocampal subregion signature,neuron_neuropil,CA2_sr,620,-0.46185514120363114,CA2_sr,neuron_neuropil,Neuropil,CA2,sr,SR,TRUE,CA2 SR,CA2_sr,DG,5,12,1
+Kaulich DG,external hippocampal subregion signature,neuron_neuropil,CA3_so,620,-0.17278739502264084,CA3_so,neuron_neuropil,Neuropil,CA3,so,SO,TRUE,CA3 SO,CA3_so,DG,7,12,1
+Kaulich DG,external hippocampal subregion signature,neuron_neuropil,CA3_sr,620,0.0155607262264097,CA3_sr,neuron_neuropil,Neuropil,CA3,sr,SR,TRUE,CA3 SR,CA3_sr,DG,8,12,1
+Kaulich DG,external hippocampal subregion signature,neuron_neuropil,DG_mo,620,0.8411940297574757,DG_mo,neuron_neuropil,Neuropil,DG,mo,MO,TRUE,DG MO,DG_mo,DG,9,12,1
+Kaulich DG,external hippocampal subregion signature,neuron_neuropil,DG_po,620,0.9974645790863312,DG_po,neuron_neuropil,Neuropil,DG,po,PO,TRUE,DG PO,DG_po,DG,10,12,1
+Kaulich DG,external hippocampal subregion signature,neuron_soma,CA1_sp,921,-0.03606421336561503,CA1_sp,neuron_soma,Soma,CA1,sp,SP,FALSE,CA1,CA1_sp,DG,11,12,1
+Kaulich DG,external hippocampal subregion signature,neuron_soma,CA2_sp,921,-0.5807250108290628,CA2_sp,neuron_soma,Soma,CA2,sp,SP,FALSE,CA2,CA2_sp,DG,12,12,1
+Kaulich DG,external hippocampal subregion signature,neuron_soma,CA3_sp,921,-0.42280897394200456,CA3_sp,neuron_soma,Soma,CA3,sp,SP,FALSE,CA3,CA3_sp,DG,13,12,1
+Kaulich DG,external hippocampal subregion signature,neuron_soma,DG_sg,921,1.0395981981366824,DG_sg,neuron_soma,Soma,DG,sg,SG,FALSE,DG,DG_sg,DG,14,12,1
+Kaulich SLM,external hippocampal strata signature,microglia,CA1,286,0.2910318293060818,CA1,microglia,Microglia ROI,CA1,,,FALSE,CA1,CA1,SLM,15,8,1
+Kaulich SLM,external hippocampal strata signature,microglia,CA2,286,-0.48110114036218393,CA2,microglia,Microglia ROI,CA2,,,FALSE,CA2,CA2,SLM,16,8,1
+Kaulich SLM,external hippocampal strata signature,microglia,CA3,286,-0.5638501937132246,CA3,microglia,Microglia ROI,CA3,,,FALSE,CA3,CA3,SLM,17,8,1
+Kaulich SLM,external hippocampal strata signature,microglia,DG,286,0.7539195047693263,DG,microglia,Microglia ROI,DG,,,FALSE,DG,DG,SLM,18,8,1
+Kaulich SLM,external hippocampal strata signature,neuron_neuropil,CA1_slm,286,0.8232384360394788,CA1_slm,neuron_neuropil,Neuropil,CA1,slm,SLM,TRUE,CA1 SLM,CA1_slm,SLM,3,8,1
+Kaulich SLM,external hippocampal strata signature,neuron_neuropil,CA1_so,286,-0.08894239986385757,CA1_so,neuron_neuropil,Neuropil,CA1,so,SO,TRUE,CA1 SO,CA1_so,SLM,1,8,1
+Kaulich SLM,external hippocampal strata signature,neuron_neuropil,CA1_sr,286,-0.14107835644479275,CA1_sr,neuron_neuropil,Neuropil,CA1,sr,SR,TRUE,CA1 SR,CA1_sr,SLM,2,8,1
+Kaulich SLM,external hippocampal strata signature,neuron_neuropil,CA2_slm,286,0.6325934130052644,CA2_slm,neuron_neuropil,Neuropil,CA2,slm,SLM,TRUE,CA2 SLM,CA2_slm,SLM,6,8,1
+Kaulich SLM,external hippocampal strata signature,neuron_neuropil,CA2_so,286,-0.39800226473063394,CA2_so,neuron_neuropil,Neuropil,CA2,so,SO,TRUE,CA2 SO,CA2_so,SLM,4,8,1
+Kaulich SLM,external hippocampal strata signature,neuron_neuropil,CA2_sr,286,-0.4229073376527363,CA2_sr,neuron_neuropil,Neuropil,CA2,sr,SR,TRUE,CA2 SR,CA2_sr,SLM,5,8,1
+Kaulich SLM,external hippocampal strata signature,neuron_neuropil,CA3_so,286,-0.2884047592888235,CA3_so,neuron_neuropil,Neuropil,CA3,so,SO,TRUE,CA3 SO,CA3_so,SLM,7,8,1
+Kaulich SLM,external hippocampal strata signature,neuron_neuropil,CA3_sr,286,-0.29930667704182906,CA3_sr,neuron_neuropil,Neuropil,CA3,sr,SR,TRUE,CA3 SR,CA3_sr,SLM,8,8,1
+Kaulich SLM,external hippocampal strata signature,neuron_neuropil,DG_mo,286,0.7840194535084453,DG_mo,neuron_neuropil,Neuropil,DG,mo,MO,TRUE,DG MO,DG_mo,SLM,9,8,1
+Kaulich SLM,external hippocampal strata signature,neuron_neuropil,DG_po,286,-0.6012095075305155,DG_po,neuron_neuropil,Neuropil,DG,po,PO,TRUE,DG PO,DG_po,SLM,10,8,1
+Kaulich SLM,external hippocampal strata signature,neuron_soma,CA1_sp,281,-0.06346133160678916,CA1_sp,neuron_soma,Soma,CA1,sp,SP,FALSE,CA1,CA1_sp,SLM,11,8,1
+Kaulich SLM,external hippocampal strata signature,neuron_soma,CA2_sp,281,0.31614079835151676,CA2_sp,neuron_soma,Soma,CA2,sp,SP,FALSE,CA2,CA2_sp,SLM,12,8,1
+Kaulich SLM,external hippocampal strata signature,neuron_soma,CA3_sp,281,-0.01575462014565167,CA3_sp,neuron_soma,Soma,CA3,sp,SP,FALSE,CA3,CA3_sp,SLM,13,8,1
+Kaulich SLM,external hippocampal strata signature,neuron_soma,DG_sg,281,-0.23692484659907595,DG_sg,neuron_soma,Soma,DG,sg,SG,FALSE,DG,DG_sg,SLM,14,8,1
+Kaulich SO,external hippocampal strata signature,microglia,CA1,16,0.3075012304195465,CA1,microglia,Microglia ROI,CA1,,,FALSE,CA1,CA1,SO,15,11,1
+Kaulich SO,external hippocampal strata signature,microglia,CA2,16,-0.1270904977499702,CA2,microglia,Microglia ROI,CA2,,,FALSE,CA2,CA2,SO,16,11,1
+Kaulich SO,external hippocampal strata signature,microglia,CA3,16,0.7425081998671645,CA3,microglia,Microglia ROI,CA3,,,FALSE,CA3,CA3,SO,17,11,1
+Kaulich SO,external hippocampal strata signature,microglia,DG,16,-0.9229189325367406,DG,microglia,Microglia ROI,DG,,,FALSE,DG,DG,SO,18,11,1
+Kaulich SO,external hippocampal strata signature,neuron_neuropil,CA1_slm,16,-0.5855435709704958,CA1_slm,neuron_neuropil,Neuropil,CA1,slm,SLM,TRUE,CA1 SLM,CA1_slm,SO,3,11,1
+Kaulich SO,external hippocampal strata signature,neuron_neuropil,CA1_so,16,0.31324433590535017,CA1_so,neuron_neuropil,Neuropil,CA1,so,SO,TRUE,CA1 SO,CA1_so,SO,1,11,1
+Kaulich SO,external hippocampal strata signature,neuron_neuropil,CA1_sr,16,-0.02901092741710288,CA1_sr,neuron_neuropil,Neuropil,CA1,sr,SR,TRUE,CA1 SR,CA1_sr,SO,2,11,1
+Kaulich SO,external hippocampal strata signature,neuron_neuropil,CA2_slm,16,-0.9108062678921056,CA2_slm,neuron_neuropil,Neuropil,CA2,slm,SLM,TRUE,CA2 SLM,CA2_slm,SO,6,11,1
+Kaulich SO,external hippocampal strata signature,neuron_neuropil,CA2_so,16,0.38814411468287074,CA2_so,neuron_neuropil,Neuropil,CA2,so,SO,TRUE,CA2 SO,CA2_so,SO,4,11,1
+Kaulich SO,external hippocampal strata signature,neuron_neuropil,CA2_sr,16,0.2549655626616848,CA2_sr,neuron_neuropil,Neuropil,CA2,sr,SR,TRUE,CA2 SR,CA2_sr,SO,5,11,1
+Kaulich SO,external hippocampal strata signature,neuron_neuropil,CA3_so,16,0.8211696881966415,CA3_so,neuron_neuropil,Neuropil,CA3,so,SO,TRUE,CA3 SO,CA3_so,SO,7,11,1
+Kaulich SO,external hippocampal strata signature,neuron_neuropil,CA3_sr,16,0.385282614151428,CA3_sr,neuron_neuropil,Neuropil,CA3,sr,SR,TRUE,CA3 SR,CA3_sr,SO,8,11,1
+Kaulich SO,external hippocampal strata signature,neuron_neuropil,DG_mo,16,-0.9787833883253624,DG_mo,neuron_neuropil,Neuropil,DG,mo,MO,TRUE,DG MO,DG_mo,SO,9,11,1
+Kaulich SO,external hippocampal strata signature,neuron_neuropil,DG_po,16,0.34133783900709064,DG_po,neuron_neuropil,Neuropil,DG,po,PO,TRUE,DG PO,DG_po,SO,10,11,1
+Kaulich SO,external hippocampal strata signature,neuron_soma,CA1_sp,16,-0.0616803437659891,CA1_sp,neuron_soma,Soma,CA1,sp,SP,FALSE,CA1,CA1_sp,SO,11,11,1
+Kaulich SO,external hippocampal strata signature,neuron_soma,CA2_sp,16,0.3024220126910689,CA2_sp,neuron_soma,Soma,CA2,sp,SP,FALSE,CA2,CA2_sp,SO,12,11,1
+Kaulich SO,external hippocampal strata signature,neuron_soma,CA3_sp,16,0.5487679687889131,CA3_sp,neuron_soma,Soma,CA3,sp,SP,FALSE,CA3,CA3_sp,SO,13,11,1
+Kaulich SO,external hippocampal strata signature,neuron_soma,DG_sg,16,-0.7895096377139932,DG_sg,neuron_soma,Soma,DG,sg,SG,FALSE,DG,DG_sg,SO,14,11,1
+Kaulich SP,external hippocampal strata signature,microglia,CA1,63,0.34022285750668535,CA1,microglia,Microglia ROI,CA1,,,FALSE,CA1,CA1,SP,15,10,1
+Kaulich SP,external hippocampal strata signature,microglia,CA2,63,-0.3664159783741856,CA2,microglia,Microglia ROI,CA2,,,FALSE,CA2,CA2,SP,16,10,1
+Kaulich SP,external hippocampal strata signature,microglia,CA3,63,0.19879403990828348,CA3,microglia,Microglia ROI,CA3,,,FALSE,CA3,CA3,SP,17,10,1
+Kaulich SP,external hippocampal strata signature,microglia,DG,63,-0.1726009190407837,DG,microglia,Microglia ROI,DG,,,FALSE,DG,DG,SP,18,10,1
+Kaulich SP,external hippocampal strata signature,neuron_neuropil,CA1_slm,63,-0.7639947643065255,CA1_slm,neuron_neuropil,Neuropil,CA1,slm,SLM,TRUE,CA1 SLM,CA1_slm,SP,3,10,1
+Kaulich SP,external hippocampal strata signature,neuron_neuropil,CA1_so,63,0.23919574899644885,CA1_so,neuron_neuropil,Neuropil,CA1,so,SO,TRUE,CA1 SO,CA1_so,SP,1,10,1
+Kaulich SP,external hippocampal strata signature,neuron_neuropil,CA1_sr,63,0.30760549071676735,CA1_sr,neuron_neuropil,Neuropil,CA1,sr,SR,TRUE,CA1 SR,CA1_sr,SP,2,10,1
+Kaulich SP,external hippocampal strata signature,neuron_neuropil,CA2_slm,63,-0.6727858064164629,CA2_slm,neuron_neuropil,Neuropil,CA2,slm,SLM,TRUE,CA2 SLM,CA2_slm,SP,6,10,1
+Kaulich SP,external hippocampal strata signature,neuron_neuropil,CA2_so,63,0.26668121355991464,CA2_so,neuron_neuropil,Neuropil,CA2,so,SO,TRUE,CA2 SO,CA2_so,SP,4,10,1
+Kaulich SP,external hippocampal strata signature,neuron_neuropil,CA2_sr,63,-0.07031343705906506,CA2_sr,neuron_neuropil,Neuropil,CA2,sr,SR,TRUE,CA2 SR,CA2_sr,SP,5,10,1
+Kaulich SP,external hippocampal strata signature,neuron_neuropil,CA3_so,63,0.2540974822614684,CA3_so,neuron_neuropil,Neuropil,CA3,so,SO,TRUE,CA3 SO,CA3_so,SP,7,10,1
+Kaulich SP,external hippocampal strata signature,neuron_neuropil,CA3_sr,63,0.278882980993042,CA3_sr,neuron_neuropil,Neuropil,CA3,sr,SR,TRUE,CA3 SR,CA3_sr,SP,8,10,1
+Kaulich SP,external hippocampal strata signature,neuron_neuropil,DG_mo,63,-0.1808303084697817,DG_mo,neuron_neuropil,Neuropil,DG,mo,MO,TRUE,DG MO,DG_mo,SP,9,10,1
+Kaulich SP,external hippocampal strata signature,neuron_neuropil,DG_po,63,0.3414613997241937,DG_po,neuron_neuropil,Neuropil,DG,po,PO,TRUE,DG PO,DG_po,SP,10,10,1
+Kaulich SP,external hippocampal strata signature,neuron_soma,CA1_sp,63,0.10056701757599262,CA1_sp,neuron_soma,Soma,CA1,sp,SP,FALSE,CA1,CA1_sp,SP,11,10,1
+Kaulich SP,external hippocampal strata signature,neuron_soma,CA2_sp,63,0.07871222118136029,CA2_sp,neuron_soma,Soma,CA2,sp,SP,FALSE,CA2,CA2_sp,SP,12,10,1
+Kaulich SP,external hippocampal strata signature,neuron_soma,CA3_sp,63,0.15978853462983622,CA3_sp,neuron_soma,Soma,CA3,sp,SP,FALSE,CA3,CA3_sp,SP,13,10,1
+Kaulich SP,external hippocampal strata signature,neuron_soma,DG_sg,63,-0.33906777338718946,DG_sg,neuron_soma,Soma,DG,sg,SG,FALSE,DG,DG_sg,SP,14,10,1
+Kaulich SR,external hippocampal strata signature,microglia,CA1,77,0.7714511957528686,CA1,microglia,Microglia ROI,CA1,,,FALSE,CA1,CA1,SR,15,9,1
+Kaulich SR,external hippocampal strata signature,microglia,CA2,77,-0.5258618357598558,CA2,microglia,Microglia ROI,CA2,,,FALSE,CA2,CA2,SR,16,9,1
+Kaulich SR,external hippocampal strata signature,microglia,CA3,77,0.17830975172204697,CA3,microglia,Microglia ROI,CA3,,,FALSE,CA3,CA3,SR,17,9,1
+Kaulich SR,external hippocampal strata signature,microglia,DG,77,-0.4238991117150595,DG,microglia,Microglia ROI,DG,,,FALSE,DG,DG,SR,18,9,1
+Kaulich SR,external hippocampal strata signature,neuron_neuropil,CA1_slm,77,-0.5329538767915236,CA1_slm,neuron_neuropil,Neuropil,CA1,slm,SLM,TRUE,CA1 SLM,CA1_slm,SR,3,9,1
+Kaulich SR,external hippocampal strata signature,neuron_neuropil,CA1_so,77,0.7296123598657372,CA1_so,neuron_neuropil,Neuropil,CA1,so,SO,TRUE,CA1 SO,CA1_so,SR,1,9,1
+Kaulich SR,external hippocampal strata signature,neuron_neuropil,CA1_sr,77,0.9698317084338548,CA1_sr,neuron_neuropil,Neuropil,CA1,sr,SR,TRUE,CA1 SR,CA1_sr,SR,2,9,1
+Kaulich SR,external hippocampal strata signature,neuron_neuropil,CA2_slm,77,-0.46048110084445015,CA2_slm,neuron_neuropil,Neuropil,CA2,slm,SLM,TRUE,CA2 SLM,CA2_slm,SR,6,9,1
+Kaulich SR,external hippocampal strata signature,neuron_neuropil,CA2_so,77,0.1828751648202804,CA2_so,neuron_neuropil,Neuropil,CA2,so,SO,TRUE,CA2 SO,CA2_so,SR,4,9,1
+Kaulich SR,external hippocampal strata signature,neuron_neuropil,CA2_sr,77,-0.02183181335114727,CA2_sr,neuron_neuropil,Neuropil,CA2,sr,SR,TRUE,CA2 SR,CA2_sr,SR,5,9,1
+Kaulich SR,external hippocampal strata signature,neuron_neuropil,CA3_so,77,0.21758178023620492,CA3_so,neuron_neuropil,Neuropil,CA3,so,SO,TRUE,CA3 SO,CA3_so,SR,7,9,1
+Kaulich SR,external hippocampal strata signature,neuron_neuropil,CA3_sr,77,0.1573884155296126,CA3_sr,neuron_neuropil,Neuropil,CA3,sr,SR,TRUE,CA3 SR,CA3_sr,SR,8,9,1
+Kaulich SR,external hippocampal strata signature,neuron_neuropil,DG_mo,77,-0.3102581807537054,DG_mo,neuron_neuropil,Neuropil,DG,mo,MO,TRUE,DG MO,DG_mo,SR,9,9,1
+Kaulich SR,external hippocampal strata signature,neuron_neuropil,DG_po,77,-0.9317644571448658,DG_po,neuron_neuropil,Neuropil,DG,po,PO,TRUE,DG PO,DG_po,SR,10,9,1
+Kaulich SR,external hippocampal strata signature,neuron_soma,CA1_sp,77,0.2491702475424297,CA1_sp,neuron_soma,Soma,CA1,sp,SP,FALSE,CA1,CA1_sp,SR,11,9,1
+Kaulich SR,external hippocampal strata signature,neuron_soma,CA2_sp,77,0.23002596483592744,CA2_sp,neuron_soma,Soma,CA2,sp,SP,FALSE,CA2,CA2_sp,SR,12,9,1
+Kaulich SR,external hippocampal strata signature,neuron_soma,CA3_sp,77,0.1458173063081582,CA3_sp,neuron_soma,Soma,CA3,sp,SP,FALSE,CA3,CA3_sp,SR,13,9,1
+Kaulich SR,external hippocampal strata signature,neuron_soma,DG_sg,77,-0.6250135186865154,DG_sg,neuron_soma,Soma,DG,sg,SG,FALSE,DG,DG_sg,SR,14,9,1
+Microglia / PVM,external curated cell-class reference panel,microglia,CA1,16,0.4600026722921611,CA1,microglia,Microglia ROI,CA1,,,FALSE,CA1,CA1,Microglia / PVM,15,2,1
+Microglia / PVM,external curated cell-class reference panel,microglia,CA2,16,-0.3730728776005092,CA2,microglia,Microglia ROI,CA2,,,FALSE,CA2,CA2,Microglia / PVM,16,2,1
+Microglia / PVM,external curated cell-class reference panel,microglia,CA3,16,-0.6143097434715212,CA3,microglia,Microglia ROI,CA3,,,FALSE,CA3,CA3,Microglia / PVM,17,2,1
+Microglia / PVM,external curated cell-class reference panel,microglia,DG,16,0.5273799487798704,DG,microglia,Microglia ROI,DG,,,FALSE,DG,DG,Microglia / PVM,18,2,1
+Microglia / PVM,external curated cell-class reference panel,neuron_neuropil,CA1_slm,15,0.6570667130248176,CA1_slm,neuron_neuropil,Neuropil,CA1,slm,SLM,TRUE,CA1 SLM,CA1_slm,Microglia / PVM,3,2,1
+Microglia / PVM,external curated cell-class reference panel,neuron_neuropil,CA1_so,15,0.16415935916393362,CA1_so,neuron_neuropil,Neuropil,CA1,so,SO,TRUE,CA1 SO,CA1_so,Microglia / PVM,1,2,1
+Microglia / PVM,external curated cell-class reference panel,neuron_neuropil,CA1_sr,15,0.01470326322342577,CA1_sr,neuron_neuropil,Neuropil,CA1,sr,SR,TRUE,CA1 SR,CA1_sr,Microglia / PVM,2,2,1
+Microglia / PVM,external curated cell-class reference panel,neuron_neuropil,CA2_slm,15,0.2984172543567559,CA2_slm,neuron_neuropil,Neuropil,CA2,slm,SLM,TRUE,CA2 SLM,CA2_slm,Microglia / PVM,6,2,1
+Microglia / PVM,external curated cell-class reference panel,neuron_neuropil,CA2_so,15,0.067163828757184,CA2_so,neuron_neuropil,Neuropil,CA2,so,SO,TRUE,CA2 SO,CA2_so,Microglia / PVM,4,2,1
+Microglia / PVM,external curated cell-class reference panel,neuron_neuropil,CA2_sr,15,-0.14377838935678117,CA2_sr,neuron_neuropil,Neuropil,CA2,sr,SR,TRUE,CA2 SR,CA2_sr,Microglia / PVM,5,2,1
+Microglia / PVM,external curated cell-class reference panel,neuron_neuropil,CA3_so,15,-0.4212363534036433,CA3_so,neuron_neuropil,Neuropil,CA3,so,SO,TRUE,CA3 SO,CA3_so,Microglia / PVM,7,2,1
+Microglia / PVM,external curated cell-class reference panel,neuron_neuropil,CA3_sr,15,-0.3393283837334695,CA3_sr,neuron_neuropil,Neuropil,CA3,sr,SR,TRUE,CA3 SR,CA3_sr,Microglia / PVM,8,2,1
+Microglia / PVM,external curated cell-class reference panel,neuron_neuropil,DG_mo,15,0.306458508829797,DG_mo,neuron_neuropil,Neuropil,DG,mo,MO,TRUE,DG MO,DG_mo,Microglia / PVM,9,2,1
+Microglia / PVM,external curated cell-class reference panel,neuron_neuropil,DG_po,15,-0.6036258008620216,DG_po,neuron_neuropil,Neuropil,DG,po,PO,TRUE,DG PO,DG_po,Microglia / PVM,10,2,1
+Microglia / PVM,external curated cell-class reference panel,neuron_soma,CA1_sp,15,0.10288943098210022,CA1_sp,neuron_soma,Soma,CA1,sp,SP,FALSE,CA1,CA1_sp,Microglia / PVM,11,2,1
+Microglia / PVM,external curated cell-class reference panel,neuron_soma,CA2_sp,15,0.567317262478523,CA2_sp,neuron_soma,Soma,CA2,sp,SP,FALSE,CA2,CA2_sp,Microglia / PVM,12,2,1
+Microglia / PVM,external curated cell-class reference panel,neuron_soma,CA3_sp,15,-0.0716186706322213,CA3_sp,neuron_soma,Soma,CA3,sp,SP,FALSE,CA3,CA3_sp,Microglia / PVM,13,2,1
+Microglia / PVM,external curated cell-class reference panel,neuron_soma,DG_sg,15,-0.5985880228284016,DG_sg,neuron_soma,Soma,DG,sg,SG,FALSE,DG,DG_sg,Microglia / PVM,14,2,1
+Oligodendrocyte,external curated cell-class reference panel,microglia,CA1,41,0.04377096162155273,CA1,microglia,Microglia ROI,CA1,,,FALSE,CA1,CA1,Oligodendrocyte,15,3,1
+Oligodendrocyte,external curated cell-class reference panel,microglia,CA2,41,-0.3655743862225785,CA2,microglia,Microglia ROI,CA2,,,FALSE,CA2,CA2,Oligodendrocyte,16,3,1
+Oligodendrocyte,external curated cell-class reference panel,microglia,CA3,41,0.7725519363079366,CA3,microglia,Microglia ROI,CA3,,,FALSE,CA3,CA3,Oligodendrocyte,17,3,1
+Oligodendrocyte,external curated cell-class reference panel,microglia,DG,41,-0.4507485117069109,DG,microglia,Microglia ROI,DG,,,FALSE,DG,DG,Oligodendrocyte,18,3,1
+Oligodendrocyte,external curated cell-class reference panel,neuron_neuropil,CA1_slm,41,0.22327260016897965,CA1_slm,neuron_neuropil,Neuropil,CA1,slm,SLM,TRUE,CA1 SLM,CA1_slm,Oligodendrocyte,3,3,1
+Oligodendrocyte,external curated cell-class reference panel,neuron_neuropil,CA1_so,41,0.31150300431288824,CA1_so,neuron_neuropil,Neuropil,CA1,so,SO,TRUE,CA1 SO,CA1_so,Oligodendrocyte,1,3,1
+Oligodendrocyte,external curated cell-class reference panel,neuron_neuropil,CA1_sr,41,-0.8236623259857027,CA1_sr,neuron_neuropil,Neuropil,CA1,sr,SR,TRUE,CA1 SR,CA1_sr,Oligodendrocyte,2,3,1
+Oligodendrocyte,external curated cell-class reference panel,neuron_neuropil,CA2_slm,41,-0.7718310286359441,CA2_slm,neuron_neuropil,Neuropil,CA2,slm,SLM,TRUE,CA2 SLM,CA2_slm,Oligodendrocyte,6,3,1
+Oligodendrocyte,external curated cell-class reference panel,neuron_neuropil,CA2_so,41,0.3023063035256653,CA2_so,neuron_neuropil,Neuropil,CA2,so,SO,TRUE,CA2 SO,CA2_so,Oligodendrocyte,4,3,1
+Oligodendrocyte,external curated cell-class reference panel,neuron_neuropil,CA2_sr,41,-0.29788910875951197,CA2_sr,neuron_neuropil,Neuropil,CA2,sr,SR,TRUE,CA2 SR,CA2_sr,Oligodendrocyte,5,3,1
+Oligodendrocyte,external curated cell-class reference panel,neuron_neuropil,CA3_so,41,1.45139370747594,CA3_so,neuron_neuropil,Neuropil,CA3,so,SO,TRUE,CA3 SO,CA3_so,Oligodendrocyte,7,3,1
+Oligodendrocyte,external curated cell-class reference panel,neuron_neuropil,CA3_sr,41,0.12257305638005464,CA3_sr,neuron_neuropil,Neuropil,CA3,sr,SR,TRUE,CA3 SR,CA3_sr,Oligodendrocyte,8,3,1
+Oligodendrocyte,external curated cell-class reference panel,neuron_neuropil,DG_mo,41,-0.2975688616490841,DG_mo,neuron_neuropil,Neuropil,DG,mo,MO,TRUE,DG MO,DG_mo,Oligodendrocyte,9,3,1
+Oligodendrocyte,external curated cell-class reference panel,neuron_neuropil,DG_po,41,-0.2200973468332853,DG_po,neuron_neuropil,Neuropil,DG,po,PO,TRUE,DG PO,DG_po,Oligodendrocyte,10,3,1
+Oligodendrocyte,external curated cell-class reference panel,neuron_soma,CA1_sp,39,-0.5235774713092589,CA1_sp,neuron_soma,Soma,CA1,sp,SP,FALSE,CA1,CA1_sp,Oligodendrocyte,11,3,1
+Oligodendrocyte,external curated cell-class reference panel,neuron_soma,CA2_sp,39,0.03158057568183437,CA2_sp,neuron_soma,Soma,CA2,sp,SP,FALSE,CA2,CA2_sp,Oligodendrocyte,12,3,1
+Oligodendrocyte,external curated cell-class reference panel,neuron_soma,CA3_sp,39,0.8726955075389408,CA3_sp,neuron_soma,Soma,CA3,sp,SP,FALSE,CA3,CA3_sp,Oligodendrocyte,13,3,1
+Oligodendrocyte,external curated cell-class reference panel,neuron_soma,DG_sg,39,-0.3806986119115165,DG_sg,neuron_soma,Soma,DG,sg,SG,FALSE,DG,DG_sg,Oligodendrocyte,14,3,1
+Synaptic neuropil,external curated cell-class reference panel,microglia,CA1,187,0.5389303032381855,CA1,microglia,Microglia ROI,CA1,,,FALSE,CA1,CA1,Synaptic neuropil,15,5,1
+Synaptic neuropil,external curated cell-class reference panel,microglia,CA2,187,-0.6060670081298654,CA2,microglia,Microglia ROI,CA2,,,FALSE,CA2,CA2,Synaptic neuropil,16,5,1
+Synaptic neuropil,external curated cell-class reference panel,microglia,CA3,187,0.10111010910030235,CA3,microglia,Microglia ROI,CA3,,,FALSE,CA3,CA3,Synaptic neuropil,17,5,1
+Synaptic neuropil,external curated cell-class reference panel,microglia,DG,187,-0.03397340420862207,DG,microglia,Microglia ROI,DG,,,FALSE,DG,DG,Synaptic neuropil,18,5,1
+Synaptic neuropil,external curated cell-class reference panel,neuron_neuropil,CA1_slm,186,-0.28604344724729047,CA1_slm,neuron_neuropil,Neuropil,CA1,slm,SLM,TRUE,CA1 SLM,CA1_slm,Synaptic neuropil,3,5,1
+Synaptic neuropil,external curated cell-class reference panel,neuron_neuropil,CA1_so,186,0.5476422366467475,CA1_so,neuron_neuropil,Neuropil,CA1,so,SO,TRUE,CA1 SO,CA1_so,Synaptic neuropil,1,5,1
+Synaptic neuropil,external curated cell-class reference panel,neuron_neuropil,CA1_sr,186,0.5448954593918279,CA1_sr,neuron_neuropil,Neuropil,CA1,sr,SR,TRUE,CA1 SR,CA1_sr,Synaptic neuropil,2,5,1
+Synaptic neuropil,external curated cell-class reference panel,neuron_neuropil,CA2_slm,186,-0.3118439386514321,CA2_slm,neuron_neuropil,Neuropil,CA2,slm,SLM,TRUE,CA2 SLM,CA2_slm,Synaptic neuropil,6,5,1
+Synaptic neuropil,external curated cell-class reference panel,neuron_neuropil,CA2_so,186,-0.03762454856211763,CA2_so,neuron_neuropil,Neuropil,CA2,so,SO,TRUE,CA2 SO,CA2_so,Synaptic neuropil,4,5,1
+Synaptic neuropil,external curated cell-class reference panel,neuron_neuropil,CA2_sr,186,-0.21423919313249773,CA2_sr,neuron_neuropil,Neuropil,CA2,sr,SR,TRUE,CA2 SR,CA2_sr,Synaptic neuropil,5,5,1
+Synaptic neuropil,external curated cell-class reference panel,neuron_neuropil,CA3_so,186,0.151723301572179,CA3_so,neuron_neuropil,Neuropil,CA3,so,SO,TRUE,CA3 SO,CA3_so,Synaptic neuropil,7,5,1
+Synaptic neuropil,external curated cell-class reference panel,neuron_neuropil,CA3_sr,186,0.08155306948251609,CA3_sr,neuron_neuropil,Neuropil,CA3,sr,SR,TRUE,CA3 SR,CA3_sr,Synaptic neuropil,8,5,1
+Synaptic neuropil,external curated cell-class reference panel,neuron_neuropil,DG_mo,186,-0.01569604403262005,DG_mo,neuron_neuropil,Neuropil,DG,mo,MO,TRUE,DG MO,DG_mo,Synaptic neuropil,9,5,1
+Synaptic neuropil,external curated cell-class reference panel,neuron_neuropil,DG_po,186,-0.4603668954673122,DG_po,neuron_neuropil,Neuropil,DG,po,PO,TRUE,DG PO,DG_po,Synaptic neuropil,10,5,1
+Synaptic neuropil,external curated cell-class reference panel,neuron_soma,CA1_sp,184,0.20040284014981943,CA1_sp,neuron_soma,Soma,CA1,sp,SP,FALSE,CA1,CA1_sp,Synaptic neuropil,11,5,1
+Synaptic neuropil,external curated cell-class reference panel,neuron_soma,CA2_sp,184,0.1426031286066556,CA2_sp,neuron_soma,Soma,CA2,sp,SP,FALSE,CA2,CA2_sp,Synaptic neuropil,12,5,1
+Synaptic neuropil,external curated cell-class reference panel,neuron_soma,CA3_sp,184,0.05638059431262058,CA3_sp,neuron_soma,Soma,CA3,sp,SP,FALSE,CA3,CA3_sp,Synaptic neuropil,13,5,1
+Synaptic neuropil,external curated cell-class reference panel,neuron_soma,DG_sg,184,-0.3993865630690958,DG_sg,neuron_soma,Soma,DG,sg,SG,FALSE,DG,DG_sg,Synaptic neuropil,14,5,1
+Vascular,external curated cell-class reference panel,microglia,CA1,23,0.23266736686454328,CA1,microglia,Microglia ROI,CA1,,,FALSE,CA1,CA1,Vascular,15,1,1
+Vascular,external curated cell-class reference panel,microglia,CA2,23,0.4246691834139541,CA2,microglia,Microglia ROI,CA2,,,FALSE,CA2,CA2,Vascular,16,1,1
+Vascular,external curated cell-class reference panel,microglia,CA3,23,-0.7696215418314093,CA3,microglia,Microglia ROI,CA3,,,FALSE,CA3,CA3,Vascular,17,1,1
+Vascular,external curated cell-class reference panel,microglia,DG,23,0.11228499155291136,DG,microglia,Microglia ROI,DG,,,FALSE,DG,DG,Vascular,18,1,1
+Vascular,external curated cell-class reference panel,neuron_neuropil,CA1_slm,22,1.0675954131734535,CA1_slm,neuron_neuropil,Neuropil,CA1,slm,SLM,TRUE,CA1 SLM,CA1_slm,Vascular,3,1,1
+Vascular,external curated cell-class reference panel,neuron_neuropil,CA1_so,22,-0.604886509469781,CA1_so,neuron_neuropil,Neuropil,CA1,so,SO,TRUE,CA1 SO,CA1_so,Vascular,1,1,1
+Vascular,external curated cell-class reference panel,neuron_neuropil,CA1_sr,22,-0.3650499007128994,CA1_sr,neuron_neuropil,Neuropil,CA1,sr,SR,TRUE,CA1 SR,CA1_sr,Vascular,2,1,1
+Vascular,external curated cell-class reference panel,neuron_neuropil,CA2_slm,22,0.6716489876050747,CA2_slm,neuron_neuropil,Neuropil,CA2,slm,SLM,TRUE,CA2 SLM,CA2_slm,Vascular,6,1,1
+Vascular,external curated cell-class reference panel,neuron_neuropil,CA2_so,22,0.1363942054548588,CA2_so,neuron_neuropil,Neuropil,CA2,so,SO,TRUE,CA2 SO,CA2_so,Vascular,4,1,1
+Vascular,external curated cell-class reference panel,neuron_neuropil,CA2_sr,22,-0.5223551539230573,CA2_sr,neuron_neuropil,Neuropil,CA2,sr,SR,TRUE,CA2 SR,CA2_sr,Vascular,5,1,1
+Vascular,external curated cell-class reference panel,neuron_neuropil,CA3_so,22,-0.13145328071494145,CA3_so,neuron_neuropil,Neuropil,CA3,so,SO,TRUE,CA3 SO,CA3_so,Vascular,7,1,1
+Vascular,external curated cell-class reference panel,neuron_neuropil,CA3_sr,22,-0.3240315605137328,CA3_sr,neuron_neuropil,Neuropil,CA3,sr,SR,TRUE,CA3 SR,CA3_sr,Vascular,8,1,1
+Vascular,external curated cell-class reference panel,neuron_neuropil,DG_mo,22,0.3907600877818721,DG_mo,neuron_neuropil,Neuropil,DG,mo,MO,TRUE,DG MO,DG_mo,Vascular,9,1,1
+Vascular,external curated cell-class reference panel,neuron_neuropil,DG_po,22,-0.3186222886808469,DG_po,neuron_neuropil,Neuropil,DG,po,PO,TRUE,DG PO,DG_po,Vascular,10,1,1
+Vascular,external curated cell-class reference panel,neuron_soma,CA1_sp,21,-0.42015615079272617,CA1_sp,neuron_soma,Soma,CA1,sp,SP,FALSE,CA1,CA1_sp,Vascular,11,1,1
+Vascular,external curated cell-class reference panel,neuron_soma,CA2_sp,21,0.6018394083219119,CA2_sp,neuron_soma,Soma,CA2,sp,SP,FALSE,CA2,CA2_sp,Vascular,12,1,1
+Vascular,external curated cell-class reference panel,neuron_soma,CA3_sp,21,0.20417044095405185,CA3_sp,neuron_soma,Soma,CA3,sp,SP,FALSE,CA3,CA3_sp,Vascular,13,1,1
+Vascular,external curated cell-class reference panel,neuron_soma,DG_sg,21,-0.3858536984832376,DG_sg,neuron_soma,Soma,DG,sg,SG,FALSE,DG,DG_sg,Vascular,14,1,1

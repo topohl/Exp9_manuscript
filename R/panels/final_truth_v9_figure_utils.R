@@ -82,12 +82,20 @@ s9f_panel_by_id <- function(contract, id) {
   hit[[1]]
 }
 
-s9f_build <- function(figure_key, dry_run = FALSE) {
+s9f_build <- function(figure_key, dry_run = FALSE, pages = NULL) {
   contract <- s9f_contract()
   nv_assert_no_model_fitting(s9f_renderer_sources())
-  figs <- Filter(function(f) identical(as.character(f$figure_key), figure_key),
-                 contract$figures)
-  if (!length(figs)) stop("no final_truth_v9 figure with key: ", figure_key, call. = FALSE)
+  key_figs <- Filter(function(f) identical(as.character(f$figure_key), figure_key),
+                     contract$figures)
+  if (!length(key_figs)) stop("no final_truth_v9 figure with key: ", figure_key, call. = FALSE)
+  # `pages` draws only some of the key's pages, for a page whose inputs this
+  # workspace does not hold. The other pages' panels are neither drawn nor
+  # removed, and the render record names the pages it covers.
+  key_pages <- vapply(key_figs, function(f) as.character(f$name), "")
+  if (!is.null(pages) && length(setdiff(pages, key_pages)))
+    stop("not a ", figure_key, " page: ", paste(setdiff(pages, key_pages), collapse = ", "),
+         call. = FALSE)
+  figs <- if (is.null(pages)) key_figs else key_figs[key_pages %in% pages]
   needed <- unique(unlist(lapply(figs, function(f)
     vapply(f$layout, function(it) as.character(it$panel), character(1)))))
   panels <- Filter(function(p) as.character(p$id) %in% needed, contract$panels)
@@ -105,23 +113,25 @@ s9f_build <- function(figure_key, dry_run = FALSE) {
   }
 
   invisible(lapply(paths, dir_create))
-  boxes_of <- list()
-  for (f in figs) for (it in f$layout) {
-    id <- as.character(it$panel)
-    boxes_of[[id]] <- unique(c(boxes_of[[id]],
-                               sprintf("%gx%g", as.numeric(it$w), as.numeric(it$h))))
+  boxes_in <- function(fs) {
+    b <- list()
+    for (f in fs) for (it in f$layout) {
+      id <- as.character(it$panel)
+      b[[id]] <- unique(c(b[[id]], sprintf("%gx%g", as.numeric(it$w), as.numeric(it$h))))
+    }
+    b
   }
-
+  boxes_of <- boxes_in(figs)
+  # file names follow every page of the key, drawn or not
+  boxes_key <- boxes_in(key_figs)
+  tag_of <- function(id, bstr) if (length(boxes_key[[id]]) > 1L) paste0(id, "_", bstr) else id
 
   # Purge panel SVGs left over from a previous contract revision. Without this a
   # renamed box silently persists on disk and pollutes both the layout audit and
   # any byte-for-byte determinism check.
   expected_svg <- character(0)
-  for (p in panels) for (bstr in boxes_of[[as.character(p$id)]]) {
-    tag <- if (length(boxes_of[[as.character(p$id)]]) > 1L)
-      paste0(as.character(p$id), "_", bstr) else as.character(p$id)
-    expected_svg <- c(expected_svg, paste0(tag, ".svg"))
-  }
+  for (id in names(boxes_key)) for (bstr in boxes_key[[id]])
+    expected_svg <- c(expected_svg, paste0(tag_of(id, bstr), ".svg"))
   stale <- setdiff(list.files(paths$panels, "[.]svg$"), expected_svg)
   if (length(stale)) {
     message("[final_truth_v9] removing ", length(stale), " stale panel file(s): ",
@@ -135,24 +145,37 @@ s9f_build <- function(figure_key, dry_run = FALSE) {
     id <- as.character(p$id)
     for (bstr in boxes_of[[id]]) {
       box <- as.numeric(strsplit(bstr, "x", fixed = TRUE)[[1]])
-      tag <- if (length(boxes_of[[id]]) > 1L) paste0(id, "_", bstr) else id
+      tag <- tag_of(id, bstr)
       svg <- file.path(paths$panels, paste0(tag, ".svg"))
       csv <- file.path(paths$source_data, paste0(id, "_source_data.csv"))
       status <- "ok"; note <- ""
+      # A panel that fails must not destroy an earlier render of it (for example
+      # panels imported because their inputs are recorded as provenance only):
+      # its previous SVG and source data are kept, the failure is still recorded
+      # and QA still fails. Only a panel with no earlier output gets a placeholder.
+      prev <- c(svg, csv)
+      kept <- if (all(file.exists(prev))) {
+        k <- file.path(tempdir(), paste0("s9f_kept_", tag, c(".svg", ".csv")))
+        if (all(file.copy(prev, k, overwrite = TRUE))) k else NULL
+      } else NULL
+      fail_panel <- function(reason) {
+        if (!is.null(kept) && all(file.copy(kept, prev, overwrite = TRUE)))
+          return(paste0(reason, " [previous output kept]"))
+        nv_placeholder(svg, id, reason, box[1], box[2])
+        write_csv_safe(data.frame(panel = id, status = "render_error", note = reason,
+                                  stringsAsFactors = FALSE), csv)
+        reason
+      }
       fn <- tryCatch(get(as.character(p$renderer), mode = "function"),
                      error = function(e) NULL)
       if (is.null(fn)) {
-        status <- "renderer_missing"; note <- as.character(p$renderer)
-        nv_placeholder(svg, id, note, box[1], box[2])
+        status <- "renderer_missing"; note <- fail_panel(as.character(p$renderer))
       } else {
-        res <- tryCatch(fn(p, svg, csv, box[1], box[2]), error = function(e) {
-          nv_placeholder(svg, id, conditionMessage(e), box[1], box[2])
-          write_csv_safe(data.frame(panel = id, status = "render_error",
-                                    note = conditionMessage(e),
-                                    stringsAsFactors = FALSE), csv)
-          structure(list(note = conditionMessage(e)), class = "nv_failed")
-        })
-        if (inherits(res, "nv_failed")) { status <- "render_error"; note <- res$note }
+        res <- tryCatch(fn(p, svg, csv, box[1], box[2]), error = function(e)
+          structure(list(note = conditionMessage(e)), class = "nv_failed"))
+        if (inherits(res, "nv_failed")) {
+          status <- "render_error"; note <- fail_panel(res$note)
+        }
       }
       panel_paths[[sprintf("%s@%gx%g", id, box[1], box[2])]] <- svg
       records[[length(records) + 1L]] <- data.frame(
@@ -168,9 +191,16 @@ s9f_build <- function(figure_key, dry_run = FALSE) {
   panel_records <- dplyr::bind_rows(records)
 
   asm <- list()
+  failed <- panel_records$panel_id[panel_records$status != "ok"]
   for (f in figs) {
     nv_verify_scale(f, panel_paths)
     target <- file.path(paths$assembled, paste0(as.character(f$name), ".svg"))
+    # a page with a failed panel keeps its previous composition (QA fails below)
+    page_ids <- vapply(f$layout, function(x) as.character(x$panel), character(1))
+    if (any(page_ids %in% failed) && file.exists(target)) {
+      message("[final_truth_v9] ", f$name, ": a panel failed; previous page kept")
+      next
+    }
     # VECTOR EXPORT. The old route wrote an assembled SVG then handed it to
     # nv_pdf(), which falls back to ImageMagick when rsvg is absent and emits a
     # single full-page raster with no fonts. Both outputs are now composed
@@ -223,6 +253,8 @@ s9f_build <- function(figure_key, dry_run = FALSE) {
   yaml::write_yaml(list(
     timestamp = format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z"),
     figure_key = figure_key, contract_version = s9f_contract_version(),
+    pages = vapply(figs, function(f) as.character(f$name), ""),
+    pages_not_drawn = setdiff(key_pages, vapply(figs, function(f) as.character(f$name), "")),
     render_git_commit = code$commit, render_code_clean = code$code_clean,
     render_code_dirty = code$dirty,
     files = lapply(drawn, function(x) list(path = relative_to(x),

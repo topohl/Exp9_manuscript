@@ -196,7 +196,7 @@ f1o3b_panel_trajectory <- function(tab, fsb, an, w_mm, h_mm, frame = NULL) {
     ref <- ref[order(ref$Sex, ref$x), , drop = FALSE]
     ggplot(mm, aes(x, estimate)) +
       # the CON descriptive mean: one dashed line, keyed once (top left of the top row's first facet)
-      geom_line(data = ref, aes(x, mean, group = Sex, linetype = Group), inherit.aes = FALSE, colour = CON_GREY,
+      geom_line(data = ref, aes(x, mean, group = Sex, linetype = Group), inherit.aes = FALSE, colour = CON_MARK,
                 linewidth = F1N$mean_lw, show.legend = top) +
       geom_line(aes(colour = Group, group = Group), linewidth = F1N$mean_lw) +
       geom_linerange(aes(ymin = ci_low, ymax = ci_high, colour = Group), linewidth = F1N$mean_lw) +

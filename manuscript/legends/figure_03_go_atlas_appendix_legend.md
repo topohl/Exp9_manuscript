@@ -19,8 +19,9 @@ leading-edge proteins meet that threshold in this frozen export. The largest
 absolute ranked statistics among leading-edge genes determine which proteins
 are displayed.
 
-One NES colour range is shared by all appendix panels and covers the full
-selected-term inventory. A symmetric protein log2 fold-change axis is shared
+All appendix panels use the manuscript's fixed NES colour range, the one of
+Figure 3 (full colour at |NES| 2); a term beyond it takes
+full colour, and each strip prints its NES. A symmetric protein log2 fold-change axis is shared
 within each theme. These limits and the displayed values are supplied with
 the figure source data. The plots display stored enrichment and mapped
 protein estimates; they do not add an inferential test.

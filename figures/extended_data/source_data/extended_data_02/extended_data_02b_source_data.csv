@@ -1,0 +1,31 @@
+internal_contrast,external_signature,level,kind,expected_match,NES,signature_FDR,signature_fdr_family,single_set_p_unadjusted
+CA1_vs_mean_other_soma_regions,CA1,Regional identity,expected pairing,TRUE,3.09765063222406,1.2e-10,soma_tissue,1e-10
+CA1_vs_mean_other_soma_regions,CA2/3,Regional identity,specificity comparison,FALSE,-2.39832861403374,1.2e-10,soma_tissue,1e-10
+CA1_vs_mean_other_soma_regions,DG,Regional identity,specificity comparison,FALSE,-1.28165279115116,6.2582977051541e-4,soma_tissue,6.2582977051541e-4
+CA2_vs_mean_other_soma_regions,CA1,Regional identity,specificity comparison,FALSE,2.04819278273244,1.2e-10,soma_tissue,1e-10
+CA2_vs_mean_other_soma_regions,CA2/3,Regional identity,expected pairing,TRUE,2.43206044188955,1.2e-10,soma_tissue,1e-10
+CA2_vs_mean_other_soma_regions,DG,Regional identity,specificity comparison,FALSE,-3.26385342402535,1.2e-10,soma_tissue,1e-10
+CA3_vs_mean_other_soma_regions,CA1,Regional identity,specificity comparison,FALSE,-1.77804929249036,2.08362491694434e-7,soma_tissue,1.90998950719898e-7
+CA3_vs_mean_other_soma_regions,CA2/3,Regional identity,expected pairing,TRUE,3.31622838044165,1.2e-10,soma_tissue,1e-10
+CA3_vs_mean_other_soma_regions,DG,Regional identity,specificity comparison,FALSE,-3.52383975249519,1.2e-10,soma_tissue,1e-10
+DG_vs_mean_other_soma_regions,CA1,Regional identity,specificity comparison,FALSE,-2.53353704954917,1.2e-10,soma_tissue,1e-10
+DG_vs_mean_other_soma_regions,CA2/3,Regional identity,specificity comparison,FALSE,-2.96393335095605,1.2e-10,soma_tissue,1e-10
+DG_vs_mean_other_soma_regions,DG,Regional identity,expected pairing,TRUE,3.68973924854974,1.2e-10,soma_tissue,1e-10
+DG_neuropil_vs_mean_non_DG_regions,CA1,Regional identity,specificity comparison,FALSE,-2.14509632926307,1.72135580948618e-6,neuropil_subregion,8.6067790474309e-7
+DG_neuropil_vs_mean_non_DG_regions,CA2/3,Regional identity,specificity comparison,FALSE,-1.88672707222414,5.4952056321875e-4,neuropil_subregion,3.6634704214583e-4
+DG_neuropil_vs_mean_non_DG_regions,DG,Regional identity,expected pairing,TRUE,2.93807928387244,6e-10,neuropil_subregion,1e-10
+CA1_SO_vs_CA3_SO,CA1,Regional identity,expected pairing,TRUE,2.30599852803019,1.00024990821906e-7,neuropil_subregion,3.33416636073019e-8
+CA1_SO_vs_CA3_SO,CA2/3,Regional identity,expected pairing,TRUE,-1.91825885366278,8.0174927113702e-4,neuropil_subregion,6.6812439261418e-4
+CA1_SO_vs_CA3_SO,DG,Regional identity,specificity comparison,FALSE,1.36016390709086,0.0602351900320714,neuropil_subregion,0.0602351900320714
+CA1_SLM_vs_mean_other_CA1_strata,SLM,CA1 laminar identity,expected pairing,TRUE,2.90299039653814,1.5e-10,ca1_strata,1e-10
+CA1_SLM_vs_mean_other_CA1_strata,SO,CA1 laminar identity,specificity comparison,FALSE,-1.64874399724207,0.0134463071771912,ca1_strata,0.012325781579092
+CA1_SLM_vs_mean_other_CA1_strata,SP,CA1 laminar identity,specificity comparison,FALSE,-2.46693175114835,1.5e-10,ca1_strata,1e-10
+CA1_SLM_vs_mean_other_CA1_strata,SR,CA1 laminar identity,specificity comparison,FALSE,-2.70069286068848,1.5e-10,ca1_strata,1e-10
+CA1_SO_vs_mean_other_CA1_strata,SLM,CA1 laminar identity,specificity comparison,FALSE,-2.88660494593947,1.5e-10,ca1_strata,1e-10
+CA1_SO_vs_mean_other_CA1_strata,SO,CA1 laminar identity,expected pairing,TRUE,1.95238030374319,3.3482726749559e-4,ca1_strata,2.7902272291299e-4
+CA1_SO_vs_mean_other_CA1_strata,SP,CA1 laminar identity,specificity comparison,FALSE,2.22335403030149,4.7456038240088e-8,ca1_strata,3.5592028680066e-8
+CA1_SO_vs_mean_other_CA1_strata,SR,CA1 laminar identity,specificity comparison,FALSE,2.55686365824307,1.5e-10,ca1_strata,1e-10
+CA1_SR_vs_mean_other_CA1_strata,SLM,CA1 laminar identity,specificity comparison,FALSE,-2.86925847436613,1.5e-10,ca1_strata,1e-10
+CA1_SR_vs_mean_other_CA1_strata,SO,CA1 laminar identity,specificity comparison,FALSE,1.25289117169837,0.183519279702486,ca1_strata,0.183519279702486
+CA1_SR_vs_mean_other_CA1_strata,SP,CA1 laminar identity,specificity comparison,FALSE,2.56550427894454,1.5e-10,ca1_strata,1e-10
+CA1_SR_vs_mean_other_CA1_strata,SR,CA1 laminar identity,expected pairing,TRUE,2.95098757145277,1.5e-10,ca1_strata,1e-10

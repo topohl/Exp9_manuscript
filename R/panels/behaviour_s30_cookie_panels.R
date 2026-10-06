@@ -44,7 +44,7 @@ S30_COOKIE_RS_WIDTHS <- c(1, 0.82)
 
 S30CK_SEX <- c("Female", "Male")
 S30CK_OFF <- c(RES = -0.14, SUS = 0.14)          # Figure 1c grammar: group offsets within sex
-S30CK_NEUTRAL_FILL <- "#6E8B99"                   # the Figure 1e fill, for non-group scatters
+S30CK_NEUTRAL_FILL <- POOLED_FILL                 # the Figure 1e fill, for non-group scatters
 # The registered windows (Stage 30 registry v1.0, measures.cookie_response_60) as displayed;
 # each must occur in the bundle's S5 display label of its window.
 S30CK_WINDOW <- c(PRE60 = "16:00–17:00", POST60 = "17:00–18:00")

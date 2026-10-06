@@ -20,9 +20,10 @@
 #                             downstream, exploratory box (not a fifth domain);
 #   b  f1o3n_panel_combz      CombZ per animal at its stored rank within sex (fsb F2), circles coloured
 #                             by group, the stored threshold and CON-mean lines (ebb A2b), the group
-#                             strip, and the six components' signed z as they enter CombZ as a heatmap
-#                             on the manuscript diverging palette (config/manuscript_palette.yml),
-#                             symmetric limits capped at F1O3N_Z_CAP; the RES/SUS boundary is marked;
+#                             strip, a row of rotated AnimalNum labels, and the six components' signed
+#                             z as they enter CombZ as a heatmap on the manuscript diverging palette
+#                             (config/manuscript_palette.yml), symmetric limits capped at F1O3N_Z_CAP;
+#                             the RES/SUS boundary is marked;
 #   c  f1o3n_panel_cc1        first active phase after CC1: animals as circles by group (CON hollow),
 #                             the RES/SUS model means and 95% CIs (ebb C2, CC1_BY_SEX), the CON
 #                             descriptive mean (fsb F1b) and the three CON cage means per sex (fsb F1);
@@ -40,14 +41,14 @@
 # and R/panels/behaviour_figure1_nature_panels.R sourced first; packages ggtext and patchwork.
 
 # The heatmap's symmetric presentational limits: signed z beyond +/-F1O3N_Z_CAP take the end colours
-# (the legend declares the cap). Presentational only.
-F1O3N_Z_CAP <- 3
-# The manuscript's one diverging scale (config/manuscript_palette.yml: diverging low / mid / high,
-# the colours nv_diverging() draws). Read, never redefined.
-F1O3N_DIVERGING <- local({
-  d <- yaml::read_yaml(repo_path("config", "manuscript_palette.yml"))$diverging
-  c(low = d$low, mid = d$mid, high = d$high)
-})
+# and the colourbar ends read <= / >= (the legend declares the cap). Presentational only. The cap is the
+# manuscript's fixed z limit (config/manuscript_palette.yml diverging_limits$z, palette v3.2: two SD of the
+# CON reference, so full colour means outside the control range), the limit of every single-variable z.
+# The manuscript's one diverging scale (diverging low / mid / high, the colours nv_diverging() draws).
+# Both read, never redefined.
+F1O3N_PALETTE <- yaml::read_yaml(repo_path("config", "manuscript_palette.yml"))
+F1O3N_Z_CAP <- as.numeric(F1O3N_PALETTE$diverging_limits$z)
+F1O3N_DIVERGING <- unlist(F1O3N_PALETTE$diverging)[c("low", "mid", "high")]
 # One CON cage per batch and three batches per sex: the design the figure-support bundle's gates
 # assert (exactly three CON cage epochs per sex and cage change, four animals each). The builders
 # stop unless the stored rows show exactly that, so the "3 cages/sex" label is checked against the data.
@@ -243,9 +244,10 @@ f1o3n_panel_combz <- function(tab, fsb, an, w_mm, h_mm) {
   vline <- geom_vline(data = bnd, aes(xintercept = x), linewidth = F1N$axis_lw, colour = INK, linetype = "22")
   no_x <- theme(axis.line.x = element_blank(), axis.ticks.x = element_blank(), axis.text.x = element_blank(), axis.title.x = element_blank())
   key_aes <- list(size = F1N$point_size, stroke = F1N$point_stroke, colour = F1N$point_colour)
+  # a missing component is the neutral box grey, never white (white is z = 0), and keeps its diagonal stroke
   fill_z <- scale_fill_gradient2(low = F1O3N_DIVERGING[["low"]], mid = F1O3N_DIVERGING[["mid"]], high = F1O3N_DIVERGING[["high"]],
                                  midpoint = 0, limits = c(-F1O3N_Z_CAP, F1O3N_Z_CAP), oob = scales::squish,
-                                 na.value = "white", guide = "none")
+                                 na.value = NEUTRAL_BOX, guide = "none")
   p_dots <- ggplot(ani, aes(x, CombZ)) +
     geom_blank(data = edges, aes(x = x), inherit.aes = FALSE) +
     geom_hline(data = thr, aes(yintercept = control_mean_combz), linewidth = F1N$rule_lw, colour = RULE) +
@@ -275,9 +277,18 @@ f1o3n_panel_combz <- function(tab, fsb, an, w_mm, h_mm) {
     theme_f1(style = "nature") + no_x +
     theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), strip.text = element_blank(),
           panel.spacing = unit(4, "pt"), plot.margin = margin(0, 1, 0.6, 1))
+  p_animal <- ggplot(ani, aes(x, 1)) +
+    geom_blank(data = edges, aes(x = x, y = 1), inherit.aes = FALSE) +
+    geom_text(aes(label = AnimalNum), angle = 90, size = f1n_text(), colour = INK, hjust = 0.5, vjust = 0.5) +
+    vline + cols + xs +
+    scale_y_continuous(breaks = 1, labels = "Animal ID", expand = c(0, 0)) +
+    labs(y = NULL) +
+    theme_f1(style = "nature") + no_x +
+    theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), strip.text = element_blank(),
+          panel.spacing = unit(4, "pt"), plot.margin = margin(0, 1, 0.6, 1))
   p_heat <- ggplot(hm, aes(x, row)) +
     geom_blank(data = edges, aes(x = x), inherit.aes = FALSE) +
-    geom_tile(aes(fill = signed_z), colour = "white", linewidth = 0.12) +
+    geom_tile(aes(fill = signed_z), colour = NEUTRAL_BOX, linewidth = 0.12) +
     geom_segment(data = gone, aes(x = x - 0.38, xend = x + 0.38, y = yn - 0.38, yend = yn + 0.38),
                  inherit.aes = FALSE, linewidth = F1N$rule_lw, colour = MUTED) +
     vline + cols + xs + fill_z +
@@ -291,15 +302,19 @@ f1o3n_panel_combz <- function(tab, fsb, an, w_mm, h_mm) {
     geom_tile(width = 1, height = 2 * F1O3N_Z_CAP / 48) +
     fill_z +
     scale_x_continuous(expand = c(0, 0)) +
-    scale_y_continuous(breaks = c(-F1O3N_Z_CAP, 0, F1O3N_Z_CAP), labels = f1_minus_labels, position = "right", expand = c(0, 0)) +
+    # the bar is inset a little at both ends so the end labels, centred on the bar's ends, stay inside the panel
+    # (flush, the lower one was cut by the panel edge)
+    scale_y_continuous(breaks = c(-F1O3N_Z_CAP, 0, F1O3N_Z_CAP),
+                       labels = c(paste0("\u2264", f1_minus_labels(-F1O3N_Z_CAP)), "0", paste0("\u2265", f1_minus_labels(F1O3N_Z_CAP))),
+                       position = "right", expand = expansion(mult = 0.06)) +
     labs(x = NULL, y = "Signed *z*") +
     theme_f1(style = "nature") +
     theme(axis.line = element_blank(), axis.ticks.x = element_blank(), axis.text.x = element_blank(),
           axis.title.y.right = f1n_markdown(angle = 90, margin = margin(l = 1.5)),
           plot.margin = margin(0, 1, 1, 3))
-  design <- "A#\nB#\nCD"
-  pb <- patchwork::wrap_plots(A = p_dots, B = p_strip, C = p_heat, D = p_bar, design = design,
-                              heights = c(12.5, 1.9, 12.6), widths = grid::unit(c(1, 2.2), c("null", "mm"))) +
+  design <- "A#\nB#\nE#\nCD"
+  pb <- patchwork::wrap_plots(A = p_dots, B = p_strip, E = p_animal, C = p_heat, D = p_bar, design = design,
+                              heights = c(12.5, 1.9, 4.2, 12.6), widths = grid::unit(c(1, 2.2), c("null", "mm"))) +
     patchwork::plot_annotation(title = "Later CombZ and its six components, animals ordered by CombZ within sex",
                                theme = theme(plot.title = element_text(size = F1N$title_pt, colour = INK, hjust = 0,
                                                                        margin = margin(F1N_HEADER_TOP_PT, 0, 1.2, F1N_INDENT_PT)),
@@ -330,11 +345,11 @@ f1o3n_panel_cc1 <- function(tab, fsb, an, w_mm, h_mm, jitter_seed = c(NA, NA), f
       geom_point(aes(fill = Group, colour = Group == "CON"), shape = 21,
                  position = position_jitter(width = F1N$jitter_width, height = 0, seed = seed),
                  size = F1N$point_size, stroke = F1N$point_stroke) +
-      # CON: the descriptive mean (a short grey bar) and the three cage means (small grey dots)
+      # CON: the descriptive mean (a short bar) and the three cage means (small dots), in the CON colour
       geom_segment(data = ref, aes(x = con_x - 0.13, xend = con_x + 0.13, y = mean, yend = mean), inherit.aes = FALSE,
-                   linewidth = F1N$mean_lw, colour = CON_GREY) +
+                   linewidth = F1N$mean_lw, colour = CON_MARK) +
       geom_point(data = cages, aes(x = con_x, y = cage_mean), inherit.aes = FALSE, shape = 21, size = 0.65, stroke = 0.25,
-                 colour = CON_GREY, fill = CON_GREY) +
+                 colour = CON_MARK, fill = CON_MARK) +
       # RES / SUS: the model means and their capless 95% CIs
       geom_linerange(data = mm, aes(x = x, ymin = ci_low, ymax = ci_high), inherit.aes = FALSE,
                      linewidth = F1N$mean_lw, colour = "black") +
@@ -342,13 +357,13 @@ f1o3n_panel_cc1 <- function(tab, fsb, an, w_mm, h_mm, jitter_seed = c(NA, NA), f
                  size = F1N$mean_size, stroke = F1N$mean_stroke, colour = "black", fill = "black") +
       facet_wrap(~ Sex, nrow = 1) +
       scale_fill_manual(values = c(CON = "white", GROUP_COL[c("RES", "SUS")]), guide = "none") +
-      scale_colour_manual(values = c(`TRUE` = CON_GREY, `FALSE` = F1N$point_colour), guide = "none") +
+      scale_colour_manual(values = c(`TRUE` = CON_MARK, `FALSE` = F1N$point_colour), guide = "none") +
       scale_x_continuous(breaks = seq_along(GROUP_LEV), labels = GROUP_LEV, limits = c(0.6, 3.48), expand = c(0, 0)) +
       scale_y_continuous(labels = f1_minus_labels) +
       labs(x = NULL, y = F1O3N_DOTS_Y[[k]], title = title) +
       theme_f1(style = "nature") +
       theme(axis.title.y = f1n_markdown(lineheight = 1.05), panel.spacing = unit(4, "pt"),
-            plot.title = element_text(size = F1N$text_pt, colour = CON_GREY, hjust = 0, margin = margin(b = 1 + top_pad, l = F1N_INDENT_PT - 1)),
+            plot.title = element_text(size = F1N$text_pt, colour = CON_MARK, hjust = 0, margin = margin(b = 1 + top_pad, l = F1N_INDENT_PT - 1)),
             plot.title.position = "plot",
             plot.margin = margin(0, 1.5, 1 + bottom_pad, 1))
   }
@@ -410,11 +425,11 @@ f1o3n_panel_trajectory <- function(tab, fsb, an, w_mm, h_mm, frame = NULL, inden
     cages$Sex <- factor(cages$Sex, levels = sexes); ref$Sex <- factor(ref$Sex, levels = sexes)
     ref <- ref[order(ref$Sex, ref$x), , drop = FALSE]
     ggplot(mm, aes(x, estimate)) +
-      geom_line(data = ref, aes(x, mean, group = Sex), inherit.aes = FALSE, colour = CON_GREY, linetype = "22", linewidth = F1N$axis_lw) +
+      geom_line(data = ref, aes(x, mean, group = Sex), inherit.aes = FALSE, colour = CON_MARK, linetype = "22", linewidth = F1N$axis_lw) +
       geom_segment(data = ref, aes(x = x - 0.1, xend = x + 0.1, y = mean, yend = mean), inherit.aes = FALSE,
-                   linewidth = F1N$mean_lw, colour = CON_GREY) +
+                   linewidth = F1N$mean_lw, colour = CON_MARK) +
       geom_point(data = cages, aes(x, cage_mean), inherit.aes = FALSE, shape = 21, size = 0.65, stroke = 0.25,
-                 colour = CON_GREY, fill = CON_GREY) +
+                 colour = CON_MARK, fill = CON_MARK) +
       geom_line(aes(colour = Group, group = Group), linewidth = F1N$axis_lw) +
       geom_linerange(aes(ymin = ci_low, ymax = ci_high, colour = Group), linewidth = F1N$mean_lw) +
       geom_point(aes(fill = Group), shape = 21, size = F1N$point_size + 0.15, stroke = F1N$point_stroke, colour = F1N$point_colour) +
