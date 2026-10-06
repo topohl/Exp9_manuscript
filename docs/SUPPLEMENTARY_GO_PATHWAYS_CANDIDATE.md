@@ -75,7 +75,9 @@ Rscript --vanilla figures/figure_03_supplementary_go.R
 ```
 
 By default the renderer writes only to the ignored candidate namespace
-`results/figures/manuscript_candidates/supplementary_go_pathways_appendix/`.
+`results/figures/manuscript_candidates/supplementary_go_pathways_appendix_v2/`
+(palette v3.2 with the darkened protein-contrast colours; the unsuffixed
+`supplementary_go_pathways_appendix/` is the first palette v3.2 render).
 Pass a new output directory as its sole argument for a separate review copy.
 It refuses an existing output directory. Outputs are four individual curve
 SVGs, four individual protein SVGs, two paired pages, a review contact sheet

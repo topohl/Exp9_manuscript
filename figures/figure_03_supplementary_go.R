@@ -17,7 +17,7 @@ if (length(args) > 1L || (length(args) == 1L && !nzchar(args[[1]])))
        call. = FALSE)
 out <- if (length(args)) args[[1]] else repo_path(
   "results", "figures", "manuscript_candidates",
-  "supplementary_go_pathways_appendix")
+  "supplementary_go_pathways_appendix_v2")
 if (file.exists(out)) stop("Candidate output already exists: ", out,
                            call. = FALSE)
 src <- repo_path("source_data", "pRoteomics",
