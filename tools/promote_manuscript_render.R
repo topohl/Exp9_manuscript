@@ -88,6 +88,14 @@ plan_promotion <- function(pid) {
         stop(pid, " was rendered from uncommitted code; commit and re-render before promoting.",
              call. = FALSE)
     }
+    # every panel the manuscript layer copied was drawn by the recorded producer
+    # run (a producer may draw only some of its pages)
+    drawn <- vapply(producer$files, function(x) as.character(x$path), "")
+    copied <- unlist(lapply(run$inputs, function(x)
+      if (identical(x$role, "figure_source")) as.character(x$input_relative_path)))
+    if (length(setdiff(copied, drawn)))
+      stop(pid, " uses panels the recorded producer run did not draw:\n  ",
+           paste(setdiff(copied, drawn), collapse = "\n  "), call. = FALSE)
     # every recorded file is resolved inside this repository, whatever root or
     # drive letter the render ran under
     root <- normalizePath(as.character(run$repository_root_at_render), winslash = "/", mustWork = FALSE)
