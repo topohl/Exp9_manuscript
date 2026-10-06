@@ -139,20 +139,33 @@ s9f_build <- function(figure_key, dry_run = FALSE) {
       svg <- file.path(paths$panels, paste0(tag, ".svg"))
       csv <- file.path(paths$source_data, paste0(id, "_source_data.csv"))
       status <- "ok"; note <- ""
+      # A panel that fails must not destroy an earlier render of it (for example
+      # panels imported because their inputs are recorded as provenance only):
+      # its previous SVG and source data are kept, the failure is still recorded
+      # and QA still fails. Only a panel with no earlier output gets a placeholder.
+      prev <- c(svg, csv)
+      kept <- if (all(file.exists(prev))) {
+        k <- file.path(tempdir(), paste0("s9f_kept_", tag, c(".svg", ".csv")))
+        if (all(file.copy(prev, k, overwrite = TRUE))) k else NULL
+      } else NULL
+      fail_panel <- function(reason) {
+        if (!is.null(kept) && all(file.copy(kept, prev, overwrite = TRUE)))
+          return(paste0(reason, " [previous output kept]"))
+        nv_placeholder(svg, id, reason, box[1], box[2])
+        write_csv_safe(data.frame(panel = id, status = "render_error", note = reason,
+                                  stringsAsFactors = FALSE), csv)
+        reason
+      }
       fn <- tryCatch(get(as.character(p$renderer), mode = "function"),
                      error = function(e) NULL)
       if (is.null(fn)) {
-        status <- "renderer_missing"; note <- as.character(p$renderer)
-        nv_placeholder(svg, id, note, box[1], box[2])
+        status <- "renderer_missing"; note <- fail_panel(as.character(p$renderer))
       } else {
-        res <- tryCatch(fn(p, svg, csv, box[1], box[2]), error = function(e) {
-          nv_placeholder(svg, id, conditionMessage(e), box[1], box[2])
-          write_csv_safe(data.frame(panel = id, status = "render_error",
-                                    note = conditionMessage(e),
-                                    stringsAsFactors = FALSE), csv)
-          structure(list(note = conditionMessage(e)), class = "nv_failed")
-        })
-        if (inherits(res, "nv_failed")) { status <- "render_error"; note <- res$note }
+        res <- tryCatch(fn(p, svg, csv, box[1], box[2]), error = function(e)
+          structure(list(note = conditionMessage(e)), class = "nv_failed"))
+        if (inherits(res, "nv_failed")) {
+          status <- "render_error"; note <- fail_panel(res$note)
+        }
       }
       panel_paths[[sprintf("%s@%gx%g", id, box[1], box[2])]] <- svg
       records[[length(records) + 1L]] <- data.frame(
@@ -168,9 +181,16 @@ s9f_build <- function(figure_key, dry_run = FALSE) {
   panel_records <- dplyr::bind_rows(records)
 
   asm <- list()
+  failed <- panel_records$panel_id[panel_records$status != "ok"]
   for (f in figs) {
     nv_verify_scale(f, panel_paths)
     target <- file.path(paths$assembled, paste0(as.character(f$name), ".svg"))
+    # a page with a failed panel keeps its previous composition (QA fails below)
+    page_ids <- vapply(f$layout, function(x) as.character(x$panel), character(1))
+    if (any(page_ids %in% failed) && file.exists(target)) {
+      message("[final_truth_v9] ", f$name, ": a panel failed; previous page kept")
+      next
+    }
     # VECTOR EXPORT. The old route wrote an assembled SVG then handed it to
     # nv_pdf(), which falls back to ImageMagick when rsvg is absent and emits a
     # single full-page raster with no fonts. Both outputs are now composed
