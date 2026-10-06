@@ -197,6 +197,7 @@ figures:
     canonical_generation: final_truth_v9
     canonical_generation_promoted_in_phase: "5B"
     producing_entry_point: figures/final_truth_v9_figure_02.R
+    assembled_pdf_source: results/figures/manuscript_candidates/final_truth_v9/figure_02/assembled/F2_NATURE_FINAL_V9.pdf
     superseded_generation: manuscript_figures_v2_grid
     superseded_status: SUPERSEDED_FOR_MANUSCRIPT
     rendering_repository_computes_statistics: false
@@ -688,6 +689,7 @@ figures:
     canonical_generation_promoted_in_phase: "6A"
     historical_generation: ED1_FINAL_V9
     producing_entry_point: figures/final_truth_v9_extended_data.R
+    assembled_pdf_source: results/figures/manuscript_candidates/final_truth_v9/extended_data/assembled/ED1_FINAL_V9.pdf
     rendering_repository_computes_statistics: false
     question: >-
       Complete bilateral reproducibility and precision audit.
@@ -764,6 +766,8 @@ figures:
     canonical_generation_promoted_in_phase: "6A.5"
     historical_generation: ED2_FINAL_V9
     producing_entry_point: figures/final_truth_v9_extended_data.R
+    # no assembled_pdf_source: the producer's ED2_FINAL_V9 page also draws the withheld
+    # panel c, so this page's PDF is rasterised from its own assembled SVG
     rendering_repository_computes_statistics: false
     withheld_panel: >-
       The historical panel c, v9_ed_internal_full, is deliberately not promoted.
@@ -841,6 +845,7 @@ figures:
     canonical_generation_promoted_in_phase: "6A"
     historical_generation: ED3_FINAL_V9
     producing_entry_point: figures/final_truth_v9_extended_data.R
+    assembled_pdf_source: results/figures/manuscript_candidates/final_truth_v9/extended_data/assembled/ED3_FINAL_V9.pdf
     rendering_repository_computes_statistics: false
     question: >-
       Why the canonical DA table is unchanged while CA2-SLM interpretation is
@@ -956,6 +961,7 @@ figures:
     canonical_generation_promoted_in_phase: "6A"
     historical_generation: ED6_FINAL_V9
     producing_entry_point: figures/final_truth_v9_extended_data.R
+    assembled_pdf_source: results/figures/manuscript_candidates/final_truth_v9/extended_data/assembled/ED6_FINAL_V9.pdf
     rendering_repository_computes_statistics: false
     question: >-
       Complete three-contrast enrichment support behind the three highlighted
@@ -1077,6 +1083,7 @@ figures:
     canonical_generation_promoted_in_phase: "6A"
     historical_generation: ED8_FINAL_V9
     producing_entry_point: figures/final_truth_v9_extended_data.R
+    assembled_pdf_source: results/figures/manuscript_candidates/final_truth_v9/extended_data/assembled/ED8_FINAL_V9.pdf
     rendering_repository_computes_statistics: false
     question: >-
       What a spatial molecular network is, and what does not differ between
