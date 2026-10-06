@@ -57,12 +57,54 @@ f9_nes_strip_limit <- function(th = NULL) nv_diverging_limit("nes")
 # Derived from the frozen s4_gsea_curve. Two changes only: the NES strip uses
 # the shared fixed NES limit (f9_nes_strip_limit()) instead of a per-panel
 # maximum, and the theme is nf_theme so every label clears the 5 pt floor.
+#
+# The curve itself is read from the frozen Figure 3 enrichment-curve export
+# (source_data/pRoteomics/figure_03_adaptation), which carries the same three
+# exemplars Figure 3h-j draw. It used to be rebuilt by s4_gsea_scores() from the
+# analysis repository's clusterProfiler inputs (data/processed/...), which this
+# repository does not hold and no contract declared. Before the switch
+# (2026-10-07) the two agreed exactly for all three programs: running ES to
+# 5e-16, member ranks, peak, ES, NES, FDR, set size and leading-edge count. The
+# checks below are the ones s4_gsea_scores() made of its own reconstruction.
+f9_frozen_curve <- function(prog, deps) {
+  pick <- function(name) {
+    p <- deps[basename(deps) == name]
+    if (length(p) != 1L)
+      stop("f9_ed_gsea_curve: the panel must declare ", name,
+           " as an input dependency", call. = FALSE)
+    nv_read_csv(repo_path(p))
+  }
+  sel <- pick("selection.csv")
+  cur <- pick("running_enrichment_curves.csv")
+  s <- sel[sel$GO_ID == prog$term & sel$dataset == prog$dataset &
+             sel$spatial_unit == prog$unit, , drop = FALSE]
+  z <- cur[cur$GO_ID == prog$term & cur$dataset == prog$dataset &
+             cur$spatial_unit == prog$unit, , drop = FALSE]
+  z <- z[order(z$rank), , drop = FALSE]
+  if (nrow(s) != 1L || nrow(z) != s$n_ranked ||
+      !all(z$rank == seq_len(nrow(z))) || sum(z$peak) != 1L ||
+      which(z$peak) != s$peak_rank || sum(z$hit) != s$setSize)
+    stop("f9_ed_gsea_curve: the frozen curve does not match its selection row for ",
+         prog$term, call. = FALSE)
+  if (!isTRUE(all.equal(z$running_ES[s$peak_rank], s$enrichmentScore,
+                        tolerance = 1e-10)))
+    stop("f9_ed_gsea_curve: the frozen curve does not peak at the stored ES for ",
+         prog$term, call. = FALSE)
+  N <- s$n_ranked
+  hits <- as.logical(z$hit)
+  lead <- if (s$enrichmentScore < 0) s$peak_rank:N else seq_len(s$peak_rank)
+  list(runes = z$running_ES, hits = hits, peak = s$peak_rank,
+       ES = s$enrichmentScore, NES = s$NES, FDR = s$BH_FDR, setSize = s$setSize,
+       N = N, n_leading = sum(hits[lead]))
+}
+
 f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   fam <- nf_fam()
   pr <- s4_programs()
   prog <- pr[pr$key == as.character(panel$program_key), , drop = FALSE]
   if (!nrow(prog)) stop("f9_ed_gsea_curve: unknown program key", call. = FALSE)
-  ev <- s4_gsea_scores(prog)
+  deps <- as.character(unlist(panel$input_dependencies))
+  ev <- f9_frozen_curve(prog, deps)
   acc <- prog$accent[1]
   N <- ev$N
   curve <- data.frame(rank = seq_len(N), es = as.numeric(ev$runes))
@@ -95,7 +137,7 @@ f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                    axis.ticks = ggplot2::element_blank(),
                    plot.margin = ggplot2::margin(0, 1, 0, 1, "mm"))
 
-  th <- nv_read_csv(repo_path(as.character(unlist(panel$input_dependencies))[1]))
+  th <- nv_read_csv(repo_path(deps[1]))
   tr <- th[th$dataset == prog$dataset[1] & th$spatial_unit == prog$unit[1] &
              th$GO_ID == prog$term[1], , drop = FALSE]
   tr <- tr[match(c("RES - CON", "SUS - CON", "SUS - RES"), tr$contrast), ]
@@ -127,7 +169,7 @@ f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::annotate("text", x = 0, y = 0.25, hjust = 0, vjust = 1,
                       family = fam, size = nf_sz(5.0), colour = "grey35",
                       label = sprintf("NES %.2f  FDR %.0e  %d/%d leading edge",
-                                      ev$NES, ev$FDR, length(ev$leading),
+                                      ev$NES, ev$FDR, ev$n_leading,
                                       sum(ev$hits))) +
     ggplot2::coord_cartesian(xlim = c(0, 1), ylim = c(-0.2, 1.05),
                              expand = FALSE) +
@@ -138,7 +180,9 @@ f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                              heights = c(0.30, 1, 0.08, 0.22))
   out <- data.frame(
     program = prog$label[1], term_id = prog$term[1], dataset = prog$dataset[1],
-    NES = ev$NES, FDR = ev$FDR,
+    NES = ev$NES, FDR = ev$FDR, set_size = ev$setSize,
+    leading_edge_n = ev$n_leading,
+    curve_source = deps[basename(deps) == "running_enrichment_curves.csv"],
     RES_CON_NES = tr$NES[1], SUS_CON_NES = tr$NES[2], SUS_RES_NES = tr$NES[3],
     shared_NES_strip_limit = lim,
     shared_scale_note = paste0(
