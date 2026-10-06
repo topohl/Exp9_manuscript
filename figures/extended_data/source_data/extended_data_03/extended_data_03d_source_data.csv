@@ -1,0 +1,4 @@
+cls,Freq
+insufficient_observed_data,12
+not_claimable_due_to_QC,10
+robust_to_missingness_and_QC,6

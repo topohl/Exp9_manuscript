@@ -1,0 +1,31 @@
+marker,dataset,compartment,displayed_value,true_value,colour_scale_censored
+Ptbp2,neuron_soma,Soma,3,5.09970188655,TRUE
+Anp32a,neuron_soma,Soma,3,3.1053692503654,TRUE
+Hdac5,neuron_soma,Soma,0.110366024346501,0.110366024346501,FALSE
+Npm1,neuron_soma,Soma,3,4.1712817737751,TRUE
+Camk2a,neuron_soma,Soma,-0.255871615420702,-0.255871615420702,FALSE
+Snap25,neuron_soma,Soma,-2.1873486147758,-2.1873486147758,FALSE
+Syp,neuron_soma,Soma,-1.8669286943178,-1.8669286943178,FALSE
+Ctss,neuron_soma,Soma,-0.1554116097752,-0.1554116097752,FALSE
+C1qa,neuron_soma,Soma,-1.1318553099287,-1.1318553099287,FALSE
+P2ry12,neuron_soma,Soma,-1.2269884283309,-1.2269884283309,FALSE
+Ptbp2,neuron_neuropil,Neuropil,-0.0341938477327997,-0.0341938477327997,FALSE
+Anp32a,neuron_neuropil,Neuropil,-1.0179500305966,-1.0179500305966,FALSE
+Hdac5,neuron_neuropil,Neuropil,-0.0287556508135989,-0.0287556508135989,FALSE
+Npm1,neuron_neuropil,Neuropil,-1.4812810508328,-1.4812810508328,FALSE
+Camk2a,neuron_neuropil,Neuropil,0.177687162500199,0.177687162500199,FALSE
+Snap25,neuron_neuropil,Neuropil,0.0262545305816033,0.0262545305816033,FALSE
+Syp,neuron_neuropil,Neuropil,0.2228114210114,0.2228114210114,FALSE
+Ctss,neuron_neuropil,Neuropil,0,0,FALSE
+C1qa,neuron_neuropil,Neuropil,0,0,FALSE
+P2ry12,neuron_neuropil,Neuropil,0,0,FALSE
+Ptbp2,microglia,Microglia ROI,-0.1343210783303,-0.1343210783303,FALSE
+Anp32a,microglia,Microglia ROI,0,0,FALSE
+Hdac5,microglia,Microglia ROI,-0.003105479317,-0.003105479317,FALSE
+Npm1,microglia,Microglia ROI,0,0,FALSE
+Camk2a,microglia,Microglia ROI,0,0,FALSE
+Snap25,microglia,Microglia ROI,0,0,FALSE
+Syp,microglia,Microglia ROI,0.166937072168,0.166937072168,FALSE
+Ctss,microglia,Microglia ROI,1.3136530544293,1.3136530544293,FALSE
+C1qa,microglia,Microglia ROI,0.286875582441699,0.286875582441699,FALSE
+P2ry12,microglia,Microglia ROI,0.9484433967326,0.9484433967326,FALSE

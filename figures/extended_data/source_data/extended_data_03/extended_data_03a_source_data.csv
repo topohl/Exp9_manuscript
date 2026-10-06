@@ -1,0 +1,2 @@
+compartment,region,layer,analysis_key,note
+neuron_neuropil,CA2,slm,CA2_slm,locator only; carries no quantity
