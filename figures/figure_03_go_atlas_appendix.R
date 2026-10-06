@@ -14,7 +14,7 @@ if (length(args) > 1L || (length(args) == 1L && !nzchar(args[[1]])))
   stop("Usage: Rscript figures/figure_03_go_atlas_appendix.R [output_directory]",
        call. = FALSE)
 out <- if (length(args)) args[[1]] else repo_path(
-  "results", "figures", "manuscript_candidates", "figure_03_go_atlas_appendix_v5")
+  "results", "figures", "manuscript_candidates", "figure_03_go_atlas_appendix_v6")
 if (file.exists(out)) stop("Output already exists: ", out, call. = FALSE)
 src <- repo_path("source_data", "pRoteomics", "figure_03_go_atlas_appendix")
 files <- c("theme_term_index.csv", "selected_contexts.csv",

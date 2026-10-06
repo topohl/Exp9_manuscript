@@ -46,8 +46,10 @@ the new exporter and renderer are uncommitted working-tree changes in this
 candidate and are not recoverable from that revision alone.
 
 The output root is
-`results/figures/manuscript_candidates/figure_03_go_atlas_appendix_v5/` (palette
-v3.2; `_v4` is the earlier render on a data-maximum NES range of 3.4).
+`results/figures/manuscript_candidates/figure_03_go_atlas_appendix_v6/` (palette
+v3.2, with the protein contrasts in darkened RES / SUS / grey20 and a typographic
+minus on signed axes; `_v5` is the first palette v3.2 render and `_v4` the
+earlier render on a data-maximum NES range of 3.4).
 Its global `theme_term_index.csv` lists every displayed membership.
 Each `theme_XX_...` folder has:
 
