@@ -42,6 +42,7 @@ rendering never addresses upstream internal folder structure.
 | `R/panels/` | panel implementation libraries reached only from figure renderers |
 | `source_data/pRoteomics/` | frozen scientific source-data bundle + manifest |
 | `source_data/MMMSociability/` | frozen behaviour bundle + manifest (byte-exact, `-text` in `.gitattributes`) |
+| `source_data/MMMSociability_candidates/` | CC4 candidate bundles (MMMSociability Stage 31), byte-exact; pinned in `config/cc4_candidate_bundles.yml` |
 | `provenance/` | claim provenance, publication registry, source manifests, AI assistance record |
 | `export/` | journal submission bundles |
 | `tests/` | publication integrity suite |

@@ -1,5 +1,6 @@
 source(file.path("R","paths.R"))
 source(repo_path("R","panels","cc4_phase_statistics_candidate.R"))
+source(repo_path("R","cc4_candidate_bundles.R"))
 import_cc4_statistics<-function(source_dir,bundle_id) {
   if(!grepl("^cc4_phase_statistics_[A-Za-z0-9_-]+$",bundle_id)) stop("Invalid statistical bundle ID.",call.=FALSE)
   m<-cc4_stats_verify_bundle(source_dir)
@@ -11,7 +12,7 @@ import_cc4_statistics<-function(source_dir,bundle_id) {
     if(!file.copy(file.path(source_dir,f),file.path(dest,f),overwrite=FALSE)) stop("Statistical import failed.",call.=FALSE)
   }
   if(!identical(hashes,unname(tools::sha256sum(file.path(dest,files))))) stop("Statistical import changed.",call.=FALSE)
-  cc4_stats_verify_bundle(dest);invisible(dest)
+  cc4_stats_verify_bundle(dest);cc4_candidate_register(source_dir,bundle_id);invisible(dest)
 }
 if(sys.nframe()==0L) {
   args<-commandArgs(trailingOnly=TRUE)

@@ -1,0 +1,16 @@
+Stage31d: CON/RES/SUS phenotype-associated CC4 whole-phase response; exploratory plan revised after inspecting descriptive and condition results.
+I2 vs pooled I3-I5; A2 vs pooled A3-A5; fixed complete cage roster per family. A1 does not determine eligibility.
+Full animal NB2: Group*Period+Batch*Period+offset(log(Hours))+(1|AnimalKey)+(1|CageID)+(0+Post|CageID).
+Four omnibus nulls remove both Group:Period coefficients. Four tests adjusted by Holm.
+Twelve planned pairwise nulls each constrain exactly one difference of Group:Period effects; retain all animals and the third group's free response. Holm across12.
+All12 contrasts are tested regardless of omnibus significance. No significance-driven contrast selection.
+Nested null bootstrap LR: simulate fresh animal/cage/post random effects and NB counts under each null; refit full/null with identical random structure.
+One full-model bootstrap per context supplies shared draws for percentile95% contrast intervals (pointwise, not simultaneous).
+Numerical gate: convergence0, positive Hessian, finite LL/beta, max absolute gradient<=0.01; BFGS retry only on failed initial fit.
+Random SD<1e-4 is an audited boundary flag, NOT an automatic inference exclusion. No random terms are removed/fixed to zero.
+More than5% failed refits at a240-attempt checkpoint withholds that procedure; max attempts ceiling(draws/0.94). First requested successes used; all attempts saved.
+P=(1+LR exceedances)/(1+successful draws). Monte Carlo SE exported. Null tests and full intervals have separate procedure status.
+Sensitivity: leave one batch out; dispersion~Group+Period; mixed-cage SUS/RES. Sensitivity estimates only, no extra P values.
+Unknown grid times; CON also received grid. Not a causal grid effect, prospective prediction, sleep assay, or test of adaptation across sessions.
+RES/SUS labels are fixed canonical outcomes; sucrose preference contributes to classification. No reclassification or independent validation claim.
+Draws 4999 Workers 24 Seed 20260930 ValidationOnly FALSE

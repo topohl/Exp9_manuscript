@@ -77,6 +77,13 @@ Rscript --vanilla 'figures/cc4_phenotype_candidate.R' '<new cc4_phenotypes_ID>' 
 Rscript --vanilla -e "testthat::test_file('tests/testthat/test-cc4-phenotype-candidate.R',reporter='summary',stop_on_failure=TRUE)"
 ```
 
+Imported 2026-10-07 as `cc4_phenotypes_20260929_v1` (upstream run
+`phase_phenotypes_20260929_v1`, 37 files, 4,999 draws, not validation-only) and
+recorded by the importer in `config/cc4_candidate_bundles.yml` and
+`provenance/source_manifests/cc4_candidate_bundles_manifest.csv`. Rendered the same day,
+with `cc4_phase_groups_20260929_v2` as the descriptive bundle, to
+`results/figures/manuscript_candidates/cc4_phenotypes_20260929_v1/`.
+
 This is a candidate path only. It does not alter Figure 1, the canonical figure
 contract, figure-generation inventory, manuscript results text or publication
 outputs. Final incorporation requires a separate review of the completed results.
