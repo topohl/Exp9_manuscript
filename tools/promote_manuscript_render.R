@@ -8,7 +8,9 @@
 #
 #   * a figure whose analysis is owned by MMMSociability and whose source data
 #     is the pinned behaviour bundle; its registry row records the bundle and
-#     the upstream commit;
+#     the upstream commit. Its contract must name the pinned bundle, and both
+#     render layers are held to the same HEAD, clean-code and hash checks as a
+#     self-rendered identity;
 #   * a figure this repository renders itself from frozen source data
 #     (SELF_RENDERED). Its per-panel source data is copied beside the render
 #     under figures/main/source_data/<id>/ with a hash manifest, and its
@@ -40,7 +42,8 @@ SELF_RENDERED <- c("figure_02", "figure_03", "extended_data_01", "extended_data_
 # one producer draws every Extended Data page, so those share its record
 v9_record <- function(key) c("logs", "manuscript_candidates", "final_truth_v9", key, "render_record.yml")
 PRODUCER_RECORD <- c(
-  list(figure_02 = v9_record("figure_02"), figure_03 = v9_record("figure_03")),
+  list(figure_01 = c("logs", "manuscript_figures", "figure_01_panels", "render_record.yml"),
+       figure_02 = v9_record("figure_02"), figure_03 = v9_record("figure_03")),
   sapply(grep("^extended_data_", SELF_RENDERED, value = TRUE),
          function(id) v9_record("extended_data"), simplify = FALSE))
 
@@ -54,6 +57,49 @@ reg <- utils::read.csv(REG, stringsAsFactors = FALSE, colClasses = "character")
 sha <- function(p) unname(tools::sha256sum(p))
 figures <- yaml::read_yaml(repo_path("figures", "figure_contract.yml"))$figures
 head <- git_commit_sha()
+
+# Both render layers - the producer that drew the panels and the manuscript layer
+# that assembled them - ran at HEAD on clean code, every panel the manuscript layer
+# copied was drawn by the recorded producer run, and every file either layer hashed
+# is unchanged. Returns the manuscript layer's run manifest.
+check_render_records <- function(pid) {
+  if (is.null(PRODUCER_RECORD[[pid]])) stop(pid, ": no producer render record is known.", call. = FALSE)
+  run <- yaml::read_yaml(path_results("logs", "manuscript_figures", pid, "run_manifest.yml"))
+  producer <- yaml::read_yaml(do.call(path_results, as.list(PRODUCER_RECORD[[pid]])))
+  for (rec in list(manuscript_layer = run, producer = producer)) {
+    if (!identical(as.character(rec$render_git_commit), head))
+      stop(pid, " was rendered at ", rec$render_git_commit, ", not at HEAD ", head,
+           "; re-render before promoting.", call. = FALSE)
+    if (!isTRUE(rec$render_code_clean))
+      stop(pid, " was rendered from uncommitted code; commit and re-render before promoting.",
+           call. = FALSE)
+  }
+  # every panel the manuscript layer copied was drawn by the recorded producer
+  # run (a producer may draw only some of its pages)
+  drawn <- vapply(producer$files, function(x) as.character(x$path), "")
+  copied <- unlist(lapply(run$inputs, function(x)
+    if (identical(x$role, "figure_source")) as.character(x$input_relative_path)))
+  if (length(setdiff(copied, drawn)))
+    stop(pid, " uses panels the recorded producer run did not draw:\n  ",
+         paste(setdiff(copied, drawn), collapse = "\n  "), call. = FALSE)
+  # every recorded file is resolved inside this repository, whatever root or
+  # drive letter the render ran under
+  root <- normalizePath(as.character(run$repository_root_at_render), winslash = "/", mustWork = FALSE)
+  here <- function(x) {
+    x <- normalizePath(x, winslash = "/", mustWork = FALSE)
+    if (!startsWith(tolower(x), tolower(paste0(root, "/"))))
+      stop("recorded path lies outside the render root: ", x, call. = FALSE)
+    file.path(repo_root(), substring(x, nchar(root) + 2L))
+  }
+  recorded <- c(lapply(run$inputs, function(x) c(file.path(repo_root(), x$input_relative_path), x$sha256)),
+                lapply(run$outputs, function(x) c(here(x$path), x$sha256)),
+                lapply(producer$files, function(x) c(file.path(repo_root(), x$path), x$sha256)))
+  changed <- Filter(function(x) !file.exists(x[[1]]) || !identical(sha(x[[1]]), x[[2]]), recorded)
+  if (length(changed))
+    stop("render inputs or outputs changed since they were recorded:\n  ",
+         paste(vapply(changed, `[[`, "", 1L), collapse = "\n  "), call. = FALSE)
+  run
+}
 
 # Everything a promotion needs, checked; nothing is written here.
 plan_promotion <- function(pid) {
@@ -75,43 +121,18 @@ plan_promotion <- function(pid) {
     source(repo_path("R", "behaviour_bundle.R"))
     p$pin <- behaviour_bundle_pin()
     behaviour_bundle_verify(p$pin)
+    # Only an identity whose contract renders from the pinned bundle has this route:
+    # ED5 and ED9 are MMMSociability analyses too, but are packaged from the frozen
+    # bridge copies in source_data/pRoteomics.
+    if (!identical(as.character(contract$behaviour_bundle_id %||% ""), p$pin$bundle_id))
+      stop(pid, " does not render from the pinned behaviour bundle ", p$pin$bundle_id,
+           "; it has no promotion route.", call. = FALSE)
+    # Promoted only from a render of the committed tree, as a self-rendered identity is.
+    check_render_records(pid)
   } else {
     # A self-rendered identity is only promoted from a render of the committed
     # tree, and nothing is written until every check below has passed.
-    run <- yaml::read_yaml(path_results("logs", "manuscript_figures", pid, "run_manifest.yml"))
-    producer <- yaml::read_yaml(do.call(path_results, as.list(PRODUCER_RECORD[[pid]])))
-    for (rec in list(manuscript_layer = run, producer = producer)) {
-      if (!identical(as.character(rec$render_git_commit), head))
-        stop(pid, " was rendered at ", rec$render_git_commit, ", not at HEAD ", head,
-             "; re-render before promoting.", call. = FALSE)
-      if (!isTRUE(rec$render_code_clean))
-        stop(pid, " was rendered from uncommitted code; commit and re-render before promoting.",
-             call. = FALSE)
-    }
-    # every panel the manuscript layer copied was drawn by the recorded producer
-    # run (a producer may draw only some of its pages)
-    drawn <- vapply(producer$files, function(x) as.character(x$path), "")
-    copied <- unlist(lapply(run$inputs, function(x)
-      if (identical(x$role, "figure_source")) as.character(x$input_relative_path)))
-    if (length(setdiff(copied, drawn)))
-      stop(pid, " uses panels the recorded producer run did not draw:\n  ",
-           paste(setdiff(copied, drawn), collapse = "\n  "), call. = FALSE)
-    # every recorded file is resolved inside this repository, whatever root or
-    # drive letter the render ran under
-    root <- normalizePath(as.character(run$repository_root_at_render), winslash = "/", mustWork = FALSE)
-    here <- function(x) {
-      x <- normalizePath(x, winslash = "/", mustWork = FALSE)
-      if (!startsWith(tolower(x), tolower(paste0(root, "/"))))
-        stop("recorded path lies outside the render root: ", x, call. = FALSE)
-      file.path(repo_root(), substring(x, nchar(root) + 2L))
-    }
-    recorded <- c(lapply(run$inputs, function(x) c(file.path(repo_root(), x$input_relative_path), x$sha256)),
-                  lapply(run$outputs, function(x) c(here(x$path), x$sha256)),
-                  lapply(producer$files, function(x) c(file.path(repo_root(), x$path), x$sha256)))
-    changed <- Filter(function(x) !file.exists(x[[1]]) || !identical(sha(x[[1]]), x[[2]]), recorded)
-    if (length(changed))
-      stop("render inputs or outputs changed since they were recorded:\n  ",
-           paste(vapply(changed, `[[`, "", 1L), collapse = "\n  "), call. = FALSE)
+    run <- check_render_records(pid)
     p$sd_src <- path_results("source_data", "manuscript", pid)
     p$sd_dst <- file.path(p$dst_dir, "source_data", pid)
     p$expected <- paste0(pid, sub("^[0-9]+", "", panel_ids), "_source_data.csv")
@@ -129,13 +150,11 @@ plan_promotion <- function(pid) {
   p
 }
 
-if (any(args %in% SELF_RENDERED)) {
-  dirty <- system2("git", c("-C", repo_root(), "status", "--porcelain", "--untracked-files=no"),
-                   stdout = TRUE)
-  if (length(dirty))
-    stop("working tree has uncommitted changes; commit before promoting ",
-         paste(args, collapse = ", "), ".", call. = FALSE)
-}
+dirty <- system2("git", c("-C", repo_root(), "status", "--porcelain", "--untracked-files=no"),
+                 stdout = TRUE)
+if (length(dirty))
+  stop("working tree has uncommitted changes; commit before promoting ",
+       paste(args, collapse = ", "), ".", call. = FALSE)
 plans <- lapply(args, plan_promotion)
 
 for (p in plans) {
