@@ -13,7 +13,9 @@
 # the figure-support bundle (fsb: descriptive CON cage means and the CombZ
 # components as they enter CombZ, figure_01_option3_*; from fsb_v2 also the
 # verbatim rows of the MMM post hoc CON/RES/SUS run 29b, figure_01_option3b_nature
-# panel c, fitted upstream once and labelled post hoc). Every printed
+# panel c, fitted upstream once and labelled post hoc; from fsb_v3 also the Stage 14
+# domain-heatmap cells and HMM figure tables of the run promoted on 2026-10-06, the
+# ed_behaviour_domain_heatmap_* and ed_behaviour_hmm candidates). Every printed
 # number resolves through the annotation map to exactly one stored cell
 # (bundle_cell). Nothing is fitted, tested, adjusted or summarised here.
 #
@@ -92,8 +94,8 @@ bundles:
   fsb:
     pin: config/figure_support_bundle.yml
     reader: R/figure_support_bundle.R
-    bundle_id: fsb_v2_20260930_a23d699
-    manifest_sha256: c59c500f248fba0873df3b1c2661d3f63ce81b2deec63bb7225e320db608e9c5
+    bundle_id: fsb_v3_20261007_a2acd57
+    manifest_sha256: bbf2de27282be4a8448dea020b6872e698e2cbf53a1811432118f5b58c6a098c
 libraries:
   - R/panels/behaviour_figure_style.R
   - R/panels/behaviour_figure1_panels.R
@@ -104,6 +106,7 @@ libraries:
   - R/panels/behaviour_figure1_nature_panels.R
   - R/panels/behaviour_figure1_option3_panels.R
   - R/panels/behaviour_figure1_option3b_panels.R
+  - R/panels/behaviour_stage14_panels.R
 output_roots:
   figures: results/figures/manuscript_candidates/behaviour_v101_s30
   source_data: results/source_data/manuscript_candidates/behaviour_v101_s30
@@ -981,3 +984,140 @@ candidates:
         "y": 5
         w: 55
         h: 66
+
+  # ------------------------------------------------------------------ 13-15 (Stage 14 domain heatmap, fsb D1)
+  ed_behaviour_domain_heatmap_picked:
+    title: Extended Data candidate, behavioural domain heatmap (all phase blocks of CC1-CC4 pooled, picked resolutions)
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: Extended Data figure candidate; one of three resolution variants of the Stage 14 domain heatmap, for review (picked, all 5-min, all 10-min); colours only
+    width_mm: 183
+    height_mm: 98
+    layout_mode: absolute
+    layout_notes: One letterless panel. Colours only (decision 2026-10-07), so the stored Stage 14 post hoc markers stay in fsb D1 and are not drawn. Hedges g on the fixed limit of the palette (diverging_limits smd), grey85 tile outlines.
+    panels:
+      - id: a
+        letter: ""
+        builder: s14_panel_domain_heatmap
+        description: Stored Stage 14 Hedges g (comparison minus reference within sex) of the seven behavioural domains by phase, sex and contrast, all phase blocks of CC1-CC4 pooled, picked resolutions (fsb D1)
+        args: {variant: picked, top_margin_pt: 3}
+        jitter_seed: null
+        inputs: [fsb/D1_domain_heatmap_cells]
+        annotation_panels: []
+        annotation_panels_legend: [s14_heatmap_picked_legend]
+        x: 5
+        "y": 5
+        w: 173
+        h: 88
+
+  ed_behaviour_domain_heatmap_all5min:
+    title: Extended Data candidate, behavioural domain heatmap (all phase blocks of CC1-CC4 pooled, all 5-min resolution)
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: Extended Data figure candidate; the all 5-min resolution variant of the Stage 14 domain heatmap, for review; colours only
+    width_mm: 183
+    height_mm: 98
+    layout_mode: absolute
+    layout_notes: As ed_behaviour_domain_heatmap_picked, with the all 5-min variant of fsb D1.
+    panels:
+      - id: a
+        letter: ""
+        builder: s14_panel_domain_heatmap
+        description: Stored Stage 14 Hedges g of the seven behavioural domains by phase, sex and contrast, all phase blocks of CC1-CC4 pooled, all 5-min resolution (fsb D1)
+        args: {variant: all5min, top_margin_pt: 3}
+        jitter_seed: null
+        inputs: [fsb/D1_domain_heatmap_cells]
+        annotation_panels: []
+        annotation_panels_legend: [s14_heatmap_all5min_legend]
+        x: 5
+        "y": 5
+        w: 173
+        h: 88
+
+  ed_behaviour_domain_heatmap_all10min:
+    title: Extended Data candidate, behavioural domain heatmap (all phase blocks of CC1-CC4 pooled, all 10-min resolution)
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: Extended Data figure candidate; the all 10-min resolution variant of the Stage 14 domain heatmap, for review; colours only
+    width_mm: 183
+    height_mm: 98
+    layout_mode: absolute
+    layout_notes: As ed_behaviour_domain_heatmap_picked, with the all 10-min variant of fsb D1.
+    panels:
+      - id: a
+        letter: ""
+        builder: s14_panel_domain_heatmap
+        description: Stored Stage 14 Hedges g of the seven behavioural domains by phase, sex and contrast, all phase blocks of CC1-CC4 pooled, all 10-min resolution (fsb D1)
+        args: {variant: all10min, top_margin_pt: 3}
+        jitter_seed: null
+        inputs: [fsb/D1_domain_heatmap_cells]
+        annotation_panels: []
+        annotation_panels_legend: [s14_heatmap_all10min_legend]
+        x: 5
+        "y": 5
+        w: 173
+        h: 88
+
+  # ------------------------------------------------------------------ 16 (Stage 14 HMM figures, fsb M1-M4)
+  ed_behaviour_hmm:
+    title: Extended Data candidate, behavioural HMM states of the ten-minute HMM (transition differences, largest transitions, dwell times, resolution sensitivity)
+    is_numbered_manuscript_figure: false
+    promotion_status: not_promoted
+    intended_role: Extended Data or Supplementary figure candidate of the exploratory Stage 14 systems layer; the inactive-phase HMM states are not separable from rest and carry no claim
+    width_mm: 183
+    height_mm: 188
+    layout_mode: absolute
+    layout_notes: Dwell times are drawn as counts in bins doubling from one HMM bin (fsb M3), where Stage 14 drew kernel density ridges. Stage 14 drew the state flow as an alluvial plot whose strata the shown flows size; here the states sit on fixed rows, labelled once (From left, To right), and a ribbon's thickness is proportional to the stored mean. The HMM states carry their display labels. Stage 14 averages each transition over the records in which it occurred (Stage 08 counts observed transitions only), so the means out of a state are conditional and need not sum to one.
+    panels:
+      - id: a
+        letter: a
+        builder: s14_panel_hmm_transition
+        description: Difference in group mean transition probability (comparison minus reference) From x To state, by sex and contrast, ten-minute HMM (fsb M1, as stored by Stage 14)
+        args: {}
+        jitter_seed: null
+        inputs: [fsb/M1_hmm_transition_difference]
+        annotation_panels: []
+        annotation_panels_legend: [s14_hmm_legend]
+        x: 5
+        "y": 5
+        w: 173
+        h: 70
+      - id: b
+        letter: b
+        builder: s14_panel_hmm_flows
+        description: The eight largest group mean transition probabilities per sex and group, From to To state, as ribbons between fixed state rows, thickness proportional to the stored mean (fsb M2)
+        args: {}
+        jitter_seed: null
+        inputs: [fsb/M2_hmm_transition_flows]
+        annotation_panels: []
+        annotation_panels_legend: [s14_hmm_legend]
+        x: 5
+        "y": 77
+        w: 173
+        h: 52
+      - id: c
+        letter: c
+        builder: s14_panel_hmm_dwell
+        description: Share of animal x cage-change records per mean dwell-time bin (bins doubling from one HMM bin) by state, phase, sex and group (fsb M3)
+        args: {}
+        jitter_seed: null
+        inputs: [fsb/M3_hmm_dwell_distribution]
+        annotation_panels: []
+        annotation_panels_legend: [s14_hmm_legend]
+        x: 5
+        "y": 131
+        w: 104
+        h: 52
+      - id: d
+        letter: d
+        builder: s14_panel_hmm_resolution
+        description: The stored state-architecture contrast (mixed-model estimate with its 95% Wald interval) at the 5-min and 10-min HMM resolutions by sex and phase (fsb M4)
+        args: {}
+        jitter_seed: null
+        inputs: [fsb/M4_hmm_resolution_sensitivity]
+        annotation_panels: []
+        annotation_panels_legend: [s14_hmm_legend]
+        x: 111
+        "y": 131
+        w: 67
+        h: 52
