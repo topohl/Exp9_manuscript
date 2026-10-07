@@ -3,8 +3,8 @@
 # Script: figures/extended_data_behaviour_panels.R
 # Stage: manuscript_figures
 # Scope: global
-# Consumes: required manuscript/figure1_bridge_mmmsociability/behavior_prediction_model_ladder.csv;
-#           required manuscript/figure1_bridge_mmmsociability/behavior_sex_effect_contract.csv
+# Consumes: required source_data/MMMSociability/behavior_prediction_model_ladder.csv;
+#           required source_data/MMMSociability/behavior_sex_effect_contract.csv
 # Produces: results/figures/manuscript/extended_data_behaviour_panels/
 # Notes: Rendering only. Reads frozen imported contracts; computes no statistic.
 # ================================================================
@@ -15,7 +15,9 @@
 # feature-by-sex interaction tests.
 #
 # Both tables are frozen upstream in topohl/MMMSociability and imported
-# byte-identically with SHA-256 into manuscript/figure1_bridge_mmmsociability/.
+# byte-identically with SHA-256 into source_data/MMMSociability/ (the bridge's
+# pRoteomics prefix manuscript/figure1_bridge_mmmsociability/, which the
+# contract still records).
 # Nothing here is fitted, resampled or corrected. Every value printed is a cell
 # of one of those two tables.
 #
@@ -42,7 +44,7 @@ suppressPackageStartupMessages({
 paths_file <- if (file.exists(file.path("R", "paths.R"))) file.path("R", "paths.R") else file.path("..", "R", "paths.R")
 source(paths_file)
 
-BRIDGE <- repo_path("manuscript", "figure1_bridge_mmmsociability")
+BRIDGE <- repo_path("source_data", "MMMSociability")
 OUT <- path_results("figures", "manuscript", "extended_data_behaviour_panels")
 dir.create(OUT, recursive = TRUE, showWarnings = FALSE)
 

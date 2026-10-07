@@ -86,10 +86,19 @@ manuscript_figure_panel_is_automated <- function(panel) {
   isTRUE(include)
 }
 
+# Contracts frozen in pRoteomics name the behaviour bridge by its old prefix. The bundle keeps that
+# internal layout under source_data/MMMSociability/; the contract records the path as frozen and the
+# resolver reads the imported copy (as frozen_input_present() in R/frozen_inputs.R does).
+MANUSCRIPT_BRIDGE_RECORDED <- "manuscript/figure1_bridge_mmmsociability/"
+MANUSCRIPT_BRIDGE_IMPORTED <- "source_data/MMMSociability/"
+
 manuscript_figure_resolve <- function(path) {
   path <- as.character(path %||% NA_character_)
   if (!length(path) || is.na(path[[1]]) || !nzchar(path[[1]])) return(NA_character_)
-  normalizePath(repo_path(path[[1]]), winslash = "/", mustWork = FALSE)
+  p <- path[[1]]
+  if (startsWith(p, MANUSCRIPT_BRIDGE_RECORDED))
+    p <- paste0(MANUSCRIPT_BRIDGE_IMPORTED, substring(p, nchar(MANUSCRIPT_BRIDGE_RECORDED) + 1L))
+  normalizePath(repo_path(p), winslash = "/", mustWork = FALSE)
 }
 
 manuscript_figure_input_rows <- function(panel) {

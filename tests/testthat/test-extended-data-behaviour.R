@@ -247,3 +247,28 @@ testthat::test_that("Results cites the Extended Data panels and no retired Figur
   testthat::expect_false(grepl("Fig. 1e", text, fixed = TRUE))
   testthat::expect_false(grepl("Fig. 1f", text, fixed = TRUE))
 })
+
+testthat::test_that("the producer and the assembly read the imported bridge, not its recorded prefix", {
+  source(testthat::test_path("..", "..", "R", "paths.R"))
+  source(repo_path("R", "manuscript_figure_utils.R"))
+  testthat::skip_if_not_installed("yaml")
+
+  # The producer reads the bridge where it is imported ...
+  code <- readLines(repo_path("figures", "extended_data_behaviour_panels.R"), warn = FALSE)
+  code <- code[!grepl("^[[:space:]]*#", code)]
+  testthat::expect_true(any(grepl('BRIDGE <- repo_path("source_data", "MMMSociability")', code, fixed = TRUE)))
+  testthat::expect_false(any(grepl("figure1_bridge_mmmsociability", code, fixed = TRUE)))
+  # ... and every bridge path the contract records (the pRoteomics prefix) resolves to that copy.
+  contract <- yaml::read_yaml(repo_path("figures", "figure_contract.yml"))
+  recorded <- character()
+  for (fig in c("ED_behaviour_coverage", "ED_behaviour_secondary"))
+    for (p in contract$figures[[fig]]$panels)
+      recorded <- c(recorded, as.character(p$primary_source), as.character(unlist(p$input_dependencies)))
+  recorded <- unique(recorded[startsWith(recorded, "manuscript/figure1_bridge_mmmsociability/")])
+  testthat::expect_gt(length(recorded), 0L)
+  for (s in recorded) {
+    r <- manuscript_figure_resolve(s)
+    testthat::expect_true(file.exists(r), info = s)
+    testthat::expect_true(grepl("/source_data/MMMSociability/", r, fixed = TRUE), info = s)
+  }
+})
