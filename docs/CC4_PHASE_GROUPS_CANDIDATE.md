@@ -10,6 +10,14 @@ its own `manifest.csv`. This is separate from the existing Figure 1 bridge.
 `tools/import_cc4_phase_groups.R` refuses overwrites and verifies all copied
 bytes. The renderer re-verifies the complete local bundle before plotting.
 
+Every CC4 import is recorded the way the frozen bundles are (`R/cc4_candidate_bundles.R`):
+a pin in `config/cc4_candidate_bundles.yml` (Stage 31 step, upstream run, manifest hash,
+file count and bytes) and every file with its bytes and sha256 in
+`provenance/source_manifests/cc4_candidate_bundles_manifest.csv`. `tools/verify_source_bundles.R`
+checks each copy against both and fails on an unlisted file or an unpinned copy. This bundle
+and `cc4_phase_statistics_20260929_v1`, imported on 2026-09-30 before the record existed,
+were recorded on 2026-10-07 with `tools/register_cc4_candidate_bundle.R`.
+
 Entry point: `figures/cc4_phase_groups_candidate.R`.
 Panel library: `R/panels/cc4_phase_groups_candidate.R`.
 Output: a new directory under `results/figures/manuscript_candidates/`, with

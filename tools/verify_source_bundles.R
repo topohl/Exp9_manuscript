@@ -242,6 +242,20 @@ if (!file.exists(fsb_pin_path)) {
   }
 }
 
+## --------------------------------------------- MMMSociability CC4 candidate bundles
+## The Stage 31b / 31c / 31d runs imported for the CC4 candidate figures (R/cc4_candidate_bundles.R).
+## Every copy must be pinned, and verify against its own manifest, its pin and the import manifest.
+cat("\nMMMSociability CC4 candidate bundles (Stage 31b / 31c / 31d)\n")
+source(repo_path("R", "cc4_candidate_bundles.R"))
+cc4 <- tryCatch(cc4_candidate_verify_all(), error = function(e) { note_fail(conditionMessage(e)); NULL })
+if (!is.null(cc4)) {
+  if (!nrow(cc4)) cat("  pinned bundles     : none\n")
+  for (i in seq_len(nrow(cc4))) {
+    cat(sprintf("  %-36s %s\n", cc4$bundle_id[i], if (cc4$ok[i]) paste(cc4$files[i], "files hash-verified") else "FAILED"))
+    if (!cc4$ok[i]) note_fail(cc4$bundle_id[i], ":", cc4$problem[i])
+  }
+}
+
 cat("\n")
 if (problems == 0L) {
   cat("RESULT: PASS - every imported bundle matches its manifest.\n")

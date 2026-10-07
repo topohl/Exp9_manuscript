@@ -1,0 +1,37 @@
+# CC4 candidate bundles imported from MMMSociability Stage 31 (R/cc4_candidate_bundles.R).
+# Written by the importers (tools/import_cc4_*.R); verified by tools/verify_source_bundles.R.
+# Candidate inputs only: no canonical figure, contract or registry row reads them.
+bundles:
+- bundle_id: cc4_phase_groups_20260929_v2
+  family: phase_groups
+  stage: 31b
+  upstream_run: phase_groups_20260929_v2
+  manifest_sha256: f5b715561a0abc7b8c9245b765e115b1536c27f2d20be1788bf99caf4a8b0af5
+  files: 11
+  bytes: 412001
+  producer: topohl/MMMSociability Analysis/31b_cc4_phase_groups.R
+  importer: tools/import_cc4_phase_groups.R
+  imported_at: 2026-09-30T14:18:52+0200 (commit 6c5b8bf; moved to this directory in
+    4abcd4e)
+- bundle_id: cc4_phase_statistics_20260929_v1
+  family: phase_statistics
+  stage: 31c
+  upstream_run: phase_statistics_20260929_v1
+  manifest_sha256: ed18a81b82d3e8a702ce8c7865e62d4d366861220e4268afe66fa5dce40bf2b5
+  files: 26
+  bytes: 5242826
+  producer: topohl/MMMSociability Analysis/31c_cc4_phase_statistics.R
+  importer: tools/import_cc4_phase_statistics.R
+  imported_at: 2026-09-30T14:18:52+0200 (commit 6c5b8bf; moved to this directory in
+    4abcd4e)
+- bundle_id: cc4_phenotypes_20260929_v1
+  family: phenotypes
+  stage: 31d
+  upstream_run: phase_phenotypes_20260929_v1
+  manifest_sha256: 72152ddefcd4617501a1e910850dac133c28256dccacde25e2e56fdf50a91fcd
+  files: 37
+  bytes: 7418077
+  producer: topohl/MMMSociability Analysis/31d_cc4_phenotype_statistics.R
+  importer: tools/import_cc4_phenotypes.R
+  imported_at: 2026-10-07T15:01:44+0200
+

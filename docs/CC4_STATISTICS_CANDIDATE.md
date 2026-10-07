@@ -26,6 +26,11 @@ Rscript --vanilla -e "testthat::test_file('tests/testthat/test-cc4-phase-statist
 
 Both import and rendering refuse existing destinations. Import preserves the
 complete upstream manifest, including saved models and simulation checkpoints.
+The importer records the copy in `config/cc4_candidate_bundles.yml` and
+`provenance/source_manifests/cc4_candidate_bundles_manifest.csv` (`R/cc4_candidate_bundles.R`),
+and `tools/verify_source_bundles.R` checks it against both. The copy of
+`cc4_phase_statistics_20260929_v1` (imported 2026-09-30) was recorded on 2026-10-07
+with `tools/register_cc4_candidate_bundle.R`.
 Exports:183x85mm PDF with embedded Arial, SVG, and300dpi PNG. The render manifest
 and input hashes record the exact scientific bundle and presentation sources.
 This is a candidate; canonical manuscript figures and publication registries

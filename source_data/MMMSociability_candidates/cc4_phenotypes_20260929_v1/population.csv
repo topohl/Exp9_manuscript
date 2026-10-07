@@ -1,0 +1,13 @@
+Sex,Phase,Group,Animals,Cages,Batches
+Female,Active,CON,12,3,3
+Female,Active,RES,28,11,3
+Female,Active,SUS,18,9,3
+Female,Inactive,CON,12,3,3
+Female,Inactive,RES,28,11,3
+Female,Inactive,SUS,18,9,3
+Male,Active,CON,12,3,3
+Male,Active,RES,22,9,3
+Male,Active,SUS,15,8,3
+Male,Inactive,CON,12,3,3
+Male,Inactive,RES,22,9,3
+Male,Inactive,SUS,15,8,3

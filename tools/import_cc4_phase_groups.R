@@ -1,6 +1,7 @@
 # Explicit frozen Stage 31b import, isolated from canonical Figure 1 assets.
 source(file.path("R", "paths.R"))
 source(repo_path("R", "panels", "cc4_phase_groups_candidate.R"))
+source(repo_path("R", "cc4_candidate_bundles.R"))
 import_cc4_phase_groups <- function(source_dir, bundle_id) {
   if (!grepl("^cc4_phase_groups_[A-Za-z0-9_-]+$", bundle_id)) stop("Invalid CC4 bundle ID.", call. = FALSE)
   cc4_verify_bundle(source_dir)
@@ -14,6 +15,7 @@ import_cc4_phase_groups <- function(source_dir, bundle_id) {
   if (!all(file.copy(file.path(source_dir,names),file.path(dest,names),overwrite=FALSE)) ||
       !identical(hashes,unname(tools::sha256sum(file.path(dest,names))))) stop("CC4 import incomplete or changed.",call.=FALSE)
   cc4_verify_bundle(dest)
+  cc4_candidate_register(source_dir, bundle_id)
   cat("Verified frozen CC4 import: ",dest,"\n",sep="")
   invisible(dest)
 }
