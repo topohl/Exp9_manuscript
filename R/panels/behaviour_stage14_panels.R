@@ -182,7 +182,7 @@ s14_panel_hmm_transition <- function(fsb, w_mm, h_mm, top_margin_pt = 11.5) {
 #' axis text: From on the left, To on the right). A ribbon's thickness is proportional to the stored mean;
 #' the ribbons at a node are stacked in state order and centred on it. The arithmetic is layout only.
 S14_FLOW_NODE_H <- 0.8      # node height (state rows are 1 apart)
-S14_FLOW_K <- 0.6           # ribbon thickness per unit of stored mean (the largest stored stack fits a node)
+S14_FLOW_K <- 0.6           # ribbon thickness per unit of the stored mean; the largest stored stack fits a node
 S14_FLOW_NODE_W <- 0.08     # node width (From at x = 0, To at x = 1)
 s14_panel_hmm_flows <- function(fsb, w_mm, h_mm, top_margin_pt = 11.5) {
   all <- fsb("M2_hmm_transition_flows")
