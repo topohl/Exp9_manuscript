@@ -1075,7 +1075,7 @@ candidates:
         description: Difference in group mean transition probability (comparison minus reference) From x To state, by sex and contrast, ten-minute HMM (fsb M1, as stored by Stage 14)
         args: {}
         jitter_seed: null
-        inputs: [fsb/M1_hmm_transition_difference]
+        inputs: [fsb/M1_hmm_transition_difference, fsb/M4_hmm_resolution_sensitivity]
         annotation_panels: []
         annotation_panels_legend: [s14_hmm_legend]
         x: 5
@@ -1088,7 +1088,7 @@ candidates:
         description: The eight largest group mean transition probabilities per sex and group, From to To state, as ribbons between fixed state rows, thickness proportional to the stored mean (fsb M2)
         args: {}
         jitter_seed: null
-        inputs: [fsb/M2_hmm_transition_flows]
+        inputs: [fsb/M2_hmm_transition_flows, fsb/M4_hmm_resolution_sensitivity]
         annotation_panels: []
         annotation_panels_legend: [s14_hmm_legend]
         x: 5
@@ -1101,7 +1101,7 @@ candidates:
         description: Share of animal x cage-change records per mean dwell-time bin (bins doubling from one HMM bin) by state, phase, sex and group (fsb M3)
         args: {}
         jitter_seed: null
-        inputs: [fsb/M3_hmm_dwell_distribution]
+        inputs: [fsb/M3_hmm_dwell_distribution, fsb/M4_hmm_resolution_sensitivity]
         annotation_panels: []
         annotation_panels_legend: [s14_hmm_legend]
         x: 5
