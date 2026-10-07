@@ -84,3 +84,19 @@ for (id in names(written)) cat(sprintf("  figure_01%s.svg  %7d bytes  %.0f x %.0
 cat("  every printed number resolved through figure_01_annotation_map.csv (", length(used), "keys )\n")
 unused <- setdiff(used, AN$resolved())
 if (length(unused)) stop("annotation keys declared but never printed: ", paste(unused, collapse = ", "), call. = FALSE)
+
+# ---------------------------------------------------------------- render record
+# Which commit drew these panels, whether that code was clean, and the hash of every panel, so that
+# tools/promote_manuscript_render.R figure_01 can refuse panels drawn from other or uncommitted code.
+code <- git_code_state()
+record_dir <- path_results("logs", "manuscript_figures", "figure_01_panels")
+dir.create(record_dir, recursive = TRUE, showWarnings = FALSE)
+yaml::write_yaml(list(
+  timestamp = format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z"),
+  producer = "figures/figure_01_panels.R",
+  behaviour_bundle_id = PIN$bundle_id, behaviour_bundle_manifest_sha256 = PIN$manifest_sha256,
+  render_git_commit = code$commit, render_code_clean = code$code_clean, render_code_dirty = code$dirty,
+  files = lapply(unname(written), function(x) list(path = relative_to(x), sha256 = unname(tools::sha256sum(x))))),
+  file.path(record_dir, "render_record.yml"))
+cat("  render record", relative_to(file.path(record_dir, "render_record.yml")), "at", substr(code$commit, 1, 7),
+    if (isTRUE(code$code_clean)) "(clean code)\n" else "(UNCOMMITTED CODE)\n")
