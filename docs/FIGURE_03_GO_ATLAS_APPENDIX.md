@@ -49,7 +49,8 @@ The output root is
 `results/figures/manuscript_candidates/figure_03_go_atlas_appendix_v6/` (palette
 v3.2, with the protein contrasts in darkened RES / SUS / grey20 and a typographic
 minus on signed axes; `_v5` is the first palette v3.2 render and `_v4` the
-earlier render on a data-maximum NES range of 3.4).
+earlier render on a data-maximum NES range of 3.4). `_v1` to `_v5` were moved on
+2026-10-07 to `Analysis/_archive_ms_results_20261007/` beside this repository.
 Its global `theme_term_index.csv` lists every displayed membership.
 Each `theme_XX_...` folder has:
 

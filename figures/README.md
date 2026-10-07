@@ -56,7 +56,9 @@ materialized and assembled like every other panel; it is no longer deferred to
 Illustrator.
 
 The authoring outputs intentionally remain separate from the journal export
-package under `results/manuscript/`. See `docs/OUTPUT_CONTRACTS.md` and run
+package, which `tools/package_journal_figures.R` writes under `export/<bundle>/`
+(the older pRoteomics export copy under `results/manuscript/` was archived on
+2026-10-07). See `docs/OUTPUT_CONTRACTS.md` and run
 `Rscript "tools/audit_output_namespaces.R"` for the read-only namespace audit.
 
 ## Output contract
