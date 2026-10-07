@@ -2,11 +2,14 @@
 
 # Generate figures/FIGURE_INDEX.md: which of the files in figures/ a reader
 # should run, which one renders the canonical panels, and which belong to a
-# superseded generation that is kept so the frozen figures stay reproducible.
+# superseded generation.
 #
-# Nothing here renames or rewrites a renderer. The generations are real history
-# and all of them still run; what was missing was a single place that says
-# which is current.
+# Nothing here renames or rewrites a renderer. On 2026-10-07 the superseded
+# candidate generations (editorial_v8, nature_v2, nature_final_v7, spatial_v6,
+# story_v3, story_v4, story_v5 and the September candidate layer) were retired
+# with their scripts, contracts and tests; they remain in git history, and their
+# renders are in Analysis/_archive_ms_oldgen_20261007/. Library files under R/
+# that still carry those names are live: the final_truth_v9 producers use them.
 #
 # Authority: provenance/publication_registry/figure_canonical_generation_registry.csv
 # (figure_id, canonical_generation, canonical_renderer, manuscript_entry_point)
@@ -25,15 +28,7 @@ pub_registry <- utils::read.csv(
 # The generation each filename prefix belongs to. Explicit, so a new generation
 # has to be declared rather than guessed at.
 GENERATIONS <- c(
-  "final_truth_v9"  = "final_truth_v9",
-  "editorial_v8"    = "editorial_v8",
-  "nature_final_v7" = "nature_final_v7",
-  "spatial_v6"      = "spatial_v6",
-  "story_v5"        = "story_v5",
-  "story_v4"        = "story_v4",
-  "story_v3"        = "story_v3",
-  "nature_v2"       = "nature_v2",
-  "candidate"       = "candidate"
+  "final_truth_v9"  = "final_truth_v9"
 )
 
 files <- sort(list.files(repo_path("figures"), pattern = "[.]R$"))

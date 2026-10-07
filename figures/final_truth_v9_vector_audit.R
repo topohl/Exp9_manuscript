@@ -4,7 +4,7 @@
 #
 # Parts 16-23 shipped PDFs that were a single full-page 300 dpi raster with zero
 # font objects, because nv_pdf() falls back to ImageMagick when rsvg is absent.
-# This audit proves the editorial_v8 PDFs are genuine vector: embedded fonts,
+# This audit proves the final_truth_v9 PDFs are genuine vector: embedded fonts,
 # real text-showing operators, and no page-sized raster.
 #
 # qpdf is the only PDF tool available here (no poppler, no ghostscript), so the
@@ -31,7 +31,7 @@ REP <- function(...) {
 
 args <- commandArgs(trailingOnly = TRUE)
 if ("--dry-run" %in% args || is_dry_run()) {
-  message("[DRY-RUN] vector export audit over editorial_v8")
+  message("[DRY-RUN] vector export audit over final_truth_v9")
   quit(save = "no", status = 0L)
 }
 
@@ -43,7 +43,7 @@ for (f in ct$figures) {
                     paste0(as.character(f$name), ".pdf"))
   if (file.exists(p)) pdfs <- c(pdfs, p)
 }
-if (!length(pdfs)) stop("no editorial_v8 PDFs found", call. = FALSE)
+if (!length(pdfs)) stop("no final_truth_v9 PDFs found", call. = FALSE)
 
 aud <- e8_vector_audit(pdfs)
 write_csv_safe(aud, OUT("vector_export_audit.csv"))
@@ -52,21 +52,6 @@ cat("\n===== VECTOR EXPORT AUDIT =====\n")
 print(aud[, c("figure", "page_size_mm", "font_count", "embedded_fonts",
               "page_sized_raster_present", "largest_raster_dimensions",
               "text_show_operators", "vector_export_pass")], row.names = FALSE)
-
-# for contrast, probe the Part-23 PDFs so the fix is demonstrable
-old <- character(0)
-for (nm in c("figure_02/assembled/F2_NATURE_FINAL_V7.pdf",
-             "figure_03/assembled/F3_NATURE_FINAL_V7.pdf")) {
-  p <- path_results("figures", "manuscript_candidates", "nature_final_v7", nm)
-  if (file.exists(p)) old <- c(old, p)
-}
-if (length(old)) {
-  cat("\n--- the Part-23 PDFs, for comparison ---\n")
-  print(e8_vector_audit(old)[, c("figure", "font_count", "embedded_fonts",
-                                 "page_sized_raster_present",
-                                 "largest_raster_dimensions",
-                                 "vector_export_pass")], row.names = FALSE)
-}
 
 
 # ------------------------------------------------------- SVG write integrity

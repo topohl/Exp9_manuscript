@@ -17,32 +17,13 @@
 # canvas really is 6 pt on the page. nv_verify_scale() asserts it.
 #
 # Renderers remain downstream only: no model fit, no enrichment, no FDR.
+#
+# 2026-10-07: the nature_v2 candidate generation (its contract, entry scripts and the nv_build()
+# driver) was retired. What remains are the shared palette, theme, I/O and guard helpers that the
+# final_truth_v9 producers and the current candidates use.
 # =====================================================================
 
-nv_contract_path <- function() repo_path("figures", "figure_nature_v2_contract.yml")
 nv_palette_path <- function() repo_path("config", "manuscript_palette.yml")
-nv_contract_version <- function() "manuscript_nature_v2_figures_v1"
-
-nv_output_paths <- function(figure_key, output_root = path_results()) {
-  list(
-    panels = file.path(output_root, "figures", "manuscript_candidates", "nature_v2",
-                       figure_key, "panels"),
-    assembled = file.path(output_root, "figures", "manuscript_candidates", "nature_v2",
-                          figure_key, "assembled"),
-    source_data = file.path(output_root, "source_data", "manuscript_candidates",
-                            "nature_v2", figure_key),
-    reports = file.path(output_root, "reports", "manuscript_candidates", "nature_v2",
-                        figure_key)
-  )
-}
-
-nv_shared_paths <- function(output_root = path_results()) {
-  list(
-    figures = file.path(output_root, "figures", "manuscript_candidates", "nature_v2"),
-    tables = file.path(output_root, "tables", "manuscript_candidates", "nature_v2"),
-    reports = file.path(output_root, "reports", "manuscript_candidates", "nature_v2")
-  )
-}
 
 # ------------------------------------------------------------- palette
 
@@ -199,15 +180,7 @@ nv_forbidden_tokens <- function() {
     "bootstrap_enrichment_test(", "blockwiseModules(", "TOMsimilarity(", "WGCNA::")
 }
 
-nv_renderer_sources <- function() {
-  c(repo_path("R", "nature_v2_figure_panels.R"),
-    repo_path("R", "nature_v2_figure_utils.R"),
-    repo_path("figures", "nature_v2_figure_02.R"),
-    repo_path("figures", "nature_v2_figure_03.R"),
-    repo_path("figures", "nature_v2_contact_sheet.R"))
-}
-
-nv_assert_no_model_fitting <- function(files = nv_renderer_sources()) {
+nv_assert_no_model_fitting <- function(files) {
   bad <- character()
   for (f in files) {
     if (!file.exists(f)) next
@@ -228,44 +201,6 @@ nv_assert_no_model_fitting <- function(files = nv_renderer_sources()) {
          paste(bad, collapse = "; "), call. = FALSE)
   }
   invisible(TRUE)
-}
-
-# ------------------------------------------------------------- contract
-
-nv_contract <- function(path = nv_contract_path()) {
-  y <- yaml::read_yaml(path)
-  ids <- vapply(y$panels, function(p) as.character(p$id), character(1))
-  if (anyDuplicated(ids)) {
-    stop("duplicate nature_v2 panel id(s): ",
-         paste(unique(ids[duplicated(ids)]), collapse = ", "), call. = FALSE)
-  }
-  if (any(grepl("^[23][a-f]$", ids))) {
-    stop("nature_v2 panel id collides with the canonical namespace", call. = FALSE)
-  }
-  # every figure must fit the Nature size contract
-  for (f in y$figures) {
-    if (as.numeric(f$width_mm) != 183) {
-      stop("figure ", f$name, " is not 183 mm wide", call. = FALSE)
-    }
-    if (as.numeric(f$height_mm) > 170) {
-      stop("figure ", f$name, " exceeds the 170 mm height ceiling", call. = FALSE)
-    }
-    # boxes must stay inside the canvas
-    for (it in f$layout) {
-      if (as.numeric(it$x) + as.numeric(it$w) > as.numeric(f$width_mm) + 1e-6 ||
-          as.numeric(it$y) + as.numeric(it$h) > as.numeric(f$height_mm) + 1e-6) {
-        stop("panel ", it$panel, " overflows figure ", f$name, call. = FALSE)
-      }
-    }
-  }
-  y
-}
-
-nv_panel_by_id <- function(contract, id) {
-  hit <- Filter(function(p) identical(as.character(p$id), as.character(id)),
-                contract$panels)
-  if (!length(hit)) stop("nature_v2 panel not declared: ", id, call. = FALSE)
-  hit[[1]]
 }
 
 # ------------------------------------------------------------- helpers
@@ -324,55 +259,6 @@ nv_placeholder <- function(path, id, reason, w_mm, h_mm) {
   invisible(path)
 }
 
-# ------------------------------------------------------------ assembly
-#
-# 1:1 placement. Each panel is embedded at exactly the width and height it was
-# authored at, so no text is rescaled. Panel letters are lowercase bold.
-nv_assemble <- function(panel_paths, figure, target) {
-  W <- as.numeric(figure$width_mm); H <- as.numeric(figure$height_mm)
-  lab_pt <- nv_pt("panel_label_pt")
-  items <- character()
-  for (i in seq_along(figure$layout)) {
-    it <- figure$layout[[i]]
-    id <- as.character(it$panel)
-    x <- as.numeric(it$x); y <- as.numeric(it$y)
-    w <- as.numeric(it$w); h <- as.numeric(it$h)
-    p <- panel_paths[[sprintf("%s@%gx%g", id, w, h)]]
-    if (!is.null(p) && file.exists(p)) {
-      uri <- base64enc::dataURI(file = p, mime = "image/svg+xml")
-      items <- c(items, sprintf(
-        '<image x="%.3f" y="%.3f" width="%.3f" height="%.3f" href="%s"/>', x, y, w, h, uri))
-    }
-    lab <- as.character(it$label %||% letters[i])
-    items <- c(items, sprintf(
-      '<text x="%.3f" y="%.3f" font-family="Arial" font-size="%s" font-weight="bold" fill="black">%s</text>',
-      x, y + lab_pt * 0.3528 * 0.92, lab_pt, lab))
-  }
-  dir_create(dirname(target))
-  writeLines(c(
-    '<?xml version="1.0" encoding="UTF-8"?>',
-    sprintf('<svg xmlns="http://www.w3.org/2000/svg" width="%smm" height="%smm" viewBox="0 0 %s %s">',
-            W, H, W, H),
-    '<rect width="100%" height="100%" fill="white"/>', items, '</svg>'),
-    target, useBytes = TRUE)
-  invisible(target)
-}
-
-nv_pdf <- function(svg_path, pdf_path) {
-  if (!requireNamespace("rsvg", quietly = TRUE)) {
-    if (!requireNamespace("magick", quietly = TRUE)) return(NA_character_)
-    out <- tryCatch({
-      i <- magick::image_read(svg_path, density = 300)
-      magick::image_write(magick::image_background(i, "white", flatten = TRUE),
-                          path = pdf_path, format = "pdf"); pdf_path
-    }, error = function(e) NA_character_)
-    return(out)
-  }
-  out <- tryCatch({ rsvg::rsvg_pdf(svg_path, pdf_path); pdf_path },
-                  error = function(e) NA_character_)
-  out
-}
-
 # A panel authored at its declared box must be embedded at that same box.
 nv_verify_scale <- function(figure, panel_paths, tol = 0.01) {
   bad <- character()
@@ -405,101 +291,4 @@ nv_verify_scale <- function(figure, panel_paths, tol = 0.01) {
          "minimum point size: ", paste(bad, collapse = "; "), call. = FALSE)
   }
   invisible(TRUE)
-}
-
-# ---------------------------------------------------------------- main
-
-nv_build <- function(figure_key, dry_run = FALSE) {
-  contract <- nv_contract()
-  nv_assert_no_model_fitting()
-  figs <- Filter(function(f) identical(as.character(f$figure_key), figure_key),
-                 contract$figures)
-  if (!length(figs)) stop("no nature_v2 figure with key: ", figure_key, call. = FALSE)
-  needed <- unique(unlist(lapply(figs, function(f)
-    vapply(f$layout, function(it) as.character(it$panel), character(1)))))
-  panels <- Filter(function(p) as.character(p$id) %in% needed, contract$panels)
-  paths <- nv_output_paths(figure_key)
-
-  if (dry_run) {
-    for (p in panels) {
-      src <- as.character(p$primary_source %||% NA_character_)
-      ok <- is.na(src) || file.exists(repo_path(src))
-      message("[DRY-RUN ", if (ok) "PASS" else "WARN", "] ", p$id, ": ",
-              if (is.na(src)) "(no external source)" else src)
-    }
-    message("[DRY-RUN] nature_v2 candidate layer; canonical and Part-16 outputs untouched.")
-    return(invisible(NULL))
-  }
-
-  invisible(lapply(paths, dir_create))
-
-  # A panel used by two variants at two different boxes must be rendered TWICE,
-  # once per box. Rendering it once and letting the assembler stretch it is
-  # exactly the defect that made the Part-16 figures illegible, so panel files
-  # are keyed by (id, box) and the assembler looks them up the same way.
-  boxes_of <- list()
-  for (f in figs) for (it in f$layout) {
-    id <- as.character(it$panel)
-    b <- sprintf("%gx%g", as.numeric(it$w), as.numeric(it$h))
-    boxes_of[[id]] <- unique(c(boxes_of[[id]], b))
-  }
-  box_key <- function(id, w, h) sprintf("%s@%gx%g", id, w, h)
-
-  panel_paths <- list(); records <- list()
-  for (p in panels) {
-   id <- as.character(p$id)
-   for (bstr in boxes_of[[id]]) {
-    box <- as.numeric(strsplit(bstr, "x", fixed = TRUE)[[1]])
-    tag <- if (length(boxes_of[[id]]) > 1L) paste0(id, "_", sub("x", "x", bstr)) else id
-    svg <- file.path(paths$panels, paste0(tag, ".svg"))
-    csv <- file.path(paths$source_data, paste0(id, "_source_data.csv"))
-    status <- "ok"; note <- ""
-    fn <- tryCatch(get(as.character(p$renderer), mode = "function"),
-                   error = function(e) NULL)
-    if (is.null(fn)) {
-      status <- "renderer_missing"; note <- as.character(p$renderer)
-      nv_placeholder(svg, id, note, box[1], box[2])
-    } else {
-      res <- tryCatch(fn(p, svg, csv, box[1], box[2]), error = function(e) {
-        nv_placeholder(svg, id, conditionMessage(e), box[1], box[2])
-        write_csv_safe(data.frame(panel = id, status = "render_error",
-                                  note = conditionMessage(e), stringsAsFactors = FALSE), csv)
-        structure(list(note = conditionMessage(e)), class = "nv_failed")
-      })
-      if (inherits(res, "nv_failed")) { status <- "render_error"; note <- res$note }
-    }
-    panel_paths[[box_key(id, box[1], box[2])]] <- svg
-    records[[length(records) + 1L]] <- data.frame(
-      panel_id = id, figure_key = figure_key,
-      box_w_mm = box[1], box_h_mm = box[2],
-      role = as.character(p$role %||% ""), status = status, note = note,
-      svg = relative_to(svg), source_data = relative_to(csv),
-      stringsAsFactors = FALSE)
-   }
-  }
-  panel_records <- dplyr::bind_rows(records)
-
-  asm <- list()
-  for (f in figs) {
-    nv_verify_scale(f, panel_paths)
-    target <- file.path(paths$assembled, paste0(as.character(f$name), ".svg"))
-    nv_assemble(panel_paths, f, target)
-    pdf <- sub("[.]svg$", ".pdf", target)
-    nv_pdf(target, pdf)
-    asm[[length(asm) + 1L]] <- data.frame(
-      variant = as.character(f$name), figure_key = figure_key,
-      width_mm = as.numeric(f$width_mm), height_mm = as.numeric(f$height_mm),
-      n_panels = length(f$layout),
-      panels = paste(vapply(f$layout, function(x) as.character(x$panel), character(1)),
-                     collapse = ";"),
-      message = gsub("\\s+", " ", trimws(as.character(f$message %||% ""))),
-      svg = relative_to(target),
-      pdf = if (file.exists(pdf)) relative_to(pdf) else NA_character_,
-      stringsAsFactors = FALSE)
-  }
-  assembly_records <- dplyr::bind_rows(asm)
-
-  write_csv_safe(panel_records, file.path(paths$reports, "nature_v2_panel_status.csv"))
-  write_csv_safe(assembly_records, file.path(paths$reports, "nature_v2_variant_status.csv"))
-  invisible(list(panels = panel_records, variants = assembly_records))
 }
