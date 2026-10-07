@@ -114,8 +114,11 @@ testthat::test_that("PB-03: the eps-floor disclosure is derived, not hard-coded"
 
 testthat::test_that("SR-21: the shipped Figure 3a is the QC-aware panel", {
   source(testthat::test_path("..", "..", "R", "paths.R"))
-  sh <- path_results("manuscript", "figure_3", "panels", "figure_03a.svg")
-  testthat::skip_if_not(file.exists(sh), "Figure 3 not exported here")
+  # The shipped panel: the manuscript layer's figure_03a.svg, hashed in its run manifest and embedded
+  # in the promoted figures/main/figure_03.svg. Until 2026-10-07 this read the Phase 5B pRoteomics export
+  # copy (results/manuscript/figure_3/, now archived), whose labels read "(37 total)" / "(15 total)".
+  sh <- path_results("figures", "manuscript", "figure_03", "panels", "figure_03a.svg")
+  testthat::skip_if_not(file.exists(sh), "Figure 3 not rendered here")
 
   lab <- local({
     s <- readLines(sh, warn = FALSE)
@@ -125,8 +128,8 @@ testthat::test_that("SR-21: the shipped Figure 3a is the QC-aware panel", {
   # Two rows, and the second one is what the pre-QC panel never had.
   testthat::expect_true(any(grepl("FDR-supported DAPs", lab, fixed = TRUE)))
   testthat::expect_true(any(grepl("Robustness-qualified", lab, fixed = TRUE)))
-  testthat::expect_true(any(grepl("(37 total)", lab, fixed = TRUE)))
-  testthat::expect_true(any(grepl("(15 total)", lab, fixed = TRUE)))
+  testthat::expect_true(any(grepl("FDR-supported DAPs (37)", lab, fixed = TRUE)))
+  testthat::expect_true(any(grepl("Robustness-qualified (15)", lab, fixed = TRUE)))
   nums <- suppressWarnings(as.integer(lab[grepl("^[0-9]+$", lab)]))
   testthat::expect_identical(sum(nums, na.rm = TRUE), 52L)   # 37 + 15
   testthat::expect_true(28L %in% nums)
