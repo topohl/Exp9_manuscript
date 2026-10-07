@@ -6,7 +6,7 @@ These are draft legends for author review. They describe the design, measures, m
 - Every statistic on the panels, and every estimate, interval, p, q and count that these legends quote, resolves through `figures/behaviour_v101_s30_annotation_map.csv` to one stored cell of one of three bundles:
   - the pinned Stage 29 behaviour bundle `ebb_v101_20260929_b2ce507` (Stage 29 characterisation and Stage 09 registered prediction; configuration v1.0.1);
   - the pinned Stage 30 figure bundle `s30b_v10_20260929_5394f2f` (frozen Stage 30 run `v1.0_be71e2f`, registry v1.0);
-  - the pinned figure-support bundle `fsb_v2_20260930_a23d699` (descriptive CON cage means and the CombZ components as they enter CombZ, byte-identical to those of `fsb_v1_20260930_f06552c`, options 3 and 3b; and the verbatim rows of the MMMSociability post hoc CON, RES and SUS run, option 3b c only).
+  - the pinned figure-support bundle `fsb_v3_20261007_a2acd57` (descriptive CON cage means and the CombZ components as they enter CombZ, byte-identical to those of `fsb_v1_20260930_f06552c`, options 3 and 3b; the verbatim rows of the MMMSociability post hoc CON, RES and SUS run, option 3b c only; and the Stage 14 domain-heatmap cells and HMM figure tables, ED Z and ED W).
 - Numbers quoted here but not drawn have their own map panels (`light_legend`, `cookie_text`, `screen_legend`, and for option 2 (d) the light-phase panels' keys). Each candidate's source data list them with `src_role = legend`.
 - Some numbers are not bundle cells: registered settings (windows, clock times, thresholds, bout lengths, bootstrap and permutation counts), the design facts that the Figure 1 option legends carry over from the canonical Figure 1 legend (recording lag, P25), and in option 3 the cage-change interval (every 4 days), the three CON cages per sex (checked against the figure-support bundle) and the presentational heatmap cap (±2, the manuscript's fixed *z* limit).
 - Nothing is calculated in this repository. The medians and quartiles on the cookie panel, and the centroid of the cookie regression line, are descriptive summaries computed in MMMSociability and exported in the Stage 30 bundle.
@@ -14,7 +14,9 @@ These are draft legends for author review. They describe the design, measures, m
 **Figure identities are placeholders:**
 - ED X: longitudinal and light-phase behaviour;
 - ED Y: home-cage cookie response;
-- Supplementary Fig. S-screen: the Stage 30 screen.
+- Supplementary Fig. S-screen: the Stage 30 screen;
+- ED Z: behavioural domain heatmap (three resolution variants for review);
+- ED W: behavioural HMM states (exploratory).
 
 The title and any interpretive sentence are left to the authors.
 
@@ -252,3 +254,31 @@ Class A marks a robust exploratory signal, not a confirmation.
 **Not shown.** The descriptive Benjamini–Hochberg q over all 48 tests, the pooled-sex estimates (estimation only), the component estimates of the L tests and all registered sensitivities are in Supplementary Table S-screen. Stage 29 combinations are shown there as carry-over rows and were not re-tested.
 
 **Calibration.** Group-blind null calibration rated every test acceptable, some with a qualifier (verdicts in Supplementary Table S-screen).
+
+---
+
+## Extended Data Fig. Z (candidate): behavioural domain heatmap, all phase blocks pooled
+
+**Extended Data Fig. Z | Behavioural domains after repeated social instability, all phase blocks of CC1–CC4 pooled (three resolution variants for review).**
+
+- **Tiles.** Each tile is the stored Hedges *g* (comparison minus reference, within sex) of one behavioural domain in the dark or light phase, for RES − CON, SUS − CON and RES − SUS, in females and in males. Rows are the seven domains, grouped by display tier (primary, secondary, exploratory).
+- **Colour.** The manuscript's diverging scale at its fixed Hedges *g* limit (`diverging_limits` smd): a larger effect takes full colour and the colourbar ends read ≤ and ≥. Grey outlines keep a tile at zero visible.
+- **Variants.** The three candidates differ only in resolution: the picked resolution of each domain, all five-minute or all ten-minute.
+- **Not drawn.** The post hoc tests stored with each cell (CON animals as units) and their markers stay in the source data; the effect sizes are descriptive.
+- **n.** Females 12 CON, 28 RES, 18 SUS; males 12 CON, 25 RES, 16 SUS.
+- **Source.** `fsb_v3_20261007_a2acd57` table D1, a verbatim copy of the Stage 14 domain-heatmap table of the promoted run (`2026-10-06`), drawn without recomputation.
+
+---
+
+## Extended Data Fig. W (candidate): behavioural HMM states (exploratory)
+
+**Extended Data Fig. W | Behavioural states of the ten-minute hidden Markov model (exploratory).**
+
+- **States.** The four states of the HMM fitted in MMMSociability on ten-minute bins, with their display labels: many position changes; no position change, co-located; few position changes; no position change, apart.
+- **(a) Transition differences.** Difference in group mean transition probability, comparison minus reference, from each state (rows) to each state (columns), by sex and contrast. Stage 14 averages each transition over the animal × cage-change × phase records in which it occurred, dark and light phases pooled: a transition that did not occur in a record is absent from the stored per-record table rather than zero, so the means are conditional on occurrence and those out of a state need not sum to one. Colour on the figure's own symmetric limit, the largest stored difference.
+- **(b) Largest transitions.** The eight largest of these group means per sex and group, as ribbons from state to state; the states sit on fixed rows and a ribbon's thickness is proportional to the stored mean (Stage 14 draws the same transitions as an alluvial plot).
+- **(c) Dwell times.** Share of animal × cage-change records in each mean dwell-time bin, the bins doubling from one HMM bin (ten minutes), by state, phase, sex and group. Stage 14 draws these as smoothed density ridges; here they are counts in fixed bins.
+- **(d) Resolution sensitivity.** The state-architecture contrast of the repeated-measures model at the five- and ten-minute HMM resolutions, with its 95% Wald interval, by sex and phase.
+- **Interpretation.** The inactive-phase states cannot be separated from rest in the position stream, and the HMM layer is exploratory: these panels carry no claim.
+- **n.** Females 12 CON, 28 RES, 18 SUS; males 12 CON, 25 RES, 16 SUS.
+- **Source.** `fsb_v3_20261007_a2acd57` tables M1–M4: the stored Stage 14 transition and resolution tables with display labels, and the stored mean dwell times of the ten-minute HMM counted in bins.

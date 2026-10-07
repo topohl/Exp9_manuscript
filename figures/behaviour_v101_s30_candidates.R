@@ -171,7 +171,13 @@ BUILDERS <- list(
   # Figure 1 option 3b (Nature layout): c (post hoc CON / RES / SUS rows of fsb P1) and the simplified d
   f1o3b_panel_cc1 = function(s, an) f1o3b_panel_cc1(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h, jitter_seed = seeds(s, 2L),
     frame = frame_of(s)),
-  f1o3b_panel_trajectory = function(s, an) f1o3b_panel_trajectory(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h, frame = frame_of(s)))
+  f1o3b_panel_trajectory = function(s, an) f1o3b_panel_trajectory(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h, frame = frame_of(s)),
+  # Stage 14 domain heatmap and HMM candidates (fsb v3 D1, M1-M4): stored values drawn, no number printed
+  s14_panel_domain_heatmap = function(s, an) s14_panel_domain_heatmap(TABS$fsb, arg(s, "variant"), s$w, s$h, top_margin_pt = top_pt(s)),
+  s14_panel_hmm_transition = function(s, an) s14_panel_hmm_transition(TABS$fsb, s$w, s$h, top_margin_pt = top_pt(s)),
+  s14_panel_hmm_flows = function(s, an) s14_panel_hmm_flows(TABS$fsb, s$w, s$h, top_margin_pt = top_pt(s)),
+  s14_panel_hmm_dwell = function(s, an) s14_panel_hmm_dwell(TABS$fsb, s$w, s$h, top_margin_pt = top_pt(s)),
+  s14_panel_hmm_resolution = function(s, an) s14_panel_hmm_resolution(TABS$fsb, s$w, s$h, top_margin_pt = top_pt(s)))
 
 # ---------------------------------------------------------------- plot introspection
 # The leaf ggplots of a panel (patchwork parts in order; a plain ggplot is its own leaf).
@@ -204,6 +210,9 @@ mapping_vars <- function(mapping) {
 # Identifier columns carried with the plotted columns wherever the layer data holds them.
 ID_COLUMNS <- c("AnimalNum", "Sex", "sex", "Group", "Batch", "CC", "id", "model_id", "construct", "estimand",
                 "measure", "scope", "window", "row", "label", "key", "question", "family", "row_order", "col_order")
+# Stored bundle columns a layer draws through layout arithmetic only (the Stage 14 flow ribbons: thickness =
+# stored mean x a constant), carried so that layer's source data hold the stored value beside its vertices.
+STORED_COLUMNS <- c("from_state", "to_state", "mean_probability")
 
 as_text_frame <- function(d) {
   out <- lapply(as.list(d), as.character)          # factors, numbers and logicals as written text
@@ -231,7 +240,7 @@ layer_blocks <- function(panel_plot) {
       if (is.null(d) || !nrow(d)) next
       vars <- mapping_vars(l$mapping)
       if (isTRUE(l$inherit.aes)) vars <- c(vars, mapping_vars(leaf$mapping))
-      keep <- intersect(names(d), unique(c(ID_COLUMNS, vars, facet_vars)))
+      keep <- intersect(names(d), unique(c(ID_COLUMNS, STORED_COLUMNS, vars, facet_vars)))
       if (!length(keep)) next
       d <- src_cols(as_text_frame(d[, keep, drop = FALSE]))
       sig <- paste(c(keep, unlist(d)), collapse = "\r")

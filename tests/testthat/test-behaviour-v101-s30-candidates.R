@@ -105,7 +105,10 @@ LABEL_WORDS <- c(
   # option 3 / 3b b: the heatmap colourbar ends, at the manuscript's fixed z limit (config/manuscript_palette.yml
   # diverging_limits$z, palette v3.2); values beyond it take the end colours
   local({ z <- format(yaml::read_yaml(repo("config", "manuscript_palette.yml"))$diverging_limits$z)
-          paste0("^(\u2264\u2212", z, "|\u2265", z, ")$") }))
+          paste0("^(\u2264\u2212", z, "|\u2265", z, ")$") }),
+  # the Stage 14 domain heatmap colourbar ends, at the fixed Hedges g limit (diverging_limits$smd)
+  local({ g <- format(yaml::read_yaml(repo("config", "manuscript_palette.yml"))$diverging_limits$smd)
+          paste0("^(", intToUtf8(0x2264L), intToUtf8(0x2212L), g, "|", intToUtf8(0x2265L), g, ")$") }))
 NUMBER <- "(?<![A-Za-z0-9.])\u2212?[0-9]+(?:\\.[0-9]+)?(?:e[-+\u2212]?[0-9]+)?"
 PURE_NUMBER <- "^\u2212?[0-9]+(\\.[0-9]+)?$"
 SUPERSCRIPT <- c("\u2212", "1", "2", "\u22121")   # plotmath h^-1 and R^2, drawn below 6 pt
@@ -189,7 +192,9 @@ test_that("the candidate contract is candidate-only and declares every panel com
   expect_equal(CT$entry_point, "figures/behaviour_v101_s30_candidates.R")
   expect_equal(CT$annotation_map, "figures/behaviour_v101_s30_annotation_map.csv")
   expect_setequal(KEYS, c("figure_01_option1", "figure_01_option2", "figure_01_option2_nature", "figure_01_option3_nature", "figure_01_option3_panel_d", "figure_01_option3b_nature", "light_phase_panel", "light_dependence_ed",
-                          "cookie_ed", "screen_summary", "ed_behaviour_longitudinal_light", "ed_behaviour_cookie"))
+                          "cookie_ed", "screen_summary", "ed_behaviour_longitudinal_light", "ed_behaviour_cookie",
+                          "ed_behaviour_domain_heatmap_picked", "ed_behaviour_domain_heatmap_all5min",
+                          "ed_behaviour_domain_heatmap_all10min", "ed_behaviour_hmm"))
   lib_code <- unlist(lapply(BEHAVIOUR_LIBS, readLines, warn = FALSE))
   JITTERED <- c("f1_panel_combz", "f1_panel_cc1", "s30_panel_light_measure", "s30_panel_light_phase", "s30_panel_cookie_rs")
   for (k in KEYS) {
@@ -418,7 +423,7 @@ text_tokens <- function(line) {
   s <- gsub("`[^`]*`", " ", line)                                           # code spans: ids, formulas, paths
   s <- gsub("(ebb|s30b)_v[0-9_a-z]+|v1\\.0(\\.[01])?(_be71e2f)?|\\bbe71e2f\\b", " ", s, perl = TRUE)  # bundle / config ids
   s <- gsub(paste0("\\b(CC[1-4]|B[1-6]|P25|EPM\\+[12]|S-TR-ORG|P-CC1|P-TR|F\\(3, df\\)|Fig\\. [0-9]+[a-z]?|",
-                   "Figure [0-9]+|Stage (09|29|30)|\u00a7[0-9A-Z]+)"), " ", s, perl = TRUE)    # labels with digits
+                   "Figure [0-9]+|Stage (09|14|29|30)|\u00a7[0-9A-Z]+)"), " ", s, perl = TRUE)    # labels with digits
   regmatches(s, gregexpr("(?<![A-Za-z0-9.])\u2212?[0-9]+(?:[.,][0-9]+)?", s, perl = TRUE))[[1]]
 }
 

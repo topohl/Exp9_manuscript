@@ -71,7 +71,8 @@ PANELS <- c("nature_v2_figure_utils.R", "final_truth_v9_panels.R", "final_truth_
             "manuscript_figure_utils.R", "behaviour_figure_style.R", "behaviour_figure1_panels.R",
             "behaviour_figure1_nature_panels.R", "behaviour_figure1_option3_panels.R",
             "behaviour_figure1_option3b_panels.R", "behaviour_s30_cookie_panels.R", "behaviour_s30_edx_panels.R",
-            "behaviour_s30_light_panels.R", "behaviour_s30_screen_panels.R", "cc4_phase_groups_candidate.R",
+            "behaviour_s30_light_panels.R", "behaviour_s30_screen_panels.R", "behaviour_stage14_panels.R",
+            "cc4_phase_groups_candidate.R",
             "cc4_phase_groups_nature.R", "cc4_phenotype_candidate.R")
 FIGURES <- c("figure_01_panels.R", "extended_data_behaviour_panels.R", "behaviour_v101_s30_candidates.R",
              "figure_03_supplementary_go.R", "figure_03_go_atlas_appendix.R", "final_truth_v9_legends.R",
@@ -91,15 +92,20 @@ testthat::test_that("no canonical or active renderer repeats a palette colour or
 })
 
 testthat::test_that("every signed fill goes through nv_diverging()", {
-  # behaviour option 3 b reads the palette and the fixed z limit itself (the behaviour layer does not source the
-  # proteomics helpers); manuscript_figure_utils.R keeps the legacy m12 render mode that no contract panel reaches
+  # behaviour option 3 b and the Stage 14 candidates read the palette and the fixed limit themselves (the behaviour
+  # layer does not source the proteomics helpers); manuscript_figure_utils.R keeps the legacy m12 render mode that
+  # no contract panel reaches
   allowed <- file.path("R", "panels", c("nature_v2_figure_utils.R", "behaviour_figure1_option3_panels.R",
-                                        "manuscript_figure_utils.R"))
+                                        "behaviour_stage14_panels.R", "manuscript_figure_utils.R"))
   for (f in setdiff(FILES, allowed))
     testthat::expect_false(any(grepl(HAND_BUILT, code_of(f))), info = f)
   o3 <- code_of(file.path("R", "panels", "behaviour_figure1_option3_panels.R"))
   testthat::expect_true(any(grepl("F1O3N_Z_CAP <- as.numeric(F1O3N_PALETTE$diverging_limits$z)", o3, fixed = TRUE)))
   testthat::expect_false(any(grepl('na.value = "white"', o3, fixed = TRUE)))
+  s14 <- code_of(file.path("R", "panels", "behaviour_stage14_panels.R"))
+  testthat::expect_true(any(grepl("S14_G_LIMIT <- as.numeric(S14_PALETTE$diverging_limits$smd)", s14, fixed = TRUE)))
+  testthat::expect_true(any(grepl('S14_PALETTE <- yaml::read_yaml(repo_path("config", "manuscript_palette.yml"))', s14, fixed = TRUE)))
+  testthat::expect_false(any(grepl('na.value = "white"', s14, fixed = TRUE)))
 })
 
 testthat::test_that("everything a contract renderer reaches is held to the same rules, function by function", {

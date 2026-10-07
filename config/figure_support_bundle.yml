@@ -1,7 +1,7 @@
-bundle_id: fsb_v2_20260930_a23d699
-manifest_sha256: c59c500f248fba0873df3b1c2661d3f63ce81b2deec63bb7225e320db608e9c5
+bundle_id: fsb_v3_20261007_a2acd57
+manifest_sha256: bbf2de27282be4a8448dea020b6872e698e2cbf53a1811432118f5b58c6a098c
 registry_status: FROZEN
-mmm_git_commit: a23d6996f3c1776eb63ba66274635cf56435534f
+mmm_git_commit: a2acd578707238ae485d8e19acac0c37ae311bea
 stage29_bundle_id: ebb_v101_20260929_b2ce507
 stage29_bundle_manifest_sha256: ec59aa337fc63511de4aa2bf3e1ee1f4b34b84d6d671565f74e0bb3939f7226c
 combz_table_sha256: 1f6a2a69c6b0781b8de8da50ecdadf309b62bbc9c82106c0fa91d18119a7de54
@@ -12,8 +12,12 @@ scientific_recomputation: none; descriptive cage means and the frozen CombZ stan
   from them by the frozen rule of Analysis/build_later_outcome_combz.R and equals
   the stored CombZ within 1e-12. P1 / P1b / P1c are verbatim copies of the hash-gated
   post hoc run 29b (registry POSTHOC_CON_CONTRASTS v1.0), whose model was fitted there
-  once; nothing is fitted, tested or adjusted in this bundle
-created_at: 2026-09-30T16:01:37+0200
+  once; nothing is fitted, tested or adjusted in this bundle. D1 is a verbatim copy
+  of the Stage 14 domain-heatmap source table and M1-M4 are the stored Stage 14 HMM
+  figure tables of the run promoted 2026-10-06c (display labels joined, a rank, the
+  Wald interval from the stored estimate and SE, and dwell-time counts in fixed bins);
+  no model is fitted, no test run, nothing smoothed and no p or q value produced here
+created_at: 2026-10-07T14:20:09+0200
 producer: topohl/MMMSociability Analysis/16c_figure_support_bundle.R
-imported_at: 2026-09-30T16:11:17+0200
+imported_at: 2026-10-07T14:22:22+0200
 importer: tools/import_figure_support_bundle.R
