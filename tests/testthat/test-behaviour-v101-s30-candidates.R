@@ -17,7 +17,9 @@ GEN <- "behaviour_v101_s30"
 CONTRACT_PATH <- repo("figures", "figure_behaviour_v101_s30_contract.yml")
 ENTRY <- repo("figures", "behaviour_v101_s30_candidates.R")
 MAP_PATH <- repo("figures", "behaviour_v101_s30_annotation_map.csv")
-CANON_MAP_PATH <- repo("figures", "figure_01_annotation_map.csv")
+# The option candidates were drawn as alternatives to the six-panel ebb_v101 Figure 1 (promoted 6a5cf75); their keys copy
+# that figure's map, kept as it was when the canonical Figure 1 moved to the consolidated layout (2026-10-12).
+CANON_MAP_PATH <- repo("figures", "figure_01_annotation_map_ebb_v101_six_panel.csv")
 BEHAVIOUR_LIBS <- sort(list.files(repo("R", "panels"), pattern = "^behaviour_.*[.][Rr]$", full.names = TRUE))
 CT <- yaml::read_yaml(CONTRACT_PATH)
 KEYS <- names(CT$candidates)
