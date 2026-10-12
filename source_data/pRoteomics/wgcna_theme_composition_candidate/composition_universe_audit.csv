@@ -1,0 +1,4 @@
+dataset,n_wgcna_included,n_ranked_protein_groups,n_ranked_genes,n_gsea_go_bp_comparisons,n_genes_per_comparison_min,n_genes_per_comparison_max,n_wgcna_and_ranked,n_primary_universe,n_tested_go_terms,n_modules,n_multi_module_supermodules,theme_registry_version,org_Mm_eg_db_version
+neuron_neuropil,5026,4968,4967,30,4967,4967,4968,4681,3710,15,4,manuscript_go_themes_v3,3.22.0
+neuron_soma,5514,5449,5448,12,5448,5448,5448,5125,3859,7,2,manuscript_go_themes_v3,3.22.0
+microglia,5201,5140,5139,12,5139,5139,5140,4849,3789,13,3,manuscript_go_themes_v3,3.22.0

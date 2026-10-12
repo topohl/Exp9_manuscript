@@ -1,0 +1,49 @@
+dataset,supermodule_id,module_id,n_proteins,n_core_kME_0.6,n_in_primary_universe,canonical_display_label,peak_unit,spatial_tau,bilateral_reproducibility_class,n_member_modules,is_multi_module_supermodule,carried_themes,top_theme,top_theme_share,top_theme_fold,top_theme_frac_module
+microglia,SM01,WGCNA_m05,36,30,35,"WGCNA_m05
+Actin / synaptic regulation",ca2,0.567750709118053,reproducible_level_and_pattern,2,TRUE,synaptic_signaling_vesicle,synaptic_signaling_vesicle,0.0197693574958814,2.73890327135797,0.342857142857143
+microglia,SM01,WGCNA_m10,30,26,30,"WGCNA_m10
+Actin remodeling",ca1,0.5813929053566184,reproducible_level_and_pattern,2,TRUE,,,,,
+microglia,SM02,WGCNA_m03,863,434,791,"WGCNA_m03
+Microtubule / secretion",ca3,0.616829053104818,reproducible_level_and_pattern,1,FALSE,,,,,
+microglia,SM03,WGCNA_m04,118,107,110,"WGCNA_m04
+Synaptic vesicle endocytosis",ca1,0.5812994453350305,reproducible_level_and_pattern,3,TRUE,synaptic_signaling_vesicle,synaptic_signaling_vesicle,0.0411861614497529,1.81556088063502,0.227272727272727
+microglia,SM03,WGCNA_m08,915,495,845,"WGCNA_m08
+Synapse/postsynaptic signaling",ca1,0.8388484999986269,reproducible_level_and_pattern,3,TRUE,,,,,
+microglia,SM03,WGCNA_m12,140,121,135,"WGCNA_m12
+Endomembrane/Ca2+ transport",ca3,0.5557207255527977,reproducible_level_and_pattern,3,TRUE,autophagy_lysosome_endosome;synaptic_signaling_vesicle,autophagy_lysosome_endosome,0.0563991323210412,2.0257732787017,0.192592592592593
+microglia,SM04,WGCNA_m09,64,26,60,"WGCNA_m09
+Metabolic / structural",ca2,0.8472101161450961,reproducible_level_and_pattern,1,FALSE,,,,,
+microglia,SM05,WGCNA_m13,45,31,42,"WGCNA_m13
+ER biogenesis / proteostasis",ca3,0.7117041590923985,reproducible_level_and_pattern,1,FALSE,,,,,
+microglia,SM06,WGCNA_m01,2478,1064,2321,"WGCNA_m01
+Mitochondrial translation/OXPHOS",dg,0.8052912238465498,reproducible_level_and_pattern,1,FALSE,mitochondrial_respiration_oxphos,mitochondrial_respiration_oxphos,0.763485477178423,1.59506293788805,0.0792761740629039
+microglia,SM07,WGCNA_m02,176,138,161,"WGCNA_m02
+Membrane / ion handling",ca3,0.6671127626026948,reproducible_level_and_pattern,1,FALSE,,,,,
+microglia,SM08,WGCNA_m06,37,30,34,"WGCNA_m06
+Basement membrane/ECM",ca2,0.38764134338413836,poor_bilateral_reproducibility,1,FALSE,neuron_projection_development,neuron_projection_development,0.0158730158730159,2.26377217553688,0.294117647058824
+microglia,SM09,WGCNA_m07,58,56,54,"WGCNA_m07
+Cytosolic translation",dg,0.8769529929687798,reproducible_level_and_pattern,2,TRUE,ribosome_translation;rna_processing_splicing_rnp,ribosome_translation,0.102620087336245,9.21490376839722,0.87037037037037
+microglia,SM09,WGCNA_m11,241,119,231,"WGCNA_m11
+RNA splicing/RNP processing",ca1,0.7640516883079794,poor_bilateral_reproducibility,2,TRUE,rna_processing_splicing_rnp;chromatin_organization,rna_processing_splicing_rnp,0.332512315270936,6.97987972618514,0.584415584415584
+neuron_neuropil,SM01,WGCNA_m15,34,16,33,WGCNA_m15 · barrier / cell-junction structural module,dg_po,0.598102401153167,poor_bilateral_reproducibility,1,FALSE,,,,,
+neuron_neuropil,SM02,WGCNA_m01,579,356,539,WGCNA_m01 · synaptic/cytoskeletal trafficking,ca1_sr,0.38335020449263485,reproducible_level_and_pattern,3,TRUE,neuron_projection_development,neuron_projection_development,0.202875399361022,1.76189191912606,0.235621521335807
+neuron_neuropil,SM02,WGCNA_m09,228,121,208,WGCNA_m09 · synaptic/cytoskeletal trafficking,ca1_sr,0.47850888405204867,reproducible_level_and_pattern,3,TRUE,,,,,
+neuron_neuropil,SM02,WGCNA_m10,494,333,463,WGCNA_m10 · synaptic/cytoskeletal trafficking,ca1_sr,0.3921537823848364,reproducible_level_and_pattern,3,TRUE,,,,,
+neuron_neuropil,SM03,WGCNA_m02,1428,646,1346,WGCNA_m02 · mitochondrial / energy metabolism,ca1_slm,0.65377215445347,reproducible_level_and_pattern,2,TRUE,mitochondrial_respiration_oxphos,mitochondrial_respiration_oxphos,0.770833333333333,2.68073613174839,0.137444279346211
+neuron_neuropil,SM03,WGCNA_m07,37,33,34,WGCNA_m07 · mitochondrial / energy metabolism,ca2_slm,0.4501987001019342,reproducible_level_and_pattern,2,TRUE,,,,,
+neuron_neuropil,SM04,WGCNA_m11,89,61,78,WGCNA_m11 · synaptic/cytoskeletal trafficking,ca3_so,0.7241203561630938,reproducible_level_and_pattern,1,FALSE,,,,,
+neuron_neuropil,SM05,WGCNA_m12,304,220,282,WGCNA_m12 · translation / proteostasis,dg_po,0.8230969989385586,poor_bilateral_reproducibility,1,FALSE,rna_processing_splicing_rnp;chromatin_organization;ribosome_translation,rna_processing_splicing_rnp,0.445454545454545,7.39422952933591,0.521276595744681
+neuron_neuropil,SM06,WGCNA_m03,262,177,247,WGCNA_m03 · RNA/RNP regulatory module,ca1_sr,0.430783066614499,reproducible_level_and_pattern,2,TRUE,,,,,
+neuron_neuropil,SM06,WGCNA_m06,367,178,335,WGCNA_m06 · translation / proteostasis,dg_po,0.710315862423037,reproducible_level_and_pattern,2,TRUE,,,,,
+neuron_neuropil,SM07,WGCNA_m04,289,141,266,WGCNA_m04 · synaptic/cytoskeletal trafficking,ca1_sr,0.40363815008076315,reproducible_level_and_pattern,5,TRUE,autophagy_lysosome_endosome,autophagy_lysosome_endosome,0.108225108225108,1.90451778797643,0.18796992481203
+neuron_neuropil,SM07,WGCNA_m05,603,264,554,WGCNA_m05 · synaptic/cytoskeletal trafficking,dg_po,0.6636161404423885,reproducible_level_and_pattern,5,TRUE,autophagy_lysosome_endosome,autophagy_lysosome_endosome,0.212121212121212,1.79230937534187,0.176895306859206
+neuron_neuropil,SM07,WGCNA_m08,40,33,40,WGCNA_m08 · translation / proteostasis,ca1_sr,0.4331069264854743,reproducible_level_and_pattern,5,TRUE,ribosome_translation,ribosome_translation,0.0252293577981651,2.95246559633028,0.275
+neuron_neuropil,SM07,WGCNA_m13,173,118,160,WGCNA_m13 · mitochondrial / energy metabolism,ca3_so,0.6276582866940403,reproducible_level_and_pattern,5,TRUE,,,,,
+neuron_neuropil,SM07,WGCNA_m14,99,84,96,WGCNA_m14 · translation / proteostasis,ca3_sr,0.602419507573968,reproducible_level_and_pattern,5,TRUE,ribosome_translation,ribosome_translation,0.0504587155963303,2.4603879969419,0.229166666666667
+neuron_soma,SM01,WGCNA_m04,987,619,920,WGCNA_m04 · mitochondrial / energy metabolism,ca3,0.7074013746512025,reproducible_level_and_pattern,2,TRUE,,,,,
+neuron_soma,SM01,WGCNA_m06,1143,614,1059,WGCNA_m06 · mitochondrial / energy metabolism,ca2,0.5831260266867883,reproducible_level_and_pattern,2,TRUE,mitochondrial_respiration_oxphos,mitochondrial_respiration_oxphos,0.546938775510204,2.64689445183172,0.126534466477809
+neuron_soma,SM02,WGCNA_m05,139,127,129,WGCNA_m05 · synaptic/cytoskeletal trafficking,ca1,0.6615600322979797,reproducible_level_and_pattern,2,TRUE,neuron_projection_development;synaptic_signaling_vesicle,neuron_projection_development,0.0529595015576324,2.10401120529353,0.263565891472868
+neuron_soma,SM02,WGCNA_m07,784,481,730,WGCNA_m07 · synaptic/cytoskeletal trafficking,ca1,0.4903671334869433,reproducible_level_and_pattern,2,TRUE,synaptic_signaling_vesicle,synaptic_signaling_vesicle,0.266339869281046,1.86985182200734,0.223287671232877
+neuron_soma,SM03,WGCNA_m02,1905,1152,1760,WGCNA_m02 · RNA/RNP regulatory module,dg,0.8150672051857861,reproducible_level_and_pattern,1,FALSE,rna_processing_splicing_rnp;chromatin_organization,rna_processing_splicing_rnp,0.756505576208178,2.20289265799257,0.23125
+neuron_soma,SM04,WGCNA_m01,354,210,338,WGCNA_m01 · mitochondrial / energy metabolism,ca3,0.8078061229001667,reproducible_level_and_pattern,1,FALSE,,,,,
+neuron_soma,SM05,WGCNA_m03,202,133,189,WGCNA_m03 · synaptic/cytoskeletal trafficking,dg,0.6819187527653003,reproducible_level_and_pattern,1,FALSE,,,,,
