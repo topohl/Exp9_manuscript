@@ -1,0 +1,289 @@
+Sex,Group,from_state,to_state,from_label,to_label,mean_probability,rank_within_sex_group,shown,resolution,source_from_label,source_to_label,stored_row
+Female,CON,2,2,"No position change, co-located","No position change, co-located",0.8079753021453765,1,TRUE,10min_based,"S2
+inactive/low-exploration","S2
+inactive/low-exploration",6
+Female,CON,4,4,"No position change, apart","No position change, apart",0.7450448478964347,2,TRUE,10min_based,"S4
+inactive/low-exploration","S4
+inactive/low-exploration",16
+Female,CON,1,1,Many position changes,Many position changes,0.5601153994168093,3,TRUE,10min_based,"S1
+burst/high-movement","S1
+burst/high-movement",1
+Female,CON,3,3,Few position changes,Few position changes,0.42751998103994326,4,TRUE,10min_based,"S3
+mixed","S3
+mixed",11
+Female,CON,1,3,Many position changes,Few position changes,0.4069590347253354,5,TRUE,10min_based,"S1
+burst/high-movement","S3
+mixed",3
+Female,CON,3,2,Few position changes,"No position change, co-located",0.2941121315994386,6,TRUE,10min_based,"S3
+mixed","S2
+inactive/low-exploration",10
+Female,CON,3,1,Few position changes,Many position changes,0.2669249235009154,7,TRUE,10min_based,"S3
+mixed","S1
+burst/high-movement",9
+Female,CON,4,3,"No position change, apart",Few position changes,0.1910677649484168,8,TRUE,10min_based,"S4
+inactive/low-exploration","S3
+mixed",15
+Female,CON,3,4,Few position changes,"No position change, apart",0.1669424669845152,9,FALSE,10min_based,"S3
+mixed","S4
+inactive/low-exploration",12
+Female,CON,1,2,Many position changes,"No position change, co-located",0.1338733440194539,10,FALSE,10min_based,"S1
+burst/high-movement","S2
+inactive/low-exploration",2
+Female,CON,2,3,"No position change, co-located",Few position changes,0.13091952626890122,11,FALSE,10min_based,"S2
+inactive/low-exploration","S3
+mixed",7
+Female,CON,4,1,"No position change, apart",Many position changes,0.11375994291961466,12,FALSE,10min_based,"S4
+inactive/low-exploration","S1
+burst/high-movement",13
+Female,CON,4,2,"No position change, apart","No position change, co-located",0.09701106253996933,13,FALSE,10min_based,"S4
+inactive/low-exploration","S2
+inactive/low-exploration",14
+Female,CON,2,1,"No position change, co-located",Many position changes,0.08389641340381684,14,FALSE,10min_based,"S2
+inactive/low-exploration","S1
+burst/high-movement",5
+Female,CON,1,4,Many position changes,"No position change, apart",0.06395234125182593,15,FALSE,10min_based,"S1
+burst/high-movement","S4
+inactive/low-exploration",4
+Female,CON,2,4,"No position change, co-located","No position change, apart",0.03258253023059785,16,FALSE,10min_based,"S2
+inactive/low-exploration","S4
+inactive/low-exploration",8
+Female,RES,2,2,"No position change, co-located","No position change, co-located",0.8036531836158887,1,TRUE,10min_based,"S2
+inactive/low-exploration","S2
+inactive/low-exploration",22
+Female,RES,4,4,"No position change, apart","No position change, apart",0.7601190756891575,2,TRUE,10min_based,"S4
+inactive/low-exploration","S4
+inactive/low-exploration",32
+Female,RES,1,1,Many position changes,Many position changes,0.5339160915331708,3,TRUE,10min_based,"S1
+burst/high-movement","S1
+burst/high-movement",17
+Female,RES,1,3,Many position changes,Few position changes,0.4169166031362021,4,TRUE,10min_based,"S1
+burst/high-movement","S3
+mixed",19
+Female,RES,3,3,Few position changes,Few position changes,0.41587004992141385,5,TRUE,10min_based,"S3
+mixed","S3
+mixed",27
+Female,RES,3,2,Few position changes,"No position change, co-located",0.2988957901366916,6,TRUE,10min_based,"S3
+mixed","S2
+inactive/low-exploration",26
+Female,RES,3,1,Few position changes,Many position changes,0.2712056567554102,7,TRUE,10min_based,"S3
+mixed","S1
+burst/high-movement",25
+Female,RES,1,2,Many position changes,"No position change, co-located",0.15237600884602348,8,TRUE,10min_based,"S1
+burst/high-movement","S2
+inactive/low-exploration",18
+Female,RES,4,3,"No position change, apart",Few position changes,0.14339102409498508,9,FALSE,10min_based,"S4
+inactive/low-exploration","S3
+mixed",31
+Female,RES,2,3,"No position change, co-located",Few position changes,0.1221820305200262,10,FALSE,10min_based,"S2
+inactive/low-exploration","S3
+mixed",23
+Female,RES,3,4,Few position changes,"No position change, apart",0.11045284579639168,11,FALSE,10min_based,"S3
+mixed","S4
+inactive/low-exploration",28
+Female,RES,4,1,"No position change, apart",Many position changes,0.0980624077056786,12,FALSE,10min_based,"S4
+inactive/low-exploration","S1
+burst/high-movement",29
+Female,RES,1,4,Many position changes,"No position change, apart",0.08763950256209563,13,FALSE,10min_based,"S1
+burst/high-movement","S4
+inactive/low-exploration",20
+Female,RES,4,2,"No position change, apart","No position change, co-located",0.08522680253215932,14,FALSE,10min_based,"S4
+inactive/low-exploration","S2
+inactive/low-exploration",30
+Female,RES,2,1,"No position change, co-located",Many position changes,0.07604040334604648,15,FALSE,10min_based,"S2
+inactive/low-exploration","S1
+burst/high-movement",21
+Female,RES,2,4,"No position change, co-located","No position change, apart",0.033657176643697884,16,FALSE,10min_based,"S2
+inactive/low-exploration","S4
+inactive/low-exploration",24
+Female,SUS,2,2,"No position change, co-located","No position change, co-located",0.8101475181965005,1,TRUE,10min_based,"S2
+inactive/low-exploration","S2
+inactive/low-exploration",38
+Female,SUS,4,4,"No position change, apart","No position change, apart",0.7652737698357387,2,TRUE,10min_based,"S4
+inactive/low-exploration","S4
+inactive/low-exploration",48
+Female,SUS,1,1,Many position changes,Many position changes,0.543110177273434,3,TRUE,10min_based,"S1
+burst/high-movement","S1
+burst/high-movement",33
+Female,SUS,3,3,Few position changes,Few position changes,0.42476903766764657,4,TRUE,10min_based,"S3
+mixed","S3
+mixed",43
+Female,SUS,1,3,Many position changes,Few position changes,0.4065435632321746,5,TRUE,10min_based,"S1
+burst/high-movement","S3
+mixed",35
+Female,SUS,3,1,Few position changes,Many position changes,0.27107150597999663,6,TRUE,10min_based,"S3
+mixed","S1
+burst/high-movement",41
+Female,SUS,3,2,Few position changes,"No position change, co-located",0.2654402204978903,7,TRUE,10min_based,"S3
+mixed","S2
+inactive/low-exploration",42
+Female,SUS,1,2,Many position changes,"No position change, co-located",0.16262780479939903,8,TRUE,10min_based,"S1
+burst/high-movement","S2
+inactive/low-exploration",34
+Female,SUS,4,3,"No position change, apart",Few position changes,0.13319847930373055,9,FALSE,10min_based,"S4
+inactive/low-exploration","S3
+mixed",47
+Female,SUS,2,3,"No position change, co-located",Few position changes,0.12348955499473005,10,FALSE,10min_based,"S2
+inactive/low-exploration","S3
+mixed",39
+Female,SUS,4,1,"No position change, apart",Many position changes,0.1162461382148516,11,FALSE,10min_based,"S4
+inactive/low-exploration","S1
+burst/high-movement",45
+Female,SUS,3,4,Few position changes,"No position change, apart",0.11392623302119848,12,FALSE,10min_based,"S3
+mixed","S4
+inactive/low-exploration",44
+Female,SUS,4,2,"No position change, apart","No position change, co-located",0.0901757287830281,13,FALSE,10min_based,"S4
+inactive/low-exploration","S2
+inactive/low-exploration",46
+Female,SUS,1,4,Many position changes,"No position change, apart",0.0675627389574151,14,FALSE,10min_based,"S1
+burst/high-movement","S4
+inactive/low-exploration",36
+Female,SUS,2,1,"No position change, co-located",Many position changes,0.06269053865328843,15,FALSE,10min_based,"S2
+inactive/low-exploration","S1
+burst/high-movement",37
+Female,SUS,2,4,"No position change, co-located","No position change, apart",0.032785652934847316,16,FALSE,10min_based,"S2
+inactive/low-exploration","S4
+inactive/low-exploration",40
+Male,CON,2,2,"No position change, co-located","No position change, co-located",0.8100632011917993,1,TRUE,10min_based,"S2
+inactive/low-exploration","S2
+inactive/low-exploration",54
+Male,CON,4,4,"No position change, apart","No position change, apart",0.7874471724142424,2,TRUE,10min_based,"S4
+inactive/low-exploration","S4
+inactive/low-exploration",64
+Male,CON,1,1,Many position changes,Many position changes,0.5368415472912977,3,TRUE,10min_based,"S1
+burst/high-movement","S1
+burst/high-movement",49
+Male,CON,1,3,Many position changes,Few position changes,0.4591769580719478,4,TRUE,10min_based,"S1
+burst/high-movement","S3
+mixed",51
+Male,CON,3,3,Few position changes,Few position changes,0.41952938891934816,5,TRUE,10min_based,"S3
+mixed","S3
+mixed",59
+Male,CON,3,2,Few position changes,"No position change, co-located",0.30286835609040036,6,TRUE,10min_based,"S3
+mixed","S2
+inactive/low-exploration",58
+Male,CON,3,1,Few position changes,Many position changes,0.27238456975642733,7,TRUE,10min_based,"S3
+mixed","S1
+burst/high-movement",57
+Male,CON,4,3,"No position change, apart",Few position changes,0.14991454309887312,8,TRUE,10min_based,"S4
+inactive/low-exploration","S3
+mixed",63
+Male,CON,1,2,Many position changes,"No position change, co-located",0.14540351713849242,9,FALSE,10min_based,"S1
+burst/high-movement","S2
+inactive/low-exploration",50
+Male,CON,4,1,"No position change, apart",Many position changes,0.1250960390895508,10,FALSE,10min_based,"S4
+inactive/low-exploration","S1
+burst/high-movement",61
+Male,CON,2,3,"No position change, co-located",Few position changes,0.12386640585900464,11,FALSE,10min_based,"S2
+inactive/low-exploration","S3
+mixed",55
+Male,CON,4,2,"No position change, apart","No position change, co-located",0.10148665101423963,12,FALSE,10min_based,"S4
+inactive/low-exploration","S2
+inactive/low-exploration",62
+Male,CON,3,4,Few position changes,"No position change, apart",0.09718479690378087,13,FALSE,10min_based,"S3
+mixed","S4
+inactive/low-exploration",60
+Male,CON,2,1,"No position change, co-located",Many position changes,0.083535228133743,14,FALSE,10min_based,"S2
+inactive/low-exploration","S1
+burst/high-movement",53
+Male,CON,1,4,Many position changes,"No position change, apart",0.07013139583268514,15,FALSE,10min_based,"S1
+burst/high-movement","S4
+inactive/low-exploration",52
+Male,CON,2,4,"No position change, co-located","No position change, apart",0.026896801929668743,16,FALSE,10min_based,"S2
+inactive/low-exploration","S4
+inactive/low-exploration",56
+Male,RES,2,2,"No position change, co-located","No position change, co-located",0.7902884977480177,1,TRUE,10min_based,"S2
+inactive/low-exploration","S2
+inactive/low-exploration",70
+Male,RES,4,4,"No position change, apart","No position change, apart",0.7412004479693939,2,TRUE,10min_based,"S4
+inactive/low-exploration","S4
+inactive/low-exploration",80
+Male,RES,1,1,Many position changes,Many position changes,0.4987401418533231,3,TRUE,10min_based,"S1
+burst/high-movement","S1
+burst/high-movement",65
+Male,RES,1,3,Many position changes,Few position changes,0.4746596885740342,4,TRUE,10min_based,"S1
+burst/high-movement","S3
+mixed",67
+Male,RES,3,3,Few position changes,Few position changes,0.455104076488788,5,TRUE,10min_based,"S3
+mixed","S3
+mixed",75
+Male,RES,3,2,Few position changes,"No position change, co-located",0.24865654834649667,6,TRUE,10min_based,"S3
+mixed","S2
+inactive/low-exploration",74
+Male,RES,3,1,Few position changes,Many position changes,0.22809458267140426,7,TRUE,10min_based,"S3
+mixed","S1
+burst/high-movement",73
+Male,RES,4,3,"No position change, apart",Few position changes,0.1753207109852764,8,TRUE,10min_based,"S4
+inactive/low-exploration","S3
+mixed",79
+Male,RES,1,2,Many position changes,"No position change, co-located",0.14117506407891753,9,FALSE,10min_based,"S1
+burst/high-movement","S2
+inactive/low-exploration",66
+Male,RES,2,3,"No position change, co-located",Few position changes,0.13344854115753824,10,FALSE,10min_based,"S2
+inactive/low-exploration","S3
+mixed",71
+Male,RES,3,4,Few position changes,"No position change, apart",0.11158444349992776,11,FALSE,10min_based,"S3
+mixed","S4
+inactive/low-exploration",76
+Male,RES,4,1,"No position change, apart",Many position changes,0.09177053148672379,12,FALSE,10min_based,"S4
+inactive/low-exploration","S1
+burst/high-movement",77
+Male,RES,4,2,"No position change, apart","No position change, co-located",0.09062911738798528,13,FALSE,10min_based,"S4
+inactive/low-exploration","S2
+inactive/low-exploration",78
+Male,RES,1,4,Many position changes,"No position change, apart",0.07618424413746833,14,FALSE,10min_based,"S1
+burst/high-movement","S4
+inactive/low-exploration",68
+Male,RES,2,1,"No position change, co-located",Many position changes,0.06681994092132885,15,FALSE,10min_based,"S2
+inactive/low-exploration","S1
+burst/high-movement",69
+Male,RES,2,4,"No position change, co-located","No position change, apart",0.041419224161962725,16,FALSE,10min_based,"S2
+inactive/low-exploration","S4
+inactive/low-exploration",72
+Male,SUS,2,2,"No position change, co-located","No position change, co-located",0.796408023220911,1,TRUE,10min_based,"S2
+inactive/low-exploration","S2
+inactive/low-exploration",86
+Male,SUS,4,4,"No position change, apart","No position change, apart",0.7492720285979692,2,TRUE,10min_based,"S4
+inactive/low-exploration","S4
+inactive/low-exploration",96
+Male,SUS,1,1,Many position changes,Many position changes,0.5118779075862606,3,TRUE,10min_based,"S1
+burst/high-movement","S1
+burst/high-movement",81
+Male,SUS,3,3,Few position changes,Few position changes,0.44546833913209105,4,TRUE,10min_based,"S3
+mixed","S3
+mixed",91
+Male,SUS,1,3,Many position changes,Few position changes,0.4322929528604296,5,TRUE,10min_based,"S1
+burst/high-movement","S3
+mixed",83
+Male,SUS,3,1,Few position changes,Many position changes,0.2571692193166945,6,TRUE,10min_based,"S3
+mixed","S1
+burst/high-movement",89
+Male,SUS,3,2,Few position changes,"No position change, co-located",0.24837257232902468,7,TRUE,10min_based,"S3
+mixed","S2
+inactive/low-exploration",90
+Male,SUS,4,3,"No position change, apart",Few position changes,0.15982734503767088,8,TRUE,10min_based,"S4
+inactive/low-exploration","S3
+mixed",95
+Male,SUS,1,2,Many position changes,"No position change, co-located",0.14555964836046162,9,FALSE,10min_based,"S1
+burst/high-movement","S2
+inactive/low-exploration",82
+Male,SUS,2,3,"No position change, co-located",Few position changes,0.1259015088648674,10,FALSE,10min_based,"S2
+inactive/low-exploration","S3
+mixed",87
+Male,SUS,4,1,"No position change, apart",Many position changes,0.1150506182414229,11,FALSE,10min_based,"S4
+inactive/low-exploration","S1
+burst/high-movement",93
+Male,SUS,3,4,Few position changes,"No position change, apart",0.1076452798433959,12,FALSE,10min_based,"S3
+mixed","S4
+inactive/low-exploration",92
+Male,SUS,4,2,"No position change, apart","No position change, co-located",0.09075572567296723,13,FALSE,10min_based,"S4
+inactive/low-exploration","S2
+inactive/low-exploration",94
+Male,SUS,1,4,Many position changes,"No position change, apart",0.07461188942434643,14,FALSE,10min_based,"S1
+burst/high-movement","S4
+inactive/low-exploration",84
+Male,SUS,2,1,"No position change, co-located",Many position changes,0.06451366876562646,15,FALSE,10min_based,"S2
+inactive/low-exploration","S1
+burst/high-movement",85
+Male,SUS,2,4,"No position change, co-located","No position change, apart",0.04001088667536741,16,FALSE,10min_based,"S2
+inactive/low-exploration","S4
+inactive/low-exploration",88

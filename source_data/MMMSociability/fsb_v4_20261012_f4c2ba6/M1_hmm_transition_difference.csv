@@ -1,0 +1,289 @@
+Sex,from_state,to_state,from_label,to_label,CON,RES,SUS,contrast,delta_probability,colour_limit,resolution,source_from_label,source_to_label
+Female,1,1,Many position changes,Many position changes,0.5601153994168093,0.5339160915331708,0.543110177273434,SUS - RES,0.009194085740263258,0.05786928564468624,10min_based,"S1
+burst/high-movement","S1
+burst/high-movement"
+Female,1,2,Many position changes,"No position change, co-located",0.1338733440194539,0.15237600884602348,0.16262780479939903,SUS - RES,0.010251795953375553,0.05786928564468624,10min_based,"S1
+burst/high-movement","S2
+inactive/low-exploration"
+Female,1,3,Many position changes,Few position changes,0.4069590347253354,0.4169166031362021,0.4065435632321746,SUS - RES,-0.010373039904027492,0.05786928564468624,10min_based,"S1
+burst/high-movement","S3
+mixed"
+Female,1,4,Many position changes,"No position change, apart",0.06395234125182593,0.08763950256209563,0.0675627389574151,SUS - RES,-0.020076763604680525,0.05786928564468624,10min_based,"S1
+burst/high-movement","S4
+inactive/low-exploration"
+Female,2,1,"No position change, co-located",Many position changes,0.08389641340381684,0.07604040334604648,0.06269053865328843,SUS - RES,-0.013349864692758048,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S1
+burst/high-movement"
+Female,2,2,"No position change, co-located","No position change, co-located",0.8079753021453765,0.8036531836158887,0.8101475181965005,SUS - RES,0.006494334580611882,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S2
+inactive/low-exploration"
+Female,2,3,"No position change, co-located",Few position changes,0.13091952626890122,0.1221820305200262,0.12348955499473005,SUS - RES,0.00130752447470385,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S3
+mixed"
+Female,2,4,"No position change, co-located","No position change, apart",0.03258253023059785,0.033657176643697884,0.032785652934847316,SUS - RES,-0.0008715237088505676,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S4
+inactive/low-exploration"
+Female,3,1,Few position changes,Many position changes,0.2669249235009154,0.2712056567554102,0.27107150597999663,SUS - RES,-0.00013415077541356624,0.05786928564468624,10min_based,"S3
+mixed","S1
+burst/high-movement"
+Female,3,2,Few position changes,"No position change, co-located",0.2941121315994386,0.2988957901366916,0.2654402204978903,SUS - RES,-0.03345556963880131,0.05786928564468624,10min_based,"S3
+mixed","S2
+inactive/low-exploration"
+Female,3,3,Few position changes,Few position changes,0.42751998103994326,0.41587004992141385,0.42476903766764657,SUS - RES,0.008898987746232712,0.05786928564468624,10min_based,"S3
+mixed","S3
+mixed"
+Female,3,4,Few position changes,"No position change, apart",0.1669424669845152,0.11045284579639168,0.11392623302119848,SUS - RES,0.0034733872248067926,0.05786928564468624,10min_based,"S3
+mixed","S4
+inactive/low-exploration"
+Female,4,1,"No position change, apart",Many position changes,0.11375994291961466,0.0980624077056786,0.1162461382148516,SUS - RES,0.01818373050917299,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S1
+burst/high-movement"
+Female,4,2,"No position change, apart","No position change, co-located",0.09701106253996933,0.08522680253215932,0.0901757287830281,SUS - RES,0.0049489262508687765,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S2
+inactive/low-exploration"
+Female,4,3,"No position change, apart",Few position changes,0.1910677649484168,0.14339102409498508,0.13319847930373055,SUS - RES,-0.010192544791254532,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S3
+mixed"
+Female,4,4,"No position change, apart","No position change, apart",0.7450448478964347,0.7601190756891575,0.7652737698357387,SUS - RES,0.005154694146581207,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S4
+inactive/low-exploration"
+Female,1,1,Many position changes,Many position changes,0.5601153994168093,0.5339160915331708,0.543110177273434,SUS - CON,-0.017005222143375298,0.05786928564468624,10min_based,"S1
+burst/high-movement","S1
+burst/high-movement"
+Female,1,2,Many position changes,"No position change, co-located",0.1338733440194539,0.15237600884602348,0.16262780479939903,SUS - CON,0.028754460779945146,0.05786928564468624,10min_based,"S1
+burst/high-movement","S2
+inactive/low-exploration"
+Female,1,3,Many position changes,Few position changes,0.4069590347253354,0.4169166031362021,0.4065435632321746,SUS - CON,-0.00041547149316079057,0.05786928564468624,10min_based,"S1
+burst/high-movement","S3
+mixed"
+Female,1,4,Many position changes,"No position change, apart",0.06395234125182593,0.08763950256209563,0.0675627389574151,SUS - CON,0.0036103977055891717,0.05786928564468624,10min_based,"S1
+burst/high-movement","S4
+inactive/low-exploration"
+Female,2,1,"No position change, co-located",Many position changes,0.08389641340381684,0.07604040334604648,0.06269053865328843,SUS - CON,-0.021205874750528417,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S1
+burst/high-movement"
+Female,2,2,"No position change, co-located","No position change, co-located",0.8079753021453765,0.8036531836158887,0.8101475181965005,SUS - CON,0.002172216051124054,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S2
+inactive/low-exploration"
+Female,2,3,"No position change, co-located",Few position changes,0.13091952626890122,0.1221820305200262,0.12348955499473005,SUS - CON,-0.007429971274171165,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S3
+mixed"
+Female,2,4,"No position change, co-located","No position change, apart",0.03258253023059785,0.033657176643697884,0.032785652934847316,SUS - CON,0.00020312270424946433,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S4
+inactive/low-exploration"
+Female,3,1,Few position changes,Many position changes,0.2669249235009154,0.2712056567554102,0.27107150597999663,SUS - CON,0.004146582479081229,0.05786928564468624,10min_based,"S3
+mixed","S1
+burst/high-movement"
+Female,3,2,Few position changes,"No position change, co-located",0.2941121315994386,0.2988957901366916,0.2654402204978903,SUS - CON,-0.02867191110154832,0.05786928564468624,10min_based,"S3
+mixed","S2
+inactive/low-exploration"
+Female,3,3,Few position changes,Few position changes,0.42751998103994326,0.41587004992141385,0.42476903766764657,SUS - CON,-0.002750943372296699,0.05786928564468624,10min_based,"S3
+mixed","S3
+mixed"
+Female,3,4,Few position changes,"No position change, apart",0.1669424669845152,0.11045284579639168,0.11392623302119848,SUS - CON,-0.05301623396331673,0.05786928564468624,10min_based,"S3
+mixed","S4
+inactive/low-exploration"
+Female,4,1,"No position change, apart",Many position changes,0.11375994291961466,0.0980624077056786,0.1162461382148516,SUS - CON,0.0024861952952369287,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S1
+burst/high-movement"
+Female,4,2,"No position change, apart","No position change, co-located",0.09701106253996933,0.08522680253215932,0.0901757287830281,SUS - CON,-0.006835333756941231,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S2
+inactive/low-exploration"
+Female,4,3,"No position change, apart",Few position changes,0.1910677649484168,0.14339102409498508,0.13319847930373055,SUS - CON,-0.05786928564468624,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S3
+mixed"
+Female,4,4,"No position change, apart","No position change, apart",0.7450448478964347,0.7601190756891575,0.7652737698357387,SUS - CON,0.020228921939304034,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S4
+inactive/low-exploration"
+Female,1,1,Many position changes,Many position changes,0.5601153994168093,0.5339160915331708,0.543110177273434,RES - CON,-0.026199307883638556,0.05786928564468624,10min_based,"S1
+burst/high-movement","S1
+burst/high-movement"
+Female,1,2,Many position changes,"No position change, co-located",0.1338733440194539,0.15237600884602348,0.16262780479939903,RES - CON,0.018502664826569593,0.05786928564468624,10min_based,"S1
+burst/high-movement","S2
+inactive/low-exploration"
+Female,1,3,Many position changes,Few position changes,0.4069590347253354,0.4169166031362021,0.4065435632321746,RES - CON,0.009957568410866702,0.05786928564468624,10min_based,"S1
+burst/high-movement","S3
+mixed"
+Female,1,4,Many position changes,"No position change, apart",0.06395234125182593,0.08763950256209563,0.0675627389574151,RES - CON,0.023687161310269697,0.05786928564468624,10min_based,"S1
+burst/high-movement","S4
+inactive/low-exploration"
+Female,2,1,"No position change, co-located",Many position changes,0.08389641340381684,0.07604040334604648,0.06269053865328843,RES - CON,-0.007856010057770368,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S1
+burst/high-movement"
+Female,2,2,"No position change, co-located","No position change, co-located",0.8079753021453765,0.8036531836158887,0.8101475181965005,RES - CON,-0.004322118529487828,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S2
+inactive/low-exploration"
+Female,2,3,"No position change, co-located",Few position changes,0.13091952626890122,0.1221820305200262,0.12348955499473005,RES - CON,-0.008737495748875015,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S3
+mixed"
+Female,2,4,"No position change, co-located","No position change, apart",0.03258253023059785,0.033657176643697884,0.032785652934847316,RES - CON,0.001074646413100032,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S4
+inactive/low-exploration"
+Female,3,1,Few position changes,Many position changes,0.2669249235009154,0.2712056567554102,0.27107150597999663,RES - CON,0.004280733254494795,0.05786928564468624,10min_based,"S3
+mixed","S1
+burst/high-movement"
+Female,3,2,Few position changes,"No position change, co-located",0.2941121315994386,0.2988957901366916,0.2654402204978903,RES - CON,0.004783658537252988,0.05786928564468624,10min_based,"S3
+mixed","S2
+inactive/low-exploration"
+Female,3,3,Few position changes,Few position changes,0.42751998103994326,0.41587004992141385,0.42476903766764657,RES - CON,-0.01164993111852941,0.05786928564468624,10min_based,"S3
+mixed","S3
+mixed"
+Female,3,4,Few position changes,"No position change, apart",0.1669424669845152,0.11045284579639168,0.11392623302119848,RES - CON,-0.05648962118812352,0.05786928564468624,10min_based,"S3
+mixed","S4
+inactive/low-exploration"
+Female,4,1,"No position change, apart",Many position changes,0.11375994291961466,0.0980624077056786,0.1162461382148516,RES - CON,-0.015697535213936062,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S1
+burst/high-movement"
+Female,4,2,"No position change, apart","No position change, co-located",0.09701106253996933,0.08522680253215932,0.0901757287830281,RES - CON,-0.011784260007810007,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S2
+inactive/low-exploration"
+Female,4,3,"No position change, apart",Few position changes,0.1910677649484168,0.14339102409498508,0.13319847930373055,RES - CON,-0.04767674085343171,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S3
+mixed"
+Female,4,4,"No position change, apart","No position change, apart",0.7450448478964347,0.7601190756891575,0.7652737698357387,RES - CON,0.015074227792722827,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S4
+inactive/low-exploration"
+Male,1,1,Many position changes,Many position changes,0.5368415472912977,0.4987401418533231,0.5118779075862606,SUS - RES,0.013137765732937512,0.05786928564468624,10min_based,"S1
+burst/high-movement","S1
+burst/high-movement"
+Male,1,2,Many position changes,"No position change, co-located",0.14540351713849242,0.14117506407891753,0.14555964836046162,SUS - RES,0.0043845842815440905,0.05786928564468624,10min_based,"S1
+burst/high-movement","S2
+inactive/low-exploration"
+Male,1,3,Many position changes,Few position changes,0.4591769580719478,0.4746596885740342,0.4322929528604296,SUS - RES,-0.04236673571360455,0.05786928564468624,10min_based,"S1
+burst/high-movement","S3
+mixed"
+Male,1,4,Many position changes,"No position change, apart",0.07013139583268514,0.07618424413746833,0.07461188942434643,SUS - RES,-0.001572354713121893,0.05786928564468624,10min_based,"S1
+burst/high-movement","S4
+inactive/low-exploration"
+Male,2,1,"No position change, co-located",Many position changes,0.083535228133743,0.06681994092132885,0.06451366876562646,SUS - RES,-0.0023062721557023935,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S1
+burst/high-movement"
+Male,2,2,"No position change, co-located","No position change, co-located",0.8100632011917993,0.7902884977480177,0.796408023220911,SUS - RES,0.006119525472893295,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S2
+inactive/low-exploration"
+Male,2,3,"No position change, co-located",Few position changes,0.12386640585900464,0.13344854115753824,0.1259015088648674,SUS - RES,-0.007547032292670841,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S3
+mixed"
+Male,2,4,"No position change, co-located","No position change, apart",0.026896801929668743,0.041419224161962725,0.04001088667536741,SUS - RES,-0.0014083374865953152,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S4
+inactive/low-exploration"
+Male,3,1,Few position changes,Many position changes,0.27238456975642733,0.22809458267140426,0.2571692193166945,SUS - RES,0.029074636645290253,0.05786928564468624,10min_based,"S3
+mixed","S1
+burst/high-movement"
+Male,3,2,Few position changes,"No position change, co-located",0.30286835609040036,0.24865654834649667,0.24837257232902468,SUS - RES,-0.0002839760174719874,0.05786928564468624,10min_based,"S3
+mixed","S2
+inactive/low-exploration"
+Male,3,3,Few position changes,Few position changes,0.41952938891934816,0.455104076488788,0.44546833913209105,SUS - RES,-0.009635737356696927,0.05786928564468624,10min_based,"S3
+mixed","S3
+mixed"
+Male,3,4,Few position changes,"No position change, apart",0.09718479690378087,0.11158444349992776,0.1076452798433959,SUS - RES,-0.003939163656531852,0.05786928564468624,10min_based,"S3
+mixed","S4
+inactive/low-exploration"
+Male,4,1,"No position change, apart",Many position changes,0.1250960390895508,0.09177053148672379,0.1150506182414229,SUS - RES,0.023280086754699114,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S1
+burst/high-movement"
+Male,4,2,"No position change, apart","No position change, co-located",0.10148665101423963,0.09062911738798528,0.09075572567296723,SUS - RES,0.00012660828498195498,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S2
+inactive/low-exploration"
+Male,4,3,"No position change, apart",Few position changes,0.14991454309887312,0.1753207109852764,0.15982734503767088,SUS - RES,-0.01549336594760553,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S3
+mixed"
+Male,4,4,"No position change, apart","No position change, apart",0.7874471724142424,0.7412004479693939,0.7492720285979692,SUS - RES,0.00807158062857527,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S4
+inactive/low-exploration"
+Male,1,1,Many position changes,Many position changes,0.5368415472912977,0.4987401418533231,0.5118779075862606,SUS - CON,-0.02496363970503712,0.05786928564468624,10min_based,"S1
+burst/high-movement","S1
+burst/high-movement"
+Male,1,2,Many position changes,"No position change, co-located",0.14540351713849242,0.14117506407891753,0.14555964836046162,SUS - CON,0.00015613122196919682,0.05786928564468624,10min_based,"S1
+burst/high-movement","S2
+inactive/low-exploration"
+Male,1,3,Many position changes,Few position changes,0.4591769580719478,0.4746596885740342,0.4322929528604296,SUS - CON,-0.02688400521151818,0.05786928564468624,10min_based,"S1
+burst/high-movement","S3
+mixed"
+Male,1,4,Many position changes,"No position change, apart",0.07013139583268514,0.07618424413746833,0.07461188942434643,SUS - CON,0.0044804935916612915,0.05786928564468624,10min_based,"S1
+burst/high-movement","S4
+inactive/low-exploration"
+Male,2,1,"No position change, co-located",Many position changes,0.083535228133743,0.06681994092132885,0.06451366876562646,SUS - CON,-0.019021559368116545,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S1
+burst/high-movement"
+Male,2,2,"No position change, co-located","No position change, co-located",0.8100632011917993,0.7902884977480177,0.796408023220911,SUS - CON,-0.013655177970888333,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S2
+inactive/low-exploration"
+Male,2,3,"No position change, co-located",Few position changes,0.12386640585900464,0.13344854115753824,0.1259015088648674,SUS - CON,0.002035103005862751,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S3
+mixed"
+Male,2,4,"No position change, co-located","No position change, apart",0.026896801929668743,0.041419224161962725,0.04001088667536741,SUS - CON,0.013114084745698668,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S4
+inactive/low-exploration"
+Male,3,1,Few position changes,Many position changes,0.27238456975642733,0.22809458267140426,0.2571692193166945,SUS - CON,-0.015215350439732822,0.05786928564468624,10min_based,"S3
+mixed","S1
+burst/high-movement"
+Male,3,2,Few position changes,"No position change, co-located",0.30286835609040036,0.24865654834649667,0.24837257232902468,SUS - CON,-0.05449578376137568,0.05786928564468624,10min_based,"S3
+mixed","S2
+inactive/low-exploration"
+Male,3,3,Few position changes,Few position changes,0.41952938891934816,0.455104076488788,0.44546833913209105,SUS - CON,0.025938950212742895,0.05786928564468624,10min_based,"S3
+mixed","S3
+mixed"
+Male,3,4,Few position changes,"No position change, apart",0.09718479690378087,0.11158444349992776,0.1076452798433959,SUS - CON,0.010460482939615032,0.05786928564468624,10min_based,"S3
+mixed","S4
+inactive/low-exploration"
+Male,4,1,"No position change, apart",Many position changes,0.1250960390895508,0.09177053148672379,0.1150506182414229,SUS - CON,-0.0100454208481279,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S1
+burst/high-movement"
+Male,4,2,"No position change, apart","No position change, co-located",0.10148665101423963,0.09062911738798528,0.09075572567296723,SUS - CON,-0.010730925341272401,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S2
+inactive/low-exploration"
+Male,4,3,"No position change, apart",Few position changes,0.14991454309887312,0.1753207109852764,0.15982734503767088,SUS - CON,0.00991280193879776,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S3
+mixed"
+Male,4,4,"No position change, apart","No position change, apart",0.7874471724142424,0.7412004479693939,0.7492720285979692,SUS - CON,-0.038175143816273294,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S4
+inactive/low-exploration"
+Male,1,1,Many position changes,Many position changes,0.5368415472912977,0.4987401418533231,0.5118779075862606,RES - CON,-0.038101405437974634,0.05786928564468624,10min_based,"S1
+burst/high-movement","S1
+burst/high-movement"
+Male,1,2,Many position changes,"No position change, co-located",0.14540351713849242,0.14117506407891753,0.14555964836046162,RES - CON,-0.004228453059574894,0.05786928564468624,10min_based,"S1
+burst/high-movement","S2
+inactive/low-exploration"
+Male,1,3,Many position changes,Few position changes,0.4591769580719478,0.4746596885740342,0.4322929528604296,RES - CON,0.015482730502086373,0.05786928564468624,10min_based,"S1
+burst/high-movement","S3
+mixed"
+Male,1,4,Many position changes,"No position change, apart",0.07013139583268514,0.07618424413746833,0.07461188942434643,RES - CON,0.006052848304783184,0.05786928564468624,10min_based,"S1
+burst/high-movement","S4
+inactive/low-exploration"
+Male,2,1,"No position change, co-located",Many position changes,0.083535228133743,0.06681994092132885,0.06451366876562646,RES - CON,-0.01671528721241415,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S1
+burst/high-movement"
+Male,2,2,"No position change, co-located","No position change, co-located",0.8100632011917993,0.7902884977480177,0.796408023220911,RES - CON,-0.019774703443781627,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S2
+inactive/low-exploration"
+Male,2,3,"No position change, co-located",Few position changes,0.12386640585900464,0.13344854115753824,0.1259015088648674,RES - CON,0.009582135298533592,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S3
+mixed"
+Male,2,4,"No position change, co-located","No position change, apart",0.026896801929668743,0.041419224161962725,0.04001088667536741,RES - CON,0.014522422232293983,0.05786928564468624,10min_based,"S2
+inactive/low-exploration","S4
+inactive/low-exploration"
+Male,3,1,Few position changes,Many position changes,0.27238456975642733,0.22809458267140426,0.2571692193166945,RES - CON,-0.044289987085023075,0.05786928564468624,10min_based,"S3
+mixed","S1
+burst/high-movement"
+Male,3,2,Few position changes,"No position change, co-located",0.30286835609040036,0.24865654834649667,0.24837257232902468,RES - CON,-0.05421180774390369,0.05786928564468624,10min_based,"S3
+mixed","S2
+inactive/low-exploration"
+Male,3,3,Few position changes,Few position changes,0.41952938891934816,0.455104076488788,0.44546833913209105,RES - CON,0.03557468756943982,0.05786928564468624,10min_based,"S3
+mixed","S3
+mixed"
+Male,3,4,Few position changes,"No position change, apart",0.09718479690378087,0.11158444349992776,0.1076452798433959,RES - CON,0.014399646596146884,0.05786928564468624,10min_based,"S3
+mixed","S4
+inactive/low-exploration"
+Male,4,1,"No position change, apart",Many position changes,0.1250960390895508,0.09177053148672379,0.1150506182414229,RES - CON,-0.033325507602827015,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S1
+burst/high-movement"
+Male,4,2,"No position change, apart","No position change, co-located",0.10148665101423963,0.09062911738798528,0.09075572567296723,RES - CON,-0.010857533626254356,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S2
+inactive/low-exploration"
+Male,4,3,"No position change, apart",Few position changes,0.14991454309887312,0.1753207109852764,0.15982734503767088,RES - CON,0.02540616788640329,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S3
+mixed"
+Male,4,4,"No position change, apart","No position change, apart",0.7874471724142424,0.7412004479693939,0.7492720285979692,RES - CON,-0.046246724444848564,0.05786928564468624,10min_based,"S4
+inactive/low-exploration","S4
+inactive/low-exploration"

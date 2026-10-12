@@ -1,0 +1,9 @@
+event_order,event_id,event_label,source,definition,n_animals,age_min,age_max,unit
+1,shuffle_start,Shuffle start,CC1,first cage change (CC1): the date of the CC1 cage-change time (ebb_v101 V_runtime_gates t0),117,22,29,"postnatal day (event date - date of birth, in days)"
+2,shuffle_stop,Shuffle stop,CC4,end of the active phase after the last regrouping (CC4): the date of the CC4 cage-change time + 1 day,117,35,42,"postnatal day (event date - date of birth, in days)"
+3,sucrose_preference,Sucrose preference test,SucPref,"sucrose preference test window: first to last day, as the workbook records it (SucPref, 'start - end')",117,36,48,"postnatal day (event date - date of birth, in days)"
+4,social_preference,Social preference test,SocPref,social preference test day (SocPref),117,42,49,"postnatal day (event date - date of birth, in days)"
+5,open_field,Open field test,OFT,open field test day (OFT),117,44,51,"postnatal day (event date - date of birth, in days)"
+6,novel_object,Novel object recognition test,NOR,novel object recognition test day (NOR),117,45,52,"postnatal day (event date - date of birth, in days)"
+7,elevated_plus_maze,Elevated plus maze,EPM,elevated plus maze test day (EPM),117,46,53,"postnatal day (event date - date of birth, in days)"
+8,samples,Blood and tissue collection,End date,blood and tissue collection day (End date),117,51,59,"postnatal day (event date - date of birth, in days)"

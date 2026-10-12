@@ -6,7 +6,7 @@ These are draft legends for author review. They describe the design, measures, m
 - Every statistic on the panels, and every estimate, interval, p, q and count that these legends quote, resolves through `figures/behaviour_v101_s30_annotation_map.csv` to one stored cell of one of three bundles:
   - the pinned Stage 29 behaviour bundle `ebb_v101_20260929_b2ce507` (Stage 29 characterisation and Stage 09 registered prediction; configuration v1.0.1);
   - the pinned Stage 30 figure bundle `s30b_v10_20260929_5394f2f` (frozen Stage 30 run `v1.0_be71e2f`, registry v1.0);
-  - the pinned figure-support bundle `fsb_v3_20261007_a2acd57` (descriptive CON cage means and the CombZ components as they enter CombZ, byte-identical to those of `fsb_v1_20260930_f06552c`, options 3 and 3b; the verbatim rows of the MMMSociability post hoc CON, RES and SUS run, option 3b c only; and the Stage 14 domain-heatmap cells and HMM figure tables, ED Z and ED W).
+  - the pinned figure-support bundle `fsb_v4_20261012_f4c2ba6` (descriptive CON cage means and the CombZ components as they enter CombZ, byte-identical to those of `fsb_v1_20260930_f06552c`, options 3 and 3b; the verbatim rows of the MMMSociability post hoc CON, RES and SUS run, option 3b c only; and the Stage 14 domain-heatmap cells and HMM figure tables, ED Z and ED W).
 - Numbers quoted here but not drawn have their own map panels (`light_legend`, `cookie_text`, `screen_legend`, and for option 2 (d) the light-phase panels' keys). Each candidate's source data list them with `src_role = legend`.
 - Some numbers are not bundle cells: registered settings (windows, clock times, thresholds, bout lengths, bootstrap and permutation counts), the design facts that the Figure 1 option legends carry over from the canonical Figure 1 legend (recording lag, P25), and in option 3 the cage-change interval (every 4 days), the three CON cages per sex (checked against the figure-support bundle) and the presentational heatmap cap (±2, the manuscript's fixed *z* limit).
 - Nothing is calculated in this repository. The medians and quartiles on the cookie panel, and the centroid of the cookie regression line, are descriptive summaries computed in MMMSociability and exported in the Stage 30 bundle.
@@ -266,7 +266,7 @@ Class A marks a robust exploratory signal, not a confirmation.
 - **Variants.** The three candidates differ only in resolution: the picked resolution of each domain, all five-minute or all ten-minute.
 - **Not drawn.** The post hoc tests stored with each cell (CON animals as units) and their markers stay in the source data; the effect sizes are descriptive.
 - **n.** Females 12 CON, 28 RES, 18 SUS; males 12 CON, 25 RES, 16 SUS.
-- **Source.** `fsb_v3_20261007_a2acd57` table D1, a verbatim copy of the Stage 14 domain-heatmap table of the promoted run (`2026-10-06`), drawn without recomputation.
+- **Source.** `fsb_v4_20261012_f4c2ba6` table D1, a verbatim copy of the Stage 14 domain-heatmap table of the promoted run (`2026-10-06`), drawn without recomputation.
 
 ---
 
@@ -281,4 +281,4 @@ Class A marks a robust exploratory signal, not a confirmation.
 - **(d) Resolution sensitivity.** The state-architecture contrast of the repeated-measures model at the five- and ten-minute HMM resolutions, with its 95% Wald interval, by sex and phase.
 - **Interpretation.** The inactive-phase states cannot be separated from rest in the position stream, and the HMM layer is exploratory: these panels carry no claim.
 - **n.** Females 12 CON, 28 RES, 18 SUS; males 12 CON, 25 RES, 16 SUS.
-- **Source.** `fsb_v3_20261007_a2acd57` tables M1–M4: the stored Stage 14 transition and resolution tables with display labels, and the stored mean dwell times of the ten-minute HMM counted in bins.
+- **Source.** `fsb_v4_20261012_f4c2ba6` tables M1–M4: the stored Stage 14 transition and resolution tables with display labels, and the stored mean dwell times of the ten-minute HMM counted in bins.
