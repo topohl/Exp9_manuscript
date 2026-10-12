@@ -62,6 +62,7 @@ The **entry point** is what you run: it selects and validates the promoted artef
 | `figures/figure_03_supplementary_go.R` | - | SHARED_SUPPORT |
 | `figures/manuscript_supporting_immunostaining_candidates.R` | - | SHARED_SUPPORT |
 | `figures/manuscript_supporting_immunostaining_panel.R` | - | SHARED_SUPPORT |
+| `figures/wgcna_theme_composition_candidate.R` | - | SHARED_SUPPORT |
 
 ## Panel contracts
 

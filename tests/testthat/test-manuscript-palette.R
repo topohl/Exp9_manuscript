@@ -73,10 +73,11 @@ PANELS <- c("nature_v2_figure_utils.R", "final_truth_v9_panels.R", "final_truth_
             "behaviour_figure1_option3b_panels.R", "behaviour_s30_cookie_panels.R", "behaviour_s30_edx_panels.R",
             "behaviour_s30_light_panels.R", "behaviour_s30_screen_panels.R", "behaviour_stage14_panels.R",
             "cc4_phase_groups_candidate.R",
-            "cc4_phase_groups_nature.R", "cc4_phenotype_candidate.R")
+            "cc4_phase_groups_nature.R", "cc4_phenotype_candidate.R", "wgcna_theme_composition_panels.R")
 FIGURES <- c("figure_01_panels.R", "extended_data_behaviour_panels.R", "behaviour_v101_s30_candidates.R",
              "figure_03_supplementary_go.R", "figure_03_go_atlas_appendix.R", "final_truth_v9_legends.R",
-             "manuscript_supporting_immunostaining_candidates.R", "manuscript_supporting_immunostaining_panel.R")
+             "manuscript_supporting_immunostaining_candidates.R", "manuscript_supporting_immunostaining_panel.R",
+             "wgcna_theme_composition_candidate.R")
 FILES <- c(file.path("R", "panels", PANELS), file.path("figures", FIGURES))
 code_of <- function(f) { x <- readLines(repo(f), warn = FALSE); x[!grepl("^\\s*#", x)] }
 HEXES <- toupper(c(unlist(PAL$group), PAL$diverging$low, PAL$diverging$high,  # current (white excepted)
