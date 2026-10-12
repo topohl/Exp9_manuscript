@@ -5,7 +5,7 @@ figures:
     title: Figure 1
     canonical_publication_id: figure_01
     width_mm: 183
-    height_mm: 238
+    height_mm: 191
     layout_mode: absolute
     manuscript_role: primary_behavioural_figure
     is_numbered_manuscript_figure: true
@@ -14,37 +14,45 @@ figures:
     behaviour_bundle_id: ebb_v101_20260929_b2ce507
     behaviour_config_version: "1.0.1"
     behaviour_config_sha256: 236a1b0827ee5bee9f5a42691f976c8279479e93b67ac9208a590e884ce8eaf7
+    figure_support_bundle_id: fsb_v4_20261012_f4c2ba6
+    figure_support_frozen_at: f4c2ba6764cf0b28e7ee7560d4dc6ad3e005af2d
     source_data_frozen_in: source_data/MMMSociability/ebb_v101_20260929_b2ce507
+    figure_support_source_data_frozen_in: source_data/MMMSociability/fsb_v4_20261012_f4c2ba6
     rendering_repository_computes_statistics: false
     visual_lineage: >-
-      Descends from the original behaviour main figure, whose closest surviving
-      ancestor is MMMSociability Analysis/27_candidate_recompose_behavior_main_figure.R
-      at commit 4b0f90f: the held-out prediction panel with its permutation null,
-      the dashed identity line, the circle/triangle sex encoding and the point and
-      histogram marks. The timeline is authored in that visual language.
+      The layout Tobias assembled by hand on 2026-10-12 from the pipelines' panels and
+      asked to be drawn from them: the design timeline with the behavioural tests and
+      postnatal ages, the option-3 CombZ and component heatmap stacked by sex, the
+      Stage 14 domain heatmap with printed effect sizes, early movement against the
+      outcome by sex, and the held-out prediction with its permutation null as an
+      inset. Group marks are circles coloured by group; panel e adds the
+      circle/triangle sex encoding of the original behaviour main figure.
     scientific_contract_summary: >-
-      Home-cage RFID behaviour of animals later classified resilient or susceptible,
-      in the first active phase after CC1 and across CC1-CC4, and early behaviour
-      versus the later continuous outcome. The primary RES/SUS analyses are SIS-only;
-      CON is descriptive. RFID position-change rate is an index of cage-scale
-      relocation and shared RFID-position occupancy an index of spatial overlap
-      with current cage-mates (configuration v1.0.1 terminology, erratum E8). Group
-      labels are defined from later CombZ, so panels c, d and e are complementary
-      views of overlapping data, not independent replication. All statistics are
-      computed and frozen in MMMSociability (Stage 29, Stage 09; bundled by Stage
-      16b); this repository renders them and computes nothing.
+      Social instability stress and the behavioural tests (a); the later continuous
+      outcome CombZ ("Integrated resilience") and the same-sex control-referenced
+      RES/SUS rule with the six components it averages (b); the Stage 14 behavioural
+      domain effect sizes by phase, sex and contrast with its post hoc markers (c);
+      early movement against the outcome by sex with Stage 09's descriptive
+      sex-stratified Spearman correlation and a post hoc least-squares display line
+      (d); and the registered held-out prediction with its permutation null (e).
+      Group labels are defined from later CombZ, so panels b, d and e are
+      complementary views of overlapping data, not independent replication. All
+      statistics are computed and frozen in MMMSociability (Stages 09, 14, 29, the
+      post hoc run 29c; bundled by Stages 16b and 16c); this repository renders them
+      and computes nothing.
     annotation_map: figures/figure_01_annotation_map.csv
     panels:
       - id: 1a
-        description: Design and timeline
+        description: Design and timeline - social instability stress, the behavioural tests and the postnatal age at each step
         producer_script: figures/figure_01_panels.R
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01a.svg
-        primary_source: source_data/MMMSociability/ebb_v101_20260929_b2ce507/A0_design_timeline.csv
+        primary_source: source_data/MMMSociability/fsb_v4_20261012_f4c2ba6/T1_design_ages.csv
         input_dependencies:
-          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/A0_design_timeline.csv
-        required_columns: [step, event, timing, role, detail, n_animals, n_windows]
+          - source_data/MMMSociability/fsb_v4_20261012_f4c2ba6/T1_design_ages.csv
+          - source_data/MMMSociability/fsb_v4_20261012_f4c2ba6/T1b_design_ages_by_animal.csv
+        required_columns: [event_order, event_id, event_label, source, definition, n_animals, age_min, age_max, unit]
         expected_rows: 8
         scientific_contract: design_schematic_temporal_precedence
         biological_unit: AnimalID
@@ -52,108 +60,82 @@ figures:
         analysis_repository: topohl/MMMSociability
         rendering_repository_computes_statistics: false
         x: 5
-        "y": 5
+        "y": 4
         w: 173
-        h: 36
+        h: 20
       - id: 1b
-        description: Later composite outcome and the same-sex control-referenced classification rule
+        description: Later composite outcome (Integrated resilience) per animal with its six components, by sex, and the same-sex control-referenced classification rule
         producer_script: figures/figure_01_panels.R
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01b.svg
-        primary_source: source_data/MMMSociability/ebb_v101_20260929_b2ce507/A4_combz_animals.csv
+        primary_source: source_data/MMMSociability/fsb_v4_20261012_f4c2ba6/F2_combz_components.csv
         input_dependencies:
-          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/A4_combz_animals.csv
+          - source_data/MMMSociability/fsb_v4_20261012_f4c2ba6/F2_combz_components.csv
+          - source_data/MMMSociability/fsb_v4_20261012_f4c2ba6/F2b_combz_definition.csv
           - source_data/MMMSociability/ebb_v101_20260929_b2ce507/A2b_combz_thresholds.csv
-        required_columns: [AnimalNum, Sex, Batch, Group, CombZ, rfid_tracked]
-        expected_rows: 117
+        required_columns: [AnimalNum, Sex, Batch, Group, component, signed_z, present, CombZ, susceptibility_threshold, below_threshold, heatmap_order_within_sex]
+        expected_rows: 702
         scientific_contract: phenotype_definition_not_independent_validation
         biological_unit: AnimalID
         hemisphere_handling: not_applicable_behavioural
         analysis_repository: topohl/MMMSociability
         rendering_repository_computes_statistics: false
         x: 5
-        "y": 43
-        w: 58
-        h: 66
+        "y": 26
+        w: 118
+        h: 96
       - id: 1c
-        description: First active phase after CC1 - RFID position-change rate and shared RFID-position occupancy by later group within sex
+        description: Stage 14 behavioural domain heatmap - Hedges g by phase, sex and contrast, with the post hoc markers
         producer_script: figures/figure_01_panels.R
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01c.svg
-        primary_source: source_data/MMMSociability/ebb_v101_20260929_b2ce507/A1_animal_cc1.csv
+        primary_source: source_data/MMMSociability/fsb_v4_20261012_f4c2ba6/D1_domain_heatmap_cells.csv
         input_dependencies:
-          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/A1_animal_cc1.csv
-          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/C2_estimates.csv
-          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/E_multiplicity.csv
-        required_columns: [AnimalNum, Sex, Batch, Group, CC, crossing_rate, shared_zone_use]
-        expected_rows: 111
-        scientific_contract: sis_only_res_sus_characterisation_cc1_primary_family_P-CC1
-        statistic: KR estimates from CC1_BY_SEX (per-sex RES-SUS and group means) and CC1_POOLED (Q1 sex difference), Holm over P-CC1 (m = 2)
+          - source_data/MMMSociability/fsb_v4_20261012_f4c2ba6/D1_domain_heatmap_cells.csv
+        required_columns: [heatmap_id, variant, row_key, row_label, display_tier, PhaseClass, Sex, contrast, cell_status, hedges_g, marker, marker_class]
+        expected_rows: 504
+        scientific_contract: descriptive_effect_sizes_with_stored_post_hoc_markers
+        statistic: Hedges g and the post hoc markers as stored by Stage 14 (run promoted 2026-10-06c), all phase blocks, resolution variant picked
         biological_unit: AnimalID
         hemisphere_handling: not_applicable_behavioural
         analysis_repository: topohl/MMMSociability
         rendering_repository_computes_statistics: false
-        x: 65
-        "y": 43
-        w: 113
-        h: 66
+        x: 5
+        "y": 124
+        w: 118
+        h: 64
       - id: 1d
-        description: Active-phase trajectories across CC1-CC4, sex-stratified
+        description: Early movement versus later composite outcome by sex - Stage 09 sex-stratified Spearman correlation and a post hoc least-squares display line
         producer_script: figures/figure_01_panels.R
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01d.svg
-        primary_source: source_data/MMMSociability/ebb_v101_20260929_b2ce507/B1_animal_longitudinal.csv
+        primary_source: source_data/MMMSociability/ebb_v101_20260929_b2ce507/A2_prediction_animals.csv
         input_dependencies:
-          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/B1_animal_longitudinal.csv
-          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/B2_descriptive_summaries.csv
-          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/C2_estimates.csv
-          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/C3_joint_tests.csv
-          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/E_multiplicity.csv
-        required_columns: [AnimalNum, Sex, Batch, Group, CC, crossing_rate, shared_zone_use]
-        expected_rows: 444
-        scientific_contract: sis_only_res_sus_trajectory_primary_family_P-TR_Q2b
-        statistic: KR group means from TR_BY_SEX; Q2b joint KR F from TR_POOLED, Holm over P-TR (m = 2); Q2c is a secondary estimate reported in the legend
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/A2_prediction_animals.csv
+          - source_data/MMMSociability/fsb_v4_20261012_f4c2ba6/E1_movement_combz_spearman_by_sex.csv
+          - source_data/MMMSociability/fsb_v4_20261012_f4c2ba6/E2_movement_combz_fit_lines.csv
+        required_columns: [AnimalNum, Group, Sex, observed_CombZ, heldout_prediction, Movement_mean, crossing_rate_equiv_per_h]
+        expected_rows: 111
+        scientific_contract: descriptive_sex_stratified_association_no_model_fitted_here
+        statistic: Stage 09 sex-stratified Spearman rho of Movement_mean with CombZ, BH q within sex over three features (descriptive, not an interaction test); least-squares display line and 95% band from the post hoc run 29c (registry POSTHOC_MOVEMENT_COMBZ_FIT v1.0; display only, adds no test)
+        colour_encoding: group by colour; the y axis is the score the groups were cut from
         biological_unit: AnimalID
         hemisphere_handling: not_applicable_behavioural
         analysis_repository: topohl/MMMSociability
         rendering_repository_computes_statistics: false
-        x: 5
-        "y": 111
-        w: 173
-        h: 62
+        x: 126
+        "y": 26
+        w: 52
+        h: 96
       - id: 1e
-        description: Early RFID position-change rate versus later composite outcome (refreshed Stage 09)
+        description: Held-out prediction of later composite outcome with its full-refit permutation null (inset)
         producer_script: figures/figure_01_panels.R
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01e.svg
-        primary_source: source_data/MMMSociability/ebb_v101_20260929_b2ce507/A2_prediction_animals.csv
-        input_dependencies:
-          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/A2_prediction_animals.csv
-          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/C2_estimates.csv
-          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/E_multiplicity.csv
-        required_columns: [AnimalNum, Group, Sex, observed_CombZ, heldout_prediction, Movement_mean, crossing_rate_equiv_per_h]
-        expected_rows: 111
-        scientific_contract: primary_association_spearman_no_model_fitted
-        statistic: Stage 09 PR1 Spearman rank correlation of Movement_mean with CombZ, bootstrap CI, BH over three registered features; x shown as 6 x Movement_mean in position changes/h
-        colour_encoding: single colour; the y axis is the score the groups were cut from
-        biological_unit: AnimalID
-        hemisphere_handling: not_applicable_behavioural
-        analysis_repository: topohl/MMMSociability
-        rendering_repository_computes_statistics: false
-        x: 5
-        "y": 175
-        w: 66
-        h: 58
-      - id: 1f
-        description: Held-out prediction of later composite outcome with its full-refit permutation null
-        producer_script: figures/figure_01_panels.R
-        render_mode: copy_svg
-        source_data_mode: copy_csv
-        figure_source: results/figures/manuscript/figure_01_panels/figure_01f.svg
         primary_source: source_data/MMMSociability/ebb_v101_20260929_b2ce507/A3_permutation_draws.csv
         input_dependencies:
           - source_data/MMMSociability/ebb_v101_20260929_b2ce507/A2_prediction_animals.csv
@@ -168,10 +150,10 @@ figures:
         hemisphere_handling: not_applicable_behavioural
         analysis_repository: topohl/MMMSociability
         rendering_repository_computes_statistics: false
-        x: 73
-        "y": 175
-        w: 105
-        h: 58
+        x: 126
+        "y": 124
+        w: 52
+        h: 64
   # PROMOTED IN PHASE 5B. Figures 2 and 3 are the final_truth_v9 generation.
   # The evidence decision was made in the Phase 5 adjudication: of thirteen
   # Results 2/3 claims, seven are supported by both generations, six by v9

@@ -10,6 +10,8 @@
 repo <- function(...) file.path(testthat::test_path("..", ".."), ...)
 source(repo("R", "paths.R"))
 source(repo("R", "behaviour_bundle.R"))
+source(repo("R", "stage30_bundle.R"))
+source(repo("R", "figure_support_bundle.R"))
 PANELS <- repo("results", "figures", "manuscript", "figure_01_panels")
 FIG <- repo("results", "figures", "manuscript", "figure_01")
 RENDERER <- repo("figures", "figure_01_panels.R")
@@ -20,16 +22,21 @@ ENTRY <- repo("figures", "figure_01.R")
 AMAP_PATH <- repo("figures", "figure_01_annotation_map.csv")
 LEGEND <- repo("manuscript", "legends", "figure1_legend.md")
 rd <- function(p) utils::read.csv(p, stringsAsFactors = FALSE)
-have_pin <- file.exists(repo("config", "behaviour_bundle.yml"))
-PANEL_IDS <- c("a", "b", "c", "d", "e", "f")
+have_pin <- file.exists(repo("config", "behaviour_bundle.yml")) && file.exists(repo("config", "figure_support_bundle.yml"))
+# The consolidated layout (2026-10-12): a design and ages, b CombZ and components, c Stage 14 domains, d movement
+# against CombZ by sex, e held-out prediction with its permutation inset.
+PANEL_IDS <- c("a", "b", "c", "d", "e")
 code_of <- function(p) { src <- readLines(p, warn = FALSE); src[!grepl("^[[:space:]]*#", src)] }
+# The table of a map row from the bundle it names (ebb, the behaviour bundle; fsb, the figure-support bundle).
+bundle_table <- function(bundle, table) switch(bundle, ebb = behaviour_bundle_table(table), fsb = fsb_bundle_table(table),
+                                              stop("unknown bundle in the annotation map: ", bundle))
 
 # The renderer's own resolution of one annotation key, re-implemented here only
 # as string handling so the test does not source the renderer.
 resolve <- function(r) {
   kv <- strsplit(strsplit(r$filters, ";", fixed = TRUE)[[1]], "=", fixed = TRUE)
   f <- stats::setNames(lapply(kv, function(x) if (identical(x[[2]], "NA")) NA else x[[2]]), vapply(kv, `[[`, "", 1L))
-  v <- do.call(bundle_cell, c(list(behaviour_bundle_table(r$table), r$column), f))
+  v <- do.call(bundle_cell, c(list(bundle_table(r$bundle, r$table), r$column), f))
   if (grepl("%d", r$format, fixed = TRUE)) v <- as.integer(round(v))
   sub("^-", "\u2212", sprintf(r$format, v))
 }
@@ -54,6 +61,7 @@ test_that("the renderer reads only the pinned bundle and computes nothing", {
   }
   code <- code_of(RENDERER)
   expect_true(any(grepl("behaviour_bundle_verify(PIN)", code, fixed = TRUE)))
+  expect_true(any(grepl("fsb_bundle_verify(FSB)", code, fixed = TRUE)))
   expect_true(any(grepl("bundle_cell", code, fixed = TRUE)))
 })
 
@@ -90,6 +98,7 @@ test_that("every annotation key resolves to exactly one bundle cell", {
   amap <- rd(AMAP_PATH)
   expect_equal(anyDuplicated(amap$key), 0L)
   expect_true(all(sub("^1", "", amap$panel) %in% PANEL_IDS))
+  expect_true(all(amap$bundle %in% c("ebb", "fsb")))
   # (that every key is also printed is proven by the value-for-value test below)
   for (i in seq_len(nrow(amap))) {
     v <- resolve(amap[i, , drop = FALSE])
@@ -135,7 +144,7 @@ test_that("the rendered panels and assembly are vector, not rasterised", {
   expect_true(grepl("data:image/svg+xml", txt, fixed = TRUE))
 })
 
-test_that("the figure contract registers the six bundle-backed panels", {
+test_that("the figure contract registers the five bundle-backed panels", {
   y <- yaml::read_yaml(repo("figures", "figure_contract.yml"))
   e <- y$figures[["01"]]
   expect_true(isTRUE(e$is_numbered_manuscript_figure))
@@ -143,13 +152,17 @@ test_that("the figure contract registers the six bundle-backed panels", {
   expect_equal(e$layout_mode, "absolute")
   ids <- vapply(e$panels, function(p) as.character(p$id), "")
   expect_setequal(ids, paste0("1", PANEL_IDS))
-  skip_if_not(have_pin, "no behaviour bundle pinned")
-  pin <- behaviour_bundle_pin()
+  skip_if_not(have_pin, "no behaviour or figure-support bundle pinned")
+  pin <- behaviour_bundle_pin(); fsb <- fsb_bundle_pin()
   expect_equal(e$behaviour_bundle_id, pin$bundle_id)
+  expect_equal(e$figure_support_bundle_id, fsb$bundle_id)
+  pinned <- paste0("source_data/MMMSociability/", c(pin$bundle_id, fsb$bundle_id), "/")
   for (p in e$panels) {
     expect_equal(as.character(p$producer_script), "figures/figure_01_panels.R")
-    expect_true(startsWith(as.character(p$primary_source), paste0("source_data/MMMSociability/", pin$bundle_id, "/")))
-    expect_true(file.exists(repo(as.character(p$primary_source))))
+    for (src in c(as.character(p$primary_source), unlist(p$input_dependencies))) {
+      expect_true(any(startsWith(src, pinned)), info = src)
+      expect_true(file.exists(repo(src)), info = src)
+    }
   }
 })
 
@@ -165,14 +178,25 @@ test_that("Figure 1 uses the same group palette as Figures 2 and 3", {
                         code, fixed = TRUE)))
   expect_false(any(grepl("NATURE_SEMANTIC_PALETTES$group", code, fixed = TRUE)))
   skip_if_not(dir.exists(PANELS), "figure 1 panels not rendered")
-  ink <- paste(readLines(file.path(PANELS, "figure_01f.svg"), warn = FALSE), collapse = "")
-  for (h in GROUP_V3) expect_true(grepl(h, ink, fixed = TRUE), info = paste("missing group ink", h))
+  for (id in c("b", "d", "e")) {
+    ink <- paste(readLines(file.path(PANELS, paste0("figure_01", id, ".svg")), warn = FALSE), collapse = "")
+    for (h in GROUP_V3) expect_true(grepl(h, ink, fixed = TRUE), info = paste("panel", id, "misses group ink", h))
+  }
 })
 
-test_that("the association panel is not coloured by outcome group", {
-  skip_if_not(dir.exists(PANELS), "figure 1 panels not rendered")
-  ink <- paste(readLines(file.path(PANELS, "figure_01e.svg"), warn = FALSE), collapse = "")
-  for (h in GROUP_V3) expect_false(grepl(h, ink, fixed = TRUE), info = paste("panel e carries group ink", h))
+# The author's layout (2026-10-12) colours the movement-outcome scatter by later group (until then panel e drew it in
+# one colour). Its line and band are the stored rows of the post hoc run 29c (fsb E2), never a fit drawn here.
+test_that("the movement panel draws the bundled display line and its statistics from Stage 09", {
+  lib <- code_of(repo("R", "panels", "behaviour_figure1_v2_panels.R"))
+  expect_true(any(grepl('fsb("E2_movement_combz_fit_lines")', lib, fixed = TRUE)))
+  expect_true(any(grepl("geom_ribbon(data = l, aes(x = x, ymin = ci_low, ymax = ci_high)", lib, fixed = TRUE)))
+  skip_if_not(have_pin, "no figure-support bundle pinned")
+  amap <- rd(AMAP_PATH)
+  d <- amap[amap$panel == "1d", , drop = FALSE]
+  expect_setequal(d$key, c("d_rho_female", "d_rho_male", "d_q_female", "d_q_male"))
+  expect_true(all(d$bundle == "fsb" & d$table == "E1_movement_combz_spearman_by_sex"))
+  e1 <- fsb_bundle_table("E1_movement_combz_spearman_by_sex")
+  expect_true(all(grepl("not an interaction test", e1$CorrelationUse, fixed = TRUE)))
 })
 
 test_that("the legend avoids prohibited wording", {
