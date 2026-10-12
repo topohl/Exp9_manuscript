@@ -15,7 +15,8 @@
 # verbatim rows of the MMM post hoc CON/RES/SUS run 29b, figure_01_option3b_nature
 # panel c, fitted upstream once and labelled post hoc; from fsb_v3 also the Stage 14
 # domain-heatmap cells and HMM figure tables of the run promoted on 2026-10-06, the
-# ed_behaviour_domain_heatmap_* and ed_behaviour_hmm candidates). Every printed
+# ed_behaviour_domain_heatmap_* and ed_behaviour_hmm candidates; fsb_v4 carries those tables
+# byte-identical and adds the Figure 1 tables, which these candidates do not read). Every printed
 # number resolves through the annotation map to exactly one stored cell
 # (bundle_cell). Nothing is fitted, tested, adjusted or summarised here.
 #
@@ -94,8 +95,8 @@ bundles:
   fsb:
     pin: config/figure_support_bundle.yml
     reader: R/figure_support_bundle.R
-    bundle_id: fsb_v3_20261007_a2acd57
-    manifest_sha256: bbf2de27282be4a8448dea020b6872e698e2cbf53a1811432118f5b58c6a098c
+    bundle_id: fsb_v4_20261012_f4c2ba6
+    manifest_sha256: c826dab157a50e7dc1acf7431201faf62675c6f0c2df9d55f6f53dfc5f16363c
 libraries:
   - R/panels/behaviour_figure_style.R
   - R/panels/behaviour_figure1_panels.R
