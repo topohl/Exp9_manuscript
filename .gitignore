@@ -11,3 +11,6 @@ export/*/
 # R graphics device byproduct of running the suite
 Rplots.pdf
 **/Rplots.pdf
+
+# Word lock files, written beside any .docx while it is open
+~$*
