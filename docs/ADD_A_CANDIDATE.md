@@ -12,7 +12,7 @@ A candidate is an analysis result that has been imported and rendered here but i
 
 ## Steps
 
-1. **Freeze upstream.** The producing repository writes a versioned, hash-frozen bundle with a manifest (for the 2026-10-15 result folders this step does not exist yet: they are plain output folders and need a bundle exporter in SISanalyzer first).
+1. **Freeze upstream.** The producing repository writes a versioned, hash-frozen bundle with a manifest. For the SISanalyzer result folders this is `manuscript_bundle/export_bundle.R` there (example: `docs/CONVENTIONAL_TESTS_CANDIDATE.md`).
 2. **Import by hand** with a script in `tools/` named `import_<thing>.R`, taking the upstream output folder and a bundle id (`<prefix>_v<version>_<date>_<commit>`). Copy `tools/import_stage30_bundle.R` as the template: it refuses unregistered or modified bundles and bundles built from a different pinned parent.
 3. **Record the import** in `config/<thing>.yml` and in `provenance/source_manifests/<thing>_manifest.csv`; run `Rscript tools/verify_source_bundles.R`.
 4. **Render** with `figures/<thing>_candidate.R <bundle id> <new output directory>`, using the palette in `config/manuscript_palette.yml` (`docs/MANUSCRIPT_PALETTE.md` explains it).
