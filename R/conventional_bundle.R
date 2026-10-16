@@ -4,8 +4,8 @@
 # hash-listed directory per bundle,
 #   Analysis/SIS_Analysis/bundles/<bundle_id>/
 # registered in BUNDLE_REGISTRY.csv beside it (bundle_id, status, created_at, producer_commit, manifest_sha256).
-# It carries the conventional behaviour tests, the physiology measures, the heterogeneity analysis and the exploratory
-# locomotion analysis: per-animal values, batch-adjusted group means, the contrasts as stored in the SISanalyzer result
+# It carries the conventional behaviour tests, the physiology measures, the heterogeneity analysis, the exploratory
+# locomotion analysis and the manual-versus-automated scoring validation: per-animal values, batch-adjusted group means, the contrasts as stored in the SISanalyzer result
 # workbooks, and provenance. Every statistic is computed upstream; nothing is recomputed here.
 # tools/import_conventional_bundle.R copies one FROZEN bundle, unchanged, into source_data/SISanalyzer/<bundle_id>/,
 # pins it in config/conventional_bundle.yml and records every file hash in
@@ -20,7 +20,8 @@ CTP_IMPORT_MANIFEST <- "provenance/source_manifests/conventional_bundle_manifest
 CTP_REGISTRY_COLUMNS <- c("bundle_id", "status", "created_at", "producer_commit", "manifest_sha256")
 CTP_MANIFEST_COLUMNS <- c("file", "rows", "bytes", "sha256")
 CTP_REQUIRED_FILES <- c("A_measures.csv", "B_values.csv", "C_group_means.csv", "D_contrasts.csv", "E_heterogeneity_summary.csv",
-                        "E_heterogeneity_tails.csv", "F_locomotion_sessions.csv", "H_provenance.csv")
+                        "E_heterogeneity_tails.csv", "F_locomotion_sessions.csv", "F_locomotion_interaction.csv", "G_validation_pairs.csv",
+                        "G_validation_agreement.csv", "H_provenance.csv")
 CTP_PROVENANCE_KEYS <- c("bundle_id", "status", "producer", "producer_commit", "producer_tree_clean", "created_at")
 
 ctp_sha <- function(p) unname(tools::sha256sum(p))
