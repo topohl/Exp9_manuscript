@@ -256,6 +256,27 @@ if (!is.null(cc4)) {
   }
 }
 
+## --------------------------------------------- SISanalyzer conventional-tests figure bundle
+## Verified only when one is pinned (config/conventional_bundle.yml; R/conventional_bundle.R).
+cat("\nSISanalyzer conventional-tests figure bundle\n")
+if (!file.exists(repo_path("config", "conventional_bundle.yml"))) {
+  cat("  pinned bundle      : none (config/conventional_bundle.yml absent; not verified)\n")
+} else {
+  source(repo_path("R", "conventional_bundle.R"))
+  ctp <- tryCatch(ctp_pin(), error = function(e) { note_fail(conditionMessage(e)); NULL })
+  if (!is.null(ctp)) {
+    cat("  pinned bundle      :", ctp$bundle_id, "(SISanalyzer", substr(ctp$producer_commit %||% "", 1, 7), ")\n")
+    okc <- tryCatch(ctp_verify(ctp), error = function(e) { note_fail(conditionMessage(e)); FALSE })
+    if (isTRUE(okc)) {
+      nc <- nrow(utils::read.csv(file.path(ctp_dir(ctp), "00_manifest.csv"), stringsAsFactors = FALSE))
+      cat("  hash-verified      :", nc, "/", nc, "\n")
+      provc <- tryCatch(ctp_provenance(file.path(ctp_dir(ctp), "H_provenance.csv")), error = function(e) { note_fail(conditionMessage(e)); NULL })
+      if (!is.null(provc) && (!identical(provc$status, "FROZEN") || !identical(provc$bundle_id, ctp$bundle_id)))
+        note_fail("the conventional-tests bundle's H_provenance is not FROZEN for", ctp$bundle_id)
+    }
+  }
+}
+
 cat("\n")
 if (problems == 0L) {
   cat("RESULT: PASS - every imported bundle matches its manifest.\n")
