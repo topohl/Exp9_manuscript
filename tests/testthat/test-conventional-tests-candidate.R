@@ -1,4 +1,4 @@
-# The conventional-tests Extended Data candidates (figures/conventional_tests_candidate.R): Extended Data 10 and 11.
+# The conventional-tests Extended Data candidates (figures/conventional_tests_candidate.R): Extended Data 10 to 12.
 #
 # Portable: the pinned SISanalyzer bundle and the panel library only. The entry script is never sourced, so nothing is
 # rendered; each check compares what the panels would draw with the frozen bundle.
@@ -65,27 +65,62 @@ testthat::test_that("the behaviour heatmap shows the main readouts and every mea
   testthat::expect_identical(H$cells$significant, !is.na(H$cells$adj_p) & H$cells$adj_p < .05)
 })
 
-testthat::test_that("the physiology heatmap shows all 19 measures with their stored values", {
+testthat::test_that("the physiology heatmap shows the main readouts and the significant measures with their stored values", {
   ids <- X$measures$id[X$measures$domain == "Physiology"]; testthat::expect_length(ids, 19L)
-  H <- ct_heatmap_data(X, ids); testthat::expect_identical(nrow(H$cells), 19L * 8L)
+  sig <- unique(X$contrasts$id[X$contrasts$id %in% ids & X$contrasts$adj_p < .05])
+  sel <- ct_selected_physiology(X); testthat::expect_setequal(sel, union(MAINS$Physiology, sig))
+  H <- ct_heatmap_data(X, sel); testthat::expect_identical(nrow(H$cells), length(sel) * 8L)
   k <- match(paste(H$cells$Sex, H$cells$id, H$cells$comparison), paste(X$contrasts$Sex, X$contrasts$id, X$contrasts$comparison))
   testthat::expect_false(anyNA(k)); testthat::expect_identical(H$cells$d, X$contrasts$d[k])
 })
 
 testthat::test_that("the locomotion and spread panels restate the stored tables", {
   s <- ct_loco_sessions_data(X)
-  testthat::expect_identical(nrow(s), 6L * 2L * 3L)
-  ix <- s[s$Session == "Locomotion index", ]
+  testthat::expect_identical(nrow(s), 6L * 2L * length(CT_CMP))
+  testthat::expect_false(anyDuplicated(s[c("Session", "Sex", "comparison")]) > 0)
+  ix <- s[s$Session == "Locomotion index", ]; testthat::expect_identical(nrow(ix), 2L * length(CT_CMP))
   k <- match(paste(ix$Sex, ix$comparison), paste(X$contrasts$Sex[X$contrasts$id == "loco_index"], X$contrasts$comparison[X$contrasts$id == "loco_index"]))
-  testthat::expect_identical(ix$d, X$contrasts$d[X$contrasts$id == "loco_index"][k])
+  testthat::expect_false(anyNA(k)); testthat::expect_identical(ix$d, X$contrasts$d[X$contrasts$id == "loco_index"][k])
   testthat::expect_identical(nrow(X$het), 22L)
   testthat::expect_setequal(unique(X$het$Set), c("Score", "Components", "Test readouts"))
   testthat::expect_identical(sort(unique(X$tails$Condition)), c("CON", "SIS"))
 })
 
+testthat::test_that("the validation page draws the stored manual and automated pairs of the same quantity, with the stored r", {
+  V <- ct_validation_data(X)
+  testthat::expect_setequal(unique(V$points$metric), CT_VAL$metric)
+  testthat::expect_false("Open entries vs bouts" %in% V$points$metric)          # a different quantity: not drawn
+  testthat::expect_true(all(X$agree$same_quantity[match(CT_VAL$metric, X$agree$metric)]))
+  keep <- X$val[X$val$same_quantity & is.finite(X$val$sleap) & is.finite(X$val$boris), ]
+  testthat::expect_identical(nrow(V$points), nrow(keep))
+  testthat::expect_identical(V$agree$pearson_r, X$agree$pearson_r[match(CT_VAL$metric, X$agree$metric)])
+  testthat::expect_true(all(V$agree$n == 20L))
+})
+
+testthat::test_that("the automated validation values are the values the tests analyse, and the calibrated pairs are marked", {
+  ids <- c(`Closed-arm time` = "epm_closed_time", `Centre time` = "epm_centre_time", `Nose dips` = "epm_nose_dips", `Novel object` = "nor_novel",
+           `Familiar object` = "nor_familiar", `Total interaction` = "nor_total", `Discrimination D2` = "nor_d2", `S1 novel` = "soc1_novel",
+           `S1 familiar` = "soc1_familiar", `S1 preference` = "soc1_pref", `S2 novel` = "soc2_novel", `S2 familiar` = "soc2_familiar", `S2 preference` = "soc2_pref")
+  for (m in names(ids)) {
+    v <- X$val[X$val$metric == m, ]; b <- X$values[X$values$id == ids[[m]], ]
+    testthat::expect_identical(v$sleap, b$value[match(v$Animal, b$Animal)], info = m)
+  }
+  cal <- X$agree$metric[X$agree$calibrated_on_these_animals]
+  testthat::expect_setequal(cal, c("Nose dips", "Novel object", "Familiar object", "Total interaction", "Discrimination D2"))
+  testthat::expect_true(all(X$agree$manual_source[X$agree$assay == "NOR"] == "raw BORIS exports"))
+})
+
+testthat::test_that("the numbers the legends quote from the locomotion interaction are the stored ones", {
+  L <- paste(readLines(repo_path("manuscript", "candidates", "conventional_tests_v1", "legends.md"), encoding = "UTF-8", warn = FALSE), collapse = " ")
+  i <- X$loco_int[X$loco_int$Test == "Group x sex", ]
+  testthat::expect_true(grepl(sprintf("F(%d, %d) = %.2f, P = %.3f", i$df1, i$df2, i$F, i$p), L, fixed = TRUE))
+  testthat::expect_true(grepl(X$pin$bundle_id, L, fixed = TRUE))
+})
+
 testthat::test_that("the candidate computes no statistic", {
   files <- c(repo_path("R", "conventional_bundle.R"), repo_path("R", "panels", "conventional_tests_panels.R"), repo_path("figures", "conventional_tests_candidate.R"))
   code <- unlist(lapply(files, function(f) { x <- readLines(f, warn = FALSE); x <- gsub('"(\\\\.|[^"\\\\])*"', '""', x, perl = TRUE); sub("#.*$", "", x) }))
-  for (pat in c("(^|[^A-Za-z0-9._])lm\\(", "emmeans", "p\\.adjust", "t\\.test", "cor\\.test", "anova\\(", "(^|[^A-Za-z0-9._])sd\\(", "(^|[^A-Za-z0-9._])var\\(", "quantile\\(", "(^|[^A-Za-z0-9._])mean\\("))
+  for (pat in c("(^|[^A-Za-z0-9._])lm\\(", "emmeans", "p\\.adjust", "t\\.test", "cor\\.test", "(^|[^A-Za-z0-9._])cor\\(", "anova\\(", "(^|[^A-Za-z0-9._])sd\\(",
+                "(^|[^A-Za-z0-9._])var\\(", "quantile\\(", "(^|[^A-Za-z0-9._])mean\\(", "geom_smooth"))
     testthat::expect_false(any(grepl(pat, code, perl = TRUE)), info = pat)
 })

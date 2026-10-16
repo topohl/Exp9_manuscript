@@ -2,7 +2,8 @@
 
 # Importer for the SISanalyzer conventional-tests figure bundle (ctp).
 #
-# The bundle (conventional behaviour tests, physiology, heterogeneity, exploratory locomotion) is owned by SISanalyzer.
+# The bundle (conventional behaviour tests, physiology, heterogeneity, exploratory locomotion, manual-versus-automated
+# scoring validation) is owned by SISanalyzer.
 # Its exporter, manuscript_bundle/export_bundle.R, is the only writer of the bundle: a versioned, hash-listed directory
 #   Analysis/SIS_Analysis/bundles/<bundle_id>/
 # registered in BUNDLE_REGISTRY.csv next to it.

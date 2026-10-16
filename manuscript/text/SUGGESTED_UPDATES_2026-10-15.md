@@ -53,7 +53,7 @@ All analyses below are per sex, except the movement-CombZ correlation and the he
 
 The heterogeneity itself can be stated directly (source: `Analysis/Resilience/Heterogeneity`, added 2026-10-16):
 
-> Stress-exposed animals were more variable than controls rather than shifted as a group: the mean CombZ hardly differed between SIS and CON, but its SD was 1.7 times larger in stress-exposed females and 2.0 times larger in stress-exposed males (Brown-Forsythe p = 0.08 and 0.02). The extra spread sat in the physiological components (in females sucrose preference, weight gain, corticosterone rise and adrenal weight; in males weight gain and corticosterone rise), not in the main readouts of the conventional tests, and it was the same inside the cages after the last regrouping (Extended Data Fig. 11c,d).
+> Stress-exposed animals were more variable than controls rather than shifted as a group: the mean CombZ hardly differed between SIS and CON, but its SD was 1.7 times larger in stress-exposed females and 2.0 times larger in stress-exposed males (Brown-Forsythe p = 0.08 and 0.02). The extra spread sat in the physiological components (in females sucrose preference, weight gain, corticosterone rise and adrenal weight; in males weight gain and corticosterone rise), not in the main readouts of the conventional tests (Extended Data Fig. 11c,d), and it was the same inside the cages after the last regrouping (within-cage SD ratio 1.75 in females and 1.92 in males; source data of Extended Data Fig. 11d).
 
 Keep "suggestive" for females (p = 0.08). In males the adrenal component goes the other way only because of one control value (OQ765, a possible entry error).
 
@@ -67,7 +67,7 @@ Line 18 then needs a weaker claim. Option: "Early movement was associated with l
 
 **3b2. Results 1, exploratory (locomotion and sex).** Source: `Analysis/Resilience/Locomotion` (added 2026-10-16). Label it exploratory; the index was defined after seeing that most nominal group-by-sex interactions are locomotion measures.
 
-> The sexes differed in which outcome group was the more active one. On a locomotion index (distance travelled in the five test sessions, each z-scored against the controls of the same sex), susceptible females moved more than resilient females (d = 0.63, P = 0.048; versus controls d = 0.71, P = 0.07), whereas in males resilient animals moved more than controls (d = 0.73, P = 0.039) and than susceptible males (d = 0.66, P = 0.044); group-by-sex interaction P = 0.020. Stress exposure as such changed locomotion alike in both sexes (condition-by-sex P = 0.92). Within each sex the index correlated with CombZ negatively in females (batch-removed ρ = −0.29, P = 0.033) and positively, not significantly, in males (ρ = 0.19, P = 0.17), the same sign pattern as home-cage movement (Extended Data Fig. 10c,d).
+> The sexes differed in which outcome group was the more active one. On a locomotion index (distance travelled in the five test sessions, each z-scored against the controls of the same sex), susceptible females moved more than resilient females (d = 0.63, P = 0.048; versus controls d = 0.71, P = 0.07), whereas in males resilient animals moved more than controls (d = 0.73, P = 0.039) and than susceptible males (d = 0.66, P = 0.044); group-by-sex interaction P = 0.020 (Extended Data Fig. 10c,d). Stress exposure as such changed locomotion alike in both sexes (condition-by-sex P = 0.92). Within each sex the index correlated with CombZ negatively in females (batch-removed ρ = −0.29, P = 0.033) and positively, not significantly, in males (ρ = 0.19, P = 0.17), the same sign pattern as home-cage movement (`Analysis/Resilience/Locomotion`).
 
 This gives the title's "sex-specific" a concrete, if exploratory, content: the direction of the link between activity and outcome differs by sex.
 
@@ -84,7 +84,7 @@ This gives the title's "sex-specific" a concrete, if exploratory, content: the d
 - lines 6-10: `(ref)` × 2, `(refs)` × 3, and "Romeo & McEwen, 2006" inline; references 3, 4 and 13 are listed but not cited; the docx has 17 numbered references, the md draft 7 author-year references
 - line 25: "Kaulich et al., 2025" is cited inline but is not in the reference list
 - lines 2-3: authors and corresponding authors empty
-- lines 13 and 51: "Supp. Fig. x" (the BORIS comparison; it covers EPM, NOR and social preference, not the open field, and uses the batch 1 subset)
+- lines 13 and 51: "Supp. Fig. x" (the BORIS comparison; it covers EPM, NOR and social preference, not the open field, and uses the batch 1 subset); candidate: Extended Data Fig. 12 (`manuscript/candidates/conventional_tests_v1`)
 - line 52: the sucrose-preference formula is empty ("as: ."); line 53: "(measurements here)" for the social preference arena; line 60: "microvettes (." unfinished
 - lines 33-35: three Discussion headings; the first two have no text, the third has one paragraph (line 36) and bullet notes (line 37)
 - missing from Methods although they feed the primary outcome: the novel object recognition protocol, the CombZ definition and its six components, the weight-gain definition, adrenal and spleen dissection, the corticosterone delta; also section number 2.5.1 appears twice
@@ -110,6 +110,6 @@ This gives the title's "sex-specific" a concrete, if exploratory, content: the d
 
 1. Re-render ED5 and ED9 from `ebb_v101`, or cite the older values with that caveat.
 2. Whether the title and abstract keep "(sex)-specific" and the "distinct paths" statement, given the sources.
-3. Which of 3a-3e go into the Results and which into the Supplement; the conventional-test and physiology results are not in any figure yet.
+3. Which of 3a-3e go into the Results and which into the Supplement; the conventional-test and physiology results are only in the Extended Data 10-12 candidates (not promoted).
 4. Whether the repository should carry a female proteomics plan (nothing in the proteomics can speak to females).
 5. The Stage 33 workbook pin in MMMSociability is stale since the corrections of 2026-10-14/15 (`Analysis/SIS_Analysis/WORKBOOK_LOG.csv`); updating it is a separate step.
