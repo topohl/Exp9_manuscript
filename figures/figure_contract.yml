@@ -1169,27 +1169,38 @@ figures:
     extended_data_number: 5
     canonical_publication_id: extended_data_05
     analysis_repository: topohl/MMMSociability
-    analysis_frozen_at: 53bc7e91f3a837c1814babbf5d2ad19553b12457
-    historical_generation: behavioural_bridge_import
+    analysis_frozen_at: b2ce5072ccbfd94e203fa7efa614dcc11e623337
+    behaviour_bundle_id: ebb_v101_20260929_b2ce507
+    behaviour_config_version: "1.0.1"
+    behaviour_config_sha256: 236a1b0827ee5bee9f5a42691f976c8279479e93b67ac9208a590e884ce8eaf7
+    figure_support_bundle_id: fsb_v4_20261012_f4c2ba6
+    figure_support_frozen_at: f4c2ba6764cf0b28e7ee7560d4dc6ad3e005af2d
+    source_data_frozen_in: source_data/MMMSociability/ebb_v101_20260929_b2ce507
+    figure_support_source_data_frozen_in: source_data/MMMSociability/fsb_v4_20261012_f4c2ba6
+    historical_generation: bundle_render
     rendering_repository_computes_statistics: false
     scientific_contract_summary: >-
       How the early window was actually measured, and the complete a-priori model
-      registry. Coverage is stated as the aggregate the frozen bundle exports; no
+      registry. Coverage is stated as the aggregate Stage 09 exports (fsb E3); no
       per-animal coverage vector exists, so no distribution is drawn. The ladder
-      is shown in registry order, never performance order, and names no winner.
+      (ebb C2, permutation P from E_multiplicity PR2) is shown in registry order,
+      never performance order, and names no winner. Until 2026-10-17 drawn from the
+      bridge contracts of MMMSociability 53bc7e9.
     panels:
       - id: 05a
         description: >-
-          Early-window coverage: animals contributing every expected 10-min slot
-          against those missing leading slots only, with the mean and minimum
-          coverage fraction stated.
+          Early-window coverage (Stage 09): animals contributing every expected
+          10-min slot and any missing slots, with the mean and minimum coverage
+          fraction stated.
         producer_script: figures/extended_data_behaviour_panels.R
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed05a.svg
-        primary_source: manuscript/figure1_bridge_mmmsociability/source_data/figure1a_timeline_source.csv
+        primary_source: source_data/MMMSociability/fsb_v4_20261012_f4c2ba6/E3_early_window_coverage.csv
         input_dependencies:
-          - manuscript/figure1_bridge_mmmsociability/source_data/figure1a_timeline_source.csv
+          - source_data/MMMSociability/fsb_v4_20261012_f4c2ba6/E3_early_window_coverage.csv
+        required_columns: [n_animals, expected_target_slots_per_animal, n_animals_complete, n_animals_missing_leading_only, mean_coverage_fraction, min_coverage_fraction]
+        expected_rows: 1
         scientific_contract: aggregate_coverage_no_per_animal_distribution_available
         biological_unit: AnimalID
         hemisphere_handling: not_applicable_behavioural
@@ -1205,11 +1216,11 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed05b.svg
-        primary_source: manuscript/figure1_bridge_mmmsociability/behavior_prediction_model_ladder.csv
+        primary_source: source_data/MMMSociability/ebb_v101_20260929_b2ce507/C2_estimates.csv
         input_dependencies:
-          - manuscript/figure1_bridge_mmmsociability/behavior_prediction_model_ladder.csv
-        required_columns: [model_id, features, sex_scope, cv_design, loao_r2, repeated_cv_mean_r2, cv_r2_q025, cv_r2_q975, permutation_p, "n", primary_or_exploratory, current_status]
-        expected_rows: 5
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/C2_estimates.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/E_multiplicity.csv
+        required_columns: [source, model_id, construct, estimand, estimate, ci_low, ci_high, "n"]
         scientific_contract: fixed_a_priori_model_registry_no_model_selected_on_performance
         biological_unit: AnimalID
         hemisphere_handling: not_applicable_behavioural
@@ -1230,15 +1241,23 @@ figures:
     extended_data_number: 9
     canonical_publication_id: extended_data_09
     analysis_repository: topohl/MMMSociability
-    analysis_frozen_at: 53bc7e91f3a837c1814babbf5d2ad19553b12457
-    historical_generation: behavioural_bridge_import
+    analysis_frozen_at: b2ce5072ccbfd94e203fa7efa614dcc11e623337
+    behaviour_bundle_id: ebb_v101_20260929_b2ce507
+    behaviour_config_version: "1.0.1"
+    behaviour_config_sha256: 236a1b0827ee5bee9f5a42691f976c8279479e93b67ac9208a590e884ce8eaf7
+    figure_support_bundle_id: fsb_v4_20261012_f4c2ba6
+    figure_support_frozen_at: f4c2ba6764cf0b28e7ee7560d4dc6ad3e005af2d
+    source_data_frozen_in: source_data/MMMSociability/ebb_v101_20260929_b2ce507
+    figure_support_source_data_frozen_in: source_data/MMMSociability/fsb_v4_20261012_f4c2ba6
+    historical_generation: bundle_render
     rendering_repository_computes_statistics: false
     scientific_contract_summary: >-
       The two secondary early features and everything the study can say about
-      sex. Panel a is drawn as effect sizes because the frozen bundle exports
-      per-animal values for Movement_mean only; a scatter for the other two
-      features would require inventing the points. Panels b and c exist to
-      license a negative statement about sex and to block a positive one.
+      sex. Panel a is drawn as effect sizes because the bundle exports
+      per-animal values for Movement_mean only (ebb A2); a scatter for the other
+      two features would require inventing the points. Panels b and c exist to
+      license a negative statement about sex and to block a positive one. Until
+      2026-10-17 drawn from the bridge contracts of MMMSociability 53bc7e9.
     prohibited_wording: female-specific; sex-specific; stronger in females; the effect was driven by females
     panels:
       - id: 09a
@@ -1250,18 +1269,18 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed09a.svg
-        primary_source: manuscript/figure1_bridge_mmmsociability/early_behavior_later_outcome_association.csv
+        primary_source: source_data/MMMSociability/ebb_v101_20260929_b2ce507/C2_estimates.csv
         input_dependencies:
-          - manuscript/figure1_bridge_mmmsociability/early_behavior_later_outcome_association.csv
-        required_columns: [predictor, outcome, "n", rho, ci_low, ci_high, p_raw, q_bh, evidence, primary_or_exploratory]
-        expected_rows: 3
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/C2_estimates.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/E_multiplicity.csv
+        required_columns: [source, model_id, construct, estimand, estimate, ci_low, ci_high, "n"]
         scientific_contract: secondary_feature_associations_effect_size_only
         biological_unit: AnimalID
         hemisphere_handling: not_applicable_behavioural
         representation_note: >-
-          Effect sizes, not scatters. figure1c_movement_combz_source.csv carries
-          per-animal values for Movement_mean only, so per-animal RMSSD and
-          entropy points do not exist in the frozen bundle and are not drawn.
+          Effect sizes, not scatters. ebb A2 carries per-animal values for
+          Movement_mean only, so per-animal RMSSD and entropy points do not exist
+          in the bundle and are not drawn.
         row: 1
         col: 1
         colspan: 2
@@ -1273,11 +1292,11 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed09b.svg
-        primary_source: manuscript/figure1_bridge_mmmsociability/behavior_sex_effect_contract.csv
+        primary_source: source_data/MMMSociability/ebb_v101_20260929_b2ce507/C2_estimates.csv
         input_dependencies:
-          - manuscript/figure1_bridge_mmmsociability/behavior_sex_effect_contract.csv
-        required_columns: [feature, interaction_estimate, interaction_ci_low, interaction_ci_high, interaction_p, interaction_q_bh, female_rho, male_rho, classification, allowed_wording, prohibited_wording]
-        expected_rows: 3
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/C2_estimates.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/E_multiplicity.csv
+        required_columns: [source, model_id, construct, estimand, estimate, ci_low, ci_high, "n"]
         scientific_contract: formal_interaction_test_negative_result_reported_as_such
         biological_unit: AnimalID
         hemisphere_handling: not_applicable_behavioural
@@ -1292,18 +1311,19 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed09c.svg
-        primary_source: manuscript/figure1_bridge_mmmsociability/behavior_sex_effect_contract.csv
+        primary_source: source_data/MMMSociability/fsb_v4_20261012_f4c2ba6/E1_movement_combz_spearman_by_sex.csv
         input_dependencies:
-          - manuscript/figure1_bridge_mmmsociability/behavior_sex_effect_contract.csv
-        required_columns: [feature, female_rho, male_rho, classification, allowed_wording, prohibited_wording]
-        expected_rows: 3
+          - source_data/MMMSociability/fsb_v4_20261012_f4c2ba6/E1_movement_combz_spearman_by_sex.csv
+          - source_data/MMMSociability/ebb_v101_20260929_b2ce507/E_multiplicity.csv
+        required_columns: [Sex, feature, "n", spearman_rho]
+        expected_rows: 6
         scientific_contract: descriptive_stratified_estimates_no_test_no_correction
         biological_unit: AnimalID
         hemisphere_handling: not_applicable_behavioural
         renderer_guard: >-
-          The producer script refuses to render unless every row is classified
-          FORMAL_INTERACTION_NOT_SUPPORTED, because these estimates are only
-          honest as context while that holds.
+          The producer script refuses to render if any feature-by-sex interaction
+          is rejected in its stored family (ebb E_multiplicity PR3), because these
+          estimates are only honest as context while none is.
         row: 2
         col: 2
 
