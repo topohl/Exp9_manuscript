@@ -111,10 +111,26 @@ testthat::test_that("the automated validation values are the values the tests an
 })
 
 testthat::test_that("the numbers the legends quote from the locomotion interaction are the stored ones", {
-  L <- paste(readLines(repo_path("manuscript", "candidates", "conventional_tests_v1", "legends.md"), encoding = "UTF-8", warn = FALSE), collapse = " ")
+  leg <- function(n) paste(readLines(repo_path("manuscript", "legends", sprintf("extended_data_%d_legend.md", n)), encoding = "UTF-8", warn = FALSE), collapse = " ")
   i <- X$loco_int[X$loco_int$Test == "Group x sex", ]
-  testthat::expect_true(grepl(sprintf("F(%d, %d) = %.2f, P = %.3f", i$df1, i$df2, i$F, i$p), L, fixed = TRUE))
-  testthat::expect_true(grepl(X$pin$bundle_id, L, fixed = TRUE))
+  testthat::expect_true(grepl(sprintf("F(%d, %d) = %.2f, P = %.3f", i$df1, i$df2, i$F, i$p), leg(10), fixed = TRUE))
+  for (n in 10:12) testthat::expect_true(grepl(X$pin$bundle_id, leg(n), fixed = TRUE), info = n)
+})
+
+testthat::test_that("the contract and the registry name the pinned bundle and this renderer for Extended Data 10 to 12", {
+  y <- yaml::read_yaml(repo_path("figures", "figure_contract.yml"))$figures
+  reg <- utils::read.csv(repo_path("provenance", "publication_registry", "canonical_publication_registry.csv"), colClasses = "character")
+  for (n in 10:12) {
+    f <- y[[sprintf("ED_%d", n)]]; pid <- sprintf("extended_data_%d", n); r <- reg[reg$publication_id == pid, ]
+    testthat::expect_identical(as.character(f$sisanalyzer_bundle_id), X$pin$bundle_id, info = pid)
+    testthat::expect_identical(as.character(f$canonical_publication_id), pid)
+    testthat::expect_false(isTRUE(f$rendering_repository_computes_statistics))
+    testthat::expect_identical(nrow(r), 1L)
+    testthat::expect_identical(r$contract_key, sprintf("ED_%d", n))
+    testthat::expect_identical(r$originating_analysis, "SISanalyzer")
+    testthat::expect_identical(r$canonical_renderer, "figures/conventional_tests_candidate.R")
+    testthat::expect_identical(r$panels, paste(vapply(f$panels, function(p) as.character(p$id), ""), collapse = ","))
+  }
 })
 
 testthat::test_that("the candidate computes no statistic", {

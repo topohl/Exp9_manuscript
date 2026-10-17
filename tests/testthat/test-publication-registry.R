@@ -30,7 +30,8 @@ testthat::test_that("every numbered publication has exactly one canonical identi
   testthat::expect_setequal(ids, c(
     "figure_01", "figure_02", "figure_03",
     "extended_data_01", "extended_data_03", "extended_data_05",
-    "extended_data_02", "extended_data_06", "extended_data_08", "extended_data_09"))
+    "extended_data_02", "extended_data_06", "extended_data_08", "extended_data_09",
+    "extended_data_10", "extended_data_11", "extended_data_12"))
 })
 
 testthat::test_that("no panel id is reused across publications", {
@@ -49,7 +50,7 @@ testthat::test_that("the registry matches the contract and records the withheld 
   testthat::skip_if_not(file.exists(reg), "registry not generated")
   r <- utils::read.csv(reg, stringsAsFactors = FALSE)
 
-  testthat::expect_identical(sum(r$status == "CANONICAL"), 10L)
+  testthat::expect_identical(sum(r$status == "CANONICAL"), 13L)   # Phase 6A's 10 plus Extended Data 10-12
   withheld <- r[r$status != "CANONICAL", ]
   testthat::expect_setequal(withheld$publication_id,
     c("extended_data_04", "extended_data_07"))
@@ -59,7 +60,7 @@ testthat::test_that("the registry matches the contract and records the withheld 
 
   y <- pub_contract()
   numbered <- Filter(function(f) isTRUE(f$is_numbered_manuscript_figure), y$figures)
-  testthat::expect_identical(length(numbered), 10L)
+  testthat::expect_identical(length(numbered), 13L)
 })
 
 testthat::test_that("the Extended Data promotion audit adjudicates all nine identities", {
@@ -116,7 +117,8 @@ testthat::test_that("the pre-restructure freeze manifest is complete", {
   reg <- repo_rel("provenance", "publication_registry", "canonical_publication_registry.csv")
   testthat::skip_if_not(file.exists(reg), "registry not generated")
   r <- utils::read.csv(reg, stringsAsFactors = FALSE)
-  canon <- r$publication_id[r$status == "CANONICAL"]
+  # Identities created after the freeze (Extended Data 10-12, drawn from the SISanalyzer bundle) cannot be in it.
+  canon <- r$publication_id[r$status == "CANONICAL" & r$originating_analysis != "SISanalyzer"]
   testthat::expect_true(all(canon %in% m$publication_id[!is.na(m$publication_id)]))
 })
 

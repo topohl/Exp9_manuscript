@@ -37,8 +37,9 @@ testthat::test_that("the publication registry is internally coherent", {
   testthat::expect_true(all(nchar(r$hash[canon]) == 64L))
   testthat::expect_true(all(!nzchar(r$rendered_artifact[!canon])))
 
-  # The frozen publication layer: 10 canonical identities, 2 withheld.
-  testthat::expect_identical(sum(canon), 10L)
+  # The publication layer: the 10 canonical identities frozen in Phase 6A plus
+  # Extended Data 10-12 (SISanalyzer bundle, promoted 2026-10-17); 2 withheld.
+  testthat::expect_identical(sum(canon), 13L)
   testthat::expect_identical(sum(!canon), 2L)
   testthat::expect_setequal(r$publication_id[!canon],
                             c("extended_data_04", "extended_data_07"))
