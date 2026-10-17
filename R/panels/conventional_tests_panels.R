@@ -25,7 +25,7 @@ CT_ALPHA <- .9
 
 ct_tx <- function(pt) pt / ggplot2::.pt
 ct_cmp_label <- function(x) sub(" - ", CT_MINUS, x, fixed = TRUE)
-ct_stars <- function(p) ifelse(p < .001, "***", ifelse(p < .01, "**", "*"))
+ct_pnum <- function(p) ifelse(p < .001, "P < 0.001", sprintf("P = %.3f", p))   # the stored adjusted p above a bracket
 #' Axis labels: no trailing zeros, a true minus sign.
 ct_num <- function(x) { s <- format(x, trim = TRUE, drop0trailing = TRUE, scientific = FALSE); s[is.na(x)] <- NA; sub("^-", CT_MINUS, s) }
 
@@ -93,7 +93,7 @@ ct_dot_data <- function(X, ids, sex) {
   b <- X$contrasts[X$contrasts$id %in% ids & X$contrasts$Sex == sex & X$contrasts$comparison %in% CT_CMP[1:3] & !is.na(X$contrasts$adj_p) & X$contrasts$adj_p < .05, , drop = FALSE]
   if (nrow(b)) { b$g1 <- match(sub(" - .*", "", b$comparison), CT_GROUPS); b$g2 <- match(sub(".* - ", "", b$comparison), CT_GROUPS)
     b <- merge(b, rng, by = "id"); b <- b[order(match(b$id, ids), b$comparison), ]; b$level <- stats::ave(seq_len(nrow(b)), b$id, FUN = seq_along)
-    b$y <- b$ytop + b$span * (.08 + .12 * b$level) }
+    b$y <- b$ytop + b$span * (.08 + .15 * b$level) }
   list(points = v, means = m, brackets = b)
 }
 
@@ -109,9 +109,9 @@ ct_dot_block <- function(X, ids, sex, titles, ncol = length(ids), show_titles = 
     ggplot2::scale_y_continuous(labels = ct_num, expand = ggplot2::expansion(mult = c(.06, .08))) +
     ggplot2::facet_wrap(~panel, ncol = ncol, scales = "free_y") +
     ggplot2::labs(x = NULL, y = NULL, title = CT_SEXLAB[[sex]]) + ct_theme(P)
-  if (nrow(D$brackets)) { br <- D$brackets; br$panel <- fac(br$id); br$top <- br$y + br$span * .07
+  if (nrow(D$brackets)) { br <- D$brackets; br$panel <- fac(br$id); br$top <- br$y + br$span * .12
     p <- p + ggplot2::geom_segment(data = br, ggplot2::aes(x = g1 + .08, xend = g2 - .08, y = y, yend = y), inherit.aes = FALSE, linewidth = lw * 1.2, colour = "black") +
-      ggplot2::geom_text(data = br, ggplot2::aes(x = (g1 + g2) / 2, y = y, label = ct_stars(adj_p)), inherit.aes = FALSE, size = ct_tx(T$axis_title_pt + 1), family = T$family, vjust = .1) +
+      ggplot2::geom_text(data = br, ggplot2::aes(x = (g1 + g2) / 2, y = y, label = ct_pnum(adj_p)), inherit.aes = FALSE, size = ct_tx(T$annotation_pt), family = T$family, vjust = -.35) +
       ggplot2::geom_blank(data = br, ggplot2::aes(x = g1, y = top), inherit.aes = FALSE) }
   if (!show_titles) p <- p + ggplot2::theme(strip.text = ggplot2::element_blank())
   if (!show_groups) p <- p + ggplot2::theme(axis.text.x = ggplot2::element_blank())
@@ -241,12 +241,12 @@ ct_ratio_forest <- function(X) {
   h$Sexl <- factor(CT_SEXLAB[h$Sex], CT_SEXLAB); h$Set <- factor(h$Set, c("Score", "Components", "Test readouts"))
   h$Short <- ifelse(h$Measure %in% names(CT_FOREST), unname(CT_FOREST[h$Measure]), h$Measure)
   h$row <- factor(h$Short, levels = rev(unique(h$Short)))
-  lim <- c(.25, 6)   # every stored interval must fit: none is cut at the axis
+  lim <- c(.2, 6)   # every stored interval must fit: none is cut at the axis
   if (any(h$`95% CI low` < lim[1] | h$`95% CI high` > lim[2])) stop("An SD-ratio interval lies outside the forest axis; widen it.", call. = FALSE)
   ggplot2::ggplot(h, ggplot2::aes(`SD ratio SIS / CON`, row)) + ggplot2::geom_vline(xintercept = 1, linewidth = lw, colour = "grey55") +
     ggplot2::geom_linerange(ggplot2::aes(xmin = `95% CI low`, xmax = `95% CI high`), linewidth = lw * 1.8, colour = CT_MEAN) +
     ggplot2::geom_point(shape = 16, size = CT_PT, colour = CT_MEAN) +
-    ggplot2::scale_x_log10(breaks = c(.5, 1, 2, 4), labels = c("0.5", "1", "2", "4"), limits = lim) +
+    ggplot2::scale_x_log10(breaks = c(.25, .5, 1, 2, 4), labels = c("0.25", "0.5", "1", "2", "4"), limits = lim) +
     ggplot2::facet_grid(Set ~ Sexl, scales = "free_y", space = "free_y") +
     ggplot2::labs(x = "SD ratio, SIS / CON", y = NULL) + ct_theme(P) +
     ggplot2::theme(strip.text.y = ggplot2::element_blank(),

@@ -33,19 +33,24 @@
 #        Rscript tools/promote_manuscript_render.R figure_03
 #        Rscript tools/promote_manuscript_render.R figure_02 extended_data_01 extended_data_02 \
 #          extended_data_03 extended_data_06 extended_data_08
+#        Rscript tools/promote_manuscript_render.R extended_data_10 extended_data_11 extended_data_12
+#          (after Rscript figures/conventional_tests_candidate.R --publication at a clean HEAD)
 
 suppressWarnings(source(file.path("R", "paths.R")))
 
 SELF_RENDERED <- c("figure_02", "figure_03", "extended_data_01", "extended_data_02",
-                   "extended_data_03", "extended_data_06", "extended_data_08")
+                   "extended_data_03", "extended_data_06", "extended_data_08",
+                   "extended_data_10", "extended_data_11", "extended_data_12")
+CONVENTIONAL_TESTS <- c("extended_data_10", "extended_data_11", "extended_data_12")   # drawn from the pinned SISanalyzer bundle
 # where the producing layer of each self-rendered identity records its render;
 # one producer draws every Extended Data page, so those share its record
 v9_record <- function(key) c("logs", "manuscript_candidates", "final_truth_v9", key, "render_record.yml")
 PRODUCER_RECORD <- c(
   list(figure_01 = c("logs", "manuscript_figures", "figure_01_panels", "render_record.yml"),
        figure_02 = v9_record("figure_02"), figure_03 = v9_record("figure_03")),
-  sapply(grep("^extended_data_", SELF_RENDERED, value = TRUE),
-         function(id) v9_record("extended_data"), simplify = FALSE))
+  sapply(setdiff(grep("^extended_data_", SELF_RENDERED, value = TRUE), CONVENTIONAL_TESTS),
+         function(id) v9_record("extended_data"), simplify = FALSE),
+  sapply(CONVENTIONAL_TESTS, function(id) c("logs", "manuscript_figures", "conventional_tests", "render_record.yml"), simplify = FALSE))
 
 args <- commandArgs(trailingOnly = TRUE)
 if (!length(args))

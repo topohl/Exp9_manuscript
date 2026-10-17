@@ -1307,6 +1307,91 @@ figures:
         row: 2
         col: 2
 
+
+  # Conventional behaviour tests, physiology and the manual-versus-automated scoring validation, drawn
+  # as whole pages from the pinned SISanalyzer bundle (config/conventional_bundle.yml). Neither computes
+  # anything; promoted through the self-rendered route of tools/promote_manuscript_render.R.
+  ED_10:
+    title: Extended Data Figure 10
+    width_mm: 183
+    height_mm: 170
+    layout_mode: whole_page
+    manuscript_role: behavioural_extended_data
+    is_numbered_manuscript_figure: true
+    extended_data_number: 10
+    canonical_publication_id: extended_data_10
+    analysis_repository: SISanalyzer
+    sisanalyzer_bundle_id: ctp_v4_20261017_30d9df9
+    producing_entry_point: figures/conventional_tests_candidate.R --publication
+    rendering_repository_computes_statistics: false
+    question: >-
+      How do CON, RES and SUS differ in the conventional behaviour tests and in locomotion, in each sex?
+    panels:
+      - id: 10a
+        description: >-
+          Main readout of each test per animal, batch-adjusted group means and 95% intervals; brackets with the adjusted P where it is below 0.05.
+      - id: 10b
+        description: >-
+          Cohen's d of the main readouts and of every measure with an adjusted P below 0.05, four comparisons per sex.
+      - id: 10c
+        description: >-
+          Locomotion index per animal by group (exploratory).
+      - id: 10d
+        description: >-
+          Cohen's d of the distance travelled in each session and of the index (exploratory).
+  ED_11:
+    title: Extended Data Figure 11
+    width_mm: 183
+    height_mm: 170
+    layout_mode: whole_page
+    manuscript_role: behavioural_extended_data
+    is_numbered_manuscript_figure: true
+    extended_data_number: 11
+    canonical_publication_id: extended_data_11
+    analysis_repository: SISanalyzer
+    sisanalyzer_bundle_id: ctp_v4_20261017_30d9df9
+    producing_entry_point: figures/conventional_tests_candidate.R --publication
+    rendering_repository_computes_statistics: false
+    question: >-
+      How do the groups differ in physiology, and is the outcome more variable after stress?
+    panels:
+      - id: 11a
+        description: >-
+          Main physiology readouts per animal, batch-adjusted group means and 95% intervals; brackets with the adjusted P.
+      - id: 11b
+        description: >-
+          Cohen's d of the main readouts and of every physiology measure with an adjusted P below 0.05.
+      - id: 11c
+        description: >-
+          CombZ of CON and SIS animals with the CON mean and one CON SD (the susceptibility cut-off).
+      - id: 11d
+        description: >-
+          SD ratio SIS / CON with residual-bootstrap intervals for CombZ, its components and the other main readouts.
+  ED_12:
+    title: Extended Data Figure 12
+    width_mm: 183
+    height_mm: 64
+    layout_mode: whole_page
+    manuscript_role: behavioural_extended_data
+    is_numbered_manuscript_figure: true
+    extended_data_number: 12
+    canonical_publication_id: extended_data_12
+    analysis_repository: SISanalyzer
+    sisanalyzer_bundle_id: ctp_v4_20261017_30d9df9
+    producing_entry_point: figures/conventional_tests_candidate.R --publication
+    rendering_repository_computes_statistics: false
+    question: >-
+      Does the automated scoring agree with manual scoring of the same videos?
+    panels:
+      - id: 12a
+        description: >-
+          Elevated plus maze: analysed automated values against manual BORIS scores, batch 1.
+      - id: 12b
+        description: >-
+          Novel object recognition: analysed automated values against the raw BORIS exports, batch 1.
+      - id: 12c
+        description: >-
+          Social preference: analysed automated values against manual scores, batch 1.
   # Manuscript-SUPPORTING, not a numbered manuscript figure. This is a
   # candidate-comparison / immunostaining-planning visualisation over three
   # already-nominated proteins. It introduces no new inferential analysis: both
