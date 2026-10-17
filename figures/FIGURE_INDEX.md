@@ -27,6 +27,9 @@ The **entry point** is what you run: it selects and validates the promoted artef
 | extended_data_07 | `figures/final_truth_v9_extended_data.R` | WITHHELD_UNUSED_AND_ARCHIVABLE |
 | extended_data_08 | `figures/final_truth_v9_extended_data.R` | CANONICAL |
 | extended_data_09 | `figures/extended_data_behaviour_panels.R` | CANONICAL |
+| extended_data_10 | `figures/conventional_tests_candidate.R` | CANONICAL |
+| extended_data_11 | `figures/conventional_tests_candidate.R` | CANONICAL |
+| extended_data_12 | `figures/conventional_tests_candidate.R` | CANONICAL |
 
 ## Every file in `figures/`
 
@@ -55,6 +58,7 @@ The **entry point** is what you run: it selects and validates the promoted artef
 | `figures/cc4_phase_groups_nature_candidate.R` | - | SHARED_SUPPORT |
 | `figures/cc4_phase_statistics_candidate.R` | - | SHARED_SUPPORT |
 | `figures/cc4_phenotype_candidate.R` | - | SHARED_SUPPORT |
+| `figures/conventional_tests_candidate.R` | - | SHARED_SUPPORT |
 | `figures/extended_data_behaviour.R` | - | SHARED_SUPPORT |
 | `figures/extended_data_behaviour_panels.R` | - | SHARED_SUPPORT |
 | `figures/extended_data_proteomics.R` | - | SHARED_SUPPORT |
