@@ -1,0 +1,49 @@
+"table","Session","Sex","comparison","d"
+"sessions","Elevated plus maze","Female","RES - CON",0.0954560046311931
+"sessions","Elevated plus maze","Female","SUS - CON",0.787557339204513
+"sessions","Elevated plus maze","Female","RES - SUS",-0.69210133457332
+"sessions","Elevated plus maze","Female","SIS - CON",0.380443821171834
+"sessions","Elevated plus maze","Male","RES - CON",0.808681454290831
+"sessions","Elevated plus maze","Male","SUS - CON",0.499199679231461
+"sessions","Elevated plus maze","Male","RES - SUS",0.30948177505937
+"sessions","Elevated plus maze","Male","SIS - CON",0.683291339250605
+"sessions","Open field","Female","RES - CON",-0.193433302070559
+"sessions","Open field","Female","SUS - CON",-0.0172544175070689
+"sessions","Open field","Female","RES - SUS",-0.17617888456349
+"sessions","Open field","Female","SIS - CON",-0.120685719526612
+"sessions","Open field","Male","RES - CON",0.922947670075761
+"sessions","Open field","Male","SUS - CON",0.487949842979143
+"sessions","Open field","Male","RES - SUS",0.434997827096618
+"sessions","Open field","Male","SIS - CON",0.740437098319064
+"sessions","Novel object","Female","RES - CON",-0.205612745403418
+"sessions","Novel object","Female","SUS - CON",-0.242509863313391
+"sessions","Novel object","Female","RES - SUS",0.0368971179099731
+"sessions","Novel object","Female","SIS - CON",-0.223541507258537
+"sessions","Novel object","Male","RES - CON",0.502268089820181
+"sessions","Novel object","Male","SUS - CON",-0.0551612459767886
+"sessions","Novel object","Male","RES - SUS",0.55742933579697
+"sessions","Novel object","Male","SIS - CON",0.270745586740978
+"sessions","Social preference","Female","RES - CON",-0.074231609921944
+"sessions","Social preference","Female","SUS - CON",0.480619040229068
+"sessions","Social preference","Female","RES - SUS",-0.554850650151012
+"sessions","Social preference","Female","SIS - CON",0.150822553317258
+"sessions","Social preference","Male","RES - CON",0.185133961233418
+"sessions","Social preference","Male","SUS - CON",-0.272666701782431
+"sessions","Social preference","Male","RES - SUS",0.457800663015849
+"sessions","Social preference","Male","SIS - CON",-0.000901975363219417
+"sessions","Social novelty","Female","RES - CON",0.493846192447137
+"sessions","Social novelty","Female","SUS - CON",1.0931629441549
+"sessions","Social novelty","Female","RES - SUS",-0.599316751707765
+"sessions","Social novelty","Female","SIS - CON",0.723071901261321
+"sessions","Social novelty","Male","RES - CON",-0.214640468508857
+"sessions","Social novelty","Male","SUS - CON",-0.122191134288974
+"sessions","Social novelty","Male","RES - SUS",-0.092449334219883
+"sessions","Social novelty","Male","SIS - CON",-0.178563742307636
+"sessions","Locomotion index","Female","RES - CON",0.106101022657024
+"sessions","Locomotion index","Female","SUS - CON",0.592983031346388
+"sessions","Locomotion index","Female","RES - SUS",-0.486882008689364
+"sessions","Locomotion index","Female","SIS - CON",0.311801034767592
+"sessions","Locomotion index","Male","RES - CON",0.695106857145058
+"sessions","Locomotion index","Male","SUS - CON",0.161798573552315
+"sessions","Locomotion index","Male","RES - SUS",0.533308283592743
+"sessions","Locomotion index","Male","SIS - CON",0.470785035205985
