@@ -1,0 +1,89 @@
+"table","Sex","id","label","name","comparison","d","adj_p","significant"
+"heatmap","Female","suc_pref3","Preference, test 3 (%)","Sucrose preference, test 3 (%)","RES - CON",-0.431,0.754,FALSE
+"heatmap","Female","suc_pref3","Preference, test 3 (%)","Sucrose preference, test 3 (%)","SUS - CON",-0.125,0.759,FALSE
+"heatmap","Female","suc_pref3","Preference, test 3 (%)","Sucrose preference, test 3 (%)","RES - SUS",-0.305,0.467,FALSE
+"heatmap","Female","suc_pref3","Preference, test 3 (%)","Sucrose preference, test 3 (%)","SIS - CON",-0.29,0.704,FALSE
+"heatmap","Male","suc_pref3","Preference, test 3 (%)","Sucrose preference, test 3 (%)","RES - CON",0.345,0.703,FALSE
+"heatmap","Male","suc_pref3","Preference, test 3 (%)","Sucrose preference, test 3 (%)","SUS - CON",-0.737,0.212,FALSE
+"heatmap","Male","suc_pref3","Preference, test 3 (%)","Sucrose preference, test 3 (%)","RES - SUS",1.083,0.0188,TRUE
+"heatmap","Male","suc_pref3","Preference, test 3 (%)","Sucrose preference, test 3 (%)","SIS - CON",-0.081,0.813,FALSE
+"heatmap","Female","suc_pref1","Preference, test 1 (%)","Sucrose preference, test 1 (%)","RES - CON",0.497,0.754,FALSE
+"heatmap","Female","suc_pref1","Preference, test 1 (%)","Sucrose preference, test 1 (%)","SUS - CON",-0.281,0.759,FALSE
+"heatmap","Female","suc_pref1","Preference, test 1 (%)","Sucrose preference, test 1 (%)","RES - SUS",0.779,0.134,FALSE
+"heatmap","Female","suc_pref1","Preference, test 1 (%)","Sucrose preference, test 1 (%)","SIS - CON",0.184,0.704,FALSE
+"heatmap","Male","suc_pref1","Preference, test 1 (%)","Sucrose preference, test 1 (%)","RES - CON",-0.22,0.798,FALSE
+"heatmap","Male","suc_pref1","Preference, test 1 (%)","Sucrose preference, test 1 (%)","SUS - CON",-1.053,0.0417,TRUE
+"heatmap","Male","suc_pref1","Preference, test 1 (%)","Sucrose preference, test 1 (%)","RES - SUS",0.833,0.0357,TRUE
+"heatmap","Male","suc_pref1","Preference, test 1 (%)","Sucrose preference, test 1 (%)","SIS - CON",-0.534,0.316,FALSE
+"heatmap","Female","suc_pref","Preference (%)","Sucrose preference, all tests (%)","RES - CON",-0.038,0.914,FALSE
+"heatmap","Female","suc_pref","Preference (%)","Sucrose preference, all tests (%)","SUS - CON",-0.946,0.0693,FALSE
+"heatmap","Female","suc_pref","Preference (%)","Sucrose preference, all tests (%)","RES - SUS",0.908,0.0129,TRUE
+"heatmap","Female","suc_pref","Preference (%)","Sucrose preference, all tests (%)","SIS - CON",-0.403,0.499,FALSE
+"heatmap","Male","suc_pref","Preference (%)","Sucrose preference, all tests (%)","RES - CON",0.285,0.806,FALSE
+"heatmap","Male","suc_pref","Preference (%)","Sucrose preference, all tests (%)","SUS - CON",-0.798,0.19,FALSE
+"heatmap","Male","suc_pref","Preference (%)","Sucrose preference, all tests (%)","RES - SUS",1.083,0.00656,TRUE
+"heatmap","Male","suc_pref","Preference (%)","Sucrose preference, all tests (%)","SIS - CON",-0.142,0.775,FALSE
+"heatmap","Female","cort_delta","Rise (ng/mL)","Corticosterone rise, response minus baseline (ng/mL)","RES - CON",-1.035,0.0242,TRUE
+"heatmap","Female","cort_delta","Rise (ng/mL)","Corticosterone rise, response minus baseline (ng/mL)","SUS - CON",-0.027,0.943,FALSE
+"heatmap","Female","cort_delta","Rise (ng/mL)","Corticosterone rise, response minus baseline (ng/mL)","RES - SUS",-1.009,0.0129,TRUE
+"heatmap","Female","cort_delta","Rise (ng/mL)","Corticosterone rise, response minus baseline (ng/mL)","SIS - CON",-0.557,0.458,FALSE
+"heatmap","Male","cort_delta","Rise (ng/mL)","Corticosterone rise, response minus baseline (ng/mL)","RES - CON",-0.238,0.806,FALSE
+"heatmap","Male","cort_delta","Rise (ng/mL)","Corticosterone rise, response minus baseline (ng/mL)","SUS - CON",0.601,0.192,FALSE
+"heatmap","Male","cort_delta","Rise (ng/mL)","Corticosterone rise, response minus baseline (ng/mL)","RES - SUS",-0.839,0.0233,TRUE
+"heatmap","Male","cort_delta","Rise (ng/mL)","Corticosterone rise, response minus baseline (ng/mL)","SIS - CON",0.107,0.775,FALSE
+"heatmap","Female","cort_response","Response (ng/mL)","Corticosterone, response (ng/mL)","RES - CON",-0.651,0.0893,FALSE
+"heatmap","Female","cort_response","Response (ng/mL)","Corticosterone, response (ng/mL)","SUS - CON",0.232,0.536,FALSE
+"heatmap","Female","cort_response","Response (ng/mL)","Corticosterone, response (ng/mL)","RES - SUS",-0.883,0.0156,TRUE
+"heatmap","Female","cort_response","Response (ng/mL)","Corticosterone, response (ng/mL)","SIS - CON",-0.256,0.434,FALSE
+"heatmap","Male","cort_response","Response (ng/mL)","Corticosterone, response (ng/mL)","RES - CON",-0.359,0.312,FALSE
+"heatmap","Male","cort_response","Response (ng/mL)","Corticosterone, response (ng/mL)","SUS - CON",0.497,0.382,FALSE
+"heatmap","Male","cort_response","Response (ng/mL)","Corticosterone, response (ng/mL)","RES - SUS",-0.856,0.0218,TRUE
+"heatmap","Male","cort_response","Response (ng/mL)","Corticosterone, response (ng/mL)","SIS - CON",-0.001,0.998,FALSE
+"heatmap","Female","spleen_ratio","Spleen (mg/100 g)","Spleen weight per 100 g body weight (mg)","RES - CON",0.191,0.749,FALSE
+"heatmap","Female","spleen_ratio","Spleen (mg/100 g)","Spleen weight per 100 g body weight (mg)","SUS - CON",0.597,0.324,FALSE
+"heatmap","Female","spleen_ratio","Spleen (mg/100 g)","Spleen weight per 100 g body weight (mg)","RES - SUS",-0.406,0.213,FALSE
+"heatmap","Female","spleen_ratio","Spleen (mg/100 g)","Spleen weight per 100 g body weight (mg)","SIS - CON",0.353,0.499,FALSE
+"heatmap","Male","spleen_ratio","Spleen (mg/100 g)","Spleen weight per 100 g body weight (mg)","RES - CON",0.014,0.968,FALSE
+"heatmap","Male","spleen_ratio","Spleen (mg/100 g)","Spleen weight per 100 g body weight (mg)","SUS - CON",0.36,0.426,FALSE
+"heatmap","Male","spleen_ratio","Spleen (mg/100 g)","Spleen weight per 100 g body weight (mg)","RES - SUS",-0.346,0.283,FALSE
+"heatmap","Male","spleen_ratio","Spleen (mg/100 g)","Spleen weight per 100 g body weight (mg)","SIS - CON",0.154,0.775,FALSE
+"heatmap","Female","adrenal_ratio","Adrenal (mg/100 g)","Adrenal weight per 100 g body weight (mg)","RES - CON",-0.501,0.375,FALSE
+"heatmap","Female","adrenal_ratio","Adrenal (mg/100 g)","Adrenal weight per 100 g body weight (mg)","SUS - CON",0.455,0.456,FALSE
+"heatmap","Female","adrenal_ratio","Adrenal (mg/100 g)","Adrenal weight per 100 g body weight (mg)","RES - SUS",-0.956,0.0129,TRUE
+"heatmap","Female","adrenal_ratio","Adrenal (mg/100 g)","Adrenal weight per 100 g body weight (mg)","SIS - CON",-0.119,0.737,FALSE
+"heatmap","Male","adrenal_ratio","Adrenal (mg/100 g)","Adrenal weight per 100 g body weight (mg)","RES - CON",-0.266,0.806,FALSE
+"heatmap","Male","adrenal_ratio","Adrenal (mg/100 g)","Adrenal weight per 100 g body weight (mg)","SUS - CON",0.138,0.726,FALSE
+"heatmap","Male","adrenal_ratio","Adrenal (mg/100 g)","Adrenal weight per 100 g body weight (mg)","RES - SUS",-0.403,0.283,FALSE
+"heatmap","Male","adrenal_ratio","Adrenal (mg/100 g)","Adrenal weight per 100 g body weight (mg)","SIS - CON",-0.097,0.775,FALSE
+"heatmap","Female","adrenal_mg","Adrenal (mg)","Adrenal weight (mg)","RES - CON",-0.302,0.429,FALSE
+"heatmap","Female","adrenal_mg","Adrenal (mg)","Adrenal weight (mg)","SUS - CON",0.532,0.202,FALSE
+"heatmap","Female","adrenal_mg","Adrenal (mg)","Adrenal weight (mg)","RES - SUS",-0.834,0.0382,TRUE
+"heatmap","Female","adrenal_mg","Adrenal (mg)","Adrenal weight (mg)","SIS - CON",0.023,0.949,FALSE
+"heatmap","Male","adrenal_mg","Adrenal (mg)","Adrenal weight (mg)","RES - CON",-0.323,0.763,FALSE
+"heatmap","Male","adrenal_mg","Adrenal (mg)","Adrenal weight (mg)","SUS - CON",-0.152,0.973,FALSE
+"heatmap","Male","adrenal_mg","Adrenal (mg)","Adrenal weight (mg)","RES - SUS",-0.171,0.929,FALSE
+"heatmap","Male","adrenal_mg","Adrenal (mg)","Adrenal weight (mg)","SIS - CON",-0.253,0.915,FALSE
+"heatmap","Female","bw_rate","Growth (g/week)","Growth rate (g per week)","RES - CON",0.292,0.547,FALSE
+"heatmap","Female","bw_rate","Growth (g/week)","Growth rate (g per week)","SUS - CON",-0.676,0.298,FALSE
+"heatmap","Female","bw_rate","Growth (g/week)","Growth rate (g per week)","RES - SUS",0.968,0.015,TRUE
+"heatmap","Female","bw_rate","Growth (g/week)","Growth rate (g per week)","SIS - CON",-0.116,0.755,FALSE
+"heatmap","Male","bw_rate","Growth (g/week)","Growth rate (g per week)","RES - CON",0.711,0.185,FALSE
+"heatmap","Male","bw_rate","Growth (g/week)","Growth rate (g per week)","SUS - CON",-0.023,0.951,FALSE
+"heatmap","Male","bw_rate","Growth (g/week)","Growth rate (g per week)","RES - SUS",0.734,0.0508,FALSE
+"heatmap","Male","bw_rate","Growth (g/week)","Growth rate (g per week)","SIS - CON",0.397,0.653,FALSE
+"heatmap","Female","bw_change","Weight gain (g)","Weight gain, first to last weighing (g)","RES - CON",0.432,0.375,FALSE
+"heatmap","Female","bw_change","Weight gain (g)","Weight gain, first to last weighing (g)","SUS - CON",-0.23,0.674,FALSE
+"heatmap","Female","bw_change","Weight gain (g)","Weight gain, first to last weighing (g)","RES - SUS",0.662,0.0537,FALSE
+"heatmap","Female","bw_change","Weight gain (g)","Weight gain, first to last weighing (g)","SIS - CON",0.143,0.737,FALSE
+"heatmap","Male","bw_change","Weight gain (g)","Weight gain, first to last weighing (g)","RES - CON",0.162,0.806,FALSE
+"heatmap","Male","bw_change","Weight gain (g)","Weight gain, first to last weighing (g)","SUS - CON",-0.65,0.192,FALSE
+"heatmap","Male","bw_change","Weight gain (g)","Weight gain, first to last weighing (g)","RES - SUS",0.811,0.0233,TRUE
+"heatmap","Male","bw_change","Weight gain (g)","Weight gain, first to last weighing (g)","SIS - CON",-0.16,0.775,FALSE
+"heatmap","Female","bw_last","Last weighing (g)","Body weight, last weighing (g)","RES - CON",0.348,0.547,FALSE
+"heatmap","Female","bw_last","Last weighing (g)","Body weight, last weighing (g)","SUS - CON",0.135,0.718,FALSE
+"heatmap","Female","bw_last","Last weighing (g)","Body weight, last weighing (g)","RES - SUS",0.213,0.507,FALSE
+"heatmap","Female","bw_last","Last weighing (g)","Body weight, last weighing (g)","SIS - CON",0.258,0.755,FALSE
+"heatmap","Male","bw_last","Last weighing (g)","Body weight, last weighing (g)","RES - CON",0.054,0.878,FALSE
+"heatmap","Male","bw_last","Last weighing (g)","Body weight, last weighing (g)","SUS - CON",-0.901,0.0791,FALSE
+"heatmap","Male","bw_last","Last weighing (g)","Body weight, last weighing (g)","RES - SUS",0.954,0.0169,TRUE
+"heatmap","Male","bw_last","Last weighing (g)","Body weight, last weighing (g)","SIS - CON",-0.312,0.653,FALSE

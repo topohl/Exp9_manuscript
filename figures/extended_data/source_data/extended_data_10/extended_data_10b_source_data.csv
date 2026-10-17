@@ -1,0 +1,105 @@
+"table","Sex","id","label","name","comparison","d","adj_p","significant"
+"heatmap","Female","soc2_total","Contact, novelty (s)","Total contact (s), novelty phase","RES - CON",0.447,0.507,FALSE
+"heatmap","Female","soc2_total","Contact, novelty (s)","Total contact (s), novelty phase","SUS - CON",0.156,0.847,FALSE
+"heatmap","Female","soc2_total","Contact, novelty (s)","Total contact (s), novelty phase","RES - SUS",0.291,0.734,FALSE
+"heatmap","Female","soc2_total","Contact, novelty (s)","Total contact (s), novelty phase","SIS - CON",0.328,0.557,FALSE
+"heatmap","Male","soc2_total","Contact, novelty (s)","Total contact (s), novelty phase","RES - CON",1.275,0.0173,TRUE
+"heatmap","Male","soc2_total","Contact, novelty (s)","Total contact (s), novelty phase","SUS - CON",0.542,0.896,FALSE
+"heatmap","Male","soc2_total","Contact, novelty (s)","Total contact (s), novelty phase","RES - SUS",0.733,0.192,FALSE
+"heatmap","Male","soc2_total","Contact, novelty (s)","Total contact (s), novelty phase","SIS - CON",0.941,0.156,FALSE
+"heatmap","Female","soc2_pref","Novelty D2","Social novelty preference (D2)","RES - CON",-0.334,0.514,FALSE
+"heatmap","Female","soc2_pref","Novelty D2","Social novelty preference (D2)","SUS - CON",-0.467,0.408,FALSE
+"heatmap","Female","soc2_pref","Novelty D2","Social novelty preference (D2)","RES - SUS",0.133,0.679,FALSE
+"heatmap","Female","soc2_pref","Novelty D2","Social novelty preference (D2)","SIS - CON",-0.392,0.416,FALSE
+"heatmap","Male","soc2_pref","Novelty D2","Social novelty preference (D2)","RES - CON",0.233,0.62,FALSE
+"heatmap","Male","soc2_pref","Novelty D2","Social novelty preference (D2)","SUS - CON",0.255,0.624,FALSE
+"heatmap","Male","soc2_pref","Novelty D2","Social novelty preference (D2)","RES - SUS",-0.022,0.946,FALSE
+"heatmap","Male","soc2_pref","Novelty D2","Social novelty preference (D2)","SIS - CON",0.244,0.593,FALSE
+"heatmap","Female","soc1_pref","Preference D2","Social preference (D2)","RES - CON",0.661,0.364,FALSE
+"heatmap","Female","soc1_pref","Preference D2","Social preference (D2)","SUS - CON",0.204,0.749,FALSE
+"heatmap","Female","soc1_pref","Preference D2","Social preference (D2)","RES - SUS",0.458,0.297,FALSE
+"heatmap","Female","soc1_pref","Preference D2","Social preference (D2)","SIS - CON",0.469,0.416,FALSE
+"heatmap","Male","soc1_pref","Preference D2","Social preference (D2)","RES - CON",0.264,0.62,FALSE
+"heatmap","Male","soc1_pref","Preference D2","Social preference (D2)","SUS - CON",0.657,0.231,FALSE
+"heatmap","Male","soc1_pref","Preference D2","Social preference (D2)","RES - SUS",-0.393,0.56,FALSE
+"heatmap","Male","soc1_pref","Preference D2","Social preference (D2)","SIS - CON",0.421,0.495,FALSE
+"heatmap","Female","nor_d2","D2","Novel-object preference (D2)","RES - CON",0.292,0.514,FALSE
+"heatmap","Female","nor_d2","D2","Novel-object preference (D2)","SUS - CON",-0.116,0.757,FALSE
+"heatmap","Female","nor_d2","D2","Novel-object preference (D2)","RES - SUS",0.407,0.297,FALSE
+"heatmap","Female","nor_d2","D2","Novel-object preference (D2)","SIS - CON",0.116,0.723,FALSE
+"heatmap","Male","nor_d2","D2","Novel-object preference (D2)","RES - CON",0.174,0.62,FALSE
+"heatmap","Male","nor_d2","D2","Novel-object preference (D2)","SUS - CON",-0.57,0.231,FALSE
+"heatmap","Male","nor_d2","D2","Novel-object preference (D2)","RES - SUS",0.744,0.128,FALSE
+"heatmap","Male","nor_d2","D2","Novel-object preference (D2)","SIS - CON",-0.115,0.723,FALSE
+"heatmap","Female","oft_habituation_slope","Distance change (cm/min)","Change in distance per minute (cm/min)","RES - CON",0.047,0.916,FALSE
+"heatmap","Female","oft_habituation_slope","Distance change (cm/min)","Change in distance per minute (cm/min)","SUS - CON",0.17,0.982,FALSE
+"heatmap","Female","oft_habituation_slope","Distance change (cm/min)","Change in distance per minute (cm/min)","RES - SUS",-0.123,0.985,FALSE
+"heatmap","Female","oft_habituation_slope","Distance change (cm/min)","Change in distance per minute (cm/min)","SIS - CON",0.099,0.948,FALSE
+"heatmap","Male","oft_habituation_slope","Distance change (cm/min)","Change in distance per minute (cm/min)","RES - CON",-0.893,0.0461,TRUE
+"heatmap","Male","oft_habituation_slope","Distance change (cm/min)","Change in distance per minute (cm/min)","SUS - CON",-0.848,0.214,FALSE
+"heatmap","Male","oft_habituation_slope","Distance change (cm/min)","Change in distance per minute (cm/min)","RES - SUS",-0.045,0.927,FALSE
+"heatmap","Male","oft_habituation_slope","Distance change (cm/min)","Change in distance per minute (cm/min)","SIS - CON",-0.883,0.0446,TRUE
+"heatmap","Female","oft_habituation","Distance change (cm)","Change in distance, last vs first epoch (cm)","RES - CON",-0.08,0.916,FALSE
+"heatmap","Female","oft_habituation","Distance change (cm)","Change in distance, last vs first epoch (cm)","SUS - CON",0.22,0.982,FALSE
+"heatmap","Female","oft_habituation","Distance change (cm)","Change in distance, last vs first epoch (cm)","RES - SUS",-0.3,0.771,FALSE
+"heatmap","Female","oft_habituation","Distance change (cm)","Change in distance, last vs first epoch (cm)","SIS - CON",0.045,0.948,FALSE
+"heatmap","Male","oft_habituation","Distance change (cm)","Change in distance, last vs first epoch (cm)","RES - CON",-0.812,0.0707,FALSE
+"heatmap","Male","oft_habituation","Distance change (cm)","Change in distance, last vs first epoch (cm)","SUS - CON",-0.984,0.214,FALSE
+"heatmap","Male","oft_habituation","Distance change (cm)","Change in distance, last vs first epoch (cm)","RES - SUS",0.172,0.674,FALSE
+"heatmap","Male","oft_habituation","Distance change (cm)","Change in distance, last vs first epoch (cm)","SIS - CON",-0.888,0.0446,TRUE
+"heatmap","Female","oft_first_distance","Early distance (cm)","Distance in first epoch (cm)","RES - CON",-0.129,0.916,FALSE
+"heatmap","Female","oft_first_distance","Early distance (cm)","Distance in first epoch (cm)","SUS - CON",-0.095,0.982,FALSE
+"heatmap","Female","oft_first_distance","Early distance (cm)","Distance in first epoch (cm)","RES - SUS",-0.034,0.985,FALSE
+"heatmap","Female","oft_first_distance","Early distance (cm)","Distance in first epoch (cm)","SIS - CON",-0.116,0.948,FALSE
+"heatmap","Male","oft_first_distance","Early distance (cm)","Distance in first epoch (cm)","RES - CON",1.064,0.0246,TRUE
+"heatmap","Male","oft_first_distance","Early distance (cm)","Distance in first epoch (cm)","SUS - CON",0.749,0.214,FALSE
+"heatmap","Male","oft_first_distance","Early distance (cm)","Distance in first epoch (cm)","RES - SUS",0.314,0.674,FALSE
+"heatmap","Male","oft_first_distance","Early distance (cm)","Distance in first epoch (cm)","SIS - CON",0.936,0.0446,TRUE
+"heatmap","Female","oft_highspeed_pct","High speed (%)","Time at high speed (%)","RES - CON",-0.155,0.916,FALSE
+"heatmap","Female","oft_highspeed_pct","High speed (%)","Time at high speed (%)","SUS - CON",-0.054,0.982,FALSE
+"heatmap","Female","oft_highspeed_pct","High speed (%)","Time at high speed (%)","RES - SUS",-0.101,0.985,FALSE
+"heatmap","Female","oft_highspeed_pct","High speed (%)","Time at high speed (%)","SIS - CON",-0.114,0.948,FALSE
+"heatmap","Male","oft_highspeed_pct","High speed (%)","Time at high speed (%)","RES - CON",0.961,0.0417,TRUE
+"heatmap","Male","oft_highspeed_pct","High speed (%)","Time at high speed (%)","SUS - CON",0.575,0.314,FALSE
+"heatmap","Male","oft_highspeed_pct","High speed (%)","Time at high speed (%)","RES - SUS",0.386,0.674,FALSE
+"heatmap","Male","oft_highspeed_pct","High speed (%)","Time at high speed (%)","SIS - CON",0.801,0.0639,FALSE
+"heatmap","Female","oft_speed","Speed (cm/s)","Speed while moving (cm/s)","RES - CON",-0.163,0.916,FALSE
+"heatmap","Female","oft_speed","Speed (cm/s)","Speed while moving (cm/s)","SUS - CON",-0.152,0.982,FALSE
+"heatmap","Female","oft_speed","Speed (cm/s)","Speed while moving (cm/s)","RES - SUS",-0.011,0.985,FALSE
+"heatmap","Female","oft_speed","Speed (cm/s)","Speed while moving (cm/s)","SIS - CON",-0.16,0.948,FALSE
+"heatmap","Male","oft_speed","Speed (cm/s)","Speed while moving (cm/s)","RES - CON",1.546,0.000952,TRUE
+"heatmap","Male","oft_speed","Speed (cm/s)","Speed while moving (cm/s)","SUS - CON",0.809,0.214,FALSE
+"heatmap","Male","oft_speed","Speed (cm/s)","Speed while moving (cm/s)","RES - SUS",0.737,0.399,FALSE
+"heatmap","Male","oft_speed","Speed (cm/s)","Speed while moving (cm/s)","SIS - CON",1.2,0.0101,TRUE
+"heatmap","Female","oft_distance","Distance (cm)","Distance travelled (cm)","RES - CON",-0.193,0.916,FALSE
+"heatmap","Female","oft_distance","Distance (cm)","Distance travelled (cm)","SUS - CON",-0.017,0.982,FALSE
+"heatmap","Female","oft_distance","Distance (cm)","Distance travelled (cm)","RES - SUS",-0.176,0.941,FALSE
+"heatmap","Female","oft_distance","Distance (cm)","Distance travelled (cm)","SIS - CON",-0.121,0.948,FALSE
+"heatmap","Male","oft_distance","Distance (cm)","Distance travelled (cm)","RES - CON",0.923,0.0445,TRUE
+"heatmap","Male","oft_distance","Distance (cm)","Distance travelled (cm)","SUS - CON",0.488,0.417,FALSE
+"heatmap","Male","oft_distance","Distance (cm)","Distance travelled (cm)","RES - SUS",0.435,0.674,FALSE
+"heatmap","Male","oft_distance","Distance (cm)","Distance travelled (cm)","SIS - CON",0.74,0.0778,FALSE
+"heatmap","Female","oft_centre_entries","Centre entries (n)","Centre entries (n)","RES - CON",-0.329,0.916,FALSE
+"heatmap","Female","oft_centre_entries","Centre entries (n)","Centre entries (n)","SUS - CON",-0.398,0.982,FALSE
+"heatmap","Female","oft_centre_entries","Centre entries (n)","Centre entries (n)","RES - SUS",0.069,0.985,FALSE
+"heatmap","Female","oft_centre_entries","Centre entries (n)","Centre entries (n)","SIS - CON",-0.362,0.948,FALSE
+"heatmap","Male","oft_centre_entries","Centre entries (n)","Centre entries (n)","RES - CON",1.088,0.0246,TRUE
+"heatmap","Male","oft_centre_entries","Centre entries (n)","Centre entries (n)","SUS - CON",0.408,0.454,FALSE
+"heatmap","Male","oft_centre_entries","Centre entries (n)","Centre entries (n)","RES - SUS",0.679,0.399,FALSE
+"heatmap","Male","oft_centre_entries","Centre entries (n)","Centre entries (n)","SIS - CON",0.787,0.0639,FALSE
+"heatmap","Female","oft_centre_pct","Centre (%)","Time in centre (%)","RES - CON",-0.017,0.965,FALSE
+"heatmap","Female","oft_centre_pct","Centre (%)","Time in centre (%)","SUS - CON",-0.471,0.408,FALSE
+"heatmap","Female","oft_centre_pct","Centre (%)","Time in centre (%)","RES - SUS",0.454,0.297,FALSE
+"heatmap","Female","oft_centre_pct","Centre (%)","Time in centre (%)","SIS - CON",-0.204,0.703,FALSE
+"heatmap","Male","oft_centre_pct","Centre (%)","Time in centre (%)","RES - CON",0.341,0.62,FALSE
+"heatmap","Male","oft_centre_pct","Centre (%)","Time in centre (%)","SUS - CON",0.074,0.844,FALSE
+"heatmap","Male","oft_centre_pct","Centre (%)","Time in centre (%)","RES - SUS",0.267,0.679,FALSE
+"heatmap","Male","oft_centre_pct","Centre (%)","Time in centre (%)","SIS - CON",0.233,0.593,FALSE
+"heatmap","Female","epm_open_pct","Open arms (%)","Open-arm share of time (%)","RES - CON",0.346,0.514,FALSE
+"heatmap","Female","epm_open_pct","Open arms (%)","Open-arm share of time (%)","SUS - CON",0.727,0.278,FALSE
+"heatmap","Female","epm_open_pct","Open arms (%)","Open-arm share of time (%)","RES - SUS",-0.381,0.297,FALSE
+"heatmap","Female","epm_open_pct","Open arms (%)","Open-arm share of time (%)","SIS - CON",0.508,0.416,FALSE
+"heatmap","Male","epm_open_pct","Open arms (%)","Open-arm share of time (%)","RES - CON",0.425,0.62,FALSE
+"heatmap","Male","epm_open_pct","Open arms (%)","Open-arm share of time (%)","SUS - CON",0.573,0.231,FALSE
+"heatmap","Male","epm_open_pct","Open arms (%)","Open-arm share of time (%)","RES - SUS",-0.148,0.806,FALSE
+"heatmap","Male","epm_open_pct","Open arms (%)","Open-arm share of time (%)","SIS - CON",0.488,0.495,FALSE
