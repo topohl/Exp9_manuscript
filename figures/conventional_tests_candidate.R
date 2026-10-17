@@ -124,7 +124,7 @@ ct_publish <- function() {
       publication_id = pid, sisanalyzer_bundle_id = pin$bundle_id, render_git_commit = code$commit, render_code_clean = code$code_clean,
       repository_root_at_render = root,
       inputs = c(lapply(pages, entry, role = "figure_source"), lapply(bundle, entry, role = "source_bundle")),
-      outputs = lapply(c(pages, csvs), function(p) list(path = normalizePath(p, winslash = "/"), sha256 = sha(p)))), file.path(log_dir, "run_manifest.yml"))
+      outputs = lapply(unname(c(pages, csvs)), function(p) list(path = normalizePath(p, winslash = "/"), sha256 = sha(p)))), file.path(log_dir, "run_manifest.yml"))
     cat(pid, "->", rel(asm), "+", length(csvs), "source-data tables\n")
   }
   rec <- do.call(path_results, as.list(CT_RECORD)); dir.create(dirname(rec), recursive = TRUE, showWarnings = FALSE)
