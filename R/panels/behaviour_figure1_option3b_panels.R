@@ -8,7 +8,7 @@
 #                              their 95% CIs (black, just right of each cloud), and under each sex a forest
 #                              of RES - CON, SUS - CON and SUS - RES with the Holm P (m = 3) beside each
 #                              row. The means and contrasts are the stored rows of the post hoc run 29b
-#                              (registry POSTHOC_CON_CONTRASTS v1.0), copied verbatim into the figure-
+#                              (registry POSTHOC_CON_CONTRASTS v1.1), copied verbatim into the figure-
 #                              support bundle (fsb P1). No CON cage means, no female - male row.
 #   d  f1o3b_panel_trajectory  CC1 -> CC4, per measure and sex: three lines, the CON descriptive mean
 #                              (dashed grey, fsb F1b; no interval, no cage marks) and the registered
@@ -30,8 +30,8 @@
 # R/panels/behaviour_figure1_nature_panels.R and R/panels/behaviour_figure1_option3_panels.R sourced
 # first; packages ggtext and patchwork.
 
-# The post hoc rows this figure may draw: the registry's primary model, frozen registry v1.0, its tier.
-F1O3B_REGISTRY_SHA256 <- "a6435d8d84b164671b59486f7a3eb9af2bff29bd251c58866cd4b777f9fa0604"
+# The post hoc rows this figure may draw: the registry's primary model, frozen registry v1.1, its tier.
+F1O3B_REGISTRY_SHA256 <- "7885317c95d608284dc118380ebd449f6606a1efd182df7cd17b6b453a1e34a0"
 F1O3B_TIER <- "POST HOC exploratory"
 F1O3B_MODEL <- "primary_separate_cage_variances"
 # The one on-panel label (the stored display_note of every P1 row; the builder checks it). "3 cages/sex"
@@ -69,7 +69,7 @@ f1o3b_posthoc_rows <- function(P1, k, sex) {
     stop(where, " must hold the three group means and the three contrasts once each.", call. = FALSE)
   if (!all(r$status == "OK")) stop(where, ": a post hoc fit is not OK; nothing is drawn for a failed fit.", call. = FALSE)
   if (!all(r$registry_sha256 == F1O3B_REGISTRY_SHA256) || !all(r$tier == F1O3B_TIER) || !all(r$display_note == F1O3B_LABEL))
-    stop(where, " is not the frozen post hoc registry v1.0 row set (sha, tier or label).", call. = FALSE)
+    stop(where, " is not the frozen post hoc registry v1.1 row set (sha, tier or label).", call. = FALSE)
   con <- r[r$estimand_type == "contrast", , drop = FALSE]
   if (nrow(con) != 3L || !all(con$holm_m == 3) || !all(con$tested %in% c(TRUE, "TRUE")))
     stop(where, ": the contrasts must be tested with Holm over m = 3.", call. = FALSE)
