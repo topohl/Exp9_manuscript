@@ -1,0 +1,109 @@
+"id","domain","test","label","main","class","order"
+"epm_open_pct","Behaviour","Elevated plus maze","Open-arm share of time (%)",TRUE,"independent",1
+"epm_closed_time","Behaviour","Elevated plus maze","Time in closed arms (s)",FALSE,"independent",2
+"epm_centre_time","Behaviour","Elevated plus maze","Time in centre (s)",FALSE,"independent",3
+"epm_open_entries","Behaviour","Elevated plus maze","Open-arm entries (n)",FALSE,"independent",4
+"epm_closed_entries","Behaviour","Elevated plus maze","Closed-arm entries (n)",FALSE,"independent",5
+"epm_open_entry_pct","Behaviour","Elevated plus maze","Open-arm share of entries (%)",FALSE,"independent",6
+"epm_nose_dips","Behaviour","Elevated plus maze","Head dips over the edge (n)",FALSE,"independent",7
+"epm_distance","Behaviour","Elevated plus maze","Distance travelled (cm)",FALSE,"independent",8
+"epm_speed","Behaviour","Elevated plus maze","Speed while moving (cm/s)",FALSE,"independent",9
+"epm_moving_pct","Behaviour","Elevated plus maze","Time spent moving (%)",FALSE,"independent",10
+"epm_stationary_time","Behaviour","Elevated plus maze","Time stationary (s)",FALSE,"independent",11
+"epm_open_distance","Behaviour","Elevated plus maze","Distance in open arms (cm)",FALSE,"independent",12
+"epm_closed_distance","Behaviour","Elevated plus maze","Distance in closed arms (cm)",FALSE,"independent",13
+"epm_open_distance_pct","Behaviour","Elevated plus maze","Open-arm share of distance (%)",FALSE,"independent",14
+"epm_open_speed","Behaviour","Elevated plus maze","Speed in open arms (cm/s)",FALSE,"independent",15
+"epm_closed_speed","Behaviour","Elevated plus maze","Speed in closed arms (cm/s)",FALSE,"independent",16
+"epm_centre_transitions","Behaviour","Elevated plus maze","Centre crossings (n)",FALSE,"independent",17
+"oft_centre_pct","Behaviour","Open field","Time in centre (%)",TRUE,"independent",18
+"oft_centre_distance_pct","Behaviour","Open field","Share of distance in centre (%)",FALSE,"independent",19
+"oft_centre_entries","Behaviour","Open field","Centre entries (n)",FALSE,"independent",20
+"oft_centre_latency","Behaviour","Open field","Latency to enter centre (s)",FALSE,"independent",21
+"oft_centre_bout","Behaviour","Open field","Mean stay in centre (s)",FALSE,"independent",22
+"oft_corner_pct","Behaviour","Open field","Time in corners (%)",FALSE,"independent",23
+"oft_corner_entries","Behaviour","Open field","Corner entries (n)",FALSE,"independent",24
+"oft_wall_distance","Behaviour","Open field","Mean distance from wall (cm)",FALSE,"independent",25
+"oft_wall5_pct","Behaviour","Open field","Time within 5 cm of the wall (%)",FALSE,"independent",26
+"oft_wall10_pct","Behaviour","Open field","Time within 10 cm of the wall (%)",FALSE,"independent",27
+"oft_distance","Behaviour","Open field","Distance travelled (cm)",FALSE,"independent",28
+"oft_speed","Behaviour","Open field","Speed while moving (cm/s)",FALSE,"independent",29
+"oft_moving_pct","Behaviour","Open field","Time spent moving (%)",FALSE,"independent",30
+"oft_immobile","Behaviour","Open field","Time immobile (s)",FALSE,"independent",31
+"oft_immobile_bouts","Behaviour","Open field","Immobility episodes (n)",FALSE,"independent",32
+"oft_immobile_bout","Behaviour","Open field","Mean immobility episode (s)",FALSE,"independent",33
+"oft_highspeed_pct","Behaviour","Open field","Time at high speed (%)",FALSE,"independent",34
+"oft_rest_pct","Behaviour","Open field","Time at rest or very low speed (%)",FALSE,"independent",35
+"oft_first_distance","Behaviour","Open field","Distance in first epoch (cm)",FALSE,"independent",36
+"oft_habituation","Behaviour","Open field","Change in distance, last vs first epoch (cm)",FALSE,"independent",37
+"oft_habituation_slope","Behaviour","Open field","Change in distance per minute (cm/min)",FALSE,"independent",38
+"oft_centre_change","Behaviour","Open field","Change in centre time, last vs first epoch (%)",FALSE,"independent",39
+"nor_d2","Behaviour","Novel object recognition","Novel-object preference (D2)",TRUE,"component",40
+"nor_novel","Behaviour","Novel object recognition","Contact with novel object (s)",FALSE,"related",41
+"nor_familiar","Behaviour","Novel object recognition","Contact with familiar object (s)",FALSE,"related",42
+"nor_total","Behaviour","Novel object recognition","Total object contact (s)",FALSE,"related",43
+"nor_latency","Behaviour","Novel object recognition","Latency to first contact (s)",FALSE,"related",44
+"nor_prox_novel","Behaviour","Novel object recognition","Time near novel object (s)",FALSE,"related",45
+"nor_prox_familiar","Behaviour","Novel object recognition","Time near familiar object (s)",FALSE,"related",46
+"nor_prox_pref","Behaviour","Novel object recognition","Proximity preference for novel object (D2)",FALSE,"related",47
+"nor_entries_novel","Behaviour","Novel object recognition","Approaches to novel object (n)",FALSE,"related",48
+"nor_entries_familiar","Behaviour","Novel object recognition","Approaches to familiar object (n)",FALSE,"related",49
+"nor_bout_novel","Behaviour","Novel object recognition","Mean contact episode, novel object (s)",FALSE,"related",50
+"nor_bout_familiar","Behaviour","Novel object recognition","Mean contact episode, familiar object (s)",FALSE,"related",51
+"nor_distance","Behaviour","Novel object recognition","Distance travelled (cm)",FALSE,"related",52
+"nor_speed","Behaviour","Novel object recognition","Speed while moving (cm/s)",FALSE,"related",53
+"nor_stationary","Behaviour","Novel object recognition","Time stationary (s)",FALSE,"related",54
+"nor_rearing","Behaviour","Novel object recognition","Rearing events (n, experimental)",FALSE,"related",55
+"soc1_pref","Behaviour","Social preference","Social preference (D2)",TRUE,"independent",56
+"soc1_novel","Behaviour","Social preference","Contact with novel mouse (s)",FALSE,"independent",57
+"soc1_familiar","Behaviour","Social preference","Contact with empty cup (s)",FALSE,"independent",58
+"soc1_total","Behaviour","Social preference","Total contact (s)",FALSE,"independent",59
+"soc1_prox_novel","Behaviour","Social preference","Time near novel mouse (s)",FALSE,"independent",60
+"soc1_prox_familiar","Behaviour","Social preference","Time near empty cup (s)",FALSE,"independent",61
+"soc1_prox_pref","Behaviour","Social preference","Proximity preference (D2)",FALSE,"independent",62
+"soc1_latency_novel","Behaviour","Social preference","Latency to novel mouse (s)",FALSE,"independent",63
+"soc1_latency_familiar","Behaviour","Social preference","Latency to empty cup (s)",FALSE,"independent",64
+"soc1_entries_novel","Behaviour","Social preference","Approaches to novel mouse (n)",FALSE,"independent",65
+"soc1_entries_familiar","Behaviour","Social preference","Approaches to empty cup (n)",FALSE,"independent",66
+"soc1_bout_novel","Behaviour","Social preference","Mean contact episode, novel mouse (s)",FALSE,"independent",67
+"soc1_bout_familiar","Behaviour","Social preference","Mean contact episode, empty cup (s)",FALSE,"independent",68
+"soc1_distance","Behaviour","Social preference","Distance travelled (cm)",FALSE,"independent",69
+"soc1_speed","Behaviour","Social preference","Speed while moving (cm/s)",FALSE,"independent",70
+"soc1_stationary","Behaviour","Social preference","Time stationary (s)",FALSE,"independent",71
+"soc2_pref","Behaviour","Social preference","Social novelty preference (D2)",TRUE,"independent",72
+"soc2_novel","Behaviour","Social preference","Contact with new mouse (s), novelty phase",FALSE,"independent",73
+"soc2_familiar","Behaviour","Social preference","Contact with familiar mouse (s), novelty phase",FALSE,"independent",74
+"soc2_total","Behaviour","Social preference","Total contact (s), novelty phase",FALSE,"independent",75
+"soc2_prox_novel","Behaviour","Social preference","Time near new mouse (s), novelty phase",FALSE,"independent",76
+"soc2_prox_familiar","Behaviour","Social preference","Time near familiar mouse (s), novelty phase",FALSE,"independent",77
+"soc2_prox_pref","Behaviour","Social preference","Proximity preference (D2), novelty phase",FALSE,"independent",78
+"soc2_latency_novel","Behaviour","Social preference","Latency to new mouse (s), novelty phase",FALSE,"independent",79
+"soc2_latency_familiar","Behaviour","Social preference","Latency to familiar mouse (s), novelty phase",FALSE,"independent",80
+"soc2_entries_novel","Behaviour","Social preference","Approaches to new mouse (n), novelty phase",FALSE,"independent",81
+"soc2_entries_familiar","Behaviour","Social preference","Approaches to familiar mouse (n), novelty phase",FALSE,"independent",82
+"soc2_bout_novel","Behaviour","Social preference","Mean contact episode, new mouse (s), novelty phase",FALSE,"independent",83
+"soc2_bout_familiar","Behaviour","Social preference","Mean contact episode, familiar mouse (s), novelty phase",FALSE,"independent",84
+"soc2_distance","Behaviour","Social preference","Distance travelled (cm), novelty phase",FALSE,"independent",85
+"soc2_speed","Behaviour","Social preference","Speed while moving (cm/s), novelty phase",FALSE,"independent",86
+"soc2_stationary","Behaviour","Social preference","Time stationary (s), novelty phase",FALSE,"independent",87
+"bw_first","Physiology","Body weight","Body weight, first weighing (g)",FALSE,"related",88
+"bw_last","Physiology","Body weight","Body weight, last weighing (g)",FALSE,"related",89
+"bw_change","Physiology","Body weight","Weight gain, first to last weighing (g)",TRUE,"related",90
+"bw_pct","Physiology","Body weight","Weight gain, first to last weighing (%)",FALSE,"related",91
+"bw_rate","Physiology","Body weight","Growth rate (g per week)",FALSE,"related",92
+"adrenal_mg","Physiology","Organ weights","Adrenal weight (mg)",FALSE,"related",93
+"spleen_mg","Physiology","Organ weights","Spleen weight (mg)",FALSE,"related",94
+"adrenal_ratio","Physiology","Organ weights","Adrenal weight per 100 g body weight (mg)",TRUE,"component",95
+"spleen_ratio","Physiology","Organ weights","Spleen weight per 100 g body weight (mg)",TRUE,"component",96
+"cort_baseline","Physiology","Corticosterone","Corticosterone, baseline (ng/mL)",FALSE,"related",97
+"cort_response","Physiology","Corticosterone","Corticosterone, response (ng/mL)",FALSE,"related",98
+"cort_delta","Physiology","Corticosterone","Corticosterone rise, response minus baseline (ng/mL)",TRUE,"component",99
+"suc_pref","Physiology","Sucrose preference","Sucrose preference, all tests (%)",TRUE,"component",100
+"suc_pref1","Physiology","Sucrose preference","Sucrose preference, test 1 (%)",FALSE,"related",101
+"suc_pref2","Physiology","Sucrose preference","Sucrose preference, test 2 (%)",FALSE,"related",102
+"suc_pref3","Physiology","Sucrose preference","Sucrose preference, test 3 (%)",FALSE,"related",103
+"suc_total1","Physiology","Sucrose preference","Liquid intake, test 1 (g)",FALSE,"related",104
+"suc_total2","Physiology","Sucrose preference","Liquid intake, test 2 (g)",FALSE,"related",105
+"suc_total3","Physiology","Sucrose preference","Liquid intake, test 3 (g)",FALSE,"related",106
+"loco_index","Behaviour","Locomotion (exploratory)","Locomotion index (z, CON = 0)",FALSE,"independent",107
+"CombZ","Score","Integrated Resilience","Integrated Resilience (CombZ)",FALSE,"score",108

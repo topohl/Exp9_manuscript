@@ -1,0 +1,301 @@
+"assay","metric","unit","same_quantity","calibrated_on_these_animals","manual_source","automated_column","Code","Animal","sleap","boris"
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","A1L9","OQ752",62.7333333333333,62.769
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","C2P4","OQ771",92.1666666666667,92.787
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","C7E2","OQ761",49.5333333333333,53.489
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","F2I1","OQ770",94.4,91.793
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","F9L3","OQ751",32.9,33.463
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","H9J5","OQ772",34.9333333333333,37.754
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","K4T2","OQ750",62.1333333333333,65.776
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","L2H0","OQ760",76.5666666666667,79.403
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","M1M3","0003",28.2,32.334
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","M8P3","OQ763",21.4,22.744
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","P9X0","OQ755",38.2333333333333,43.231
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","R8K7","OQ754",10.7,10.246
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","R8O3","OQ764",41.4333333333333,43.066
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","S7I3","0004",34.1666666666667,45.631
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","T2H7","OQ762",96.9333333333333,99.725
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","U5P3","OQ765",10.8333333333333,13.539
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","V2P0","0002",41.7666666666667,46.808
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","X1H0","0001",35.4666666666667,41.275
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","Y0F3","OQ753",22.6,25.274
+"EPM","Open-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_s","Y6V5","OQ773",30.5333333333333,31.64
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","A1L9","OQ752",178.966666666667,176.154
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","C2P4","OQ771",151.233333333333,145.982
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","C7E2","OQ761",195.366666666667,192.926
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","F2I1","OQ770",135.466666666667,137.485
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","F9L3","OQ751",207.2,202.035
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","H9J5","OQ772",213.833333333333,197.494
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","K4T2","OQ750",171.233333333333,162.967
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","L2H0","OQ760",192.266666666667,188.605
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","M1M3","0003",231.933333333333,224.965
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","M8P3","OQ763",228.066666666667,225.803
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","P9X0","OQ755",210.833333333333,210.4
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","R8K7","OQ754",274.1,272.983
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","R8O3","OQ764",183.1,179.44
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","S7I3","0004",195.233333333333,194.073
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","T2H7","OQ762",124.3,128.136
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","U5P3","OQ765",259.166666666667,252.729
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","V2P0","0002",189.766666666667,186.004
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","X1H0","0001",197.233333333333,197.63
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","Y0F3","OQ753",217.233333333333,203.756
+"EPM","Closed-arm time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_closed_s","Y6V5","OQ773",228.5,222.955
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","A1L9","OQ752",57.8333333333333,61.115
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","C2P4","OQ771",56.6,60.808
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","C7E2","OQ761",55,55.719
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","F2I1","OQ770",70.1333333333333,70.765
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","F9L3","OQ751",59.9,64.347
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","H9J5","OQ772",51.2333333333333,64.051
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","K4T2","OQ750",66.6333333333333,71.326
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","L2H0","OQ760",30.4333333333333,32.974
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","M1M3","0003",39.8666666666667,42.721
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","M8P3","OQ763",49.7,51.629
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","P9X0","OQ755",50.9333333333333,46.347
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","R8K7","OQ754",14.9333333333333,16.135
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","R8O3","OQ764",75.4666666666667,77.28
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","S7I3","0004",70,60.144
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","T2H7","OQ762",77.8333333333333,71.964
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","U5P3","OQ765",29.7666666666667,33.897
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","V2P0","0002",65.9333333333333,67.006
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","X1H0","0001",67.2,61.266
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","Y0F3","OQ753",59.6666666666667,67.22
+"EPM","Centre time","s",TRUE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_center_s","Y6V5","OQ773",40.5666666666667,45.469
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","A1L9","OQ752",11,49
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","C2P4","OQ771",17,108
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","C7E2","OQ761",10,44
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","F2I1","OQ770",22,100
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","F9L3","OQ751",10,37
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","H9J5","OQ772",11,18
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","K4T2","OQ750",10,56
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","L2H0","OQ760",11,51
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","M1M3","0003",6,28
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","M8P3","OQ763",4,21
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","P9X0","OQ755",10,45
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","R8K7","OQ754",3,12
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","R8O3","OQ764",13,42
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","S7I3","0004",11,34
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","T2H7","OQ762",20,108
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","U5P3","OQ765",5,9
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","V2P0","0002",11,38
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","X1H0","0001",7,39
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","Y0F3","OQ753",7,22
+"EPM","Open entries vs bouts","count",FALSE,FALSE,"BORIS project as transcribed in the release validation table","sleap_EPM_open_entries","Y6V5","OQ773",11,24
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","A1L9","OQ752",14,10
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","C2P4","OQ771",28,27
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","C7E2","OQ761",13,19
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","F2I1","OQ770",21,18
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","F9L3","OQ751",8,9
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","H9J5","OQ772",12,5
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","K4T2","OQ750",12,12
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","L2H0","OQ760",18,17
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","M1M3","0003",7,7
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","M8P3","OQ763",9,7
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","P9X0","OQ755",13,14
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","R8K7","OQ754",6,3
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","R8O3","OQ764",12,8
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","S7I3","0004",18,10
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","T2H7","OQ762",25,35
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","U5P3","OQ765",6,2
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","V2P0","0002",12,8
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","X1H0","0001",14,13
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","Y0F3","OQ753",10,8
+"EPM","Nose dips","count",TRUE,TRUE,"BORIS project as transcribed in the release validation table","sleap_EPM_nosedip_n","Y6V5","OQ773",11,7
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","A1L9","OQ752",17.8,13.39
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","C2P4","OQ771",13.2666666666667,12.994
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","C7E2","OQ761",25.1333333333333,24.436
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","F2I1","OQ770",10.6666666666667,10.045
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","F9L3","OQ751",7.33333333333333,9.938
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","H9J5","OQ772",19.0333333333333,17.29
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","K4T2","OQ750",9.43333333333333,9.238
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","L2H0","OQ760",17.7333333333333,17.653
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","M1M3","0003",19.8333333333333,18.989
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","M8P3","OQ763",33.1666666666667,35.414
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","P9X0","OQ755",12.6,10.942
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","R8K7","OQ754",8.76666666666667,10.961
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","R8O3","OQ764",14.8333333333333,13.318
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","S7I3","0004",3.13333333333333,2.518
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","T2H7","OQ762",22.6333333333333,23.978
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","U5P3","OQ765",21.6666666666667,19.626
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","V2P0","0002",17.5333333333333,18.519
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","X1H0","0001",17.0333333333333,16.241
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","Y0F3","OQ753",5.6,4.821
+"NOR","Novel object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_nov_s","Y6V5","OQ773",18.4,17.986
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","A1L9","OQ752",7.83333333333333,10.993
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","C2P4","OQ771",10.1666666666667,9.951
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","C7E2","OQ761",15.9666666666667,16.972
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","F2I1","OQ770",5.8,6.8
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","F9L3","OQ751",5.06666666666667,6.718
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","H9J5","OQ772",7.7,7.366
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","K4T2","OQ750",11.5666666666667,10.242
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","L2H0","OQ760",7.76666666666667,7.733
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","M1M3","0003",8.7,6.912
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","M8P3","OQ763",16.7333333333333,19.01
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","P9X0","OQ755",15.4333333333333,14.245
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","R8K7","OQ754",9.4,5.29
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","R8O3","OQ764",12.1333333333333,13.239
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","S7I3","0004",5.93333333333333,6.267
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","T2H7","OQ762",18.6333333333333,17.919
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","U5P3","OQ765",9.6,9.348
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","V2P0","0002",12.2333333333333,9.252
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","X1H0","0001",15.9333333333333,15.483
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","Y0F3","OQ753",7.26666666666667,7.308
+"NOR","Familiar object","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_fam_s","Y6V5","OQ773",6.33333333333333,7.235
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","A1L9","OQ752",25.6333333333333,24.383
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","C2P4","OQ771",23.4333333333334,22.945
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","C7E2","OQ761",41.1,41.408
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","F2I1","OQ770",16.4666666666667,16.845
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","F9L3","OQ751",12.4,16.656
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","H9J5","OQ772",26.7333333333333,24.656
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","K4T2","OQ750",21,19.48
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","L2H0","OQ760",25.5,25.386
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","M1M3","0003",28.5333333333333,25.901
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","M8P3","OQ763",49.9,54.424
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","P9X0","OQ755",28.0333333333333,25.187
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","R8K7","OQ754",18.1666666666667,16.251
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","R8O3","OQ764",26.9666666666666,26.557
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","S7I3","0004",9.06666666666666,8.785
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","T2H7","OQ762",41.2666666666666,41.897
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","U5P3","OQ765",31.2666666666667,28.974
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","V2P0","0002",29.7666666666666,27.771
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","X1H0","0001",32.9666666666666,31.724
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","Y0F3","OQ753",12.8666666666667,12.129
+"NOR","Total interaction","s",TRUE,TRUE,"raw BORIS exports","sleap_NOR_total_s","Y6V5","OQ773",24.7333333333333,25.221
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","A1L9","OQ752",0.388816644993498,0.0983061969404913
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","C2P4","OQ771",0.132290184921763,0.132621486162563
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","C7E2","OQ761",0.223033252230331,0.180255023183926
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","F2I1","OQ770",0.295546558704455,0.192638765212229
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","F9L3","OQ751",0.182795698924731,0.193323727185399
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","H9J5","OQ772",0.423940149625934,0.402498377676833
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","K4T2","OQ750",-0.101587301587303,-0.0515400410677619
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","L2H0","OQ760",0.390849673202613,0.390766564248011
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","M1M3","0003",0.39018691588785,0.466275433380951
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","M8P3","OQ763",0.329325317301271,0.301411142143172
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","P9X0","OQ755",-0.101070154577882,-0.131139079683964
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","R8K7","OQ754",-0.0348623853211008,0.348963140729801
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","R8O3","OQ764",0.100123609394314,0.00297473359189663
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","S7I3","0004",-0.308823529411765,-0.426750142287991
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","T2H7","OQ762",0.0969305331179323,0.144616559658209
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","U5P3","OQ765",0.385927505330491,0.354731828535929
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","V2P0","0002",0.178051511758119,0.333693421194771
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","X1H0","0001",0.0333670374115269,0.0238935821460093
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","Y0F3","OQ753",-0.129533678756477,-0.20504575810042
+"NOR","Discrimination D2","index",TRUE,TRUE,"raw BORIS exports","sleap_NOR_D2","Y6V5","OQ773",0.487870619946092,0.426271757662266
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","A1L9","OQ752",157.8,168.735
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","C2P4","OQ771",183.5,195.416
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","C7E2","OQ761",218.1,200.949
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","F2I1","OQ770",177.466666666667,181.803
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","F9L3","OQ751",133.3,137.973
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","H9J5","OQ772",240.466666666667,319.674
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","K4T2","OQ750",182.133333333333,195.944
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","L2H0","OQ760",102.766666666667,108.559
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","M1M3","0003",173.233333333333,178.388
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","M8P3","OQ763",214.2,227.805
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","P9X0","OQ755",106.733333333333,121.801
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","R8K7","OQ754",196.6,188.946
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","R8O3","OQ764",229.5,263.057
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","S7I3","0004",169.566666666667,179.927
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","T2H7","OQ762",216.766666666667,216.966
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","U5P3","OQ765",220.3,246.371
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","V2P0","0002",286.333333333333,298.839
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","X1H0","0001",180.266666666667,202.054
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","Y0F3","OQ753",215.1,220.919
+"SocP","S1 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_novel","Y6V5","OQ773",264.533333333333,296.582
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","A1L9","OQ752",20.0333333333333,21.406
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","C2P4","OQ771",19.5666666666667,16.256
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","C7E2","OQ761",35.8333333333333,56.301
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","F2I1","OQ770",27.5,23.565
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","F9L3","OQ751",74.9,55.706
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","H9J5","OQ772",22.2666666666667,26.487
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","K4T2","OQ750",18.8333333333333,16.991
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","L2H0","OQ760",30.6666666666667,41.993
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","M1M3","0003",46.9666666666667,54.242
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","M8P3","OQ763",26.3,30.028
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","P9X0","OQ755",22.7666666666667,24.976
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","R8K7","OQ754",24.0666666666667,30.235
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","R8O3","OQ764",19.2,24.977
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","S7I3","0004",35.0666666666667,32.827
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","T2H7","OQ762",36.5333333333333,33.625
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","U5P3","OQ765",37.5666666666667,35.984
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","V2P0","0002",25.2666666666667,25.032
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","X1H0","0001",17.0333333333333,17.486
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","Y0F3","OQ753",31.7,32.357
+"SocP","S1 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_familiar","Y6V5","OQ773",30.6666666666667,31.727
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","A1L9","OQ752",0.774695407685099,0.774840776055664
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","C2P4","OQ771",0.807288246881155,0.846403870138705
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","C7E2","OQ761",0.717773693882909,0.562285714285714
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","F2I1","OQ770",0.731663685152058,0.770509524366016
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","F9L3","OQ751",0.280499519692603,0.424759524780694
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","H9J5","OQ772",0.830499873128648,0.846967162678638
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","K4T2","OQ750",0.812572565931332,0.840411393148144
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","L2H0","OQ760",0.540344741443918,0.442146235187842
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","M1M3","0003",0.573418104753254,0.533662898164467
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","M8P3","OQ763",0.781288981288981,0.767074036294811
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","P9X0","OQ755",0.648391248391247,0.659674199636183
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","R8K7","OQ754",0.781873111782477,0.724109297794973
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","R8O3","OQ764",0.845597104945718,0.826569085594062
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","S7I3","0004",0.657273171526308,0.691408857177773
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","T2H7","OQ762",0.711540992235821,0.731634416240009
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","U5P3","OQ765",0.708634953464322,0.745115191868393
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","V2P0","0002",0.837826272999572,0.845419935715146
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","X1H0","0001",0.827335698597737,0.840703288694543
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","Y0F3","OQ753",0.743111831442464,0.744492174544765
+"SocP","S1 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S1_pref_index","Y6V5","OQ773",0.792231255645889,0.806724762342793
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","A1L9","OQ752",75.9333333333333,16.121
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","C2P4","OQ771",175.5,192.079
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","C7E2","OQ761",126.133333333333,125.401
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","F2I1","OQ770",95.0333333333333,98.903
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","F9L3","OQ751",71.2333333333333,70.5
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","H9J5","OQ772",261.566666666667,281.379
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","K4T2","OQ750",152.366666666667,152.947
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","L2H0","OQ760",93.4333333333333,103.678
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","M1M3","0003",134.666666666667,144.452
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","M8P3","OQ763",66.3666666666667,60.71
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","P9X0","OQ755",153.766666666667,163.35
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","R8K7","OQ754",89.5333333333333,117.714
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","R8O3","OQ764",254.566666666667,265.897
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","S7I3","0004",159.333333333333,170.872
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","T2H7","OQ762",106.8,100.634
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","U5P3","OQ765",123.566666666667,139.208
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","V2P0","0002",148.8,153.874
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","X1H0","0001",105.533333333333,114.459
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","Y0F3","OQ753",111.166666666667,103.451
+"SocP","S2 novel","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_novel","Y6V5","OQ773",173.533333333333,185.496
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","A1L9","OQ752",90.6333333333333,164.523
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","C2P4","OQ771",39.3,42.488
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","C7E2","OQ761",45.1666666666667,44.005
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","F2I1","OQ770",82.7666666666667,86.049
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","F9L3","OQ751",101.333333333333,92.848
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","H9J5","OQ772",88.3333333333333,98.556
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","K4T2","OQ750",58.5666666666667,58.239
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","L2H0","OQ760",58.4,65.041
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","M1M3","0003",72.9333333333333,64.964
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","M8P3","OQ763",38.3333333333333,33.748
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","P9X0","OQ755",27.3666666666667,28.483
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","R8K7","OQ754",114.533333333333,123.466
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","R8O3","OQ764",57,61.536
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","S7I3","0004",59.4333333333333,64.479
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","T2H7","OQ762",50.0333333333333,49.603
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","U5P3","OQ765",63.0333333333333,69.729
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","V2P0","0002",148.5,169.778
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","X1H0","0001",93.1666666666667,91.72
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","Y0F3","OQ753",45.1666666666667,51.039
+"SocP","S2 familiar","s",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_familiar","Y6V5","OQ773",115.866666666667,118.711
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","A1L9","OQ752",-0.0882529517710627,-0.821516352605124
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","C2P4","OQ771",0.634078212290503,0.637732502866985
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","C7E2","OQ761",0.472660050593499,0.480478849627522
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","F2I1","OQ770",0.0689913760779899,0.0694991132834465
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","F9L3","OQ751",-0.17442534286266,-0.136812204618361
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","H9J5","OQ772",0.495093836334191,0.481195467645782
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","K4T2","OQ750",0.444690265486726,0.448457757616509
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","L2H0","OQ760",0.230735455543359,0.229002068528145
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","M1M3","0003",0.297366730892744,0.379569851396264
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","M8P3","OQ763",0.267749124482649,0.285439031103771
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","P9X0","OQ755",0.697828487302172,0.70304379329938
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","R8K7","OQ754",-0.122508983992158,-0.0238494070818476
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","R8O3","OQ764",0.634107200171178,0.624130738196822
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","S7I3","0004",0.456650921834526,0.45206096426189
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","T2H7","OQ762",0.361955366631244,0.339669988085492
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","U5P3","OQ765",0.324401571989998,0.332535644715871
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","V2P0","0002",0.00100908173562062,-0.0491391988926378
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","X1H0","0001",0.0622378795504093,0.110287662662056
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","Y0F3","OQ753",0.422174840085289,0.339258204414525
+"SocP","S2 preference","index",TRUE,FALSE,"SocP.xlsx as transcribed in the release validation table","sleap_SocP_S2_pref_index","Y6V5","OQ773",0.199262842662979,0.219538011945813
