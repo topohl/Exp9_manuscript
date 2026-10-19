@@ -199,7 +199,7 @@ ckrs_m_hi,cookie_rs,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CAT-DC60-M,%#.3g
 ckrs_m_p,cookie_rs,s30b,S3c_cookie_estimates,p_raw,id=COOKIE-CAT-DC60-M,%.2f,raw p (Kenward-Roger t)
 ckrs_m_q,cookie_rs,s30b,S3c_cookie_estimates,q_local_bh,id=COOKIE-CAT-DC60-M,%.2f,local BH q within family COOKIE-CAT (m = 3)
 ckrs_int,cookie_rs,s30b,S3c_cookie_estimates,estimate,id=COOKIE-CAT-DC60-INT,%#.3g,home-cage cookie response (dcookie60): female - male difference in RES - SUS (g_RS:sex_c; position changes/h; COOKIE-CAT; registered exploratory test)
-ckrs_int_lo,cookie_rs,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CAT-DC60-INT,%#.3g,95% CI lower
+ckrs_int_lo,cookie_rs,s30b,S3c_cookie_estimates,ci_low,id=COOKIE-CAT-DC60-INT,%.1f,95% CI lower
 ckrs_int_hi,cookie_rs,s30b,S3c_cookie_estimates,ci_high,id=COOKIE-CAT-DC60-INT,%#.3g,95% CI upper
 ckrs_int_p,cookie_rs,s30b,S3c_cookie_estimates,p_raw,id=COOKIE-CAT-DC60-INT,%.2f,raw p (Kenward-Roger t)
 ckrs_int_q,cookie_rs,s30b,S3c_cookie_estimates,q_local_bh,id=COOKIE-CAT-DC60-INT,%.2f,local BH q within family COOKIE-CAT (m = 3)
