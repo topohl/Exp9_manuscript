@@ -1,10 +1,10 @@
-bundle_id: fsb_v4_20261012_f4c2ba6
-manifest_sha256: c826dab157a50e7dc1acf7431201faf62675c6f0c2df9d55f6f53dfc5f16363c
+bundle_id: fsb_v5_20261019_8212df4
+manifest_sha256: bc3aaf0d94a31b18bea3a114a6a0c0b8ac6ef401f6c8c4565bf2032f4da37ebb
 registry_status: FROZEN
-mmm_git_commit: f4c2ba6764cf0b28e7ee7560d4dc6ad3e005af2d
-stage29_bundle_id: ebb_v101_20260929_b2ce507
-stage29_bundle_manifest_sha256: ec59aa337fc63511de4aa2bf3e1ee1f4b34b84d6d671565f74e0bb3939f7226c
-combz_table_sha256: 1f6a2a69c6b0781b8de8da50ecdadf309b62bbc9c82106c0fa91d18119a7de54
+mmm_git_commit: 8212df40042dac62546de885b720819cabb36483
+stage29_bundle_id: ebb_v102_20261019_677ed97
+stage29_bundle_manifest_sha256: 41b8ce8170de64b739b4c3517e7280d4c1282332d873b75794e674220c6b7ff9
+combz_table_sha256: 5acb9a25a05cb32e44ce9523f9477a0bc307f52287e6d8cbd8d05110b9a40e10
 scientific_recomputation: none; descriptive cage means and the frozen CombZ standardisation
   reproduced exactly; no model. The standardised values are the stored canonical component
   z-scores exactly as they enter CombZ (the upstream within-sex CON standardisation
@@ -14,15 +14,16 @@ scientific_recomputation: none; descriptive cage means and the frozen CombZ stan
   post hoc run 29b (registry POSTHOC_CON_CONTRASTS v1.0), whose model was fitted there
   once; nothing is fitted, tested or adjusted in this bundle. D1 is a verbatim copy
   of the Stage 14 domain-heatmap source table and M1-M4 are the stored Stage 14 HMM
-  figure tables of the run promoted 2026-10-06c (display labels joined, a rank, the
-  Wald interval from the stored estimate and SE, and dwell-time counts in fixed bins);
-  no model is fitted, no test run, nothing smoothed and no p or q value produced here.
-  E1 is a verbatim copy of Stage 09's sex-stratified correlation table (rho, p and
-  BH q computed there); E2 / E2b / E2c are verbatim copies of the hash-gated post
-  hoc run 29c (registry POSTHOC_MOVEMENT_COMBZ_FIT v1.0), whose display line and band
-  were fitted there once; T1 / T1b are ages by date arithmetic from the pinned planning
-  workbook. Nothing is fitted here.
-created_at: 2026-10-12T12:04:44+0200
+  figure tables of the corrected-outcome run promoted 2026-10-19 (display labels joined,
+  a rank, the Wald interval from the stored estimate and SE, and dwell-time counts
+  in fixed bins); no model is fitted, no test run, nothing smoothed and no p or q
+  value produced here. E1 is a verbatim copy of Stage 09's sex-stratified correlation
+  table (rho, p and BH q computed there); E2 / E2b / E2c are verbatim copies of the
+  hash-gated post hoc run 29c (registry POSTHOC_MOVEMENT_COMBZ_FIT v1.0), whose display
+  line and band were fitted there once; E3 is a verbatim copy of Stage 09's early-window
+  coverage summary (slot counts, group-blind); T1 / T1b are ages by date arithmetic
+  from the pinned planning workbook. Nothing is fitted here.
+created_at: 2026-10-19T18:33:40+0200
 producer: topohl/MMMSociability Analysis/16c_figure_support_bundle.R
-imported_at: 2026-10-12T12:06:23+0200
+imported_at: 2026-10-19T18:33:49+0200
 importer: tools/import_figure_support_bundle.R

@@ -1,0 +1,143 @@
+stage,gate,passed,hard,detail
+0-code,MMM files used are committed and clean (git status --untracked-files=all / ls-files),TRUE,TRUE,8212df40042dac62546de885b720819cabb36483
+0-code,REAL run executes the committed Analysis/16c_figure_support_bundle.R,TRUE,TRUE,C:/Users/topohl/Documents/GitHub/MMMSociability/Analysis/16c_figure_support_bundle.R
+0-code,frozen CombZ definition code: git hash-object of Analysis/build_later_outcome_combz.R = pinned blob,TRUE,TRUE,3303304ec9309f6361326c9e7acc7e023c134715
+0-code,frozen CombZ definition code: HEAD blob = pinned blob,TRUE,TRUE,""
+0-output,REAL bundle version folder does not exist (immutable),TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/figure_support_bundle/fsb_v5_20261019_8212df4
+0-output,REAL staging folder does not exist (no earlier aborted write),TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/figure_support_bundle/.tmp_fsb_v5_20261019_8212df4
+0-output,REAL BUNDLE_REGISTRY.csv has no row for this bundle id,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/figure_support_bundle/BUNDLE_REGISTRY.csv
+0-output,REAL gate log for this bundle does not exist (immutable),TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/figure_support_bundle/logs/fsb_v5_20261019_8212df4_gate_results.csv
+0-output,every output path shorter than 250 characters (Windows R path limit),TRUE,TRUE,188
+stage29_bundle,Stage 29 bundle folder = pinned bundle id,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/behavior_bundle/ebb_v102_20261019_677ed97
+stage29_bundle,00_manifest.csv SHA-256 = pinned,TRUE,TRUE,41b8ce8170de64b739b4c3517e7280d4c1282332d873b75794e674220c6b7ff9
+stage29_bundle,every bundle file: bytes and SHA-256 match,TRUE,TRUE,""
+stage29_bundle,no file in the bundle outside its manifest,TRUE,TRUE,""
+stage29_bundle,BUNDLE_REGISTRY row: FROZEN with the pinned manifest hash,TRUE,TRUE,1 row(s)
+1-stage29,ebb_v101 B1_animal_longitudinal.csv listed in 00_manifest and verified,TRUE,TRUE,B1_animal_longitudinal.csv
+1-stage29,ebb_v101 B2_descriptive_summaries.csv listed in 00_manifest and verified,TRUE,TRUE,B2_descriptive_summaries.csv
+1-stage29,ebb_v101 A4_combz_animals.csv listed in 00_manifest and verified,TRUE,TRUE,A4_combz_animals.csv
+1-stage29,ebb_v101 A2b_combz_thresholds.csv listed in 00_manifest and verified,TRUE,TRUE,A2b_combz_thresholds.csv
+1-stage29,ebb_v101 I_analysis_config.json listed in 00_manifest and verified,TRUE,TRUE,I_analysis_config.json
+1-stage29,ebb_v101 A2_prediction_animals.csv listed in 00_manifest and verified,TRUE,TRUE,A2_prediction_animals.csv
+1-stage29,ebb_v101 V_runtime_gates.csv listed in 00_manifest and verified,TRUE,TRUE,V_runtime_gates.csv
+1b-posthoc,post hoc run folder = pinned run (29b_posthoc_con_contrasts/v1.1_5482c43),TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/pipeline/29b_posthoc_con_contrasts/v1.1_5482c43
+1b-posthoc,audit/output_manifest.csv SHA-256 = pinned,TRUE,TRUE,476aad959fc068ad4b20313a0c5194ce6e609d20957830d3cd67a5978790c0c5
+1b-posthoc,"output manifest lists 7 files, among them the 3 tables copied",TRUE,TRUE,7
+1b-posthoc,every manifest file: bytes and SHA-256 match,TRUE,TRUE,""
+1b-posthoc,no file in the run folder outside the manifest,TRUE,TRUE,""
+1b-posthoc,every run file is read-only,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/pipeline/29b_posthoc_con_contrasts/v1.1_5482c43
+1b-posthoc,README commit = post hoc run commit,TRUE,TRUE,commit 5482c439f6408ac415276d16f1ac1d1b59e8fd0e
+1b-posthoc,README registry sha256 = frozen post hoc registry,TRUE,TRUE,registry sha256 7885317c95d608284dc118380ebd449f6606a1efd182df7cd17b6b453a1e34a0
+1b-posthoc,"run_manifest: REAL at the run commit with the frozen registry, fitted once",TRUE,TRUE,REAL 5482c439f6408ac415276d16f1ac1d1b59e8fd0e 7885317c95d608284dc118380ebd449f6606a1efd182df7cd17b6b453a1e34a0
+1b-posthoc,run_manifest: status counts = pinned (no FAILED fit),TRUE,TRUE,primary_separate_cage_variances OK=4; sensitivity_common_cage_variance OK=4 0
+1c-stage14,domain_heatmap: on-disk SHA-256 = pinned,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/analyses/systems_dashboard/5min/stats_tables/systems_sis_domain_heatmap_source_data.csv 09623902bef7f3ec5d1dab8e1aaae355a9ca5cf3c593f797b7420f6fdc36bba4
+1c-stage14,domain_heatmap: the Stage 14 promotion record lists this file with this SHA-256,TRUE,TRUE,1 row(s); rewritten
+1c-stage14,transition_means: on-disk SHA-256 = pinned,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/analyses/systems_dashboard/5min/tables/systems_hmm_transition_probability_summary.csv bca83d0a98cb384e8719b746a580f70cb3e25be04aa96666a7c74f5eaf7243d6
+1c-stage14,transition_means: the Stage 14 promotion record lists this file with this SHA-256,TRUE,TRUE,1 row(s); rewritten
+1c-stage14,transition_differences: on-disk SHA-256 = pinned,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/analyses/systems_dashboard/5min/tables/systems_hmm_transition_probability_differences.csv c15f8dc9a0e0c75910e49cacebaee441cbfb437db2f3bdc180efe6d9695cf448
+1c-stage14,transition_differences: the Stage 14 promotion record lists this file with this SHA-256,TRUE,TRUE,1 row(s); rewritten
+1c-stage14,resolution_sensitivity: on-disk SHA-256 = pinned,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/analyses/systems_dashboard/5min/stats_tables/systems_sis_hmm_resolution_sensitivity.csv 6801951a639ab958b3c66a15c7bb3e9944c1963b6eb304d7754bce367e3cec58
+1c-stage14,resolution_sensitivity: the Stage 14 promotion record lists this file with this SHA-256,TRUE,TRUE,1 row(s); rewritten
+1c-stage14,state_display_labels: on-disk SHA-256 = pinned,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/analyses/systems_dashboard/5min/tables/systems_hmm_state_display_labels.csv 60ec75e62b4b407fef8c3ef8750cd816b821d231df473c3f5cb72e18b1132c29
+1c-stage14,state_display_labels: the Stage 14 promotion record lists this file with this SHA-256,TRUE,TRUE,1 row(s); unchanged
+1c-stage14,Stage 08 10-minute dwell-time table: on-disk SHA-256 = pinned,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/analyses/hmm_states/10min/tables/hmm_state_dwell_times.csv 6860bff82eef736d66f79a3737ed32c5f341a0e0327800fd256ff9af369169c8
+1d-stage09,Stage 09 sex-stratified correlation table: on-disk SHA-256 = pinned,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/pipeline/09_early_prediction/10min/tables/primary_movement_entropyacf1_correlations_by_sex.csv a3db010dea622340da8f3e41d2771467f307b5594f19fb1cb5937c66c0a716ec
+1d-stage09,Stage 09 model_ladder_input.csv: on-disk SHA-256 = pinned (= the Stage 29 v1.0.1 release input pin),TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/pipeline/09_early_prediction/10min/tables/model_ladder_input.csv 8870b35346e84e867589fea65bc8d367f99444dff156efc704bdc7d7718f5dac
+1d-stage09,Stage 09 early-window coverage summary: on-disk SHA-256 = pinned,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/pipeline/09_early_prediction/10min/tables/early_window_contract_summary.csv 5e1adcbe56b9183ac81cc7d292ab805a697d206ddf3b8e4990ac2180d0c85cb2
+1e-posthoc29c,post hoc run folder = pinned run (29c_posthoc_movement_combz_fit/v1.1_5482c43),TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/pipeline/29c_posthoc_movement_combz_fit/v1.1_5482c43
+1e-posthoc29c,audit/output_manifest.csv SHA-256 = pinned,TRUE,TRUE,ac7d6cefd6aadc70ccde686e50aeeede333f308c352f931f810d249b0bb689ac
+1e-posthoc29c,"output manifest lists 7 files, among them the 3 tables copied",TRUE,TRUE,7
+1e-posthoc29c,every manifest file: bytes and SHA-256 match,TRUE,TRUE,""
+1e-posthoc29c,no file in the run folder outside the manifest,TRUE,TRUE,""
+1e-posthoc29c,every run file is read-only,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/pipeline/29c_posthoc_movement_combz_fit/v1.1_5482c43
+1e-posthoc29c,README commit = post hoc run commit,TRUE,TRUE,commit 5482c439f6408ac415276d16f1ac1d1b59e8fd0e
+1e-posthoc29c,README registry sha256 = frozen post hoc registry,TRUE,TRUE,registry sha256 66471dd86456a8ca352c181c0430911989e5fd09f536e3576d9f395fee12c03c
+1e-posthoc29c,"run_manifest: REAL at the run commit with the frozen registry, fitted once",TRUE,TRUE,REAL 5482c439f6408ac415276d16f1ac1d1b59e8fd0e 66471dd86456a8ca352c181c0430911989e5fd09f536e3576d9f395fee12c03c
+1e-posthoc29c,run_manifest: status counts = pinned (no FAILED fit),TRUE,TRUE,Female OK; Male OK
+1f-timeline,"planning workbook E9_Experimental Timeline.xlsx: on-disk SHA-256 = pinned (2026-10-12, batch-6 SIS start corrected)",TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Planning/E9_Experimental Timeline.xlsx 098f22db860253712e58423c20987c15a5e136ddb37d69bfb9bd03b3da8ec582
+2-inputs,CombZ tables resolve to analysis_ready/canonical/later_outcome_combz/tables,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/later_outcome_combz/tables/later_outcome_combz_animal_level.csv; S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/later_outcome_combz/tables/combz_component_definition.csv; S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/later_outcome_combz/tables/combz_classification_thresholds.csv
+2-inputs,combz_table : on-disk SHA-256 = pinned,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/later_outcome_combz/tables/later_outcome_combz_animal_level.csv 5acb9a25a05cb32e44ce9523f9477a0bc307f52287e6d8cbd8d05110b9a40e10
+2-inputs,combz_component_definition : on-disk SHA-256 = pinned,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/later_outcome_combz/tables/combz_component_definition.csv a3696795a7362f86afc6e1eeb05e095509a3083cc6b715f8944b81539eae2b49
+2-inputs,combz_classification_thresholds : on-disk SHA-256 = pinned,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/canonical/later_outcome_combz/tables/combz_classification_thresholds.csv 70950e4aa3c36cd3ffb3e27d3e3060af07db72eb1b7ba5048062a9d562ef035b
+2-inputs,sus_list : on-disk SHA-256 = pinned,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/sus_animals.csv 65821453e64264b55cccdc86db2b161788e09fd1b5a4ee56e2786b513b00f131
+2-inputs,con_list : on-disk SHA-256 = pinned,TRUE,TRUE,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/con_animals.csv eddd2ee9c3a182f98211b4cbba689e2bb5f72985aeb178f72b25b7d25db1b75d
+3-definition,producer parsed: 7 definition constants (one assignment each) and the 4 consecutive composite-rule lines,TRUE,TRUE,102 top-level expressions
+3-definition,"frozen components: NOR, sucrose_pref, weight_dev, delta_cort, adrenal_weight, spleen_weight; inverted: delta_cort, adrenal_weight, spleen_weight",TRUE,TRUE,""
+3-definition,combz_component_definition.csv components = producer COMBZ_COMPONENTS (same order),TRUE,TRUE,"NOR,sucrose_pref,weight_dev,delta_cort,adrenal_weight,spleen_weight"
+3-definition,combz_component_definition.csv sign_inverted = producer COMBZ_COMPONENT_META,TRUE,TRUE,"FALSE,FALSE,FALSE,TRUE,TRUE,TRUE"
+3-definition,combz_component_definition.csv xlsx_column / raw_measure / higher_means = producer COMBZ_COMPONENT_META,TRUE,TRUE,""
+3-definition,combz_component_definition.csv weight_in_composite = 1 / number of components,TRUE,TRUE,""
+3-definition,combz_component_definition.csv combz_definition_id / reference_population_id = producer constants,TRUE,TRUE,""
+3-definition,"combz_component_definition.csv: component standardisation not reproducible in the repository (recorded, carried verbatim)",TRUE,TRUE,""
+4-read,planning workbook re-hashed after the read = pinned (the bytes read are the pinned bytes),TRUE,TRUE,""
+4-read,B1: 111 animals x CC1-CC4 (444 rows); CON 24 animals (96 rows),TRUE,TRUE,444 111 96
+4-read,CombZ table: 117 unique animals; A4: 117 animals,TRUE,TRUE,117 117
+4-read,"sus / con lists: 39 and 24 ids, disjoint",TRUE,TRUE,39 24
+5-labels,"CombZ-table outcome_group = list rule (CON if con list, else SUS if sus list, else RES) for all 117",TRUE,TRUE,"CON 24, RES 54, SUS 39"
+5-labels,CON on the con list <=> experimental_condition CON,TRUE,TRUE,""
+5-labels,"CombZ table = ebb_v101 A4 for all 117 (Sex, Batch, Group identical; CombZ within 1e-12)",TRUE,TRUE,3.99680288865056e-15
+5-labels,"B1 animals: one Sex / Batch / Group / CombZ each, = CombZ table (CombZ within 1e-12)",TRUE,TRUE,111 3.99680288865056e-15
+5-labels,"canonical thresholds = ebb_v101 A2b within 1e-12 (Female, Male)",TRUE,TRUE,Female -0.333634856715103; Male -0.433242738233125
+6-F1,"F1 / F1b: 4 measures x 2 sexes x 4 CC; 96 cage rows, 32 reference rows",TRUE,TRUE,96 32 32
+6-F1,exactly 3 CON cage epochs per sex per CC (every measure),TRUE,TRUE,""
+6-F1,"every CON cage: 4 CON animals with a value, n_in_cage 4",TRUE,TRUE,""
+6-F1,"one CON cage per batch: Female B3 / B4 / B6, Male B1 / B2 / B5",TRUE,TRUE,""
+6-F1,sum of cage n = B2 CON n (12 per sex x CC),TRUE,TRUE,12
+6-F1,mean of the 3 cage means = B2 CON mean within 1e-12 (equal cage sizes),TRUE,TRUE,6.03961325396085e-14
+6-F1,CON cage epochs hold only CON animals,TRUE,TRUE,""
+6-F1,each CON group keeps the same 4 animals at CC1-CC4,TRUE,TRUE,""
+6-F2,F2: 117 animals x 6 components = 702 rows,TRUE,TRUE,702
+6-F2,CombZ recomposed from signed_z by the frozen producer rule = stored CombZ within 1e-12 (all 117),TRUE,TRUE,0
+6-F2,"n_components_present from the frozen rule = stored (all 117); animals with 4 of 6: 2, 5 of 6: 10, 6 of 6: 105",TRUE,TRUE,"1546 adrenal_weight,OR419 adrenal_weight,OR419 spleen_weight,OR416 adrenal_weight,OR434 adrenal_weight,OR429 adrenal_weight,OR425 adrenal_weight,OR414 adrenal_weight,OR414 spleen_weight,OQ764 adrenal_weight,OQ750 adrenal_weight,314 adrenal_weight,OQ762 delta_cort,OR126 adrenal_weight"
+6-F2,signed_z = stored component value for every animal x component (identical doubles),TRUE,TRUE,""
+6-F2,z = direction x signed_z; direction -1 exactly for the inverted components,TRUE,TRUE,""
+6-F2,classification reproduced: for SIS animals below_threshold <=> Group SUS (0 mismatches),TRUE,TRUE,""
+6-F2,F2b: 6 component rows; n_present = 117 - n_missing,TRUE,TRUE,""
+6-P,"P1 / P1b / P1c present with the declared row counts (24, 24, 8)",TRUE,TRUE,"24,24,8"
+6-P,P1_posthoc_con_contrasts: every source cell carried verbatim (text) in source column order,TRUE,TRUE,""
+6-P,P1b_posthoc_sensitivity: every source cell carried verbatim (text) in source column order,TRUE,TRUE,""
+6-P,P1c_posthoc_diagnostics: every source cell carried verbatim (text) in source column order,TRUE,TRUE,""
+6-P,"P1 / P1b: registry sha256, version and tier on every row = the frozen post hoc registry",TRUE,TRUE,""
+6-P,"P1: six estimands (3 means, 3 contrasts) per measure x sex; Holm m = 3 on the tested rows",TRUE,TRUE,""
+6-P,P1: primary model rows only; P1b: sensitivity rows only,TRUE,TRUE,""
+6-P,P1 / P1b display text free of banned wording,TRUE,TRUE,""
+6-D1,"D1: 504 rows = 3 heatmaps x 3 variants (all_blocks 84, cc1_a1 42, cc1_l1 42 rows per variant); 468 estimated, 36 not_shown",TRUE,TRUE,cc1_a1 picked 42; cc1_a1 all5min 42; cc1_a1 all10min 42; cc1_l1 picked 42; cc1_l1 all5min 42; cc1_l1 all10min 42; all_blocks picked 84; all_blocks all5min 84; all_blocks all10min 84
+6-D1,"D1 display text free of banned wording (window, row label and description, tier)",TRUE,TRUE,""
+6-M,HMM display labels: the 4 states of the 10-minute HMM with unique semantic and display labels,TRUE,TRUE,"Many position changes; No position change, co-located; Few position changes; No position change, apart"
+6-M,M1: 96 rows = 2 sexes x 4 x 4 states x 3 contrasts; DeltaProbability = comparison - reference mean within 1e-12,TRUE,TRUE,96 0
+6-M,M2: 96 rows = 2 sexes x 3 groups x 16 transitions; the 8 largest shown per sex x group,TRUE,TRUE,96
+6-M,"M3: 2 sexes x 2 phases x 3 groups x 4 states x 7 bins; counts sum to the 3,346 records; fractions sum to 1 per group",TRUE,TRUE,336 3346
+6-M,"M4: 24 rows = 2 HMM resolutions x 2 sexes x 2 phases x 3 contrasts, behavioural state architecture only",TRUE,TRUE,24 Behavioral state architecture
+6-E1,E1: every source cell carried verbatim (text) in source column order,TRUE,TRUE,""
+6-E1,"E1: 6 rows = 3 features x 2 sexes, once each",TRUE,TRUE,"6 Movement_mean,Movement_rmssd,Entropy_acf1"
+6-E1,E1 Female Movement_mean: n = the ebb_v101 A2 animals of that sex,TRUE,TRUE,58 58
+6-E1,E1 Male Movement_mean: n = the ebb_v101 A2 animals of that sex,TRUE,TRUE,53 53
+6-E1,"Stage 09 input (model_ladder_input) = ebb_v101 A2 for all animals: Sex, Movement_mean, outcome = observed_CombZ (within 1e-12)",TRUE,TRUE,111 111 111 5.329070518200751e-15 3.9968028886505635e-15
+6-E1,"E1 display text free of banned wording (feature_label, CorrelationUse)",TRUE,TRUE,""
+6-E3,E3: every source cell carried verbatim (text) in source column order,TRUE,TRUE,""
+6-E3,E3: the coverage columns are present,TRUE,TRUE,""
+6-E3,E3: 1 row; n_animals = 111; 72 expected slots per animal,TRUE,TRUE,1 111 72
+6-E2,"E2 / E2b / E2c present with the declared row counts (202, 4, 2)",TRUE,TRUE,"202,4,2"
+6-E2,E2_movement_combz_fit_lines: every source cell carried verbatim (text) in source column order,TRUE,TRUE,""
+6-E2,E2b_movement_combz_fit_coefficients: every source cell carried verbatim (text) in source column order,TRUE,TRUE,""
+6-E2,E2c_movement_combz_fit_diagnostics: every source cell carried verbatim (text) in source column order,TRUE,TRUE,""
+6-E2,"E2 / E2b / E2c: registry sha256, version and tier on every row = the frozen registry of run 29c",TRUE,TRUE,""
+6-E2,E2c: both sex fits OK,TRUE,TRUE,Female OK; Male OK
+6-E2,E2 Female: n = the ebb_v101 A2 animals; the line spans their Movement_mean range (within 1e-12),TRUE,TRUE,58 0.944444444444444 7.22222222222222
+6-E2,E2 Male: n = the ebb_v101 A2 animals; the line spans their Movement_mean range (within 1e-12),TRUE,TRUE,53 1.58333333333333 6.08333333333333
+6-E2,E2 / E2b / E2c: no test statistic or P column (registry 29c section 3),TRUE,TRUE,""
+6-T1,planning workbook Animals sheet: the 117 CombZ animals matched once each,TRUE,TRUE,117 117
+6-T1,workbook Batch = ebb_v101 Batch for every animal,TRUE,TRUE,""
+6-T1,every animal has a date of birth and a date and age at every design step,TRUE,TRUE,""
+6-T1,design order for every animal: shuffle start < shuffle stop <= every test day <= blood and tissue collection,TRUE,TRUE,""
+6-T1,CC1 ages 22-29 for every animal (Stage 33 gate GC-6l),TRUE,TRUE,22-29
+6-T1,"workbook 'SIS start' = the CC1 date of the ebb_v101 cage-change time, for every animal",TRUE,TRUE,""
+6-T1,workbook-recorded SocPref age = computed age (117 animals with a recorded age),TRUE,TRUE,""
+6-T1,workbook-recorded OFT age = computed age (117 animals with a recorded age),TRUE,TRUE,""
+6-T1,workbook-recorded NOR age = computed age (117 animals with a recorded age),TRUE,TRUE,""
+6-T1,workbook-recorded EPM age = computed age (117 animals with a recorded age),TRUE,TRUE,""
+6-T1,workbook-recorded sucrose window start age = computed age (98 animals with a recorded age),TRUE,TRUE,""
+6-T1,workbook-recorded sucrose window end age = computed age (98 animals with a recorded age),TRUE,TRUE,""
+6-T1,workbook-recorded end-date (Age) age = computed age (117 animals with a recorded age),TRUE,TRUE,""
+6-T1,"T1: 8 design steps, 117 animals each",TRUE,TRUE,shuffle_start 117; shuffle_stop 117; sucrose_preference 117; social_preference 117; open_field 117; novel_object 117; elevated_plus_maze 117; samples 117
+6-tables,"display text free of banned wording (labels, F2b text)",TRUE,TRUE,""
