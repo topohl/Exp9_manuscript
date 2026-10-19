@@ -15,7 +15,7 @@
 
 source(file.path("R", "paths.R"))
 source(repo_path("R", "integration_utils.R"))
-source(repo_path("R", "nature_v2_figure_utils.R"))
+source(repo_path("R", "house_v2_figure_utils.R"))
 source(repo_path("R", "spatial_grammar_utils.R"))
 source(repo_path("R", "final_truth_v9_figure_utils.R"))
 source(repo_path("R", "final_truth_v9_fidelity_panels.R"))
@@ -35,7 +35,7 @@ dir_create(OUT)
 sidecar <- function(fig, id) {
   p <- file.path(SD, fig, paste0(id, "_source_data.csv"))
   if (!file.exists(p)) return(NULL)
-  nv_read_csv(p)
+  hv_read_csv(p)
 }
 # keep only columns that exist, then rename; never invent a column
 pick <- function(z, map) {

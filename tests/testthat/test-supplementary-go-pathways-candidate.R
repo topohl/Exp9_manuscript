@@ -32,8 +32,8 @@ testthat::test_that("supplementary GO candidate is selection-disclosed and sourc
   testthat::expect_false(anyNA(regions$NES))
   code <- readLines(repo_path("figures", "figure_03_supplementary_go.R"), warn = FALSE)
   code <- code[!grepl("^\\s*#", code)]
-  testthat::expect_true(any(grepl('nes_limit <- nv_diverging_limit("nes")', code, fixed = TRUE)))
-  testthat::expect_true(any(grepl('nv_diverging(measure = "nes"', code, fixed = TRUE)))
+  testthat::expect_true(any(grepl('nes_limit <- hv_diverging_limit("nes")', code, fixed = TRUE)))
+  testthat::expect_true(any(grepl('hv_diverging(measure = "nes"', code, fixed = TRUE)))
   testthat::expect_identical(nrow(protein), 84L)
   testthat::expect_false(anyDuplicated(protein[c("GO_ID", "gene",
                                                   "contrast")]) > 0)

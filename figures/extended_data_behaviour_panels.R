@@ -140,7 +140,7 @@ N_ANIMALS <- unique(ladder$n)
 
 # ---------------------------------------------------------------- house style
 # Identical to figures/figure_01_panels.R, because this figure is read beside it.
-source(repo_path("R", "plotting_nature.R"))
+source(repo_path("R", "plotting_figure_style.R"))
 
 INK <- "#2B2B2B"; MUTED <- "#6E6E6E"; RULE <- "#B5B5B5"
 GREEN_DARK <- "#2F6F62"

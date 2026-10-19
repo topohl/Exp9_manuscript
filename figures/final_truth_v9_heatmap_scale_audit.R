@@ -15,12 +15,12 @@
 #
 # WHAT "OUTSIDE THE LIMITS" MEANS HERE. Two kinds of colour limit exist since
 # palette v3.2 (config/manuscript_palette.yml diverging_limits):
-#  * a FIXED limit by measure, drawn by nv_diverging(measure = ...): values
+#  * a FIXED limit by measure, drawn by hv_diverging(measure = ...): values
 #    beyond it are squished to full colour on purpose, the colourbar ends read
 #    <= / >=, and the sidecar keeps the uncapped value. Such a panel is audited
 #    against the fixed limit it actually draws, as intentional saturation.
 #  * a panel's own limit (a declared display cap, or the data maximum):
-#    nv_diverging(limits = ...) keeps the ggplot2 default oob = censor, so an
+#    hv_diverging(limits = ...) keeps the ggplot2 default oob = censor, so an
 #    out-of-range value is NOT squished, it becomes NA and is painted na.value
 #    (grey50). A silent clip there would show up as a grey tile, and the audit
 #    checks both the numbers and the rendered SVG.
@@ -28,7 +28,7 @@
 source(file.path("R", "paths.R"))
 source(repo_path("R", "null_coalescing.R"))
 source(repo_path("R", "integration_utils.R"))
-source(repo_path("R", "nature_v2_figure_utils.R"))
+source(repo_path("R", "house_v2_figure_utils.R"))
 source(repo_path("R", "final_truth_v9_figure_utils.R"))
 Sys.setenv(PROTEOMICS_SCRIPT_ID = "figures/final_truth_v9_heatmap_scale_audit.R")
 
@@ -57,13 +57,13 @@ fig_of <- do.call(rbind, lapply(ct$figures, function(f) do.call(rbind, lapply(
 # panel is still listed, so the search is auditable rather than asserted.
 TOKENS <- c("geom_tile", "geom_raster", "Heatmap\\(", "scale_fill_gradient2",
             "scale_fill_gradient", "scale_fill_distiller", "colorRamp2",
-            "nv_diverging", "limits *=", "oob *=", "squish", "scales::squish",
+            "hv_diverging", "limits *=", "oob *=", "squish", "scales::squish",
             "pmin\\(", "pmax\\(", "cut\\(", "winsor", "truncate", "\\bcap\\b",
             "clamp", "censor")
 # recursive: the panel libraries live under R/panels
 SRC <- list.files(repo_path("R"), pattern = "[.]R$", full.names = TRUE,
                   recursive = TRUE)
-SRC <- c(SRC[grepl("final_truth_v9|nature_v2_figure_utils|nature_final_v7|figure3_adaptation",
+SRC <- c(SRC[grepl("final_truth_v9|house_v2_figure_utils|house_final_v7|figure3_adaptation",
                    basename(SRC))],
          list.files(repo_path("figures"), pattern = "^final_truth_v9.*[.]R$",
                     full.names = TRUE),
@@ -162,7 +162,7 @@ num <- function(x) suppressWarnings(as.numeric(x))
 sidecar <- function(pid) {
   k <- fig_of$figure_key[match(pid, fig_of$panel_id)]
   p <- file.path(SD, k, paste0(pid, "_source_data.csv"))
-  if (file.exists(p)) nv_read_csv(p) else NULL
+  if (file.exists(p)) hv_read_csv(p) else NULL
 }
 svg_path <- function(pid) {
   k <- fig_of$figure_key[match(pid, fig_of$panel_id)]
@@ -186,7 +186,7 @@ rows <- do.call(rbind, lapply(seq_len(nrow(SPEC)), function(i) {
   # then it was drawn before palette v3.2 and not re-rendered since (the ED6
   # atlases and strips need upstream inputs this repository does not import), so
   # it still carries its old data-maximum limit and ggplot's censor.
-  pal_lim <- if (fixed) nv_diverging_limit(SPEC$measure[i]) else NA_real_
+  pal_lim <- if (fixed) hv_diverging_limit(SPEC$measure[i]) else NA_real_
   rec <- intersect(c("colour_limit", "shared_NES_scale_limit",
                      "shared_NES_strip_limit"), names(d))[1]
   rec_lim <- if (!is.na(rec)) num(d[[rec]][1]) else NA_real_
@@ -212,7 +212,7 @@ rows <- do.call(rbind, lapply(seq_len(nrow(SPEC)), function(i) {
   # a panel drawn at a fixed limit must show exactly that limit's end labels;
   # an own-limit panel discloses with any <= / >= mark (Figure 2e)
   on_bar <- if (drawn_fixed)
-    all(nv_diverging_labels(pal_lim)[c(1, 5)] %in% labs) else
+    all(hv_diverging_labels(pal_lim)[c(1, 5)] %in% labs) else
     any(grepl("≥|≤", labs))
   printed <- identical(SPEC$disclosure[i], "printed") &&
     all(sprintf("%.1f", v) %in% labs)
@@ -293,7 +293,7 @@ sprintf("faithfully; %d saturate deliberately and disclose it. None clips silent
 "## Why a clip here would be visible rather than silent",
 "",
 "A panel on its own limit (a declared display cap or its data maximum) draws",
-"through nv_diverging(limits = ...), which keeps the ggplot2 default",
+"through hv_diverging(limits = ...), which keeps the ggplot2 default",
 "oob = scales::censor. An out-of-range value is therefore NOT squished to the",
 "endpoint colour - it becomes NA and is painted grey50. The audit checks the",
 sprintf("rendered SVGs for that colour as well as the numbers: %d panels contain",

@@ -235,7 +235,7 @@ figures:
           deterministic legend order, compartment encoded clearly, no empty legend
           block and no boundary clipping.
         producer_script: figures/final_truth_v9_figure_02.R
-        renderer: nf_pca_compact
+        renderer: hf_pca_compact
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_02/panels/v9_pca.svg
@@ -300,7 +300,7 @@ figures:
           identity. The weaker fine CA1 laminar result is deliberately kept visible.
           The complete metric inventory lives in ED1, not here.
         producer_script: figures/final_truth_v9_figure_02.R
-        renderer: nf_bilateral_main
+        renderer: hf_bilateral_main
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_02/panels/v9_bilateral_main.svg

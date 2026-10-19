@@ -31,7 +31,7 @@ S14_PALETTE <- yaml::read_yaml(repo_path("config", "manuscript_palette.yml"))
 S14_DIVERGING <- unlist(S14_PALETTE$diverging)[c("low", "mid", "high")]
 S14_G_LIMIT <- as.numeric(S14_PALETTE$diverging_limits$smd)
 S14_TILE_BORDER <- "grey85"
-S14_TILE_LW <- as.numeric(S14_PALETTE$line$tile_border_pt) * 0.75     # pt -> ggplot linewidth, as nv_lw()
+S14_TILE_LW <- as.numeric(S14_PALETTE$line$tile_border_pt) * 0.75     # pt -> ggplot linewidth, as hv_lw()
 S14_MISSING <- "grey90"                                                # a cell without a value (white means zero)
 S14_MINUS <- intToUtf8(0x2212L); S14_LE <- intToUtf8(0x2264L); S14_GE <- intToUtf8(0x2265L)
 S14_HEATMAP_ID <- "all_blocks"
@@ -74,7 +74,7 @@ s14_bar_labels <- function(limit, fixed) {
 }
 
 #' The diverging fill: the palette's ends, white at zero. `fixed`: the measure's fixed limit, full colour
-#' beyond it (squish, as nv_diverging(measure =)); otherwise the figure's own symmetric limit (no value
+#' beyond it (squish, as hv_diverging(measure =)); otherwise the figure's own symmetric limit (no value
 #' lies beyond it, so nothing is squished).
 s14_fill <- function(limit, fixed) {
   ggplot2::scale_fill_gradient2(low = S14_DIVERGING[["low"]], mid = S14_DIVERGING[["mid"]], high = S14_DIVERGING[["high"]],

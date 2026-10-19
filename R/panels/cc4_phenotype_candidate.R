@@ -80,7 +80,7 @@ cc4g_panels <- function(stats,descriptive) {
       ggplot2::scale_shape_manual(values=shapes,drop=FALSE)+ggplot2::scale_linetype_manual(values=lines,drop=FALSE)+
       ggplot2::scale_x_continuous(breaks=2:5,labels=labs,expand=ggplot2::expansion(add=.25))+
       ggplot2::scale_y_continuous(limits=c(0,ymax),expand=ggplot2::expansion(mult=c(0,.04)))+
-      ggplot2::labs(tag=letters[i],title=paste(sex,tolower(phase),sep=" | "),x=NULL,y="RFID position changes (h\u207b\u00b9)")+cc4_nature_theme()
+      ggplot2::labs(tag=letters[i],title=paste(sex,tolower(phase),sep=" | "),x=NULL,y="RFID position changes (h\u207b\u00b9)")+cc4_house_theme()
     c<-subset(stats$contrasts,Sex==sex&Phase==phase);o<-subset(stats$omnibus,Sex==sex&Phase==phase)
     c$Y<-match(c$Contrast,c("SUS-RES","SUS-CON","RES-CON"))
     c$Text<-ifelse(c$TestStatus=="PASS",cc4g_p_label(c$HolmP),"Test withheld")
@@ -94,7 +94,7 @@ cc4g_panels <- function(stats,descriptive) {
       ggplot2::scale_x_log10(limits=c(xlim[1],xlim[2]*2),breaks=c(.25,.5,.75,1,1.5,2,3,4)[c(.25,.5,.75,1,1.5,2,3,4)<=xlim[2]])+
       ggplot2::scale_y_continuous(breaks=3:1,labels=c("RES-CON","SUS-CON","SUS-RES"),limits=c(.5,3.5))+
       ggplot2::labs(tag=letters[i+4L],title=paste(sex,tolower(phase),sep=" | "),subtitle=subtitle,x="Ratio of rate ratios",y=NULL)+
-      cc4_nature_theme()+ggplot2::theme(legend.position="none",plot.subtitle=ggplot2::element_text(size=5.8,hjust=.5))
+      cc4_house_theme()+ggplot2::theme(legend.position="none",plot.subtitle=ggplot2::element_text(size=5.8,hjust=.5))
   }
   panels
 }

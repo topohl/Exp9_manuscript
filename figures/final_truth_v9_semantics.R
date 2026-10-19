@@ -14,7 +14,7 @@
 source(file.path("R", "paths.R"))
 source(repo_path("R", "null_coalescing.R"))
 source(repo_path("R", "integration_utils.R"))
-source(repo_path("R", "nature_v2_figure_utils.R"))
+source(repo_path("R", "house_v2_figure_utils.R"))
 source(repo_path("R", "spatial_grammar_utils.R"))
 source(repo_path("R", "story_v4_figure_panels.R"))
 Sys.setenv(PROTEOMICS_SCRIPT_ID = "figures/final_truth_v9_semantics.R")
@@ -29,7 +29,7 @@ OUT <- path_results("tables", "manuscript_candidates", "final_truth_v9", "audit"
 REP <- path_results("reports", "manuscript_candidates", "final_truth_v9")
 dir_create(OUT); dir_create(REP)
 
-TH <- nv_read_csv(repo_path(
+TH <- hv_read_csv(repo_path(
   "results", "tables", "10_biological_integration", "gsea_wgcna_concordance",
   "global", "ontology_aware_gsea_theme_assignments_all_contrasts.csv"))
 elig <- TH[TH$theme_claim_eligible %in% TRUE, , drop = FALSE]
@@ -320,7 +320,7 @@ vl <- data.frame(
 write_csv_safe(vl, file.path(OUT, "validation_language_audit.csv"))
 
 # =================================================== S21 WGCNA module naming
-appr <- nv_read_csv(repo_path(
+appr <- hv_read_csv(repo_path(
   "results", "reviewer_audit", "wgcna_label_approval",
   "WGCNA_final_label_approval_table.csv"))
 appr <- appr[appr$level == "module", , drop = FALSE]
@@ -340,7 +340,7 @@ mn$allowed_manuscript_label <- ifelse(
 # activated, and neither is edited here.
 ev_path <- file.path(OUT, "wgcna_annotation_evidence_matrix.csv")
 if (file.exists(ev_path)) {
-  ev <- nv_read_csv(ev_path)
+  ev <- hv_read_csv(ev_path)
   k <- match(paste(mn$dataset, mn$module_id), paste(ev$dataset, ev$module_id))
   needs <- !is.na(k) & ev$label_review_required[k] %in% TRUE
   mn$allowed_manuscript_label[needs] <- sprintf(

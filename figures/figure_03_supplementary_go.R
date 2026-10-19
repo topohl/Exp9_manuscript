@@ -3,8 +3,8 @@
 # It reads frozen pRoteomics evidence and does not recompute enrichment.
 
 source(file.path("R", "paths.R"))
-source(repo_path("R", "panels", "nature_v2_figure_utils.R"))
-source(repo_path("R", "panels", "nature_final_v7_panels.R"))
+source(repo_path("R", "panels", "house_v2_figure_utils.R"))
+source(repo_path("R", "panels", "house_final_v7_panels.R"))
 source(repo_path("R", "panels", "spatial_grammar_utils.R"))
 source(repo_path("R", "panels", "final_truth_v9_panels.R"))
 for (pkg in c("ggplot2", "patchwork", "svglite", "ragg")) {
@@ -92,7 +92,7 @@ display <- c("Translation", "Chromatin organization",
 # one Figure 3 uses (Extended Data 6 follows when it is re-rendered), so a
 # colour means the same NES here as there. A value beyond it takes full colour;
 # the strips print every NES and the regional source data keep them uncapped.
-nes_limit <- nv_diverging_limit("nes")
+nes_limit <- hv_diverging_limit("nes")
 if (anyNA(regional$NES))
   stop("Regional exact-term inventory carries a missing NES.", call. = FALSE)
 make_curve <- function(i) {
@@ -112,7 +112,7 @@ make_curve <- function(i) {
   tri$GSEA_FDR <- tri$BH_FDR
   prog <- data.frame(dataset = s$dataset, unit = s$spatial_unit,
                      term = s$GO_ID, label = display[[i]],
-                     accent = unname(nv_dataset_colours()[[s$dataset]]),
+                     accent = unname(hv_dataset_colours()[[s$dataset]]),
                      stringsAsFactors = FALSE)
   ev <- list(N = s$n_ranked, runes = z$running_ES, hits = z$hit,
              peak = s$peak_rank, ES = s$enrichmentScore,
@@ -178,27 +178,27 @@ unit_labels <- c("CA1 SLM", "CA1 SO", "CA1 SR", "CA2 SLM", "CA2 SO",
                  "CA1", "CA2", "CA3", "DG")
 regions_plot <- ggplot2::ggplot(regional,
                                 ggplot2::aes(unit_index, term, fill = NES)) +
-  ggplot2::geom_tile(colour = nv_tile_border(),
-                     linewidth = nv_lw("tile_border_pt")) +
+  ggplot2::geom_tile(colour = hv_tile_border(),
+                     linewidth = hv_lw("tile_border_pt")) +
   ggplot2::geom_point(data = regional[regional$supported, , drop = FALSE],
                       colour = "grey10", size = 0.45) +
   ggplot2::geom_vline(xintercept = c(10.5, 14.5),
-                      linewidth = nv_lw("reference_pt"),
+                      linewidth = hv_lw("reference_pt"),
                       colour = "grey55") +
   ggplot2::facet_grid(contrast ~ ., switch = "y") +
-  nv_diverging(measure = "nes", name = "GO-term NES") +
+  hv_diverging(measure = "nes", name = "GO-term NES") +
   ggplot2::scale_x_continuous(breaks = 1:18, labels = unit_labels,
                               limits = c(0.5, 18.5), expand = c(0, 0)) +
-  ggplot2::labs(x = NULL, y = NULL) + nf_theme_tile() +
+  ggplot2::labs(x = NULL, y = NULL) + hf_theme_tile() +
   ggplot2::theme(
     panel.grid = ggplot2::element_blank(),
     panel.spacing.y = ggplot2::unit(3, "mm"),
     axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, vjust = 1,
-                                        size = NF_MIN_PT),
-    axis.text.y = ggplot2::element_text(size = NF_MIN_PT),
+                                        size = HF_MIN_PT),
+    axis.text.y = ggplot2::element_text(size = HF_MIN_PT),
     strip.background = ggplot2::element_rect(fill = "grey95", colour = NA),
     strip.text.y.left = ggplot2::element_text(angle = 0, face = "bold",
-                                              size = NF_MIN_PT),
+                                              size = HF_MIN_PT),
     legend.position = "bottom",
     # wide enough for the five labels of the fixed NES scale (<= -2 ... >= 2),
     # with the title above the bar so it cannot run into the end label
@@ -209,13 +209,13 @@ dir.create(out, recursive = TRUE, showWarnings = FALSE)
 panel_stems <- c("translation", "chromatin", "neuron_projection", "autophagy")
 for (i in seq_along(rendered)) {
   stem <- paste0("supp_curve_", panel_stems[[i]])
-  nv_save_panel(rendered[[i]]$plot, file.path(out, paste0(stem, ".svg")),
+  hv_save_panel(rendered[[i]]$plot, file.path(out, paste0(stem, ".svg")),
                 85, 77)
   utils::write.csv(rendered[[i]]$source_data,
                    file.path(out, paste0(stem, "_source_data.csv")),
                    row.names = FALSE)
   protein_stem <- paste0("supp_protein_", panel_stems[[i]])
-  nv_save_panel(protein_rendered[[i]]$plot,
+  hv_save_panel(protein_rendered[[i]]$plot,
                 file.path(out, paste0(protein_stem, ".svg")), 85, 61)
   utils::write.csv(protein_rendered[[i]]$source_data,
                    file.path(out, paste0(protein_stem, "_source_data.csv")),

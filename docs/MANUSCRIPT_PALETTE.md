@@ -12,16 +12,16 @@
 
 ## How renderers use it
 
-- Signed fills go through `nv_diverging(measure = ...)`
-  (`R/panels/nature_v2_figure_utils.R`): the measure's limit, values beyond it at
+- Signed fills go through `hv_diverging(measure = ...)`
+  (`R/panels/house_v2_figure_utils.R`): the measure's limit, values beyond it at
   full colour, colour-bar ends reading ≤ / ≥. The sidecar of each panel records
   the limit drawn (`colour_limit`, `shared_NES_scale_limit`,
   `shared_NES_strip_limit`), and the source data keep every value uncapped.
 - A panel with limits of its own (no measure) keeps ggplot's censor, so a value
   outside them is drawn in the missing-value colour rather than silently capped.
-- Diverging tiles are outlined in grey85 (`nv_tile_border()`), so a tile at zero
+- Diverging tiles are outlined in grey85 (`hv_tile_border()`), so a tile at zero
   does not vanish into the page; signed axes use a typographic minus
-  (`nv_minus_labels()`).
+  (`hv_minus_labels()`).
 - MMMSociability pins this file in `Functions/manuscript_palette.R` (version,
   commit, git blob and sha256). Update the pin whenever the file changes.
 

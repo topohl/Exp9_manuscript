@@ -1,4 +1,4 @@
-# CC4 Nature-format candidate: presentation only
+# CC4 House-format candidate: presentation only
 
 This candidate renders the unchanged `cc4_phase_groups_20260929_v2` frozen
 scientific bundle. It does not fit the proposed formal model or add p-values.
@@ -7,9 +7,9 @@ sessions. CON therefore is not an unexposed grid control.
 
 ## Source and output
 
-- Renderer: `figures/cc4_phase_groups_nature_candidate.R`.
-- Panel library: `R/panels/cc4_phase_groups_nature.R`.
-- Test: `tests/testthat/test-cc4-nature-candidate.R`.
+- Renderer: `figures/cc4_phase_groups_house_candidate.R`.
+- Panel library: `R/panels/cc4_phase_groups_house.R`.
+- Test: `tests/testthat/test-cc4-house-candidate.R`.
 - Source bundle: `source_data/MMMSociability_candidates/cc4_phase_groups_20260929_v2/`.
 - Reviewed output: `results/figures/manuscript_candidates/cc4_phase_groups_nature_20260929_v2/`.
 
@@ -19,8 +19,8 @@ PNG. Activity and change figures are 183 x 120 mm; the contrast figure is
 5.5-7 pt at final size, including bold lower-case panel letters. The established
 CON/RES/SUS colours, shapes and line styles are preserved. Long descriptions
 are carried by the legends below. Scales match between sexes within each phase
-family. These choices follow the [Nature research figure guide](https://research-figure-guide.nature.com/figures/building-and-exporting-figure-panels/)
-and its recommendations for sizing, editable text, accessible keys and compact
+family. These choices follow the common journal figure specifications
+and their recommendations for sizing, editable text, accessible keys and compact
 panel arrangement. This is formatting guidance, not a claim of journal approval.
 
 ## Legend: activity
@@ -67,8 +67,8 @@ associations.
 ## Reproduce into a new directory
 
 ```powershell
-Rscript --vanilla figures/cc4_phase_groups_nature_candidate.R 'cc4_phase_groups_20260929_v2' '<new candidate directory>'
-Rscript --vanilla -e "testthat::test_file('tests/testthat/test-cc4-nature-candidate.R', reporter='summary', stop_on_failure=TRUE)"
+Rscript --vanilla figures/cc4_phase_groups_house_candidate.R 'cc4_phase_groups_20260929_v2' '<new candidate directory>'
+Rscript --vanilla -e "testthat::test_file('tests/testthat/test-cc4-house-candidate.R', reporter='summary', stop_on_failure=TRUE)"
 ```
 
 All rendering is downstream of the frozen bundle. Formal modelling belongs

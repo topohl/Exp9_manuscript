@@ -43,7 +43,7 @@ s6_exemplar_contrasts <- function(ex, themes) {
 }
 
 s6_themes <- function() {
-  nv_read_csv(repo_path("results", "tables", "10_biological_integration",
+  hv_read_csv(repo_path("results", "tables", "10_biological_integration",
                         "gsea_wgcna_concordance", "global",
                         "ontology_aware_gsea_theme_assignments_all_contrasts.csv"))
 }
@@ -123,7 +123,7 @@ s6_hippo_glyph <- function(ex, accent, fam) {
   p +
     ggplot2::geom_text(data = rl, ggplot2::aes(x, y, label = l,
                                                colour = hit, fontface = ifelse(hit, 2, 1)),
-                       family = fam, size = nv_size(4.6), show.legend = FALSE) +
+                       family = fam, size = hv_size(4.6), show.legend = FALSE) +
     ggplot2::scale_colour_manual(values = c("TRUE" = accent, "FALSE" = "grey62"),
                                  guide = "none") +
     ggplot2::coord_equal(xlim = c(-1.62, 1.62), ylim = c(-1.46, 1.46),
@@ -134,8 +134,8 @@ s6_hippo_glyph <- function(ex, accent, fam) {
 # ------------------------------------------------- the bridge panel itself
 
 s6_f3_anatomy_bridge <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nv_palette()$typography$family
-  dcol <- nv_dataset_colours()
+  fam <- hv_palette()$typography$family
+  dcol <- hv_dataset_colours()
   th <- s6_themes()
   ex <- s6_exemplars()
 
@@ -172,11 +172,11 @@ s6_f3_anatomy_bridge <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   strips <- lapply(seq_len(nrow(ex)), function(i) {
     z <- rows[rows$key == ex$key[i], ]
     ggplot2::ggplot(z, ggplot2::aes(NES, contrast)) +
-      ggplot2::geom_vline(xintercept = 0, linewidth = nv_lw("reference_pt"),
+      ggplot2::geom_vline(xintercept = 0, linewidth = hv_lw("reference_pt"),
                           colour = "grey55") +
       ggplot2::geom_segment(ggplot2::aes(x = 0, xend = NES, yend = contrast),
                             colour = ex$accent[i],
-                            linewidth = nv_lw("reference_pt")) +
+                            linewidth = hv_lw("reference_pt")) +
       ggplot2::geom_point(ggplot2::aes(shape = supported), size = 1.5,
                           fill = "white", colour = ex$accent[i], stroke = 0.45) +
       ggplot2::scale_shape_manual(values = c("TRUE" = 16, "FALSE" = 21),
@@ -185,7 +185,7 @@ s6_f3_anatomy_bridge <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                   breaks = c(-2, 0, 2)) +
       ggplot2::scale_y_discrete(limits = rev(levels(z$contrast))) +
       ggplot2::labs(x = NULL, y = NULL) +
-      nv_theme(grid = "x") +
+      hv_theme(grid = "x") +
       ggplot2::theme(axis.text.y = ggplot2::element_text(size = 4.9),
                      axis.text.x = ggplot2::element_text(size = 4.7))
   })
@@ -196,13 +196,13 @@ s6_f3_anatomy_bridge <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   heads <- lapply(seq_len(nrow(ex)), function(i) {
     ggplot2::ggplot() +
       ggplot2::annotate("text", x = 0, y = 1, hjust = 0.5, vjust = 1,
-                        family = fam, size = nv_size(5.5), fontface = "bold",
+                        family = fam, size = hv_size(5.5), fontface = "bold",
                         colour = "grey12", label = ex$comp_label[i]) +
       ggplot2::annotate("text", x = 0, y = 0.52, hjust = 0.5, vjust = 1,
-                        family = fam, size = nv_size(5.2), colour = ex$accent[i],
+                        family = fam, size = hv_size(5.2), colour = ex$accent[i],
                         label = ex$unit_label[i]) +
       ggplot2::annotate("text", x = 0, y = 0.06, hjust = 0.5, vjust = 1,
-                        family = fam, size = nv_size(4.9), colour = "grey25",
+                        family = fam, size = hv_size(4.9), colour = "grey25",
                         label = ex$program[i]) +
       ggplot2::coord_cartesian(xlim = c(-1, 1), ylim = c(-0.5, 1.05),
                                expand = FALSE) +
@@ -212,7 +212,7 @@ s6_f3_anatomy_bridge <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   notes <- lapply(seq_len(nrow(ex)), function(i) {
     ggplot2::ggplot() +
       ggplot2::annotate("text", x = -1, y = 0.5, hjust = 0, vjust = 0.5,
-                        family = fam, size = nv_size(4.5), colour = "grey35",
+                        family = fam, size = hv_size(4.5), colour = "grey35",
                         lineheight = 1.15,
                         label = paste(strwrap(ex$shape[i], 34), collapse = "\n")) +
       ggplot2::coord_cartesian(xlim = c(-1, 1), ylim = c(0, 1), expand = FALSE) +
@@ -238,7 +238,7 @@ s6_f3_anatomy_bridge <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                by = "key")
   out$evidence <- "canonical ontology-aware GSEA theme table; values read, not recomputed"
   write_csv_safe(out, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -247,7 +247,7 @@ s6_f3_anatomy_bridge <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # The cross-compartment GSEA atlas with nested compartment / region / layer
 # headers instead of compound strings on the x-axis.
 s6_f3_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nv_palette()$typography$family
+  fam <- hv_palette()$typography$family
   th <- s6_themes()
   contrast <- as.character(panel$contrast %||% "SUS - RES")
   z <- th[th$contrast == contrast &
@@ -301,7 +301,7 @@ s6_f3_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_point(data = cells[cells$has_support, , drop = FALSE],
                         ggplot2::aes(xpos, ypos), size = 0.42,
                         colour = "grey10") +
-    nv_diverging(limits = lim, name = "median\nNES") +
+    hv_diverging(limits = lim, name = "median\nNES") +
     ggplot2::scale_x_continuous(breaks = seq_len(n),
                                 labels = sg_axis_labels(blocks),
                                 limits = c(0.5, n + 0.5), expand = c(0, 0)) +
@@ -313,10 +313,10 @@ s6_f3_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                       linewidth = 0.45, colour = "grey25") +
     ggplot2::annotate("text", x = blocks$compartment$mid, y = y_comp,
                       label = blocks$compartment$label, family = fam,
-                      size = nv_size(5.4), fontface = "bold", colour = "grey15") +
+                      size = hv_size(5.4), fontface = "bold", colour = "grey15") +
     ggplot2::annotate("text", x = blocks$region$mid, y = y_reg,
                       label = blocks$region$label, family = fam,
-                      size = nv_size(5.0), colour = "grey30") +
+                      size = hv_size(5.0), colour = "grey30") +
     ggplot2::labs(x = NULL, y = NULL,
                   caption = paste0(
                     "Contrast: ", contrast,
@@ -326,7 +326,7 @@ s6_f3_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                     "interpretation layer and is NOT a new FDR family. ",
                     length(dropped), " qc_review theme(s) not claim-eligible ",
                     "are excluded.")) +
-    nv_theme_tile() +
+    hv_theme_tile() +
     ggplot2::theme(
       axis.text.x = ggplot2::element_text(size = 4.8, colour = "grey25"),
       axis.text.y = ggplot2::element_text(size = 5),
@@ -348,7 +348,7 @@ s6_f3_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                linewidth = 0.18, colour = "grey72")
   }
   write_csv_safe(cells, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -370,7 +370,7 @@ s6_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   prog <- pr[pr$key == as.character(panel$program_key), , drop = FALSE]
   if (!nrow(prog)) stop("unknown program key: ", panel$program_key, call. = FALSE)
   ev <- s4_gsea_scores(prog)
-  fam <- nv_palette()$typography$family
+  fam <- hv_palette()$typography$family
   acc <- prog$accent[1]
   N <- ev$N
 
@@ -379,16 +379,16 @@ s6_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   ticks <- data.frame(rank = which(ev$hits))
 
   top <- ggplot2::ggplot(curve, ggplot2::aes(rank, es)) +
-    ggplot2::geom_hline(yintercept = 0, linewidth = nv_lw("reference_pt"),
+    ggplot2::geom_hline(yintercept = 0, linewidth = hv_lw("reference_pt"),
                         colour = "grey75") +
     ggplot2::geom_line(colour = acc, linewidth = 0.45) +
     ggplot2::annotate("segment", x = ev$peak, xend = ev$peak, y = 0, yend = ev$ES,
-                      linewidth = nv_lw("reference_pt"), colour = "grey55",
+                      linewidth = hv_lw("reference_pt"), colour = "grey55",
                       linetype = "22") +
     ggplot2::scale_x_continuous(expand = c(0, 0), limits = c(1, N),
                                 breaks = c(1, N), labels = c("SUS", "RES")) +
     ggplot2::labs(x = NULL, y = "enrichment score") +
-    nv_theme() +
+    hv_theme() +
     ggplot2::theme(plot.margin = ggplot2::margin(1, 1, 0, 1, "mm"),
                    axis.title.y = ggplot2::element_text(size = 5.4))
 
@@ -398,13 +398,13 @@ s6_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::scale_x_continuous(expand = c(0, 0), limits = c(1, N)) +
     ggplot2::scale_y_continuous(expand = c(0, 0)) +
     ggplot2::labs(x = NULL, y = NULL) +
-    nv_theme() +
+    hv_theme() +
     ggplot2::theme(axis.text = ggplot2::element_blank(),
                    axis.line = ggplot2::element_blank(),
                    axis.ticks = ggplot2::element_blank(),
                    plot.margin = ggplot2::margin(0, 1, 0, 1, "mm"))
 
-  th <- nv_read_csv(repo_path(as.character(unlist(panel$input_dependencies))[1]))
+  th <- hv_read_csv(repo_path(as.character(unlist(panel$input_dependencies))[1]))
   tr <- th[th$dataset == prog$dataset[1] & th$spatial_unit == prog$unit[1] &
              th$GO_ID == prog$term[1], , drop = FALSE]
   tr <- tr[match(c("RES - CON", "SUS - CON", "SUS - RES"), tr$contrast), ]
@@ -415,16 +415,16 @@ s6_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   lim <- max(abs(tr$NES), na.rm = TRUE)
 
   bot <- ggplot2::ggplot(tr, ggplot2::aes(short, 1, fill = NES)) +
-    ggplot2::geom_tile(colour = "white", linewidth = nv_lw("tile_border_pt")) +
+    ggplot2::geom_tile(colour = "white", linewidth = hv_lw("tile_border_pt")) +
     ggplot2::geom_text(ggplot2::aes(label = sprintf("%.1f", NES)),
-                       family = fam, size = nv_size(5)) +
+                       family = fam, size = hv_size(5)) +
     ggplot2::geom_point(data = tr[tr$sig, , drop = FALSE],
                         ggplot2::aes(short, 1.42), size = 0.4, colour = "black",
                         inherit.aes = FALSE) +
-    nv_diverging(limits = c(-lim, lim), name = NULL, guide = "none") +
+    hv_diverging(limits = c(-lim, lim), name = NULL, guide = "none") +
     ggplot2::scale_y_continuous(limits = c(0.5, 1.6), expand = c(0, 0)) +
     ggplot2::labs(x = NULL, y = NULL) +
-    nv_theme_tile() +
+    hv_theme_tile() +
     ggplot2::theme(axis.text.y = ggplot2::element_blank(),
                    axis.text.x = ggplot2::element_text(size = 5),
                    plot.margin = ggplot2::margin(0, 1, 1, 1, "mm"))
@@ -433,13 +433,13 @@ s6_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   unit <- sg_unit_label(prog$unit[1], prog$dataset[1])
   hdr <- ggplot2::ggplot() +
     ggplot2::annotate("text", x = 0, y = 0.98, hjust = 0, vjust = 1, family = fam,
-                      size = nv_size(5.2), fontface = "bold", colour = "grey12",
+                      size = hv_size(5.2), fontface = "bold", colour = "grey12",
                       label = paste0(comp, "   ", unit)) +
     ggplot2::annotate("text", x = 0, y = 0.62, hjust = 0, vjust = 1, family = fam,
-                      size = nv_size(5.4), fontface = "bold", colour = acc,
+                      size = hv_size(5.4), fontface = "bold", colour = acc,
                       label = prog$label[1]) +
     ggplot2::annotate("text", x = 0, y = 0.26, hjust = 0, vjust = 1, family = fam,
-                      size = nv_size(4.8), colour = "grey25",
+                      size = hv_size(4.8), colour = "grey25",
                       label = sprintf("NES %.2f   FDR %.0e   %d/%d leading edge",
                                       ev$NES, ev$FDR, length(ev$leading),
                                       ev$setSize)) +
@@ -472,6 +472,6 @@ s6_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       "permutation is run and no p-value or FDR is recomputed."),
     stringsAsFactors = FALSE)
   write_csv_safe(out, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }

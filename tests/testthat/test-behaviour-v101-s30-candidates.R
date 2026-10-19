@@ -75,8 +75,8 @@ svg_text_nodes <- function(path) {
              pt = as.numeric(sub(".*font-size: *([0-9.]+)px.*", "\\1", style)),
              family = sub('.*font-family: *"?([^";]+)"?;.*', "\\1", style), stringsAsFactors = FALSE)
 }
-# The Nature layout prints an e-notation value in the form 2.61 × 10^−5: three consecutive text
-# nodes (the mantissa, "× 10" and the exponent, f1n_sci_parts). They are read back as the one string
+# The house layout prints an e-notation value in the form 2.61 × 10^−5: three consecutive text
+# nodes (the mantissa, "× 10" and the exponent, f1h_sci_parts). They are read back as the one string
 # the map resolves ("2.61e−5"), so the value is checked value for value like any other.
 join_sci_nodes <- function(nodes) {
   t <- trimws(nodes$text); keep <- rep(TRUE, nrow(nodes))
@@ -118,16 +118,16 @@ strip_labels <- function(x) { for (p in LABEL_WORDS) x <- gsub(p, " ", x, perl =
 numbers_in <- function(x) regmatches(x, gregexpr(NUMBER, x, perl = TRUE))[[1]]
 panel_svg <- function(s) file.path(FIGROOT, s$candidate, "panels", sprintf("%s_%s.svg", s$candidate, s$id))
 
-# The Nature-layout candidate (NATURE_REDESIGN_SPEC): one vector page, and a text floor of exactly
+# The house-layout candidate (NATURE_REDESIGN_SPEC): one vector page, and a text floor of exactly
 # 5.0 pt with no superscript exception (the other candidates keep 6 pt with the plotmath exception).
-NATURE <- "figure_01_option2_nature"
+HOUSE <- "figure_01_option2_house"
 vector_page <- function(k) identical(CT$candidates[[k]]$assembly, "vector_page")
-TEXT_FLOOR_PT <- c(figure_01_option2_nature = 5.0, figure_01_option3_nature = 5.0, figure_01_option3_panel_d = 5.0,
-                   figure_01_option3b_nature = 5.0)
+TEXT_FLOOR_PT <- c(figure_01_option2_house = 5.0, figure_01_option3_house = 5.0, figure_01_option3_panel_d = 5.0,
+                   figure_01_option3b_house = 5.0)
 # Figure 1 option 3 (OPTION3_SPEC): the page, and the stand-alone copy of its panel d.
-OPTION3 <- "figure_01_option3_nature"; OPTION3_D <- "figure_01_option3_panel_d"
+OPTION3 <- "figure_01_option3_house"; OPTION3_D <- "figure_01_option3_panel_d"
 # Figure 1 option 3b (OPTION3B_SPEC): option 3 with c (post hoc CON / RES / SUS, fsb P1) and d rebuilt.
-OPTION3B <- "figure_01_option3b_nature"
+OPTION3B <- "figure_01_option3b_house"
 # The frozen post hoc registry whose rows (fsb P1, P1b) option 3b may draw or quote.
 POSTHOC_REGISTRY_SHA256 <- "7885317c95d608284dc118380ebd449f6606a1efd182df7cd17b6b453a1e34a0"
 # Fill and stroke colours an SVG draws (svglite style attributes), upper-case hex.
@@ -193,7 +193,7 @@ test_that("the candidate contract is candidate-only and declares every panel com
   expect_equal(CT$scientific_recomputation, "none")
   expect_equal(CT$entry_point, "figures/behaviour_v101_s30_candidates.R")
   expect_equal(CT$annotation_map, "figures/behaviour_v101_s30_annotation_map.csv")
-  expect_setequal(KEYS, c("figure_01_option1", "figure_01_option2", "figure_01_option2_nature", "figure_01_option3_nature", "figure_01_option3_panel_d", "figure_01_option3b_nature", "light_phase_panel", "light_dependence_ed",
+  expect_setequal(KEYS, c("figure_01_option1", "figure_01_option2", "figure_01_option2_house", "figure_01_option3_house", "figure_01_option3_panel_d", "figure_01_option3b_house", "light_phase_panel", "light_dependence_ed",
                           "cookie_ed", "screen_summary", "ed_behaviour_longitudinal_light", "ed_behaviour_cookie",
                           "ed_behaviour_domain_heatmap_picked", "ed_behaviour_domain_heatmap_all5min",
                           "ed_behaviour_domain_heatmap_all10min", "ed_behaviour_hmm"))
@@ -217,7 +217,7 @@ test_that("the candidate contract is candidate-only and declares every panel com
       expect_true(nzchar(s$description), info = paste(k, s$id))
       expect_true(any(startsWith(lib_code, paste0(s$builder, " <- function("))), info = paste(k, s$id, "builder", s$builder))
       expect_true(length(s$inputs) > 0 && all(grepl("^(ebb|s30b|fsb)/[A-Za-z0-9_]+$", unlist(s$inputs))), info = paste(k, s$id))
-      # a panel prints map values, or (the Nature-layout design panel) has moved all of them to its legend
+      # a panel prints map values, or (the house-layout design panel) has moved all of them to its legend
       expect_true(length(s$annotation_panels) > 0 || length(s$annotation_panels_legend) > 0, info = paste(k, s$id))
       if (s$builder %in% JITTERED)
         expect_true(!is.null(s$jitter_seed) && !anyNA(unlist(s$jitter_seed)), info = paste(k, s$id, "needs an explicit jitter seed"))
@@ -272,31 +272,31 @@ test_that("every annotation key resolves to exactly one stored cell", {
   legend_only <- setdiff(unique(unlist(lapply(all_panels(), function(s) s$annotation_panels_legend))), drawn)
   expect_true(all(c("light_legend", "cookie_text") %in% legend_only))
   # the option-panel keys are copies of the canonical Figure 1 keys (same cell, same format), except
-  # the Nature layout's own legend keys (the n its legend quotes): they say so in their meaning, and
-  # they are only quoted, in the Nature candidate's legend map panels, never drawn
+  # the house layout's own legend keys (the n its legend quotes): they say so in their meaning, and
+  # they are only quoted, in the house-style candidate's legend map panels, never drawn
   canon <- rd(CANON_MAP_PATH)
-  nature_only <- grepl("^f1o2n_", m$key) & grepl("(Nature layout only; no canonical Figure 1 key)", m$meaning, fixed = TRUE)
-  expect_true(all(grepl("^f1o2n_(c_n_|f_n$)", m$key[nature_only])))
-  nature_legend <- unique(unlist(lapply(CT$candidates[[NATURE]]$panels, function(s) s$annotation_panels_legend)))
-  expect_true(all(m$panel[nature_only] %in% setdiff(nature_legend, drawn)))
-  opt <- m[grepl("^f1o([12]|2n)_", m$key) & !nature_only, , drop = FALSE]
+  house_only <- grepl("^f1o2h_", m$key) & grepl("(house layout only; no canonical Figure 1 key)", m$meaning, fixed = TRUE)
+  expect_true(all(grepl("^f1o2h_(c_n_|f_n$)", m$key[house_only])))
+  house_legend <- unique(unlist(lapply(CT$candidates[[HOUSE]]$panels, function(s) s$annotation_panels_legend)))
+  expect_true(all(m$panel[house_only] %in% setdiff(house_legend, drawn)))
+  opt <- m[grepl("^f1o([12]|2n)_", m$key) & !house_only, , drop = FALSE]
   expect_equal(nrow(opt), 3L * nrow(canon[!grepl("^d_", canon$key), ]))
   i <- match(sub("^f1o([12]|2n)_", "", opt$key), canon$key)
   expect_false(anyNA(i))
   for (col in c("table", "column", "filters", "format")) expect_identical(opt[[col]], canon[[col]][i], info = col)
-  o3 <- m[startsWith(m$key, "f1o3n_"), , drop = FALSE]
+  o3 <- m[startsWith(m$key, "f1o3h_"), , drop = FALSE]
   expect_gt(nrow(o3), 0L)
   o3_only <- grepl("(option 3 only; no canonical Figure 1 key)", o3$meaning, fixed = TRUE)
-  j <- match(sub("^f1o3n_", "", o3$key[!o3_only]), canon$key)
+  j <- match(sub("^f1o3h_", "", o3$key[!o3_only]), canon$key)
   expect_false(anyNA(j), info = paste(o3$key[!o3_only][is.na(j)], collapse = ", "))
-  for (col in c("table", "column", "filters", "format")) expect_identical(o3[[col]][!o3_only], canon[[col]][j], info = paste("f1o3n_", col))
-  expect_true(all(is.na(match(sub("^f1o3n_", "", o3$key[o3_only]), canon$key))))
+  for (col in c("table", "column", "filters", "format")) expect_identical(o3[[col]][!o3_only], canon[[col]][j], info = paste("f1o3h_", col))
+  expect_true(all(is.na(match(sub("^f1o3h_", "", o3$key[o3_only]), canon$key))))
   o3_panels <- unique(unlist(lapply(c(CT$candidates[[OPTION3]]$panels, CT$candidates[[OPTION3_D]]$panels), function(s)
     c(s$annotation_panels, s$annotation_panels_plotted, s$annotation_panels_legend))))
   expect_setequal(unique(o3$panel), o3_panels)
-  expect_true(all(startsWith(o3_panels, "f1o3n_")))
+  expect_true(all(startsWith(o3_panels, "f1o3h_")))
   # option 3b: its own keys (f1o3b_) serve only its c and d; a, b, e and f reuse option 3's map panels.
-  # A copied registered key names its f1o3n_ source and resolves the same cell with the same format;
+  # A copied registered key names its f1o3h_ source and resolves the same cell with the same format;
   # the post hoc keys read fsb P1 / P1b rows of the frozen registry's models only.
   o3b <- m[startsWith(m$key, "f1o3b_"), , drop = FALSE]
   expect_gt(nrow(o3b), 0L)
@@ -306,9 +306,9 @@ test_that("every annotation key resolves to exactly one stored cell", {
   expect_setequal(unique(o3b$panel), cd_panels)
   expect_true(all(startsWith(cd_panels, "f1o3b_")))
   for (s in Filter(function(s) !s$id %in% c("c", "d"), o3b_cand))
-    expect_true(all(startsWith(unlist(c(s$annotation_panels, s$annotation_panels_legend)), "f1o3n_")), info = s$id)
-  same <- regmatches(o3b$meaning, regexpr("the same cell as f1o3n_[a-z0-9_]+", o3b$meaning))
-  copied <- grepl("the same cell as f1o3n_", o3b$meaning, fixed = TRUE)
+    expect_true(all(startsWith(unlist(c(s$annotation_panels, s$annotation_panels_legend)), "f1o3h_")), info = s$id)
+  same <- regmatches(o3b$meaning, regexpr("the same cell as f1o3h_[a-z0-9_]+", o3b$meaning))
+  copied <- grepl("the same cell as f1o3h_", o3b$meaning, fixed = TRUE)
   src <- m[match(sub("^the same cell as ", "", same), m$key), , drop = FALSE]
   expect_false(anyNA(src$key))
   for (col in c("bundle", "table", "column", "filters", "format")) expect_identical(o3b[[col]][copied], src[[col]], info = paste("f1o3b_", col))
@@ -400,7 +400,7 @@ test_that("the SVG text uses the manuscript terminology and typography", {
     expect_false(grepl("*", txt, fixed = TRUE), info = paste(s$candidate, s$id, "prints a star"))
     # a sign is the typographic minus U+2212, never a hyphen-minus
     expect_false(grepl("(^|[\\s\\[(,=])-[0-9]", txt, perl = TRUE), info = paste(s$candidate, s$id, "prints a hyphen-minus sign"))
-    # Arial; nothing below 6 pt except plotmath superscripts (the Nature layout: nothing below 5.0 pt, no exception)
+    # Arial; nothing below 6 pt except plotmath superscripts (the house layout: nothing below 5.0 pt, no exception)
     expect_true(all(nodes$family == "Arial"), info = paste(s$candidate, s$id))
     if (s$candidate %in% names(TEXT_FLOOR_PT)) {
       low <- nodes[nodes$pt < TEXT_FLOOR_PT[[s$candidate]] - 1e-9 & nzchar(trimws(nodes$text)), , drop = FALSE]
@@ -519,19 +519,19 @@ test_that("the outputs exist, are authored at their boxes and equal the receipt"
   }
 })
 
-test_that("the Nature-layout candidate is one vector page with live text, embedded Arial and the option 2 inks", {
-  cand <- CT$candidates[[NATURE]]
-  expect_true(vector_page(NATURE))
+test_that("the house-layout candidate is one vector page with live text, embedded Arial and the option 2 inks", {
+  cand <- CT$candidates[[HOUSE]]
+  expect_true(vector_page(HOUSE))
   expect_equal(c(cand$width_mm, cand$height_mm), c(183, 160))
   expect_lte(cand$height_mm, 170)
   expect_equal(c(cand$page_margin_mm, cand$panel_gap_mm), c(4, 3))
   expect_equal(unname(vapply(cand$panels, function(s) s$letter, "")), letters[1:6])
-  for (s in cand$panels) expect_identical(s$args$style, "nature", info = s$id)
+  for (s in cand$panels) expect_identical(s$args$style, "house", info = s$id)
   skip_if_not(have_pins, "bundles not pinned")
   skip_if_not(rendered, "candidates not rendered")
   skip_if_not_installed("xml2")
   rc <- rd(RECEIPT)
-  r <- rc[rc$candidate == NATURE, , drop = FALSE]
+  r <- rc[rc$candidate == HOUSE, , drop = FALSE]
   page_svg <- repo(r$path[r$kind == "assembled_svg"]); page_pdf <- repo(r$path[r$kind == "assembled_pdf"])
   # the SVG: no embedded image, live text only, nothing below 5.0 pt, Arial
   svg_src <- paste(readLines(page_svg, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
@@ -552,7 +552,7 @@ test_that("the Nature-layout candidate is one vector page with live text, embedd
     expect_true(grepl("font-size: 8.00px", xml2::xml_attr(node, "style"), fixed = TRUE), info = s$letter)
   }
   # the page draws exactly the panels' text (so the value-for-value test on the panels holds for the page)
-  panel_txt <- unlist(lapply(cand$panels, function(s) svg_text_nodes(panel_svg(c(s, list(candidate = NATURE))))$text))
+  panel_txt <- unlist(lapply(cand$panels, function(s) svg_text_nodes(panel_svg(c(s, list(candidate = HOUSE))))$text))
   page_txt <- page$text[!(page$pt == 8 & page$text %in% letters[1:6])]
   expect_identical(sort(trimws(page_txt)), sort(trimws(panel_txt)))
   # the PDF: one page, vector (no image XObject), every font an embedded Arial
@@ -578,12 +578,12 @@ test_that("the Nature-layout candidate is one vector page with live text, embedd
   n_desc <- length(pdf_hits(pdf, "/Type\\s*/FontDescriptor"))
   expect_gt(n_desc, 0L)
   expect_equal(length(pdf_hits(pdf, "/FontFile[23]?\\s+[0-9]+\\s+[0-9]+\\s+R")), n_desc)
-  # no new ink: every fill and stroke colour of the Nature-layout panels is one option 2 already draws
+  # no new ink: every fill and stroke colour of the house-layout panels is one option 2 already draws
   o2 <- CT$candidates$figure_01_option2$panels
   o2_ink <- unique(unlist(lapply(o2, function(s) svg_colours(panel_svg(c(s, list(candidate = "figure_01_option2")))))))
   for (s in cand$panels) {
-    ink <- svg_colours(panel_svg(c(s, list(candidate = NATURE))))
-    expect_equal(setdiff(ink, o2_ink), character(0), info = paste(NATURE, s$id, "draws a colour option 2 does not"))
+    ink <- svg_colours(panel_svg(c(s, list(candidate = HOUSE))))
+    expect_equal(setdiff(ink, o2_ink), character(0), info = paste(HOUSE, s$id, "draws a colour option 2 does not"))
   }
   expect_equal(setdiff(svg_colours(page_svg), o2_ink), character(0))
 })

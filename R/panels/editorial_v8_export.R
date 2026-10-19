@@ -2,7 +2,7 @@
 #
 # THE DEFECT THIS FIXES
 # ---------------------
-# nv_pdf() prefers rsvg::rsvg_pdf, which is vector-preserving, but falls back to
+# hv_pdf() prefers rsvg::rsvg_pdf, which is vector-preserving, but falls back to
 # ImageMagick at 300 dpi when rsvg is absent. rsvg is NOT installed here, so
 # every final PDF in Parts 16-23 is a single full-page RGB raster: one
 # /Subtype /Image of exactly 2161 x 2008 px and zero font objects. The SVG
@@ -16,8 +16,8 @@
 # font (/FontFile2, /BaseFont ...+ArialMT), so the result is genuine vector.
 #
 # To do that the build needs the ggplot OBJECTS, not the written SVGs. The
-# frozen renderers hand their plot to nv_save_panel() and return nothing, so
-# e8_capture_on() temporarily shadows nv_save_panel in the global environment:
+# frozen renderers hand their plot to hv_save_panel() and return nothing, so
+# e8_capture_on() temporarily shadows hv_save_panel in the global environment:
 # renderers resolve it by name at call time, so they hand their plot to the
 # shadow, which records it and then delegates to the original. No frozen
 # renderer is edited.
@@ -30,9 +30,9 @@ e8_key <- function(id, w, h) sprintf("%s@%gx%g", id, w, h)
 
 e8_capture_on <- function() {
   if (exists(".e8_orig_save", envir = globalenv())) return(invisible(FALSE))
-  orig <- get("nv_save_panel", envir = globalenv())
+  orig <- get("hv_save_panel", envir = globalenv())
   assign(".e8_orig_save", orig, envir = globalenv())
-  assign("nv_save_panel", function(plot, svg_path, w_mm, h_mm) {
+  assign("hv_save_panel", function(plot, svg_path, w_mm, h_mm) {
     assign(basename(svg_path), list(plot = plot, w = w_mm, h = h_mm),
            envir = e8_registry)
     orig(plot, svg_path, w_mm, h_mm)
@@ -42,7 +42,7 @@ e8_capture_on <- function() {
 
 e8_capture_off <- function() {
   if (!exists(".e8_orig_save", envir = globalenv())) return(invisible(FALSE))
-  assign("nv_save_panel", get(".e8_orig_save", envir = globalenv()),
+  assign("hv_save_panel", get(".e8_orig_save", envir = globalenv()),
          envir = globalenv())
   rm(".e8_orig_save", envir = globalenv())
   invisible(TRUE)
@@ -70,8 +70,8 @@ e8_as_grob <- function(p) {
 e8_compose_pdf <- function(figure, svg_names, pdf_path) {
   W <- as.numeric(figure$width_mm)
   H <- as.numeric(figure$height_mm)
-  lab_pt <- nv_pt("panel_label_pt")
-  fam <- nv_palette()$typography$family
+  lab_pt <- hv_pt("panel_label_pt")
+  fam <- hv_palette()$typography$family
 
   dir_create(dirname(pdf_path))
   # cairo floors the MediaBox to whole points, which would make a 183 mm page
@@ -192,8 +192,8 @@ e8_vector_audit <- function(pdfs) {
 e8_compose_svg <- function(figure, svg_names, svg_path) {
   W <- as.numeric(figure$width_mm)
   H <- as.numeric(figure$height_mm)
-  lab_pt <- nv_pt("panel_label_pt")
-  fam <- nv_palette()$typography$family
+  lab_pt <- hv_pt("panel_label_pt")
+  fam <- hv_palette()$typography$family
 
   dir_create(dirname(svg_path))
   svglite::svglite(svg_path, width = W / 25.4, height = H / 25.4, bg = "white",

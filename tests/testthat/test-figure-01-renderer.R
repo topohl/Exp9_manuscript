@@ -180,7 +180,7 @@ test_that("the figure contract registers the five bundle-backed panels", {
 })
 
 # The manuscript group palette (config/manuscript_palette.yml group, v3): every figure reads it, the vendored
-# R/vendor/plotting_nature.R keeps its older trio byte-identical to pRoteomics and is not used for group colour.
+# R/vendor/plotting_figure_style.R keeps its older trio byte-identical to pRoteomics and is not used for group colour.
 GROUP_V3 <- unlist(yaml::read_yaml(repo("config", "manuscript_palette.yml"))$group)[c("CON", "RES", "SUS")]
 
 test_that("Figure 1 uses the same group palette as Figures 2 and 3", {

@@ -52,8 +52,8 @@ s4_unit_levels <- function() {
 # no anatomical artwork of any kind, and the canonical contract already marks
 # panel 2a deferred_to_illustrator with figure_source null.
 s4_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nv_palette()$typography$family
-  dcol <- nv_dataset_colours()
+  fam <- hv_palette()$typography$family
+  dcol <- hv_dataset_colours()
 
   # one hippocampus: CA pyramidal band as an open arc, DG as a nested V
   arcdf <- function(cx, cy, r, t0, t1, n = 120) {
@@ -115,18 +115,18 @@ s4_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_point(data = mg, ggplot2::aes(x, y), size = 0.7,
                         colour = dcol[["microglia"]]) +
     ggplot2::geom_text(data = lab, ggplot2::aes(x, y, label = l), family = fam,
-                       size = nv_size(6), fontface = "bold") +
+                       size = hv_size(6), fontface = "bold") +
     ggplot2::geom_text(data = lyrlab, ggplot2::aes(x, y, label = l), family = fam,
-                       size = nv_size(5), colour = dcol[["neuron_neuropil"]]) +
+                       size = hv_size(5), colour = dcol[["neuron_neuropil"]]) +
     ggplot2::annotate("text", x = c(-1.55, 1.55), y = 1.42,
                       label = c("left hemisphere", "right hemisphere"),
-                      family = fam, size = nv_size(5.4), fontface = "bold") +
+                      family = fam, size = hv_size(5.4), fontface = "bold") +
     ggplot2::annotate("segment", x = -0.42, xend = 0.42, y = 1.42, yend = 1.42,
                       linewidth = 0.25, colour = "grey60",
                       arrow = grid::arrow(length = ggplot2::unit(0.8, "mm"),
                                           ends = "both", type = "closed")) +
     ggplot2::annotate("text", x = 0, y = 1.18, label = "paired tissue",
-                      family = fam, size = nv_size(5), colour = "grey35") +
+                      family = fam, size = hv_size(5), colour = "grey35") +
     ggplot2::coord_equal(xlim = c(-3.05, 3.05), ylim = c(-1.58, 1.62),
                          expand = FALSE) +
     ggplot2::theme_void(base_family = fam) +
@@ -144,12 +144,12 @@ s4_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_point(data = key, ggplot2::aes(x - 0.13, y), size = 1.1,
                         colour = key$col) +
     ggplot2::geom_text(data = key, ggplot2::aes(x, y, label = l), hjust = 0,
-                       family = fam, size = nv_size(5)) +
+                       family = fam, size = hv_size(5)) +
     ggplot2::annotate("text", x = -3.0, y = -1.50, hjust = 0, family = fam,
-                      size = nv_size(5), colour = "grey30",
+                      size = hv_size(5), colour = "grey30",
                       label = "9 animals (3 CON / 3 RES / 3 SUS) · AnimalID = biological replicate · 18 spatial units per animal") +
     ggplot2::annotate("text", x = 3.0, y = 1.55, hjust = 1, family = fam,
-                      size = nv_size(5), colour = "grey55", fontface = "italic",
+                      size = hv_size(5), colour = "grey55", fontface = "italic",
                       label = "schematic — Illustrator-ready placeholder")
 
   write_csv_safe(data.frame(
@@ -164,7 +164,7 @@ s4_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                      "kind; the canonical contract already marks panel 2a ",
                      "deferred_to_illustrator. No histological data is fabricated.")),
     stringsAsFactors = FALSE), csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -172,9 +172,9 @@ s4_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # prespecified contrasts. The Part-18 version showed three median contrasts and
 # hid the spread; the forest is the finding.
 s4_bilateral <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  prot <- nv_read_csv(repo_path(panel$primary_source))
-  summ <- nv_read_csv(repo_path(as.character(unlist(panel$input_dependencies))[1]))
-  fam <- nv_palette()$typography$family
+  prot <- hv_read_csv(repo_path(panel$primary_source))
+  summ <- hv_read_csv(repo_path(as.character(unlist(panel$input_dependencies))[1]))
+  fam <- hv_palette()$typography$family
 
   # representative = the contrast closest to the overall median r
   target <- stats::median(summ$pearson_r)
@@ -184,36 +184,36 @@ s4_bilateral <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   lim <- c(-3.2, 3.2)
   sc <- ggplot2::ggplot(dat, ggplot2::aes(estimate_L, estimate_R)) +
     ggplot2::geom_abline(slope = 1, intercept = 0,
-                         linewidth = nv_lw("reference_pt"), colour = "grey70") +
+                         linewidth = hv_lw("reference_pt"), colour = "grey70") +
     ggplot2::geom_point(colour = "#1F3D52", size = 0.12, alpha = 0.25, shape = 16) +
     ggplot2::annotate("text", x = lim[1] * 0.92, y = lim[2] * 0.88, hjust = 0,
-                      family = fam, size = nv_size(5.4),
+                      family = fam, size = hv_size(5.4),
                       label = sprintf("r = %.2f", pick$pearson_r[1])) +
     ggplot2::annotate("text", x = lim[1] * 0.92, y = lim[2] * 0.66, hjust = 0,
-                      family = fam, size = nv_size(5), colour = "grey35",
+                      family = fam, size = hv_size(5), colour = "grey35",
                       label = gsub("_", " ", pick$contrast[1])) +
     ggplot2::coord_cartesian(xlim = lim, ylim = lim, expand = FALSE) +
     ggplot2::scale_x_continuous(breaks = c(-3, 0, 3)) +
     ggplot2::scale_y_continuous(breaks = c(-3, 0, 3)) +
     ggplot2::labs(x = "left hemisphere (log2)", y = "right hemisphere (log2)") +
-    nv_theme()
+    hv_theme()
 
   s <- summ[order(summ$pearson_r), ]
   s$lab <- gsub("_", " ", s$contrast)
   s$lab <- sub("vs mean other", "vs other", s$lab)
   s$lab <- factor(s$lab, levels = s$lab)
-  s$dsl <- nv_dataset_label(s$dataset)
+  s$dsl <- hv_dataset_label(s$dataset)
   fo <- ggplot2::ggplot(s, ggplot2::aes(pearson_r, lab, colour = dsl)) +
     ggplot2::geom_segment(ggplot2::aes(x = 0, xend = pearson_r, yend = lab),
-                          colour = "grey88", linewidth = nv_lw("reference_pt")) +
+                          colour = "grey88", linewidth = hv_lw("reference_pt")) +
     ggplot2::geom_point(size = 1.1) +
     ggplot2::scale_colour_manual(values = stats::setNames(
-      unname(nv_dataset_colours()[c("neuron_neuropil", "neuron_soma", "microglia")]),
-      nv_dataset_label(c("neuron_neuropil", "neuron_soma", "microglia"))), name = NULL) +
+      unname(hv_dataset_colours()[c("neuron_neuropil", "neuron_soma", "microglia")]),
+      hv_dataset_label(c("neuron_neuropil", "neuron_soma", "microglia"))), name = NULL) +
     ggplot2::scale_x_continuous(limits = c(0, 1), breaks = c(0, 0.5, 1),
                                 expand = c(0, 0)) +
     ggplot2::labs(x = "paired-hemisphere r", y = NULL) +
-    nv_theme(grid = "x") +
+    hv_theme(grid = "x") +
     ggplot2::theme(axis.text.y = ggplot2::element_text(size = 5),
                    legend.position = "bottom",
                    legend.key.height = ggplot2::unit(1.8, "mm"))
@@ -229,7 +229,7 @@ s4_bilateral <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                      "spread from fine CA1 laminar to coarse regional contrasts ",
                      "is the result, not an inconvenience")
   write_csv_safe(out, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -237,14 +237,14 @@ s4_bilateral <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # proteins per family makes boxplots indefensible; 10 named genes x 3
 # compartments is the honest encoding and is already stored as a matrix.
 s4_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  d <- nv_read_csv(repo_path(panel$primary_source))
+  d <- hv_read_csv(repo_path(panel$primary_source))
   keep <- intersect(c("marker_gene", "dataset", "median_centered_log2",
                       "marker_class"), names(d))
   z <- d[, keep, drop = FALSE]
-  z <- z[z$dataset %in% names(nv_dataset_colours()), , drop = FALSE]
-  z$dsl <- nv_dataset_label(z$dataset)
+  z <- z[z$dataset %in% names(hv_dataset_colours()), , drop = FALSE]
+  z$dsl <- hv_dataset_label(z$dataset)
   z$dsl <- factor(z$dsl,
-    levels = nv_dataset_label(c("neuron_soma", "neuron_neuropil", "microglia")))
+    levels = hv_dataset_label(c("neuron_soma", "neuron_neuropil", "microglia")))
   # order genes by which compartment they mark, then by effect
   ord <- z[order(z$marker_class, -z$median_centered_log2), ]
   z$marker_gene <- factor(z$marker_gene, levels = rev(unique(ord$marker_gene)))
@@ -252,10 +252,10 @@ s4_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 
   p <- ggplot2::ggplot(z, ggplot2::aes(dsl, marker_gene,
                                        fill = median_centered_log2)) +
-    ggplot2::geom_tile(colour = "white", linewidth = nv_lw("tile_border_pt")) +
-    nv_diverging(limits = c(-lim, lim), name = "median-centred\nlog2") +
+    ggplot2::geom_tile(colour = "white", linewidth = hv_lw("tile_border_pt")) +
+    hv_diverging(limits = c(-lim, lim), name = "median-centred\nlog2") +
     ggplot2::labs(x = NULL, y = NULL) +
-    nv_theme_tile() +
+    hv_theme_tile() +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 30, hjust = 1),
                    axis.text.y = ggplot2::element_text(size = 5.2, face = "italic"),
                    legend.position = "right")
@@ -266,7 +266,7 @@ s4_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "imply dispersion the data do not carry; no CI or SE exists for these ",
     "differences anywhere in the source")
   write_csv_safe(z, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -281,8 +281,8 @@ s4_gsea_scores <- function(prog) {
                     "clusterProfiler", prog$dataset, "phenotype_within_unit",
                     prog$unit_dir, prog$contrast_dir)
   aud <- file.path(base, "protein_group_audits")
-  g <- nv_read_csv_longpath(aud, "collapsed_gene_input.csv", stringsAsFactors = FALSE)
-  res <- nv_read_csv_longpath(file.path(base, "GO", "BP"),
+  g <- hv_read_csv_longpath(aud, "collapsed_gene_input.csv", stringsAsFactors = FALSE)
+  res <- hv_read_csv_longpath(file.path(base, "GO", "BP"),
                               "GSEA_BP_results_full.csv", stringsAsFactors = FALSE)
   r <- res[res$ID == prog$term, , drop = FALSE]
   if (!nrow(r)) stop("term absent from stored GSEA result: ", prog$term)
@@ -331,7 +331,7 @@ s4_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   prog <- pr[pr$key == as.character(panel$program_key), , drop = FALSE]
   if (!nrow(prog)) stop("unknown program key: ", panel$program_key)
   ev <- s4_gsea_scores(prog)
-  fam <- nv_palette()$typography$family
+  fam <- hv_palette()$typography$family
   acc <- prog$accent[1]
   N <- ev$N
 
@@ -341,16 +341,16 @@ s4_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   ticks <- data.frame(rank = which(ev$hits))
 
   top <- ggplot2::ggplot(curve, ggplot2::aes(rank, es)) +
-    ggplot2::geom_hline(yintercept = 0, linewidth = nv_lw("reference_pt"),
+    ggplot2::geom_hline(yintercept = 0, linewidth = hv_lw("reference_pt"),
                         colour = "grey75") +
     ggplot2::geom_line(colour = acc, linewidth = 0.45) +
     ggplot2::annotate("segment", x = ev$peak, xend = ev$peak, y = 0, yend = ev$ES,
-                      linewidth = nv_lw("reference_pt"), colour = "grey55",
+                      linewidth = hv_lw("reference_pt"), colour = "grey55",
                       linetype = "22") +
     ggplot2::scale_x_continuous(expand = c(0, 0), limits = c(1, N),
                                 breaks = c(1, N), labels = c("SUS", "RES")) +
     ggplot2::labs(x = NULL, y = "enrichment score") +
-    nv_theme() +
+    hv_theme() +
     ggplot2::theme(plot.margin = ggplot2::margin(1, 1, 0, 1, "mm"),
                    axis.title.y = ggplot2::element_text(size = 5.4))
 
@@ -360,14 +360,14 @@ s4_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::scale_x_continuous(expand = c(0, 0), limits = c(1, N)) +
     ggplot2::scale_y_continuous(expand = c(0, 0)) +
     ggplot2::labs(x = NULL, y = NULL) +
-    nv_theme() +
+    hv_theme() +
     ggplot2::theme(axis.text = ggplot2::element_blank(),
                    axis.line = ggplot2::element_blank(),
                    axis.ticks = ggplot2::element_blank(),
                    plot.margin = ggplot2::margin(0, 1, 0, 1, "mm"))
 
   # three-contrast trajectory for this exact program and context
-  th <- nv_read_csv(repo_path(as.character(unlist(panel$input_dependencies))[1]))
+  th <- hv_read_csv(repo_path(as.character(unlist(panel$input_dependencies))[1]))
   tr <- th[th$dataset == prog$dataset[1] & th$spatial_unit == prog$unit[1] &
              th$GO_ID == prog$term[1], , drop = FALSE]
   tr <- tr[match(c("RES - CON", "SUS - CON", "SUS - RES"), tr$contrast), ]
@@ -378,26 +378,26 @@ s4_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   lim <- max(abs(tr$NES), na.rm = TRUE)
 
   bot <- ggplot2::ggplot(tr, ggplot2::aes(short, 1, fill = NES)) +
-    ggplot2::geom_tile(colour = "white", linewidth = nv_lw("tile_border_pt")) +
+    ggplot2::geom_tile(colour = "white", linewidth = hv_lw("tile_border_pt")) +
     ggplot2::geom_text(ggplot2::aes(label = sprintf("%.1f", NES)),
-                       family = fam, size = nv_size(5)) +
+                       family = fam, size = hv_size(5)) +
     ggplot2::geom_point(data = tr[tr$sig, , drop = FALSE],
                         ggplot2::aes(short, 1.42), size = 0.4, colour = "black",
                         inherit.aes = FALSE) +
-    nv_diverging(limits = c(-lim, lim), name = NULL, guide = "none") +
+    hv_diverging(limits = c(-lim, lim), name = NULL, guide = "none") +
     ggplot2::scale_y_continuous(limits = c(0.5, 1.6), expand = c(0, 0)) +
     ggplot2::labs(x = NULL, y = NULL) +
-    nv_theme_tile() +
+    hv_theme_tile() +
     ggplot2::theme(axis.text.y = ggplot2::element_blank(),
                    axis.text.x = ggplot2::element_text(size = 5),
                    plot.margin = ggplot2::margin(0, 1, 1, 1, "mm"))
 
   hdr <- ggplot2::ggplot() +
     ggplot2::annotate("text", x = 0, y = 0.70, hjust = 0, vjust = 1, family = fam,
-                      size = nv_size(5.6), fontface = "bold", colour = acc,
+                      size = hv_size(5.6), fontface = "bold", colour = acc,
                       label = prog$label[1]) +
     ggplot2::annotate("text", x = 0, y = 0.30, hjust = 0, vjust = 1, family = fam,
-                      size = nv_size(5), colour = "grey25",
+                      size = hv_size(5), colour = "grey25",
                       label = sprintf("NES %.2f   FDR %.0e   %d/%d leading edge",
                                       ev$NES, ev$FDR, length(ev$leading), ev$setSize)) +
     ggplot2::coord_cartesian(xlim = c(0, 1), ylim = c(0, 1), expand = FALSE) +
@@ -430,7 +430,7 @@ s4_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     SUS_RES_NES = tr$NES[tr$contrast == "SUS - RES"][1],
     SUS_RES_FDR = tr$GSEA_FDR[tr$contrast == "SUS - RES"][1]))
   write_csv_safe(out, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -456,7 +456,7 @@ s4_proteins <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                      prog$dataset[1], "forward", "per_file",
                      sprintf("%s%s_%s%s.csv", tok, cb[1], tok, cb[2]))
       if (!file.exists(f)) next
-      da <- nv_read_csv(f)
+      da <- hv_read_csv(f)
       sym <- intersect(c("official_gene_symbol", "gene_symbol"), names(da))[1]
       m <- match(keep, da[[sym]])
       rows[[length(rows) + 1L]] <- data.frame(
@@ -477,14 +477,14 @@ s4_proteins <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   z$sig <- is.finite(z$BH_FDR) & z$BH_FDR < 0.05
 
   p <- ggplot2::ggplot(z, ggplot2::aes(contrast, gene, fill = log2FC)) +
-    ggplot2::geom_tile(colour = "white", linewidth = nv_lw("tile_border_pt")) +
+    ggplot2::geom_tile(colour = "white", linewidth = hv_lw("tile_border_pt")) +
     ggplot2::geom_point(data = z[z$sig, , drop = FALSE], size = 0.4,
                         colour = "black") +
-    nv_diverging(limits = c(-lim, lim), name = "log2FC",
+    hv_diverging(limits = c(-lim, lim), name = "log2FC",
                  oob = scales::squish) +
     ggplot2::facet_wrap(~ program, scales = "free", nrow = 1) +
     ggplot2::labs(x = NULL, y = NULL) +
-    nv_theme_tile() +
+    hv_theme_tile() +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1,
                                                        size = 5),
                    axis.text.y = ggplot2::element_text(size = 5.4, face = "italic"),
@@ -495,16 +495,16 @@ s4_proteins <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "stored leading-edge proteins of each program's canonical term, ranked by ",
     "|stored rank statistic|, top %d per program; no gene chosen by name"), top_n)
   write_csv_safe(z, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
 # a. Spatial stress overview: where protein-level and program-level effects sit,
 # on the same anatomical vocabulary as Figure 2.
 s4_overview <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  member <- nv_read_csv(repo_path(panel$primary_source))
+  member <- hv_read_csv(repo_path(panel$primary_source))
   deps <- as.character(unlist(panel$input_dependencies))
-  atlas <- nv_read_csv(repo_path(deps[1]))
+  atlas <- hv_read_csv(repo_path(deps[1]))
   gsea <- as.data.frame(data.table::fread(repo_path(deps[2]), showProgress = FALSE))
 
   m <- merge(member[, c("dataset", "spatial_unit", "ProteinGroupID")],
@@ -533,15 +533,15 @@ s4_overview <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   z <- merge(z, clm, all.x = TRUE)
   z <- merge(z, prog, all.x = TRUE)
   z[is.na(z)] <- 0
-  z$dsl <- nv_dataset_label(z$dataset)
+  z$dsl <- hv_dataset_label(z$dataset)
   z$dsl <- factor(z$dsl,
-    levels = nv_dataset_label(c("neuron_neuropil", "neuron_soma", "microglia")))
+    levels = hv_dataset_label(c("neuron_neuropil", "neuron_soma", "microglia")))
   z$unit <- factor(z$spatial_unit, levels = s4_unit_levels())
   z <- z[!is.na(z$unit), ]
 
   p <- ggplot2::ggplot(z, ggplot2::aes(unit, 1)) +
     ggplot2::geom_tile(ggplot2::aes(fill = n_supported_terms), colour = "white",
-                       linewidth = nv_lw("tile_border_pt")) +
+                       linewidth = hv_lw("tile_border_pt")) +
     ggplot2::scale_fill_gradient(low = "#F2F2EF", high = "#1F3D52",
                                  name = "FDR-supported\nGSEA terms") +
     ggplot2::geom_point(data = z[z$n_dap > 0, , drop = FALSE],
@@ -554,7 +554,7 @@ s4_overview <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::scale_y_continuous(limits = c(0.5, 1.55), expand = c(0, 0)) +
     ggplot2::facet_grid(. ~ dsl, scales = "free_x", space = "free_x") +
     ggplot2::labs(x = NULL, y = NULL) +
-    nv_theme_tile() +
+    hv_theme_tile() +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
                    axis.text.y = ggplot2::element_blank(),
                    strip.text = ggplot2::element_text(face = "bold"),
@@ -565,6 +565,6 @@ s4_overview <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                       "restricted; program-level support is broad and present ",
                       "in all three compartments")
   write_csv_safe(z, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }

@@ -28,7 +28,7 @@
 source(file.path("R", "paths.R"))
 source(repo_path("R", "null_coalescing.R"))
 source(repo_path("R", "integration_utils.R"))
-source(repo_path("R", "nature_v2_figure_utils.R"))
+source(repo_path("R", "house_v2_figure_utils.R"))
 source(repo_path("R", "final_truth_v9_figure_utils.R"))
 Sys.setenv(PROTEOMICS_SCRIPT_ID = "figures/final_truth_v9_annotation_audit.R")
 
@@ -61,7 +61,7 @@ SUPPORT_ALPHA <- 0.05       # the canonical GSEA FDR threshold, unchanged
 MAJOR_MIN_N <- 3L
 MAJOR_MIN_FRAC <- 0.10
 
-TH <- nv_read_csv(repo_path(
+TH <- hv_read_csv(repo_path(
   "results", "tables", "10_biological_integration", "gsea_wgcna_concordance",
   "global", "ontology_aware_gsea_theme_assignments_all_contrasts.csv"))
 elig <- TH[TH$theme_claim_eligible %in% TRUE, , drop = FALSE]

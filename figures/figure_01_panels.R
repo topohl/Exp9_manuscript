@@ -54,7 +54,7 @@ getter <- function(prefix, read) function(name) {
 tab <- getter("ebb", function(n) behaviour_bundle_table(n, PIN))
 fsb <- getter("fsb", function(n) fsb_bundle_table(n, FSB))
 
-for (lib in c("behaviour_figure_style.R", "behaviour_figure1_panels.R", "behaviour_s30_light_panels.R", "behaviour_figure1_nature_panels.R",
+for (lib in c("behaviour_figure_style.R", "behaviour_figure1_panels.R", "behaviour_s30_light_panels.R", "behaviour_figure1_house_panels.R",
               "behaviour_figure1_option3_panels.R", "behaviour_stage14_panels.R", "behaviour_figure1_v2_panels.R"))
   source(repo_path("R", "panels", lib))
 

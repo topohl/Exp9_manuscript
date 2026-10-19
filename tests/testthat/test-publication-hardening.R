@@ -66,7 +66,7 @@ test_that("out-of-layer v9 renderers are exactly the five that are documented", 
   used <- used[nzchar(used)]
   out_of_layer <- sort(used[!grepl("^(f9_|s9f_|f3a_)", used)])
   expect_equal(out_of_layer,
-               c("nf_bilateral_main", "nf_pca_compact", "nvp_ed_celltype",
+               c("hf_bilateral_main", "hf_pca_compact", "hvp_ed_celltype",
                  "s5_ed_ca2_displacement", "s5_ed_network_distance"))
 })
 

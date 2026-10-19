@@ -9,7 +9,7 @@
 
 source(file.path("R", "paths.R"))
 source(repo_path("R", "integration_utils.R"))
-source(repo_path("R", "nature_v2_figure_utils.R"))
+source(repo_path("R", "house_v2_figure_utils.R"))
 source(repo_path("R", "final_truth_v9_figure_utils.R"))
 Sys.setenv(PROTEOMICS_SCRIPT_ID = "figures/final_truth_v9_readmes.R")
 
@@ -131,7 +131,7 @@ sup <- path_results("tables", "manuscript_candidates", "final_truth_v9",
 dd_path <- file.path(sup, "ST0_data_dictionary.csv")
 sup_tab <- c("| Table | Contents |", "|---|---|")
 if (file.exists(dd_path)) {
-  dd <- nv_read_csv(dd_path)
+  dd <- hv_read_csv(dd_path)
   u <- unique(dd[, c("table_file", "table_title")])
   sup_tab <- c(sup_tab, sprintf("| `%s` | %s |", u$table_file, u$table_title))
 }

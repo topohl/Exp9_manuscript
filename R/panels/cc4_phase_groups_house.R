@@ -1,6 +1,6 @@
 # Presentation-only refinement of the frozen Stage 31b descriptive estimates.
 # No calculation of new scientific estimates, intervals or p-values.
-cc4_nature_theme <- function() {
+cc4_house_theme <- function() {
   theme_nature_manuscript_panel(base_size=6.5,base_family="Arial",publication_legible=TRUE) +
     ggplot2::theme(axis.line=ggplot2::element_line(linewidth=.18),
       axis.ticks=ggplot2::element_line(linewidth=.18),
@@ -17,7 +17,7 @@ cc4_nature_theme <- function() {
       legend.margin=ggplot2::margin(0,0,1,0,unit="mm"))
 }
 
-cc4_nature_plots <- function(data) {
+cc4_house_plots <- function(data) {
   # group colours: the manuscript palette (config/manuscript_palette.yml group, v3)
   palette <- unlist(yaml::read_yaml(repo_path("config","manuscript_palette.yml"))$group)[c("CON","RES","SUS")]
   if (anyNA(palette) || !all(grepl("^#[0-9A-Fa-f]{6}$",palette)))
@@ -60,7 +60,7 @@ cc4_nature_plots <- function(data) {
       ggplot2::scale_y_continuous(limits=family_limits(phase,measure),expand=ggplot2::expansion(mult=c(0,.05))) +
       ggplot2::labs(tag=tag,title=paste(sex,tolower(phase),sep=" | "),x=NULL,
         y=if (measure=="Rate") "RFID position changes (h\u207b\u00b9)" else paste0("Change from ",ifelse(phase=="Inactive","I2","A2")," (h\u207b\u00b9)")) +
-      cc4_nature_theme()
+      cc4_house_theme()
   }
   combine <- function(measure) {
     plots <- list(panel("Female","Inactive",measure,"a"),panel("Male","Inactive",measure,"b"),
@@ -87,11 +87,11 @@ cc4_nature_plots <- function(data) {
       ggplot2::scale_x_continuous(limits=lim,breaks=scales::breaks_pretty(4),expand=ggplot2::expansion(mult=.025)) +
       ggplot2::scale_y_discrete(labels=function(x) gsub("-","\u2212",x,fixed=TRUE),expand=ggplot2::expansion(add=.5)) +
       ggplot2::labs(tag=tag,title=paste(sex,tolower(phase),sep=" | "),x="Difference in phase change (h\u207b\u00b9)",y=NULL) +
-      cc4_nature_theme()
+      cc4_house_theme()
   }
   contrasts <- patchwork::wrap_plots(contrast_panel("Female","Inactive","a"),contrast_panel("Male","Inactive","b"),
     contrast_panel("Female","Active","c"),contrast_panel("Male","Active","d"),ncol=2) +
     patchwork::plot_annotation(caption="Paired batch contrasts; pointwise 95% t intervals (3 batches per sex). Positive values favour a larger change in the first group.",
       theme=ggplot2::theme(plot.caption=ggplot2::element_text(family="Arial",size=5.5,hjust=0)))
-  list(cc4_nature_activity=combine("Rate"),cc4_nature_changes=combine("Change"),cc4_nature_group_contrasts=contrasts)
+  list(cc4_house_activity=combine("Rate"),cc4_house_changes=combine("Change"),cc4_house_group_contrasts=contrasts)
 }

@@ -52,8 +52,8 @@ s5_block <- function(domain) {
 # created for a pairing that cannot exist. Expected pairings are solid, the
 # off-target specificity comparisons that make the test meaningful are open.
 s5_kaulich_forest <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  k <- nv_read_csv(repo_path(panel$primary_source))
-  fam <- nv_palette()$typography$family
+  k <- hv_read_csv(repo_path(panel$primary_source))
+  fam <- hv_palette()$typography$family
 
   z <- data.frame(
     dataset = k$dataset, contrast = k$internal_contrast,
@@ -69,14 +69,14 @@ s5_kaulich_forest <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                   levels = rev(s5_pretty_contrast(ord)))
 
   p <- ggplot2::ggplot(z, ggplot2::aes(NES, row)) +
-    ggplot2::geom_vline(xintercept = 0, linewidth = nv_lw("reference_pt"),
+    ggplot2::geom_vline(xintercept = 0, linewidth = hv_lw("reference_pt"),
                         colour = "grey65") +
     ggplot2::geom_point(ggplot2::aes(colour = expected, shape = expected,
                                      alpha = supported), size = 1.35,
                         stroke = 0.35) +
     ggplot2::geom_text(data = z[z$expected, , drop = FALSE],
                        ggplot2::aes(label = signature), family = fam,
-                       size = nv_size(5), nudge_y = 0.34, colour = "#1F3D52") +
+                       size = hv_size(5), nudge_y = 0.34, colour = "#1F3D52") +
     ggplot2::scale_colour_manual(
       values = c("TRUE" = "#1F3D52", "FALSE" = "#9E9A92"),
       labels = c("TRUE" = "expected match", "FALSE" = "specificity comparison"),
@@ -90,7 +90,7 @@ s5_kaulich_forest <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::facet_grid(block ~ ., scales = "free_y", space = "free_y",
                         switch = "y") +
     ggplot2::labs(x = "external signature NES", y = NULL) +
-    nv_theme(grid = "x") +
+    hv_theme(grid = "x") +
     ggplot2::theme(axis.text.y = ggplot2::element_text(size = 5),
                    strip.placement = "outside",
                    strip.text.y.left = ggplot2::element_text(angle = 90, size = 5,
@@ -104,7 +104,7 @@ s5_kaulich_forest <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "the off-diagonal of a contrast x signature grid is structurally empty, ",
     "not missing data")
   write_csv_safe(z, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -114,8 +114,8 @@ s5_kaulich_forest <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # terms, so a shared term axis would be 83% empty. Point size is the stored
 # setSize; nothing is invented.
 s5_internal_multiples <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  g <- nv_read_csv(repo_path(panel$primary_source))
-  fam <- nv_palette()$typography$family
+  g <- hv_read_csv(repo_path(panel$primary_source))
+  fam <- hv_palette()$typography$family
   z <- data.frame(
     contrast = g$contrast, term = g$Description, NES = g$NES,
     FDR = g$p_adjust, setSize = g$setSize, stringsAsFactors = FALSE)
@@ -134,10 +134,10 @@ s5_internal_multiples <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 
   p <- ggplot2::ggplot(z, ggplot2::aes(NES, term_f)) +
     ggplot2::geom_segment(ggplot2::aes(x = 0, xend = NES, yend = term_f),
-                          colour = "grey85", linewidth = nv_lw("reference_pt")) +
+                          colour = "grey85", linewidth = hv_lw("reference_pt")) +
     ggplot2::geom_point(ggplot2::aes(size = setSize, colour = supported)) +
     ggplot2::geom_text(ggplot2::aes(x = 0.08, label = term), hjust = 0,
-                       family = fam, size = nv_size(5), colour = "black") +
+                       family = fam, size = hv_size(5), colour = "black") +
     ggplot2::scale_colour_manual(values = c("TRUE" = "#1F3D52", "FALSE" = "#B9B9B4"),
                                  guide = "none") +
     ggplot2::scale_size_area(max_size = 1.8, name = "genes",
@@ -147,7 +147,7 @@ s5_internal_multiples <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::facet_grid(facet ~ ., scales = "free_y", space = "free_y",
                         switch = "y") +
     ggplot2::labs(x = "internal anatomical GSEA NES", y = NULL) +
-    nv_theme(grid = "x") +
+    hv_theme(grid = "x") +
     ggplot2::theme(axis.text.y = ggplot2::element_blank(),
                    axis.ticks.y = ggplot2::element_blank(),
                    strip.placement = "outside",
@@ -162,7 +162,7 @@ s5_internal_multiples <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "in a single contrast, so a term x contrast grid would be 83% blank. ",
     "Point size is the stored setSize. All 14 are FDR-supported")
   write_csv_safe(z[, setdiff(names(z), c("term_id", "term_f"))], csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -171,8 +171,8 @@ s5_internal_multiples <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # ED3: CA2-SLM QC. Missingness by sample with QC flags, and the normalisation
 # displacement that explains the burden.
 s5_ed_ca2_missingness <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  s <- nv_read_csv(repo_path(panel$primary_source))
-  fam <- nv_palette()$typography$family
+  s <- hv_read_csv(repo_path(panel$primary_source))
+  fam <- hv_palette()$typography$family
   s$lab <- paste0(s$AnimalID, "_", s$hemisphere)
   s$flag <- ifelse(s$qc_flag == "PASS", "", s$qc_flag)
   p <- ggplot2::ggplot(s, ggplot2::aes(stats::reorder(lab, -fraction_missing_preimputation),
@@ -180,22 +180,22 @@ s5_ed_ca2_missingness <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                        fill = StressGroup)) +
     ggplot2::geom_col(width = 0.68) +
     ggplot2::geom_text(ggplot2::aes(label = flag), vjust = -0.3,
-                       size = nv_size(5), family = fam) +
-    ggplot2::scale_fill_manual(values = nv_group_colours(), name = NULL) +
+                       size = hv_size(5), family = fam) +
+    ggplot2::scale_fill_manual(values = hv_group_colours(), name = NULL) +
     ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0, 0.12))) +
     ggplot2::labs(x = NULL, y = "fraction missing\nbefore imputation") +
-    nv_theme(grid = "y") +
+    hv_theme(grid = "y") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 60, hjust = 1,
                                                        size = 5),
                    legend.position = "right")
   write_csv_safe(s, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
 s5_ed_ca2_displacement <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  b <- nv_read_csv(repo_path(panel$primary_source))
-  fam <- nv_palette()$typography$family
+  b <- hv_read_csv(repo_path(panel$primary_source))
+  fam <- hv_palette()$typography$family
   b$flag <- ifelse(b$qc_flag == "PASS", "", b$qc_flag)
   p <- ggplot2::ggplot(b, ggplot2::aes(fraction_missing_preimputation,
                                        mean_centred_value_of_always_observed_proteins)) +
@@ -203,26 +203,26 @@ s5_ed_ca2_displacement <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     # light and nearly grey, so colour alone must not carry group
     ggplot2::geom_point(ggplot2::aes(fill = StressGroup, shape = StressGroup),
                         size = 1.3, colour = "grey20", stroke = 0.3) +
-    ggplot2::geom_text(ggplot2::aes(label = flag), family = fam, size = nv_size(5),
+    ggplot2::geom_text(ggplot2::aes(label = flag), family = fam, size = hv_size(5),
                        vjust = -0.9, colour = "grey25") +
-    ggplot2::scale_fill_manual(values = nv_group_colours(), name = NULL) +
+    ggplot2::scale_fill_manual(values = hv_group_colours(), name = NULL) +
     ggplot2::scale_shape_manual(values = c(CON = 21, RES = 24, SUS = 22), name = NULL) +
     ggplot2::labs(x = "fraction missing before imputation",
                   y = "centred value of proteins\nobserved in every sample") +
-    nv_theme(grid = "y") +
+    hv_theme(grid = "y") +
     ggplot2::theme(legend.position = "right")
   b$mechanism <- paste0(
     "per-sample median centring uses observed values only, so a heavily ",
     "missing sample gets an inflated median and every one of its proteins is ",
     "displaced downwards - including proteins with no imputed value anywhere")
   write_csv_safe(b, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
 s5_ed_ca2_classes <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  r <- nv_read_csv(repo_path(panel$primary_source))
-  fam <- nv_palette()$typography$family
+  r <- hv_read_csv(repo_path(panel$primary_source))
+  fam <- hv_palette()$typography$family
   z <- as.data.frame(table(cls = r$CA2_SLM_robustness_class),
                      stringsAsFactors = FALSE)
   z$lab <- gsub("_", " ", z$cls)
@@ -233,19 +233,19 @@ s5_ed_ca2_classes <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   p <- ggplot2::ggplot(z, ggplot2::aes(Freq, lab)) +
     ggplot2::geom_col(fill = z$col[order(z$Freq)], width = 0.6) +
     ggplot2::geom_text(ggplot2::aes(label = Freq), hjust = -0.35,
-                       family = fam, size = nv_size(5.4)) +
+                       family = fam, size = hv_size(5.4)) +
     ggplot2::scale_x_continuous(limits = c(0, max(z$Freq) * 1.22),
                                 expand = c(0, 0)) +
     ggplot2::labs(x = "proteins of the canonical 28", y = NULL) +
-    nv_theme(grid = "x") +
+    hv_theme(grid = "x") +
     ggplot2::theme(axis.text.y = ggplot2::element_text(size = 5))
   write_csv_safe(z[, c("cls", "Freq")], csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
 s5_ed_ca2_sensitivity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  r <- nv_read_csv(repo_path(panel$primary_source))
+  r <- hv_read_csv(repo_path(panel$primary_source))
   z <- data.frame(
     gene = r$gene_symbol, canonical = r$canonical_log2FC_SUS_minus_RES,
     hemi = r$effect_dropping_QC_failed_hemispheres,
@@ -253,10 +253,10 @@ s5_ed_ca2_sensitivity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   z <- z[is.finite(z$canonical) & is.finite(z$hemi), , drop = FALSE]
   p <- ggplot2::ggplot(z, ggplot2::aes(canonical, hemi)) +
     ggplot2::geom_abline(slope = 1, intercept = 0, linetype = "22",
-                         linewidth = nv_lw("reference_pt"), colour = "grey65") +
-    ggplot2::geom_hline(yintercept = 0, linewidth = nv_lw("reference_pt"),
+                         linewidth = hv_lw("reference_pt"), colour = "grey65") +
+    ggplot2::geom_hline(yintercept = 0, linewidth = hv_lw("reference_pt"),
                         colour = "grey80") +
-    ggplot2::geom_vline(xintercept = 0, linewidth = nv_lw("reference_pt"),
+    ggplot2::geom_vline(xintercept = 0, linewidth = hv_lw("reference_pt"),
                         colour = "grey80") +
     ggplot2::geom_point(ggplot2::aes(colour = cls), size = 1.1) +
     ggplot2::scale_colour_manual(values = c(
@@ -266,20 +266,20 @@ s5_ed_ca2_sensitivity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       labels = function(x) gsub("_", " ", x), name = NULL) +
     ggplot2::labs(x = "canonical log2FC (SUS − RES)",
                   y = "with QC-failed\nhemispheres dropped") +
-    nv_theme(grid = "y") +
+    hv_theme(grid = "y") +
     ggplot2::theme(legend.position = "bottom",
                    legend.key.height = ggplot2::unit(1.8, "mm"))
   z$reading <- paste0("points below the identity line lose magnitude when the ",
                       "two QC-failed SUS acquisitions are removed")
   write_csv_safe(z, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
 # ED5: WGCNA phenotype context, with the null stated on the panel.
 s5_ed_wgcna_phenotype <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  e <- nv_read_csv(repo_path(panel$primary_source))
-  fam <- nv_palette()$typography$family
+  e <- hv_read_csv(repo_path(panel$primary_source))
+  fam <- hv_palette()$typography$family
   lab <- intersect(c("module_display_label", "ModuleLabel_Final"), names(e))[1]
   z <- data.frame(module = if (is.na(lab)) e$module_id else e[[lab]],
                   module_id = e$module_id, contrast = e$contrast,
@@ -289,14 +289,14 @@ s5_ed_wgcna_phenotype <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   lim <- max(abs(z$estimate), na.rm = TRUE)
   n_sig <- sum(z$fdr < 0.05, na.rm = TRUE)
   p <- ggplot2::ggplot(z, ggplot2::aes(contrast, module, fill = estimate)) +
-    ggplot2::geom_tile(colour = "white", linewidth = nv_lw("tile_border_pt")) +
-    nv_diverging(limits = c(-lim, lim), name = "model effect") +
+    ggplot2::geom_tile(colour = "white", linewidth = hv_lw("tile_border_pt")) +
+    hv_diverging(limits = c(-lim, lim), name = "model effect") +
     ggplot2::labs(x = NULL, y = NULL,
                   caption = sprintf(paste0("%d of %d module x contrast cells reach ",
                     "tier-specific FDR < 0.05 (minimum %.3f): the colour field is ",
                     "DESCRIPTIVE and no cell is marked as significant"),
                     n_sig, nrow(z), min(z$fdr, na.rm = TRUE))) +
-    nv_theme_tile() +
+    hv_theme_tile() +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 30, hjust = 1),
                    axis.text.y = ggplot2::element_text(size = 5),
                    legend.position = "right",
@@ -305,14 +305,14 @@ s5_ed_wgcna_phenotype <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                                         lineheight = 1.2))
   z$fdr_supported_cells <- n_sig
   write_csv_safe(z, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
 # ED7: stress vs baseline spatial identity across every robustness subset.
 s5_ed_identity_subsets <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  c1 <- nv_read_csv(repo_path(panel$primary_source))
-  fam <- nv_palette()$typography$family
+  c1 <- hv_read_csv(repo_path(panel$primary_source))
+  fam <- hv_palette()$typography$family
   c1$lab <- gsub("_", " ", c1$subset)
   c1$lab <- factor(c1$lab, levels = rev(c1$lab))
   c1$pct <- 100 * c1$fraction_outside_baseline_affinity
@@ -322,50 +322,50 @@ s5_ed_identity_subsets <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_text(ggplot2::aes(label = sprintf("%d/%d",
                                                     effect_outside_baseline_affinity,
                                                     n_hits)),
-                       hjust = -0.15, family = fam, size = nv_size(5)) +
+                       hjust = -0.15, family = fam, size = hv_size(5)) +
     ggplot2::scale_fill_manual(values = c("TRUE" = "#1F3D52", "FALSE" = "#9E9A92"),
                                guide = "none") +
     ggplot2::scale_x_continuous(limits = c(0, 122), expand = c(0, 0)) +
     ggplot2::labs(x = "% of hits outside dominant baseline spatial affinity",
                   y = NULL) +
-    nv_theme(grid = "x") +
+    hv_theme(grid = "x") +
     ggplot2::theme(axis.text.y = ggplot2::element_text(size = 5))
   c1$note <- paste0("the result survives every robustness restriction; the old ",
                     "rank-10 tail did not and is deliberately not shown")
   write_csv_safe(c1, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
 # ED8: network and coupling nulls, stated explicitly.
 s5_ed_nulls <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  n <- nv_read_csv(repo_path(panel$primary_source))
-  fam <- nv_palette()$typography$family
+  n <- hv_read_csv(repo_path(panel$primary_source))
+  fam <- hv_palette()$typography$family
   z <- data.frame(dataset = n$dataset, p = n$exact_p,
                   floor = n$min_attainable_p, n_edges = n$n_edges,
                   stringsAsFactors = FALSE)
-  z$lab <- nv_dataset_label(z$dataset)
+  z$lab <- hv_dataset_label(z$dataset)
   z$lab <- factor(z$lab,
-    levels = nv_dataset_label(c("neuron_neuropil", "neuron_soma", "microglia")))
+    levels = hv_dataset_label(c("neuron_neuropil", "neuron_soma", "microglia")))
   p <- ggplot2::ggplot(z, ggplot2::aes(p, lab)) +
     ggplot2::geom_vline(xintercept = 0.05, linetype = "22",
-                        linewidth = nv_lw("reference_pt"), colour = "#D1543A") +
+                        linewidth = hv_lw("reference_pt"), colour = "#D1543A") +
     ggplot2::geom_segment(ggplot2::aes(x = floor, xend = p, yend = lab),
-                          colour = "grey85", linewidth = nv_lw("reference_pt")) +
+                          colour = "grey85", linewidth = hv_lw("reference_pt")) +
     ggplot2::geom_point(ggplot2::aes(x = floor), colour = "grey60", size = 1,
                         shape = 1) +
     ggplot2::geom_point(size = 1.4, colour = "#1F3D52") +
     ggplot2::geom_text(ggplot2::aes(label = sprintf("p = %.2f", p)), hjust = -0.3,
-                       family = fam, size = nv_size(5)) +
+                       family = fam, size = hv_size(5)) +
     ggplot2::scale_x_continuous(limits = c(0, 1.05), expand = c(0, 0),
                                 breaks = c(0, 0.05, 0.5, 1)) +
     ggplot2::labs(x = "exact whole-network p (open circle = attainable floor)",
                   y = NULL) +
-    nv_theme(grid = "x")
+    hv_theme(grid = "x")
   z$reading <- paste0("an informative null: the enumeration had resolution to ",
                       "0.0036 and found no whole-network group difference")
   write_csv_safe(z, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -378,8 +378,8 @@ s5_ed_nulls <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # point: exactly one of 48 intervals excludes zero, and nothing approaches FDR
 # support. This is the panel that prevents the reader from mining the edge list.
 s5_ed_coupling <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  x <- nv_read_csv(repo_path(panel$primary_source))
-  fam <- nv_palette()$typography$family
+  x <- hv_read_csv(repo_path(panel$primary_source))
+  fam <- hv_palette()$typography$family
   keep <- c("Edge", "Outcome", "Change", "window", "estimate",
             "conf.low", "conf.high", "p.value", "n",
             "p.adj_BH_within_outcome", "p.adj_BH_all_edge_phenotype_tests")
@@ -408,11 +408,11 @@ s5_ed_coupling <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   u$ypos <- as.integer(factor(u$edge_lab, levels = rev(sort(unique(u$edge_lab))))) +
     (u$row - mean(unique(u$row))) * 0.22
   p <- ggplot2::ggplot(u, ggplot2::aes(estimate, ypos)) +
-    ggplot2::geom_vline(xintercept = 0, linewidth = nv_lw("reference_pt"),
+    ggplot2::geom_vline(xintercept = 0, linewidth = hv_lw("reference_pt"),
                         colour = "grey55") +
     ggplot2::geom_segment(ggplot2::aes(x = conf.low, xend = conf.high,
                                        yend = ypos, colour = excludes_zero),
-                          linewidth = nv_lw("reference_pt")) +
+                          linewidth = hv_lw("reference_pt")) +
     ggplot2::geom_point(ggplot2::aes(colour = excludes_zero), size = 0.7) +
     ggplot2::scale_colour_manual(values = c("TRUE" = "#C0442C", "FALSE" = "#9E9A92"),
                                  guide = "none") +
@@ -429,7 +429,7 @@ s5_ed_coupling <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                     nrow(u), sum(u$excludes_zero),
                     min(u$p.adj_BH_within_outcome),
                     min(u$p.adj_BH_all_edge_phenotype_tests))) +
-    nv_theme(grid = "x") +
+    hv_theme(grid = "x") +
     ggplot2::theme(axis.text.y = ggplot2::element_text(size = 5),
                    panel.spacing.x = ggplot2::unit(1.6, "mm"),
                    plot.subtitle = ggplot2::element_text(size = 5, colour = "grey20"))
@@ -441,7 +441,7 @@ s5_ed_coupling <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     nrow(x), nrow(u), sum(u$excludes_zero), nrow(u),
     min(u$p.adj_BH_within_outcome), min(u$p.adj_BH_all_edge_phenotype_tests))
   write_csv_safe(u, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -450,15 +450,15 @@ s5_ed_coupling <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # One AnimalID is one independent network replicate, so this shows the actual
 # replicate-level spread behind the whole-network permutation in ED8c.
 s5_ed_network_distance <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  d <- nv_read_csv(repo_path(panel$primary_source))
-  fam <- nv_palette()$typography$family
-  grp <- nv_group_colours()
+  d <- hv_read_csv(repo_path(panel$primary_source))
+  fam <- hv_palette()$typography$family
+  grp <- hv_group_colours()
   dcol <- names(d)[grepl("^distance", names(d))][1]
   if (is.na(dcol)) stop("no distance column in ", panel$primary_source)
   d$value <- d[[dcol]]
-  d$lab <- nv_dataset_label(d$dataset)
+  d$lab <- hv_dataset_label(d$dataset)
   d$lab <- factor(d$lab,
-    levels = nv_dataset_label(c("neuron_neuropil", "neuron_soma", "microglia")))
+    levels = hv_dataset_label(c("neuron_neuropil", "neuron_soma", "microglia")))
   d$Group <- factor(d$StressGroup, levels = c("CON", "RES", "SUS"))
   # deterministic horizontal offset instead of geom_jitter
   d <- d[order(d$lab, d$Group, d$AnimalID), ]
@@ -477,13 +477,13 @@ s5_ed_network_distance <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                 limits = c(0.5, 3.5)) +
     ggplot2::facet_wrap(~lab, nrow = 1, scales = "free_y") +
     ggplot2::labs(x = NULL, y = "network distance from CON consensus") +
-    nv_theme(grid = "y")
+    hv_theme(grid = "y")
   d$reading <- paste0("each point is one animal-level network replicate; CON ",
                       "animals use a leave-one-CON-out centroid so no animal ",
                       "is compared against a centroid containing itself; ",
                       "group means are shown without an inferential claim")
   write_csv_safe(d, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -501,8 +501,8 @@ s5_ed_network_distance <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # guide order pinned. The frozen layers keep their existing behaviour; the
 # defect is reported rather than silently propagated.
 s5_pca <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  d <- nv_read_csv(repo_path(panel$primary_source))
-  ve <- nv_read_csv(repo_path(as.character(unlist(panel$input_dependencies))[1]),
+  d <- hv_read_csv(repo_path(panel$primary_source))
+  ve <- hv_read_csv(repo_path(as.character(unlist(panel$input_dependencies))[1]),
                     required = FALSE)
   pc <- function(k) {
     if (is.null(ve)) return(sprintf("PC%d", k))
@@ -511,8 +511,8 @@ s5_pca <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     sprintf("PC%d (%.0f%%)", k, 100 * v[1])
   }
   ds <- c("neuron_neuropil", "neuron_soma", "microglia")
-  d <- d[d$dataset %in% names(nv_dataset_colours()), , drop = FALSE]
-  d$lab <- factor(nv_dataset_label(d$dataset), levels = nv_dataset_label(ds))
+  d <- d[d$dataset %in% names(hv_dataset_colours()), , drop = FALSE]
+  d$lab <- factor(hv_dataset_label(d$dataset), levels = hv_dataset_label(ds))
   d$region <- factor(d$region, levels = c("CA1", "CA2", "CA3", "DG"))
   # stable row order so the drawing order of overlapping points is fixed too
   d <- d[order(d$lab, d$region, d$Sample), , drop = FALSE]
@@ -521,18 +521,18 @@ s5_pca <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_point(ggplot2::aes(colour = lab, shape = region),
                         size = 0.6, stroke = 0.25, alpha = 0.9) +
     ggplot2::scale_colour_manual(values = stats::setNames(
-      unname(nv_dataset_colours()[ds]), nv_dataset_label(ds)), name = NULL) +
+      unname(hv_dataset_colours()[ds]), hv_dataset_label(ds)), name = NULL) +
     ggplot2::scale_shape_manual(values = c(16, 17, 15, 3), name = NULL) +
     ggplot2::guides(colour = ggplot2::guide_legend(order = 1),
                     shape = ggplot2::guide_legend(order = 2)) +
     ggplot2::labs(x = pc(1), y = pc(2)) +
-    nv_theme() +
+    hv_theme() +
     ggplot2::theme(legend.position = "right",
                    legend.spacing.y = ggplot2::unit(0.4, "mm"),
                    legend.key.height = ggplot2::unit(2.2, "mm"))
 
   write_csv_safe(d[, c("Sample", "PC1", "PC2", "dataset", "region", "layer",
                        "celltype_layer")], csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }

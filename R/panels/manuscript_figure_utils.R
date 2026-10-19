@@ -262,7 +262,7 @@ manuscript_figure_render_m12 <- function(source, panel_svg, source_target) {
   required_packages <- c("readr", "dplyr", "ggplot2", "svglite", "scales")
   missing_packages <- required_packages[!vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)]
   if (length(missing_packages)) stop("Missing package(s): ", paste(missing_packages, collapse = ", "), call. = FALSE)
-  if (!exists("nature_palette", mode = "function")) source(repo_path("R", "plotting_nature.R"))
+  if (!exists("nature_palette", mode = "function")) source(repo_path("R", "plotting_figure_style.R"))
   if (!exists("anatomical_spatial_unit_levels", mode = "function")) {
     source(repo_path("R", "sus_res_spatial_dap_atlas_utils.R"))
   }

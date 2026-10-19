@@ -4,7 +4,7 @@
 # nothing is rendered; each check compares what the panels would draw with the frozen export.
 
 source(testthat::test_path("..", "..", "R", "paths.R"))
-for (f in c("nature_v2_figure_utils.R", "nature_final_v7_panels.R", "spatial_grammar_utils.R",
+for (f in c("house_v2_figure_utils.R", "house_final_v7_panels.R", "spatial_grammar_utils.R",
             "final_truth_v9_panels.R", "figure3_adaptation_panels.R", "wgcna_theme_composition_panels.R"))
   source(repo_path("R", "panels", f))
 
@@ -81,7 +81,7 @@ testthat::test_that("the coherence tiles restate the summary and the pips its se
 testthat::test_that("the candidate computes no statistic and draws no group effect", {
   files <- c(repo_path("R", "panels", "wgcna_theme_composition_panels.R"),
              repo_path("figures", "wgcna_theme_composition_candidate.R"))
-  testthat::expect_true(nv_assert_no_model_fitting(files))
+  testthat::expect_true(hv_assert_no_model_fitting(files))
   code <- unlist(lapply(files, function(f) { x <- readLines(f, warn = FALSE); x[!grepl("^\\s*#", x)] }))
   for (pat in BEHAVIOUR_FORBIDDEN_STATS)
     testthat::expect_false(any(grepl(pat, code, perl = TRUE)), info = pat)

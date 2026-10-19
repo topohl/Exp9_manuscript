@@ -1,6 +1,6 @@
 source(testthat::test_path("..","..","R","paths.R"))
-source(repo_path("R","vendor","plotting_nature.R"))
-source(repo_path("R","panels","cc4_phase_groups_nature.R"))
+source(repo_path("R","vendor","plotting_figure_style.R"))
+source(repo_path("R","panels","cc4_phase_groups_house.R"))
 source(repo_path("R","panels","cc4_phase_statistics_candidate.R"))
 
 testthat::test_that("statistical forest displays frozen values and withholds gated rows", {
