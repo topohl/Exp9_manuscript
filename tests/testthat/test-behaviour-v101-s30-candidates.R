@@ -279,9 +279,9 @@ test_that("every annotation key resolves to exactly one stored cell", {
   expect_true(all(grepl("^f1o2h_(c_n_|f_n$)", m$key[house_only])))
   house_legend <- unique(unlist(lapply(CT$candidates[[HOUSE]]$panels, function(s) s$annotation_panels_legend)))
   expect_true(all(m$panel[house_only] %in% setdiff(house_legend, drawn)))
-  opt <- m[grepl("^f1o([12]|2n)_", m$key) & !house_only, , drop = FALSE]
+  opt <- m[grepl("^f1o([12]|2h)_", m$key) & !house_only, , drop = FALSE]
   expect_equal(nrow(opt), 3L * nrow(canon[!grepl("^d_", canon$key), ]))
-  i <- match(sub("^f1o([12]|2n)_", "", opt$key), canon$key)
+  i <- match(sub("^f1o([12]|2h)_", "", opt$key), canon$key)
   expect_false(anyNA(i))
   for (col in c("table", "column", "filters", "format")) expect_identical(opt[[col]], canon[[col]][i], info = col)
   o3 <- m[startsWith(m$key, "f1o3h_"), , drop = FALSE]
