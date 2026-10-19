@@ -2,8 +2,8 @@
 # Figure 3 d-i renderer applied to every supported SUS-RES GO term in the
 # seven atlas themes. This only reads frozen publication source data.
 source(file.path("R", "paths.R"))
-source(repo_path("R", "panels", "nature_v2_figure_utils.R"))
-source(repo_path("R", "panels", "nature_final_v7_panels.R"))
+source(repo_path("R", "panels", "house_v2_figure_utils.R"))
+source(repo_path("R", "panels", "house_final_v7_panels.R"))
 source(repo_path("R", "panels", "spatial_grammar_utils.R"))
 source(repo_path("R", "panels", "final_truth_v9_panels.R"))
 for (pkg in c("ggplot2", "patchwork", "svglite"))
@@ -68,7 +68,7 @@ if (any(!is.finite(regional$NES)))
 # colours read like Figure 3e-g.
 # The full atlas spans a wider NES range: a term beyond the limit takes full
 # colour, and each strip prints its NES, which the sidecars keep uncapped.
-nes_limit <- nv_diverging_limit("nes")
+nes_limit <- hv_diverging_limit("nes")
 regional_key <- paste(regional$GO_ID, regional$dataset,
                       regional$spatial_unit, regional$contrast)
 if (anyDuplicated(regional_key) ||
@@ -121,7 +121,7 @@ for (t in seq_along(seven)) {
       tri$GSEA_FDR <- tri$BH_FDR
       prog <- data.frame(dataset = s$dataset, unit = s$spatial_unit,
                          term = id_term, label = short_label(s$GO_description),
-                         accent = unname(nv_dataset_colours()[[s$dataset]]))
+                         accent = unname(hv_dataset_colours()[[s$dataset]]))
       ev <- list(N = s$n_ranked, runes = z$running_ES, hits = z$hit,
                  peak = s$peak_rank, ES = s$enrichmentScore,
                  NES = s$NES, FDR = s$BH_FDR)

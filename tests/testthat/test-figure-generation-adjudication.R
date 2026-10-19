@@ -144,7 +144,7 @@ testthat::test_that("the adjudication record is present and internally consisten
 })
 
 testthat::test_that("the column-registration defect is fixed and stays fixed", {
-  # PB-01, now resolved. NF_RGT reserves the atlas-legend gutter; before the
+  # PB-01, now resolved. HF_RGT reserves the atlas-legend gutter; before the
   # repair it was applied in the DAP track only, so panels a and b of Figure 3
   # did not share column geometry and the headline 28 pointed at CA3 stratum
   # oriens. The tripwire this test used to carry has fired and been inverted:
@@ -153,13 +153,13 @@ testthat::test_that("the column-registration defect is fixed and stays fixed", {
   testthat::skip_if_not(file.exists(src), "v9 panel renderers not present")
   code <- readLines(src, warn = FALSE)
 
-  dap <- grep("plot.margin = ggplot2::margin(1, NF_RGT, 0, 1, \"mm\")", code, fixed = TRUE)
+  dap <- grep("plot.margin = ggplot2::margin(1, HF_RGT, 0, 1, \"mm\")", code, fixed = TRUE)
   testthat::expect_gte(length(dap), 2L)   # the DAP track and the coupled atlas
 
   atlas <- paste(code[seq(grep("^f9_gsea_atlas <- function", code)[1],
                           length(code))], collapse = "\n")
   atlas <- sub("\nf9_[a-z_]+ <- function.*$", "", atlas)
-  testthat::expect_true(grepl("NF_RGT", atlas, fixed = TRUE),
+  testthat::expect_true(grepl("HF_RGT", atlas, fixed = TRUE),
     info = "f9_gsea_atlas must reserve the same right gutter as the track above it")
   testthat::expect_true(grepl("shares_column_geometry_with", atlas, fixed = TRUE))
 

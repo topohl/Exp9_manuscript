@@ -9,7 +9,7 @@
 # proteins of the curated GSEA themes, not whether any group differs, so no group effect is
 # drawn. A module "carries" a theme when the export marks the cell composition_supported.
 #
-# Needs R/panels/nature_v2_figure_utils.R, nature_final_v7_panels.R, final_truth_v9_panels.R
+# Needs R/panels/house_v2_figure_utils.R, house_final_v7_panels.R, final_truth_v9_panels.R
 # and figure3_adaptation_panels.R (theme labels and the Figure 3 theme colours).
 
 WTC_ID <- "wgcna_theme_composition_candidate"
@@ -65,7 +65,7 @@ wtc_themes <- function(theme_index) {
 wtc_short_module <- function(x) sub("^WGCNA_", "", x)
 wtc_split <- function(x) if (is.na(x) || !nzchar(x)) character() else strsplit(x, ";", fixed = TRUE)[[1]]
 wtc_id_number <- function(x) as.integer(gsub("\\D", "", x))
-wtc_compartment_label <- function(x) unname(nv_dataset_label(x))
+wtc_compartment_label <- function(x) unname(hv_dataset_label(x))
 
 # ------------------------------------------------------------ wheel layout
 
@@ -140,7 +140,7 @@ WTC_EMPTY <- "grey95"
 wtc_wheel_cells <- function(x) {
   themes <- wtc_themes(x$themes)
   w <- wtc_layout(x$wheel)
-  ev <- nv_evidence_colours()
+  ev <- hv_evidence_colours()
   rows <- list()
   for (k in seq_len(nrow(themes))) {
     carried <- vapply(w$carried_themes, function(s) themes$theme_id[[k]] %in% wtc_split(s), logical(1))
@@ -173,10 +173,10 @@ wtc_wheel_cells <- function(x) {
 }
 
 wtc_wheel_plot <- function(x) {
-  fam <- nf_fam()
+  fam <- hf_fam()
   cells <- wtc_wheel_cells(x)
   w <- wtc_layout(x$wheel)
-  dcol <- nv_dataset_colours()
+  dcol <- hv_dataset_colours()
   tiles <- cells[!is.na(cells$fill), , drop = FALSE]
   poly <- do.call(rbind, lapply(seq_len(nrow(tiles)), function(i) {
     s <- wtc_sector(tiles$t0[[i]], tiles$t1[[i]], tiles$r0[[i]], tiles$r1[[i]], paste("cell", i))
@@ -208,23 +208,23 @@ wtc_wheel_plot <- function(x) {
   peak$label <- toupper(sub("_.*$", "", peak$value))
   ggplot2::ggplot() +
     ggplot2::geom_polygon(data = poly, ggplot2::aes(x, y, group = key, fill = fill),
-                          colour = "white", linewidth = nv_lw("tile_border_pt")) +
+                          colour = "white", linewidth = hv_lw("tile_border_pt")) +
     ggplot2::geom_polygon(data = sm_poly, ggplot2::aes(x, y, group = key, fill = fill),
-                          colour = "white", linewidth = nv_lw("tile_border_pt")) +
+                          colour = "white", linewidth = hv_lw("tile_border_pt")) +
     ggplot2::geom_path(data = comp_line, ggplot2::aes(x, y, group = dataset),
-                       colour = "grey20", linewidth = nv_lw("axis_pt")) +
+                       colour = "grey20", linewidth = hv_lw("axis_pt")) +
     ggplot2::geom_text(data = mod_lab, ggplot2::aes(x, y, label = module_label, angle = wtc_radial_angle(tm),
                                                     hjust = wtc_radial_hjust(tm, "outer")),
-                       family = fam, size = nv_size(nv_pt("annotation_pt")), colour = "grey10") +
+                       family = fam, size = hv_size(hv_pt("annotation_pt")), colour = "grey10") +
     ggplot2::geom_text(data = peak, ggplot2::aes(x, y, label = label, angle = wtc_radial_angle(tm),
                                                  hjust = wtc_radial_hjust(tm, "inner")),
-                       family = fam, size = nv_size(nv_pt("annotation_pt")), colour = "grey45") +
+                       family = fam, size = hv_size(hv_pt("annotation_pt")), colour = "grey45") +
     ggplot2::geom_text(data = sm_lab, ggplot2::aes(x, y, label = supermodule_id,
                                                    angle = wtc_tangent_angle(tm),
                                                    colour = ifelse(multi, "grey10", "grey55")),
-                       family = fam, size = nv_size(nv_pt("annotation_pt"))) +
+                       family = fam, size = hv_size(hv_pt("annotation_pt"))) +
     ggplot2::geom_text(data = comp_lab, ggplot2::aes(x, y, label = label, angle = wtc_tangent_angle(tm)),
-                       family = fam, fontface = "bold", size = nv_size(nv_pt("axis_title_pt"))) +
+                       family = fam, fontface = "bold", size = hv_size(hv_pt("axis_title_pt"))) +
     ggplot2::scale_fill_identity() + ggplot2::scale_colour_identity() +
     ggplot2::coord_fixed(xlim = c(-50.5, 50.5), ylim = c(-50.5, 50.5), expand = FALSE, clip = "off") +
     ggplot2::theme_void(base_family = fam)
@@ -232,12 +232,12 @@ wtc_wheel_plot <- function(x) {
 
 # The wheel's key, drawn as its own small panel so the wheel keeps its full width.
 wtc_wheel_key <- function(x) {
-  fam <- nf_fam()
+  fam <- hf_fam()
   themes <- wtc_themes(x$themes)
-  ev <- nv_evidence_colours()
-  dcol <- nv_dataset_colours()
-  ts <- nv_size(nv_pt("legend_text_pt"))
-  hs <- nv_size(nv_pt("legend_title_pt"))
+  ev <- hv_evidence_colours()
+  dcol <- hv_dataset_colours()
+  ts <- hv_size(hv_pt("legend_text_pt"))
+  hs <- hv_size(hv_pt("legend_title_pt"))
   heads <- list(); boxes <- list(); texts <- list()
   pos <- c(x = 0, y = 0)
   head <- function(label) {
@@ -279,7 +279,7 @@ wtc_wheel_key <- function(x) {
   heads <- do.call(rbind, heads); boxes <- do.call(rbind, boxes); texts <- do.call(rbind, texts)
   ggplot2::ggplot() +
     ggplot2::geom_tile(data = boxes, ggplot2::aes(x, y, fill = fill, colour = border),
-                       width = 0.8, height = 0.72, linewidth = nv_lw("tile_border_pt")) +
+                       width = 0.8, height = 0.72, linewidth = hv_lw("tile_border_pt")) +
     ggplot2::geom_tile(data = ramp, ggplot2::aes(x, y, fill = fill), width = 0.1, height = 0.72) +
     ggplot2::geom_text(data = ticks, ggplot2::aes(x, y, label = label), family = fam, size = ts, vjust = 1) +
     ggplot2::annotate("text", x = 19.1, y = ramp_y, label = "\u03c4, concentration across units",
@@ -317,7 +317,7 @@ wtc_matrix_data <- function(x) {
 }
 
 wtc_matrix_plot <- function(x) {
-  fam <- nf_fam()
+  fam <- hf_fam()
   d <- wtc_matrix_data(x)
   d <- d[d$n_overlap > 0, , drop = FALSE]
   strip <- function(v) {
@@ -325,7 +325,7 @@ wtc_matrix_plot <- function(x) {
     ifelse(grepl("supermodule$", v), "SM", wtc_compartment_label(ds))
   }
   labs_x <- stats::setNames(as.character(d$entity_label), as.character(d$column))
-  navy <- nv_evidence_colours()[["supported"]]
+  navy <- hv_evidence_colours()[["supported"]]
   ggplot2::ggplot(d, ggplot2::aes(column, theme_label)) +
     ggplot2::geom_point(ggplot2::aes(size = frac_theme_in_entity, fill = fold_enrichment,
                                      colour = composition_supported,
@@ -344,17 +344,17 @@ wtc_matrix_plot <- function(x) {
     ggplot2::facet_grid(. ~ facet, scales = "free_x", space = "free_x",
                         labeller = ggplot2::as_labeller(strip)) +
     ggplot2::labs(x = NULL, y = NULL) +
-    nf_theme_tile() +
+    hf_theme_tile() +
     ggplot2::theme(
       text = ggplot2::element_text(family = fam),
-      axis.text.x = ggplot2::element_text(size = nv_pt("axis_text_pt"), angle = 90, vjust = 0.5, hjust = 1),
-      axis.text.y = ggplot2::element_text(size = nv_pt("axis_text_pt")),
-      strip.text = ggplot2::element_text(size = nv_pt("axis_title_pt")),
-      panel.grid.major = ggplot2::element_line(colour = "grey93", linewidth = nv_lw("reference_pt")),
+      axis.text.x = ggplot2::element_text(size = hv_pt("axis_text_pt"), angle = 90, vjust = 0.5, hjust = 1),
+      axis.text.y = ggplot2::element_text(size = hv_pt("axis_text_pt")),
+      strip.text = ggplot2::element_text(size = hv_pt("axis_title_pt")),
+      panel.grid.major = ggplot2::element_line(colour = "grey93", linewidth = hv_lw("reference_pt")),
       panel.spacing.x = grid::unit(1.2, "mm"),
       legend.position = "right", legend.box = "vertical",
-      legend.text = ggplot2::element_text(size = nv_pt("legend_text_pt")),
-      legend.title = ggplot2::element_text(size = nv_pt("legend_title_pt")),
+      legend.text = ggplot2::element_text(size = hv_pt("legend_text_pt")),
+      legend.title = ggplot2::element_text(size = hv_pt("legend_title_pt")),
       legend.key.size = grid::unit(2.6, "mm"))
 }
 
@@ -383,25 +383,25 @@ wtc_coherence_data <- function(x) {
 }
 
 wtc_coherence_plot <- function(x) {
-  fam <- nf_fam()
+  fam <- hf_fam()
   cd <- wtc_coherence_data(x)
   s <- cd$tiles
   p <- cd$pips
-  navy <- nv_evidence_colours()[["supported"]]
+  navy <- hv_evidence_colours()[["supported"]]
   dark <- function(v) v >= 0.5
   p$x <- as.integer(p$compartment) + (p$pip - 3) * 0.13
   p$y <- as.integer(p$theme_label) - 0.29
   p$col <- ifelse(dark(p$share), "white", navy)
   p$shape <- ifelse(p$holds, 15L, 0L)   # filled square: also carried; open: not
   ggplot2::ggplot(s, ggplot2::aes(compartment, theme_label)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = share_captured_by_carriers), colour = nv_tile_border(),
-                       linewidth = nv_lw("tile_border_pt")) +
+    ggplot2::geom_tile(ggplot2::aes(fill = share_captured_by_carriers), colour = hv_tile_border(),
+                       linewidth = hv_lw("tile_border_pt")) +
     ggplot2::geom_text(ggplot2::aes(label = class_label, colour = ifelse(dark(share_captured_by_carriers),
                                                                          "white", "grey10")),
-                       nudge_y = 0.24, family = fam, size = nv_size(nv_pt("annotation_pt")), fontface = "bold") +
+                       nudge_y = 0.24, family = fam, size = hv_size(hv_pt("annotation_pt")), fontface = "bold") +
     ggplot2::geom_text(ggplot2::aes(label = carrier_label, colour = ifelse(dark(share_captured_by_carriers),
                                                                            "white", "grey25")),
-                       nudge_y = -0.01, family = fam, size = nv_size(nv_pt("annotation_pt"))) +
+                       nudge_y = -0.01, family = fam, size = hv_size(hv_pt("annotation_pt"))) +
     ggplot2::geom_point(data = p, ggplot2::aes(x, y, colour = col, shape = shape), size = 0.75,
                         stroke = 0.3, inherit.aes = FALSE) +
     ggplot2::scale_shape_identity() +
@@ -411,11 +411,11 @@ wtc_coherence_plot <- function(x) {
     ggplot2::scale_colour_identity() +
     ggplot2::scale_x_discrete(position = "top") +
     ggplot2::labs(x = NULL, y = NULL) +
-    nf_theme_tile() +
+    hf_theme_tile() +
     ggplot2::theme(text = ggplot2::element_text(family = fam),
-                   axis.text = ggplot2::element_text(size = nv_pt("axis_text_pt")),
+                   axis.text = ggplot2::element_text(size = hv_pt("axis_text_pt")),
                    legend.position = "bottom",
-                   legend.text = ggplot2::element_text(size = nv_pt("legend_text_pt")),
-                   legend.title = ggplot2::element_text(size = nv_pt("legend_title_pt")),
+                   legend.text = ggplot2::element_text(size = hv_pt("legend_text_pt")),
+                   legend.title = ggplot2::element_text(size = hv_pt("legend_title_pt")),
                    legend.key.height = grid::unit(2, "mm"), legend.key.width = grid::unit(6, "mm"))
 }

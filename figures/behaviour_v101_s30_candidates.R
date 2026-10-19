@@ -120,8 +120,8 @@ prefixed <- function(an, s) edx_annotation_prefixed(an, arg(s, "key_prefix"))
 typo <- function(s) arg(s, "typography", "figure1")
 top_pt <- function(s) as.numeric(arg(s, "top_margin_pt", 11.5))
 num_or_null <- function(s, name) if (is.null(s$args[[name]])) NULL else as.numeric(s$args[[name]])
-# style: the builders' style profile ("figure1", the default, or "nature"); frame: the row's shared
-# plot frame of a nature-style panel (args plot_top_mm and axis_mm), or NULL.
+# style: the builders' style profile ("figure1", the default, or "house"); frame: the row's shared
+# plot frame of a house-style panel (args plot_top_mm and axis_mm), or NULL.
 sty <- function(s) arg(s, "style", "figure1")
 frame_of <- function(s) {
   if (is.null(s$args$plot_top_mm) != is.null(s$args$axis_mm)) stop("panel ", s$id, ": give plot_top_mm and axis_mm together.", call. = FALSE)
@@ -161,14 +161,14 @@ BUILDERS <- list(
   s30_panel_cookie_combz = function(s, an) s30_panel_cookie_combz(TABS$s30b, an, s$w, s$h),
   s30_panel_screen = function(s, an) s30_panel_screen(TABS$s30b, an, s$w, s$h, pq_style = arg(s, "pq_style", "stacked"),
     top_margin_pt = top_pt(s)),
-  # Figure 1 option 3 (Nature layout): a-d read the behaviour bundle and the figure-support bundle
-  f1o3n_panel_design = function(s, an) f1o3n_panel_design(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h),
-  f1o3n_panel_combz = function(s, an) f1o3n_panel_combz(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h),
-  f1o3n_panel_cc1 = function(s, an) f1o3n_panel_cc1(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h, jitter_seed = seeds(s, 2L),
+  # Figure 1 option 3 (house layout): a-d read the behaviour bundle and the figure-support bundle
+  f1o3h_panel_design = function(s, an) f1o3h_panel_design(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h),
+  f1o3h_panel_combz = function(s, an) f1o3h_panel_combz(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h),
+  f1o3h_panel_cc1 = function(s, an) f1o3h_panel_cc1(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h, jitter_seed = seeds(s, 2L),
     frame = frame_of(s)),
-  f1o3n_panel_trajectory = function(s, an) f1o3n_panel_trajectory(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h, frame = frame_of(s),
+  f1o3h_panel_trajectory = function(s, an) f1o3h_panel_trajectory(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h, frame = frame_of(s),
     indent = nzchar(s$letter)),   # the letterless stand-alone d drops the header's letter indent
-  # Figure 1 option 3b (Nature layout): c (post hoc CON / RES / SUS rows of fsb P1) and the simplified d
+  # Figure 1 option 3b (house layout): c (post hoc CON / RES / SUS rows of fsb P1) and the simplified d
   f1o3b_panel_cc1 = function(s, an) f1o3b_panel_cc1(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h, jitter_seed = seeds(s, 2L),
     frame = frame_of(s)),
   f1o3b_panel_trajectory = function(s, an) f1o3b_panel_trajectory(TABS$ebb, TABS$fsb, prefixed(an, s), s$w, s$h, frame = frame_of(s)),

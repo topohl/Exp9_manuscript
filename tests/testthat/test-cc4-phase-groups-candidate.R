@@ -1,5 +1,5 @@
 source(testthat::test_path("..", "..", "R", "paths.R"))
-source(repo_path("R", "vendor", "plotting_nature.R"))
+source(repo_path("R", "vendor", "plotting_figure_style.R"))
 source(repo_path("R", "panels", "cc4_phase_groups_candidate.R"))
 upstream <- "MMMSociability_candidates"
 src <- repo_path("source_data", upstream, "cc4_phase_groups_20260929_v2")

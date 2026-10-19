@@ -17,7 +17,7 @@
 #      one panel it carries one shared symmetric scale and one colour bar.
 #      Since palette v3.2 that scale is the measure's fixed colour limit
 #      (config/manuscript_palette.yml diverging_limits: NES, z, set-mean z,
-#      correlation, SMD), drawn by nv_diverging(measure = ...): values beyond
+#      correlation, SMD), drawn by hv_diverging(measure = ...): values beyond
 #      it take full colour, the colour bar ends read <= / >=, and the source
 #      data keep every value uncapped.
 #   4. VECTOR EXPORT. The delivered PDF must contain embedded fonts and real
@@ -64,7 +64,7 @@ panels:
     primary_source: data/raw/pg_matrix/quicksearch.stats.annotated.xlsx
 
   - id: v9_pca
-    renderer: nf_pca_compact
+    renderer: hf_pca_compact
     role: global_structure
     spatial_axes: compartment+region
     phenotype_axes: none_intentional
@@ -104,7 +104,7 @@ panels:
     primary_source: results/source_data/03_qc_exploration/04e_control_compartment_abundance_publication_figures/global/figure2d_compact_recognizable_markers_v2_source_data.csv
 
   - id: v9_bilateral_main
-    renderer: nf_bilateral_main
+    renderer: hf_bilateral_main
     role: reproducibility
     spatial_axes: compartment+region+layer
     phenotype_axes: none_intentional
@@ -388,7 +388,7 @@ panels:
     narrative: module by spatial-unit fingerprint; no structurally inapplicable cell is drawn.
     primary_source: results/tables/manuscript_candidates/spatial_v6/spatial_v6_con_baseline_profile_long.csv
   - id: v9_ed_celltype
-    renderer: nvp_ed_celltype
+    renderer: hvp_ed_celltype
     role: wgcna_celltype
     spatial_axes: compartment
     phenotype_axes: none_intentional

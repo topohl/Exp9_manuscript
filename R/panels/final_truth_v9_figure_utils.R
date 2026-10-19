@@ -2,13 +2,13 @@
 # Story-v3 engine.
 #
 # A fourth candidate family, isolated from canonical, Part-16 and Part-17.
-# It SOURCES R/nature_v2_figure_utils.R read-only to reuse the palette, theme,
+# It SOURCES R/house_v2_figure_utils.R read-only to reuse the palette, theme,
 # exact-box rendering, long-path reader, assembler and model-fitting guard.
 # Those Part-17 files are not modified; only new s9f_* functions are added here.
 # =====================================================================
 
-if (!exists("nv_contract", mode = "function")) {
-  source(repo_path("R", "nature_v2_figure_utils.R"))
+if (!exists("hv_contract", mode = "function")) {
+  source(repo_path("R", "house_v2_figure_utils.R"))
 }
 
 s9f_contract_path <- function() repo_path("figures", "figure_final_truth_v9_contract.yml")
@@ -84,7 +84,7 @@ s9f_panel_by_id <- function(contract, id) {
 
 s9f_build <- function(figure_key, dry_run = FALSE, pages = NULL) {
   contract <- s9f_contract()
-  nv_assert_no_model_fitting(s9f_renderer_sources())
+  hv_assert_no_model_fitting(s9f_renderer_sources())
   key_figs <- Filter(function(f) identical(as.character(f$figure_key), figure_key),
                      contract$figures)
   if (!length(key_figs)) stop("no final_truth_v9 figure with key: ", figure_key, call. = FALSE)
@@ -161,7 +161,7 @@ s9f_build <- function(figure_key, dry_run = FALSE, pages = NULL) {
       fail_panel <- function(reason) {
         if (!is.null(kept) && all(file.copy(kept, prev, overwrite = TRUE)))
           return(paste0(reason, " [previous output kept]"))
-        nv_placeholder(svg, id, reason, box[1], box[2])
+        hv_placeholder(svg, id, reason, box[1], box[2])
         write_csv_safe(data.frame(panel = id, status = "render_error", note = reason,
                                   stringsAsFactors = FALSE), csv)
         reason
@@ -172,8 +172,8 @@ s9f_build <- function(figure_key, dry_run = FALSE, pages = NULL) {
         status <- "renderer_missing"; note <- fail_panel(as.character(p$renderer))
       } else {
         res <- tryCatch(fn(p, svg, csv, box[1], box[2]), error = function(e)
-          structure(list(note = conditionMessage(e)), class = "nv_failed"))
-        if (inherits(res, "nv_failed")) {
+          structure(list(note = conditionMessage(e)), class = "hv_failed"))
+        if (inherits(res, "hv_failed")) {
           status <- "render_error"; note <- fail_panel(res$note)
         }
       }
@@ -193,7 +193,7 @@ s9f_build <- function(figure_key, dry_run = FALSE, pages = NULL) {
   asm <- list()
   failed <- panel_records$panel_id[panel_records$status != "ok"]
   for (f in figs) {
-    nv_verify_scale(f, panel_paths)
+    hv_verify_scale(f, panel_paths)
     target <- file.path(paths$assembled, paste0(as.character(f$name), ".svg"))
     # a page with a failed panel keeps its previous composition (QA fails below)
     page_ids <- vapply(f$layout, function(x) as.character(x$panel), character(1))
@@ -202,7 +202,7 @@ s9f_build <- function(figure_key, dry_run = FALSE, pages = NULL) {
       next
     }
     # VECTOR EXPORT. The old route wrote an assembled SVG then handed it to
-    # nv_pdf(), which falls back to ImageMagick when rsvg is absent and emits a
+    # hv_pdf(), which falls back to ImageMagick when rsvg is absent and emits a
     # single full-page raster with no fonts. Both outputs are now composed
     # directly from the captured ggplot grobs, so the SVG and the PDF are the
     # same drawing and the PDF is genuine vector.

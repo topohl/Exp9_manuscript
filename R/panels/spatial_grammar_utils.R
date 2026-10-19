@@ -239,7 +239,7 @@ sg_blocks <- function(unit_keys, datasets) {
 sg_header_layers <- function(blocks, y_comp = 1.06, y_region = 1.015,
                              size_comp = 5.4, size_region = 5.0,
                              fam = NULL) {
-  if (is.null(fam)) fam <- nv_palette()$typography$family
+  if (is.null(fam)) fam <- hv_palette()$typography$family
   cmp <- blocks$compartment; reg <- blocks$region
   n <- nrow(blocks$order)
   list(
@@ -248,13 +248,13 @@ sg_header_layers <- function(blocks, y_comp = 1.06, y_region = 1.015,
                       y = y_comp - 0.012, yend = y_comp - 0.012,
                       linewidth = 0.5, colour = "grey25"),
     ggplot2::annotate("text", x = cmp$mid, y = y_comp, label = cmp$label,
-                      family = fam, size = nv_size(size_comp), fontface = "bold",
+                      family = fam, size = hv_size(size_comp), fontface = "bold",
                       colour = "grey15", vjust = 0),
     ggplot2::annotate("segment", x = reg$start - 0.5, xend = reg$end + 0.5,
                       y = y_region - 0.008, yend = y_region - 0.008,
                       linewidth = 0.25, colour = "grey55"),
     ggplot2::annotate("text", x = reg$mid, y = y_region, label = reg$label,
-                      family = fam, size = nv_size(size_region), colour = "grey30",
+                      family = fam, size = hv_size(size_region), colour = "grey30",
                       vjust = 0),
     # heavy vertical separators BETWEEN compartments only
     if (nrow(cmp) > 1L)

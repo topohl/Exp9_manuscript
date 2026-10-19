@@ -14,7 +14,7 @@
 source(file.path("R", "paths.R"))
 source(repo_path("R", "null_coalescing.R"))
 source(repo_path("R", "integration_utils.R"))
-source(repo_path("R", "nature_v2_figure_utils.R"))
+source(repo_path("R", "house_v2_figure_utils.R"))
 source(repo_path("R", "spatial_grammar_utils.R"))
 source(repo_path("R", "final_truth_v9_figure_utils.R"))
 Sys.setenv(PROTEOMICS_SCRIPT_ID = "figures/final_truth_v9_claim_audit.R")
@@ -32,7 +32,7 @@ OUT <- path_results("tables", "manuscript_candidates", "final_truth_v9", "audit"
 dir_create(OUT)
 sc <- function(fig, id) {
   p <- file.path(SD, fig, paste0(id, "_source_data.csv"))
-  if (file.exists(p)) nv_read_csv(p) else NULL
+  if (file.exists(p)) hv_read_csv(p) else NULL
 }
 fails <- character(0)
 FAIL <- function(msg) fails <<- c(fails, msg)
@@ -99,7 +99,7 @@ valid <- paste(u$dataset, u$analysis_key)
 sp <- list()
 fs <- list.files(SD, "_source_data[.]csv$", recursive = TRUE, full.names = TRUE)
 for (f in fs) {
-  z <- nv_read_csv(f)
+  z <- hv_read_csv(f)
   cols <- intersect(c("unit", "spatial_unit", "sg_unit", "baseline_unit",
                       "effect_unit", "gene_peak_unit"), names(z))
   if (!length(cols) || !"dataset" %in% names(z)) next
@@ -140,7 +140,7 @@ spa <- rbind(spa, data.frame(file = "ALL", column = "banned_units",
 write_csv_safe(spa, file.path(OUT, "final_spatial_label_audit.csv"))
 
 # ======================================== S3 n and replication, incl. the n=27
-netd <- nv_read_csv(repo_path("results", "tables", "11_spatial_systems",
+netd <- hv_read_csv(repo_path("results", "tables", "11_spatial_systems",
                               "networks", "animal_network_distance_from_CON.csv"))
 nrep <- data.frame(
   figure = c("F2", "F3", "ED8"),
@@ -253,7 +253,7 @@ write_csv_safe(mt, file.path(OUT, "multiple_testing_family_audit.csv"))
 # =============================================== S13 scale consistency
 D3 <- file.path(SD, "figure_03")
 lim_prot <- unique(unlist(lapply(c("syn", "rna", "ox"), function(k) {
-  z <- nv_read_csv(file.path(D3, sprintf("v9_prot_%s_source_data.csv", k)))
+  z <- hv_read_csv(file.path(D3, sprintf("v9_prot_%s_source_data.csv", k)))
   as.numeric(sub(".*limit [+]/-([0-9.]+).*", "\\1", z$shared_scale_note[1]))
 })))
 # Every listed NES panel must RECORD the colour limit it drew: a sidecar without
@@ -264,7 +264,7 @@ lim_prot <- unique(unlist(lapply(c("syn", "rna", "ox"), function(k) {
 # is re-rendered.
 rec_limit <- function(p, col) {
   if (!file.exists(p)) { FAIL(paste0("S13: missing source data ", p)); return(NA_real_) }
-  z <- nv_read_csv(p)
+  z <- hv_read_csv(p)
   if (!col %in% names(z)) {
     FAIL(paste0("S13: ", basename(p), " does not record its colour limit (", col, ")"))
     return(NA_real_)
@@ -307,7 +307,7 @@ scal <- data.frame(
 for (i in which(!scal$same_quantity_shared_scale))
   FAIL(paste0("a quantity drawn more than once does not share one scale: ",
               scal$quantity[i], " (", scal$limits_by_panel[i], "). A panel ",
-              "recording a limit other than the palette's (", nv_diverging_limit("nes"),
+              "recording a limit other than the palette's (", hv_diverging_limit("nes"),
               ") was drawn before palette v3.2; re-render it."))
 write_csv_safe(scal, file.path(OUT, "final_scale_consistency_audit.csv"))
 

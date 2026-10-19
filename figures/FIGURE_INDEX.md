@@ -55,7 +55,7 @@ The **entry point** is what you run: it selects and validates the promoted artef
 | `figures/final_truth_v9_wgcna_annotation_audit.R` | final_truth_v9 | CANONICAL_GENERATION_SUPPORT |
 | `figures/behaviour_v101_s30_candidates.R` | - | SHARED_SUPPORT |
 | `figures/cc4_phase_groups_candidate.R` | - | SHARED_SUPPORT |
-| `figures/cc4_phase_groups_nature_candidate.R` | - | SHARED_SUPPORT |
+| `figures/cc4_phase_groups_house_candidate.R` | - | SHARED_SUPPORT |
 | `figures/cc4_phase_statistics_candidate.R` | - | SHARED_SUPPORT |
 | `figures/cc4_phenotype_candidate.R` | - | SHARED_SUPPORT |
 | `figures/conventional_tests_candidate.R` | - | SHARED_SUPPORT |

@@ -1,16 +1,16 @@
 # The manuscript palette (config/manuscript_palette.yml, v3.2): one colour source for every figure.
 #
 #   1. the contract: version, group and diverging colours, a white midpoint, ends distinct from it and each other;
-#   2. one fixed colour limit per signed measure, drawn by nv_diverging(measure = ...): the limit, the <= / >= end
+#   2. one fixed colour limit per signed measure, drawn by hv_diverging(measure = ...): the limit, the <= / >= end
 #      labels, full colour beyond the limit, and a missing value that is never white (white is zero);
 #   3. a panel's own limits (no measure) keep ggplot's censor, so an out-of-range value stays visible;
 #   4. no canonical or active renderer repeats a palette colour as a literal or keeps a replaced one, every signed
-#      fill goes through nv_diverging(), and every behaviour figure takes its group colours from the palette file.
+#      fill goes through hv_diverging(), and every behaviour figure takes its group colours from the palette file.
 #
 # Portable: repository files only, nothing rendered.
 
 source(testthat::test_path("..", "..", "R", "paths.R"))
-source(repo_path("R", "panels", "nature_v2_figure_utils.R"))
+source(repo_path("R", "panels", "house_v2_figure_utils.R"))
 repo <- function(...) file.path(testthat::test_path("..", ".."), ...)
 
 PAL <- yaml::read_yaml(repo("config", "manuscript_palette.yml"))
@@ -33,47 +33,47 @@ testthat::test_that("the palette contract holds the v3 colours", {
 testthat::test_that("each signed measure has one fixed colour limit", {
   testthat::expect_identical(unlist(PAL$diverging_limits),
                              c(smd = 1, correlation = 0.6, nes = 2, z = 2, z_set_mean = 1))
-  testthat::expect_identical(nv_diverging_limit("nes"), 2)
-  testthat::expect_error(nv_diverging_limit("log2fc"), "no fixed diverging limit")
+  testthat::expect_identical(hv_diverging_limit("nes"), 2)
+  testthat::expect_error(hv_diverging_limit("log2fc"), "no fixed diverging limit")
 })
 
-testthat::test_that("nv_diverging(measure =) draws the fixed limit, squishes beyond it and marks the ends", {
-  s <- nv_diverging(measure = "nes", name = "NES")
+testthat::test_that("hv_diverging(measure =) draws the fixed limit, squishes beyond it and marks the ends", {
+  s <- hv_diverging(measure = "nes", name = "NES")
   testthat::expect_equal(s$limits, c(-2, 2))
   testthat::expect_identical(s$get_labels(s$get_breaks()),
                              c(paste0(LE, MINUS, "2"), paste0(MINUS, "1"), "0", "1", paste0(GE, "2")))
   s$train(c(-2, 2))
   testthat::expect_identical(toupper(s$map(c(-5, 0, 5))), toupper(unname(unlist(PAL$diverging))))
   testthat::expect_false(toupper(s$na.value) %in% c("WHITE", "#FFFFFF", "GREY100", "GRAY100"))
-  r <- nv_diverging(measure = "correlation")
+  r <- hv_diverging(measure = "correlation")
   testthat::expect_identical(r$get_labels(r$get_breaks()),
                              c(paste0(LE, MINUS, "0.6"), paste0(MINUS, "0.3"), "0", "0.3", paste0(GE, "0.6")))
-  z <- nv_diverging(measure = "z_set_mean", guide = "none")
+  z <- hv_diverging(measure = "z_set_mean", guide = "none")
   testthat::expect_equal(z$limits, c(-1, 1))
-  testthat::expect_error(nv_diverging(limits = c(-1, 1), measure = "nes"), "not both")
+  testthat::expect_error(hv_diverging(limits = c(-1, 1), measure = "nes"), "not both")
   # a caller's own breaks are labelled too, ends marked only at the limit
-  b <- nv_diverging(measure = "nes", breaks = c(-2, 0, 2))
+  b <- hv_diverging(measure = "nes", breaks = c(-2, 0, 2))
   testthat::expect_identical(b$get_labels(b$get_breaks()),
                              c(paste0(LE, MINUS, "2"), "0", paste0(GE, "2")))
-  testthat::expect_error(nv_diverging(measure = "nes", oob = scales::censor), "always squishes")
+  testthat::expect_error(hv_diverging(measure = "nes", oob = scales::censor), "always squishes")
 })
 
 testthat::test_that("a panel's own limits keep ggplot's censor, so an out-of-range value stays visible", {
-  s <- nv_diverging(limits = c(-1, 1), name = NULL)
+  s <- hv_diverging(limits = c(-1, 1), name = NULL)
   s$train(c(-1, 1))
   testthat::expect_identical(s$map(5), s$na.value)
   testthat::expect_false(toupper(s$na.value) %in% c("WHITE", "#FFFFFF"))
 })
 
 # canonical and active renderers (figures/FIGURE_INDEX.md); superseded generations keep their own code
-PANELS <- c("nature_v2_figure_utils.R", "final_truth_v9_panels.R", "final_truth_v9_fidelity_panels.R",
+PANELS <- c("house_v2_figure_utils.R", "final_truth_v9_panels.R", "final_truth_v9_fidelity_panels.R",
             "final_truth_v9_ed_panels.R", "final_truth_v9_figure_utils.R", "figure3_adaptation_panels.R",
             "manuscript_figure_utils.R", "behaviour_figure_style.R", "behaviour_figure1_panels.R",
-            "behaviour_figure1_nature_panels.R", "behaviour_figure1_option3_panels.R",
+            "behaviour_figure1_house_panels.R", "behaviour_figure1_option3_panels.R",
             "behaviour_figure1_option3b_panels.R", "behaviour_s30_cookie_panels.R", "behaviour_s30_edx_panels.R",
             "behaviour_s30_light_panels.R", "behaviour_s30_screen_panels.R", "behaviour_stage14_panels.R",
             "cc4_phase_groups_candidate.R",
-            "cc4_phase_groups_nature.R", "cc4_phenotype_candidate.R", "wgcna_theme_composition_panels.R")
+            "cc4_phase_groups_house.R", "cc4_phenotype_candidate.R", "wgcna_theme_composition_panels.R")
 FIGURES <- c("figure_01_panels.R", "extended_data_behaviour_panels.R", "behaviour_v101_s30_candidates.R",
              "figure_03_supplementary_go.R", "figure_03_go_atlas_appendix.R", "final_truth_v9_legends.R",
              "manuscript_supporting_immunostaining_candidates.R", "manuscript_supporting_immunostaining_panel.R",
@@ -92,16 +92,16 @@ testthat::test_that("no canonical or active renderer repeats a palette colour or
   for (f in FILES) testthat::expect_equal(unname(hex_hits(code_of(f))), character(0), info = f)
 })
 
-testthat::test_that("every signed fill goes through nv_diverging()", {
+testthat::test_that("every signed fill goes through hv_diverging()", {
   # behaviour option 3 b and the Stage 14 candidates read the palette and the fixed limit themselves (the behaviour
   # layer does not source the proteomics helpers); manuscript_figure_utils.R keeps the legacy m12 render mode that
   # no contract panel reaches
-  allowed <- file.path("R", "panels", c("nature_v2_figure_utils.R", "behaviour_figure1_option3_panels.R",
+  allowed <- file.path("R", "panels", c("house_v2_figure_utils.R", "behaviour_figure1_option3_panels.R",
                                         "behaviour_stage14_panels.R", "manuscript_figure_utils.R"))
   for (f in setdiff(FILES, allowed))
     testthat::expect_false(any(grepl(HAND_BUILT, code_of(f))), info = f)
   o3 <- code_of(file.path("R", "panels", "behaviour_figure1_option3_panels.R"))
-  testthat::expect_true(any(grepl("F1O3N_Z_CAP <- as.numeric(F1O3N_PALETTE$diverging_limits$z)", o3, fixed = TRUE)))
+  testthat::expect_true(any(grepl("F1O3H_Z_CAP <- as.numeric(F1O3H_PALETTE$diverging_limits$z)", o3, fixed = TRUE)))
   testthat::expect_false(any(grepl('na.value = "white"', o3, fixed = TRUE)))
   s14 <- code_of(file.path("R", "panels", "behaviour_stage14_panels.R"))
   testthat::expect_true(any(grepl("S14_G_LIMIT <- as.numeric(S14_PALETTE$diverging_limits$smd)", s14, fixed = TRUE)))
@@ -111,7 +111,7 @@ testthat::test_that("every signed fill goes through nv_diverging()", {
 
 testthat::test_that("everything a contract renderer reaches is held to the same rules, function by function", {
   # The contracts also name renderers that live in older modules beside superseded code (2c and 2f in
-  # nature_final_v7, ED3c and ED8b in story_v5, the ED4 cell-type panel in nature_v2_figure_panels), and every
+  # house_final_v7, ED3c and ED8b in story_v5, the ED4 cell-type panel in house_v2_figure_panels), and every
   # renderer calls helpers. Every function a contract renderer can reach through R/panels, outside the files
   # checked whole above, is checked on its own, so the superseded code beside it keeps its own colours.
   renderers <- character()
@@ -143,8 +143,8 @@ testthat::test_that("everything a contract renderer reaches is held to the same 
     for (d in defs[[n]]) todo <- c(todo, setdiff(intersect(all.names(d$body), names(defs)), reached))
   }
   outside <- reached[!vapply(reached, function(n) all(vapply(defs[[n]], `[[`, "", "file") %in% PANELS), logical(1))]
-  testthat::expect_true(all(c("nf_pca_compact", "nf_bilateral_main", "s5_ed_ca2_displacement",
-                              "s5_ed_network_distance", "nvp_ed_celltype") %in% outside))
+  testthat::expect_true(all(c("hf_pca_compact", "hf_bilateral_main", "s5_ed_ca2_displacement",
+                              "s5_ed_network_distance", "hvp_ed_celltype") %in% outside))
   for (n in outside) for (d in defs[[n]]) {
     code <- d$code[!grepl("^\\s*#", d$code)]
     testthat::expect_equal(unname(hex_hits(code)), character(0), info = paste(n, d$file))
@@ -156,7 +156,7 @@ testthat::test_that("every behaviour figure takes its group colours from the pal
   testthat::expect_true(any(grepl(
     'GROUP_COL <- unlist(yaml::read_yaml(repo_path("config", "manuscript_palette.yml"))$group)',
     code_of(file.path("R", "panels", "behaviour_figure_style.R")), fixed = TRUE)))
-  for (f in c("cc4_phase_groups_candidate.R", "cc4_phase_groups_nature.R", "cc4_phenotype_candidate.R"))
+  for (f in c("cc4_phase_groups_candidate.R", "cc4_phase_groups_house.R", "cc4_phenotype_candidate.R"))
     testthat::expect_true(any(grepl("manuscript_palette.yml", code_of(file.path("R", "panels", f)), fixed = TRUE)),
                           info = f)
 })

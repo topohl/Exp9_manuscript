@@ -1,37 +1,37 @@
-# Nature-final v7 Figure-2 panels.
+# House final v7 Figure-2 panels.
 #
-# Every renderer here obeys a hard 5 pt floor at final size: nf_pt() clamps, and
+# Every renderer here obeys a hard 5 pt floor at final size: hf_pt() clamps, and
 # the build re-measures the emitted SVG and fails if anything slipped below.
 #
 # DOWNSTREAM ONLY. These reshape and label canonical values. No model, no test,
 # no p-value, no new inference.
 
-NF_MIN_PT <- 5.0
+HF_MIN_PT <- 5.0
 
 # clamp any requested point size to the floor
-nf_pt <- function(x) pmax(as.numeric(x), NF_MIN_PT)
+hf_pt <- function(x) pmax(as.numeric(x), HF_MIN_PT)
 # ggplot size units from a clamped point size
-nf_sz <- function(x) nv_size(nf_pt(x))
+hf_sz <- function(x) hv_size(hf_pt(x))
 
-nf_fam <- function() nv_palette()$typography$family
+hf_fam <- function() hv_palette()$typography$family
 
 # base theme with the floor applied to every text element
-nf_theme <- function(grid = "none") {
-  fam <- nf_fam()
-  nv_theme(grid = grid) +
+hf_theme <- function(grid = "none") {
+  fam <- hf_fam()
+  hv_theme(grid = grid) +
     ggplot2::theme(
-      text = ggplot2::element_text(family = fam, size = NF_MIN_PT),
-      axis.text = ggplot2::element_text(size = NF_MIN_PT, colour = "grey20"),
-      axis.title = ggplot2::element_text(size = nf_pt(5.6)),
-      legend.text = ggplot2::element_text(size = NF_MIN_PT),
-      legend.title = ggplot2::element_text(size = nf_pt(5.4)),
-      strip.text = ggplot2::element_text(size = nf_pt(5.4)),
-      plot.caption = ggplot2::element_text(size = NF_MIN_PT, colour = "grey30",
+      text = ggplot2::element_text(family = fam, size = HF_MIN_PT),
+      axis.text = ggplot2::element_text(size = HF_MIN_PT, colour = "grey20"),
+      axis.title = ggplot2::element_text(size = hf_pt(5.6)),
+      legend.text = ggplot2::element_text(size = HF_MIN_PT),
+      legend.title = ggplot2::element_text(size = hf_pt(5.4)),
+      strip.text = ggplot2::element_text(size = hf_pt(5.4)),
+      plot.caption = ggplot2::element_text(size = HF_MIN_PT, colour = "grey30",
                                            hjust = 0, lineheight = 1.2))
 }
 
-nf_theme_tile <- function() {
-  nf_theme() + ggplot2::theme(axis.line = ggplot2::element_blank(),
+hf_theme_tile <- function() {
+  hf_theme() + ggplot2::theme(axis.line = ggplot2::element_blank(),
                               axis.ticks = ggplot2::element_blank())
 }
 
@@ -49,9 +49,9 @@ nf_theme_tile <- function() {
 # Compartment = glyph style (dashed band / solid band / diamond marker).
 # Region      = shared header-and-separator system, not a rainbow.
 # Layer       = anatomical position plus an explicit short label.
-nf_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  dcol <- nv_dataset_colours()
+hf_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+  fam <- hf_fam()
+  dcol <- hv_dataset_colours()
   np <- unname(dcol[["neuron_neuropil"]])
   so_col <- unname(dcol[["neuron_soma"]])
   mg_col <- unname(dcol[["microglia"]])
@@ -110,7 +110,7 @@ nf_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_path(data = brk, ggplot2::aes(x, y, group = region),
                        colour = "grey55", linewidth = 0.3) +
     ggplot2::geom_text(data = rlab, ggplot2::aes(x, y, label = l), family = fam,
-                       size = nf_sz(5.8), fontface = "bold", colour = "grey12")
+                       size = hf_sz(5.8), fontface = "bold", colour = "grey12")
 
   # DG bracket and label
   dgb <- arcdf(0.44, -0.24, 0.56, pi * 1.18, pi * 0.30, 40)
@@ -118,7 +118,7 @@ nf_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_path(data = dgb, ggplot2::aes(x, y), colour = "grey55",
                        linewidth = 0.3) +
     ggplot2::annotate("text", x = 0.44, y = -0.95, label = "DG", family = fam,
-                      size = nf_sz(5.8), fontface = "bold", colour = "grey12")
+                      size = hf_sz(5.8), fontface = "bold", colour = "grey12")
 
   # microglia-enriched ROI: one diamond per region
   mg <- do.call(rbind, lapply(c(0.12, 0.46, 0.84), function(f) {
@@ -133,7 +133,7 @@ nf_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   # which is the anchor a reader needs to find a block in panel d.
   p <- p +
     ggplot2::annotate("text", x = 0, y = 1.88, label = "both hemispheres",
-                      family = fam, size = nf_sz(5.0), colour = "grey30")
+                      family = fam, size = hf_sz(5.0), colour = "grey30")
 
   drawing <- p +
     ggplot2::coord_equal(xlim = c(-1.95, 1.95), ylim = c(-1.70, 2.02),
@@ -167,17 +167,17 @@ nf_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                         size = 1.3, colour = mg_col) +
     ggplot2::geom_text(ggplot2::aes(0.105, row + 0.24,
                                     label = sprintf("%s  -  %d units, %s", name, n, res)),
-                       hjust = 0, family = fam, size = nf_sz(5.2),
+                       hjust = 0, family = fam, size = hf_sz(5.2),
                        fontface = "bold", colour = "grey12") +
     ggplot2::geom_text(ggplot2::aes(0.105, row - 0.18, label = detail),
-                       hjust = 0, family = fam, size = nf_sz(5.0),
+                       hjust = 0, family = fam, size = hf_sz(5.0),
                        colour = "grey35") +
     ggplot2::scale_colour_manual(values = kcol, guide = "none") +
     ggplot2::coord_cartesian(xlim = c(-0.02, 1.62), ylim = c(0.25, 3.95),
                              expand = FALSE) +
     ggplot2::labs(caption = "abbreviations and order as in d") +
     ggplot2::theme_void(base_family = fam) +
-    ggplot2::theme(plot.caption = ggplot2::element_text(size = NF_MIN_PT,
+    ggplot2::theme(plot.caption = ggplot2::element_text(size = HF_MIN_PT,
                                                         colour = "grey45",
                                                         hjust = 0),
                    plot.margin = ggplot2::margin(1, 1, 0, 1, "mm"))
@@ -194,24 +194,24 @@ nf_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "position plus a short label. DG MO and DG PO are neuropil. SLM exists in ",
     "CA1 and CA2 only; there is no CA3 SLM unit.")
   write_csv_safe(out, csv_path)
-  nv_save_panel(pl, svg_path, w_mm, h_mm)
+  hv_save_panel(pl, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
 # ==========================================================================
 # b. Proteome depth - the least dominant main panel
 # ==========================================================================
-nf_depth_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  d <- nv_read_csv(repo_path(panel$primary_source))
+hf_depth_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+  fam <- hf_fam()
+  d <- hv_read_csv(repo_path(panel$primary_source))
   cn <- intersect(c("Proteins.Identified", "n_proteins", "proteins_identified"),
                   names(d))[1]
-  if (is.na(cn)) stop("nf_depth_compact: no protein-count column", call. = FALSE)
+  if (is.na(cn)) stop("hf_depth_compact: no protein-count column", call. = FALSE)
   d$val <- as.numeric(d[[cn]])
   # this source names the compartment in celltype_layer / qc_compartment, not
   # in a `dataset` column; excluded runs must not count toward depth
   ccol <- intersect(c("celltype_layer", "qc_compartment", "dataset"), names(d))[1]
-  if (is.na(ccol)) stop("nf_depth_compact: no compartment column", call. = FALSE)
+  if (is.na(ccol)) stop("hf_depth_compact: no compartment column", call. = FALSE)
   map <- c(neuron_neuropil = "neuron_neuropil", neuropil = "neuron_neuropil",
            neuron_soma = "neuron_soma", soma = "neuron_soma",
            microglia = "microglia")
@@ -231,15 +231,15 @@ nf_depth_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                           colour = "grey45") +
     ggplot2::geom_point(ggplot2::aes(colour = lab), size = 0.5, alpha = 0.8) +
     ggplot2::scale_colour_manual(
-      values = stats::setNames(unname(nv_dataset_colours()[sg_compartment_levels()]),
+      values = stats::setNames(unname(hv_dataset_colours()[sg_compartment_levels()]),
                                sg_compartments()$short), guide = "none") +
     ggplot2::scale_x_continuous(breaks = 1:3, labels = sg_compartments()$short,
                                 limits = c(0.5, 3.5)) +
     ggplot2::labs(x = NULL, y = "proteins identified") +
-    nf_theme(grid = "y") +
+    hf_theme(grid = "y") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 30, hjust = 1))
   write_csv_safe(d[, c("dataset", "val")], csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -253,10 +253,10 @@ nf_depth_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # Here the legend moves to the bottom as a single deterministic row, region is
 # NOT encoded (it would not be readable at this size and implying it would be
 # dishonest), and the caption says so.
-nf_pca_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  d <- nv_read_csv(repo_path(panel$primary_source))
-  ve <- nv_read_csv(repo_path(as.character(unlist(panel$input_dependencies))[1]),
+hf_pca_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+  fam <- hf_fam()
+  d <- hv_read_csv(repo_path(panel$primary_source))
+  ve <- hv_read_csv(repo_path(as.character(unlist(panel$input_dependencies))[1]),
                     required = FALSE)
   pc <- function(k) {
     if (is.null(ve)) return(sprintf("PC%d", k))
@@ -273,16 +273,16 @@ nf_pca_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_point(ggplot2::aes(colour = lab), size = 0.5, stroke = 0,
                         alpha = 0.85) +
     ggplot2::scale_colour_manual(
-      values = stats::setNames(unname(nv_dataset_colours()[ds]),
+      values = stats::setNames(unname(hv_dataset_colours()[ds]),
                                sg_compartments()$short), name = NULL) +
     ggplot2::guides(colour = ggplot2::guide_legend(
       nrow = 1, override.aes = list(size = 1.1))) +
     # typographic minus on both PC axes (2026-10-07), as on every v9 axis
-    ggplot2::scale_x_continuous(labels = nv_minus_labels) +
-    ggplot2::scale_y_continuous(labels = nv_minus_labels) +
+    ggplot2::scale_x_continuous(labels = hv_minus_labels) +
+    ggplot2::scale_y_continuous(labels = hv_minus_labels) +
     ggplot2::labs(x = pc(1), y = pc(2),
                   caption = "compartment only; region is not encoded at this size") +
-    nf_theme() +
+    hf_theme() +
     ggplot2::theme(
       legend.position = "bottom",
       legend.margin = ggplot2::margin(0, 0, 0, 0),
@@ -290,7 +290,7 @@ nf_pca_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       legend.key.size = ggplot2::unit(2.4, "mm"),
       plot.margin = ggplot2::margin(1, 2, 1, 1, "mm"))
   write_csv_safe(d[, c("Sample", "PC1", "PC2", "dataset")], csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -301,9 +301,9 @@ nf_pca_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # Same phenotype-blind selection as Part 21: rows are the top genes of each
 # prespecified CON-only anatomical contrast. Values are within-protein CON z.
 # Gene labels are held at the 5 pt floor.
-nf_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  z <- nv_read_csv(repo_path(panel$primary_source))
+hf_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+  fam <- hf_fam()
+  z <- hv_read_csv(repo_path(panel$primary_source))
   ord <- unique(z[, c("gene", "contrast")])
   ord <- ord[order(ord$contrast, ord$gene), , drop = FALSE]
   ord <- ord[!duplicated(ord$gene), , drop = FALSE]
@@ -320,7 +320,7 @@ nf_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   p <- ggplot2::ggplot(z, ggplot2::aes(xpos, ypos)) +
     ggplot2::geom_tile(ggplot2::aes(fill = con_z), colour = "white",
                        linewidth = 0.1) +
-    nv_diverging(limits = lim, name = "CON z") +
+    hv_diverging(limits = lim, name = "CON z") +
     ggplot2::scale_x_continuous(breaks = seq_len(n),
                                 labels = sg_axis_labels(b),
                                 limits = c(0.5, n + 0.5), expand = c(0, 0)) +
@@ -332,19 +332,19 @@ nf_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                       linewidth = 0.45, colour = "grey25") +
     ggplot2::annotate("text", x = b$compartment$mid, y = y_comp,
                       label = b$compartment$label, family = fam,
-                      size = nf_sz(5.4), fontface = "bold", colour = "grey12") +
+                      size = hf_sz(5.4), fontface = "bold", colour = "grey12") +
     ggplot2::annotate("text", x = b$region$mid, y = y_reg, label = b$region$label,
-                      family = fam, size = nf_sz(5.0), colour = "grey30") +
+                      family = fam, size = hf_sz(5.0), colour = "grey30") +
     ggplot2::labs(x = NULL, y = NULL,
                   caption = paste0(
                     "CON animals only (n = 3). Genes are the top hits of each ",
                     "prespecified CON-only anatomical contrast; no stress ",
                     "information enters selection. Each gene is standardised ",
                     "across its own compartment.")) +
-    nf_theme_tile() +
+    hf_theme_tile() +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(size = NF_MIN_PT, colour = "grey25"),
-      axis.text.y = ggplot2::element_text(size = NF_MIN_PT, face = "italic"),
+      axis.text.x = ggplot2::element_text(size = HF_MIN_PT, colour = "grey25"),
+      axis.text.y = ggplot2::element_text(size = HF_MIN_PT, face = "italic"),
       legend.position = "right",
       legend.key.width = ggplot2::unit(1.6, "mm"),
       legend.key.height = ggplot2::unit(3.6, "mm"))
@@ -357,7 +357,7 @@ nf_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "segment", x = rend + 0.5, xend = rend + 0.5, y = 0.5, yend = y_reg + 0.4,
     linewidth = 0.18, colour = "grey72")
   write_csv_safe(z, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -368,9 +368,9 @@ nf_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # Part 22 found the previous version had rotated axis labels escaping the panel
 # box and a legend consuming a quarter of 39 mm. Here the compartment labels are
 # horizontal, the legend sits at the bottom, and the box is 78 mm.
-nf_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  d <- nv_read_csv(repo_path(panel$primary_source))
+hf_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+  fam <- hf_fam()
+  d <- hv_read_csv(repo_path(panel$primary_source))
   mcol <- intersect(c("marker_label", "marker_gene", "marker", "GeneSymbol",
                       "gene"), names(d))[1]
   ccol <- intersect(c("compartment", "dataset", "celltype_layer",
@@ -378,7 +378,7 @@ nf_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   vcol <- intersect(c("displayed_centered_log2", "median_centered_log2",
                       "z", "value"), names(d))[1]
   if (any(is.na(c(mcol, ccol, vcol)))) {
-    stop("nf_compartment: cannot locate marker/compartment/value columns; have: ",
+    stop("hf_compartment: cannot locate marker/compartment/value columns; have: ",
          paste(names(d), collapse = ", "), call. = FALSE)
   }
   map <- c(neuron_neuropil = "neuron_neuropil", neuropil = "neuron_neuropil",
@@ -397,7 +397,7 @@ nf_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   p <- ggplot2::ggplot(d, ggplot2::aes(xpos, ypos)) +
     ggplot2::geom_tile(ggplot2::aes(fill = val), colour = "white",
                        linewidth = 0.15) +
-    nv_diverging(limits = lim, name = NULL) +
+    hv_diverging(limits = lim, name = NULL) +
     ggplot2::scale_x_continuous(breaks = 1:3, labels = sg_compartments()$short,
                                 limits = c(0.5, 3.5), expand = c(0, 0),
                                 position = "top") +
@@ -405,18 +405,18 @@ nf_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                 limits = c(0.5, length(mk) + 0.5),
                                 expand = c(0, 0)) +
     ggplot2::labs(x = NULL, y = NULL) +
-    nf_theme_tile() +
+    hf_theme_tile() +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(size = NF_MIN_PT, colour = "grey15",
+      axis.text.x = ggplot2::element_text(size = HF_MIN_PT, colour = "grey15",
                                           face = "bold"),
-      axis.text.y = ggplot2::element_text(size = NF_MIN_PT, face = "italic"),
+      axis.text.y = ggplot2::element_text(size = HF_MIN_PT, face = "italic"),
       legend.position = "bottom",
       legend.key.height = ggplot2::unit(1.6, "mm"),
       legend.key.width = ggplot2::unit(5, "mm"),
       legend.margin = ggplot2::margin(0, 0, 0, 0),
       legend.box.margin = ggplot2::margin(-2, 0, 0, 0))
   write_csv_safe(d[, c("marker", "ds", "val")], csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -428,14 +428,14 @@ nf_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # laminar identity less so, with an explicit block separator between the two
 # anatomical levels. The complete metric inventory (Pearson, Spearman, sign
 # agreement, ICC, precision) stays in ED1 - this panel is NOT that panel.
-nf_bilateral_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  su <- nv_read_csv(repo_path(as.character(unlist(panel$input_dependencies))[1]))
+hf_bilateral_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+  fam <- hf_fam()
+  su <- hv_read_csv(repo_path(as.character(unlist(panel$input_dependencies))[1]))
   rc <- intersect(c("pearson_r", "r", "correlation", "bilateral_pearson"),
                   names(su))[1]
   cc <- intersect(c("contrast", "anatomical_contrast", "comparison"), names(su))[1]
   if (any(is.na(c(rc, cc)))) {
-    stop("nf_bilateral_main: cannot locate r/contrast columns; have: ",
+    stop("hf_bilateral_main: cannot locate r/contrast columns; have: ",
          paste(names(su), collapse = ", "), call. = FALSE)
   }
   su$r <- as.numeric(su[[rc]])
@@ -461,7 +461,7 @@ nf_bilateral_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   p <- ggplot2::ggplot(su, ggplot2::aes(r, ypos)) +
     ggplot2::geom_segment(ggplot2::aes(x = 0, xend = r, yend = ypos,
                                        colour = level),
-                          linewidth = nv_lw("reference_pt")) +
+                          linewidth = hv_lw("reference_pt")) +
     ggplot2::geom_point(ggplot2::aes(colour = level), size = 1) +
     ggplot2::scale_colour_manual(
       values = c("Regional identity" = "#1F3D52",
@@ -471,8 +471,8 @@ nf_bilateral_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::scale_x_continuous(limits = c(0, 1), breaks = c(0, 0.5, 1)) +
     ggplot2::labs(x = "left-right correlation of the anatomical effect",
                   y = NULL) +
-    nf_theme(grid = "x") +
-    ggplot2::theme(axis.text.y = ggplot2::element_text(size = NF_MIN_PT),
+    hf_theme(grid = "x") +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(size = HF_MIN_PT),
                    legend.position = "bottom",
                    legend.key.size = ggplot2::unit(2.4, "mm"),
                    legend.margin = ggplot2::margin(0, 0, 0, 0),
@@ -485,7 +485,7 @@ nf_bilateral_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                linewidth = 0.3, colour = "grey55")
   }
   write_csv_safe(su[, c("contrast", "level", "r")], csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -496,9 +496,9 @@ nf_bilateral_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # Main shows only the story-driving expected pairings, blocked by anatomical
 # level. The complete specificity inventory - every off-target comparison -
 # stays in ED2, so the two are not the same graphic.
-nf_external_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  k <- nv_read_csv(repo_path(panel$primary_source))
+hf_external_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+  fam <- hf_fam()
+  k <- hv_read_csv(repo_path(panel$primary_source))
   k <- k[k$expected_match %in% TRUE, , drop = FALSE]
   k$level <- ifelse(grepl("strata", k$validation_domain),
                     "CA1 laminar identity", "Regional identity")
@@ -509,11 +509,11 @@ nf_external_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   k$ypos <- seq_len(nrow(k))
 
   p <- ggplot2::ggplot(k, ggplot2::aes(NES, ypos)) +
-    ggplot2::geom_vline(xintercept = 0, linewidth = nv_lw("reference_pt"),
+    ggplot2::geom_vline(xintercept = 0, linewidth = hv_lw("reference_pt"),
                         colour = "grey65") +
     ggplot2::geom_segment(ggplot2::aes(x = 0, xend = NES, yend = ypos,
                                        colour = level),
-                          linewidth = nv_lw("reference_pt")) +
+                          linewidth = hv_lw("reference_pt")) +
     ggplot2::geom_point(ggplot2::aes(colour = level, shape = sig), size = 1.1,
                         fill = "white", stroke = 0.4) +
     ggplot2::scale_shape_manual(values = c("TRUE" = 16, "FALSE" = 21),
@@ -525,8 +525,8 @@ nf_external_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                 expand = ggplot2::expansion(add = 0.8)) +
     ggplot2::labs(x = "NES vs external hippocampal signature", y = NULL,
                   caption = "expected pairings only; filled = FDR < 0.05. Full specificity inventory in ED2.") +
-    nf_theme(grid = "x") +
-    ggplot2::theme(axis.text.y = ggplot2::element_text(size = NF_MIN_PT),
+    hf_theme(grid = "x") +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(size = HF_MIN_PT),
                    legend.position = "none")
   nreg <- sum(k$level == "Regional identity")
   if (nreg > 0 && nreg < nrow(k)) {
@@ -536,7 +536,7 @@ nf_external_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   }
   write_csv_safe(k[, c("internal_contrast", "external_signature", "level",
                        "NES", "p_adjust")], csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -546,9 +546,9 @@ nf_external_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 #
 # Main shows the single strongest canonical term per contrast so the panel fits
 # at >=5 pt. The complete term inventory stays in ED2.
-nf_internal_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  g <- nv_read_csv(repo_path(panel$primary_source))
+hf_internal_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+  fam <- hf_fam()
+  g <- hv_read_csv(repo_path(panel$primary_source))
   g$level <- ifelse(grepl("CA1_strata", g$contrast),
                     "CA1 laminar identity", "Regional identity")
   g$level <- factor(g$level, levels = c("Regional identity", "CA1 laminar identity"))
@@ -561,11 +561,11 @@ nf_internal_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   g$sig <- is.finite(g$p_adjust) & g$p_adjust < 0.05
 
   p <- ggplot2::ggplot(g, ggplot2::aes(NES, ypos)) +
-    ggplot2::geom_vline(xintercept = 0, linewidth = nv_lw("reference_pt"),
+    ggplot2::geom_vline(xintercept = 0, linewidth = hv_lw("reference_pt"),
                         colour = "grey65") +
     ggplot2::geom_segment(ggplot2::aes(x = 0, xend = NES, yend = ypos,
                                        colour = level),
-                          linewidth = nv_lw("reference_pt")) +
+                          linewidth = hv_lw("reference_pt")) +
     ggplot2::geom_point(ggplot2::aes(colour = level, size = setSize,
                                      shape = sig), fill = "white", stroke = 0.4) +
     ggplot2::scale_shape_manual(values = c("TRUE" = 16, "FALSE" = 21),
@@ -578,8 +578,8 @@ nf_internal_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                 expand = ggplot2::expansion(add = 0.8)) +
     ggplot2::labs(x = "NES, internal anatomical GO program", y = NULL,
                   caption = "strongest canonical term per contrast; point size = set size. Full term inventory in ED2.") +
-    nf_theme(grid = "x") +
-    ggplot2::theme(axis.text.y = ggplot2::element_text(size = NF_MIN_PT),
+    hf_theme(grid = "x") +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(size = HF_MIN_PT),
                    legend.position = "none")
   nreg <- sum(g$level == "Regional identity")
   if (nreg > 0 && nreg < nrow(g)) {
@@ -589,6 +589,6 @@ nf_internal_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   }
   write_csv_safe(g[, c("contrast", "Description", "level", "NES", "p_adjust",
                        "setSize")], csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }

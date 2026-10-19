@@ -1,7 +1,7 @@
 source(file.path("R","paths.R"))
-source(repo_path("R","vendor","plotting_nature.R"))
+source(repo_path("R","vendor","plotting_figure_style.R"))
 source(repo_path("R","panels","cc4_phase_groups_candidate.R"))
-source(repo_path("R","panels","cc4_phase_groups_nature.R"))
+source(repo_path("R","panels","cc4_phase_groups_house.R"))
 source(repo_path("R","panels","cc4_phenotype_candidate.R"))
 render_cc4_phenotypes<-function(bundle_id,descriptive_id,output_dir) {
   if(!grepl("^cc4_phenotypes_[A-Za-z0-9_-]+$",bundle_id)||!grepl("^cc4_phase_groups_[A-Za-z0-9_-]+$",descriptive_id))stop("Invalid bundle IDs.",call.=FALSE)
@@ -20,8 +20,8 @@ render_cc4_phenotypes<-function(bundle_id,descriptive_id,output_dir) {
   dir.create(output_dir,recursive=TRUE)
   for(ext in c("png","pdf","svg"))ggplot2::ggsave(file.path(output_dir,paste0("cc4_phenotype_response.",ext)),p,
     device=switch(ext,png=ragg::agg_png,pdf=grDevices::cairo_pdf,svg=svglite::svglite),width=183,height=230,units="mm",dpi=300,bg="white")
-  paths<-c(file.path(src,"manifest.csv"),file.path(ds,"manifest.csv"),repo_path("R","paths.R"),repo_path("R","vendor","plotting_nature.R"),
-    repo_path("R","panels","cc4_phase_groups_candidate.R"),repo_path("R","panels","cc4_phase_groups_nature.R"),
+  paths<-c(file.path(src,"manifest.csv"),file.path(ds,"manifest.csv"),repo_path("R","paths.R"),repo_path("R","vendor","plotting_figure_style.R"),
+    repo_path("R","panels","cc4_phase_groups_candidate.R"),repo_path("R","panels","cc4_phase_groups_house.R"),
     repo_path("R","panels","cc4_phenotype_candidate.R"),repo_path("figures","cc4_phenotype_candidate.R"))
   utils::write.csv(data.frame(Path=paths,SHA256=unname(tools::sha256sum(paths))),file.path(output_dir,"render_inputs.csv"),row.names=FALSE)
   capture.output(sessionInfo(),file=file.path(output_dir,"render_session_info.txt"))

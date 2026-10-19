@@ -40,7 +40,7 @@ cc4_stats_plot <- function(d) {
   d$Text<-ifelse(d$Status=="PASS",sprintf("%.2f [%.2f, %.2f]   P = %.3f",d$Estimate,d$Lower95,d$Upper95,d$HolmP),"Inference withheld: fitting diagnostics")
   good<-d[d$Status=="PASS",]
   limits<-if(nrow(good)) range(c(.5,2,good$Lower95*.9,good$Upper95*1.1)) else c(.5,2)
-  base<-cc4_nature_theme()+ggplot2::theme(legend.position="none",axis.title.y=ggplot2::element_blank(),
+  base<-cc4_house_theme()+ggplot2::theme(legend.position="none",axis.title.y=ggplot2::element_blank(),
     axis.text.y=ggplot2::element_text(size=6.5),plot.margin=ggplot2::margin(3,3,3,3,unit="mm"))
   forest<-ggplot2::ggplot(d,ggplot2::aes(y=Row))+
     ggplot2::geom_vline(xintercept=1,linetype="dotted",linewidth=.2,colour="grey45")+

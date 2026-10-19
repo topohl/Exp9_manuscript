@@ -13,7 +13,7 @@
 # the Stage 29 v1.0.2 behaviour bundle (ebb), the Stage 30 figure bundle (s30b) and
 # the figure-support bundle (fsb: descriptive CON cage means and the CombZ
 # components as they enter CombZ, figure_01_option3_*; from fsb_v2 also the
-# verbatim rows of the MMM post hoc CON/RES/SUS run 29b, figure_01_option3b_nature
+# verbatim rows of the MMM post hoc CON/RES/SUS run 29b, figure_01_option3b_house
 # panel c, fitted upstream once and labelled post hoc; from fsb_v3 also the Stage 14
 # domain-heatmap cells and HMM figure tables of the run promoted on 2026-10-06, the
 # ed_behaviour_domain_heatmap_* and ed_behaviour_hmm candidates; fsb_v4 carries those tables
@@ -56,10 +56,10 @@
 #   scatter_width      relative width of the prediction scatter (Figure 1f: 0.6)
 #   bottom_pad_pt      extra bottom margin of the prediction plots (Figure 1f: 0), so their x axes
 #                      sit level with the association panel's (two-line x title) in the same row
-#   style: nature      the opt-in Nature style profile (BH_NATURE; NATURE_REDESIGN_SPEC): the builders
-#                      draw their f1n_* / s30n_* variants (R/panels/behaviour_figure1_nature_panels.R);
+#   style: house      the opt-in house style profile (BH_HOUSE; NATURE_REDESIGN_SPEC): the builders
+#                      draw their f1h_* / s30h_* variants (R/panels/behaviour_figure1_house_panels.R);
 #                      the default "figure1" draws exactly as before
-#   plot_top_mm, axis_mm   (style nature) the top edge of the first plot panel and the x-axis line of
+#   plot_top_mm, axis_mm   (style house) the top edge of the first plot panel and the x-axis line of
 #                      the last one, in mm below the box top, so the panels of a row share one frame
 #
 # Per candidate (optional):
@@ -105,7 +105,7 @@ libraries:
   - R/panels/behaviour_s30_light_panels.R
   - R/panels/behaviour_s30_cookie_panels.R
   - R/panels/behaviour_s30_screen_panels.R
-  - R/panels/behaviour_figure1_nature_panels.R
+  - R/panels/behaviour_figure1_house_panels.R
   - R/panels/behaviour_figure1_option3_panels.R
   - R/panels/behaviour_figure1_option3b_panels.R
   - R/panels/behaviour_stage14_panels.R
@@ -307,11 +307,11 @@ candidates:
         h: 65
 
   # ------------------------------------------------------------------ 2n
-  figure_01_option2_nature:
-    title: Figure 1, option 2 (Nature layout; the option 2 content redrawn to the journal's figure rules)
+  figure_01_option2_house:
+    title: Figure 1, option 2 (house layout; the option 2 content redrawn to the journal's figure rules)
     is_numbered_manuscript_figure: false
     promotion_status: not_promoted
-    intended_role: main-figure candidate (Figure 1); option 2 in the Nature layout, beside figure_01_option2 for comparison; same content, stored values and inks
+    intended_role: main-figure candidate (Figure 1); option 2 in the house layout, beside figure_01_option2 for comparison; same content, stored values and inks
     width_mm: 183
     height_mm: 160
     layout_mode: absolute
@@ -329,23 +329,23 @@ candidates:
       group key (left-aligned at its plot panel) sits on row 2's second line with c's "Female - male:
       Holm P" lines. Row frames: plot tops at 8.1 mm (row 2) and 3.4 mm (row 3) below the box top, x-axis
       lines at 65.8 and 58.3 mm (plot_top_mm, axis_mm). Values moved off the panels are quoted by the
-      legend (annotation_panels_legend): a's n footer (f1o2n_design_legend), c's RES - SUS and
-      female - male CIs and n (f1o2n_cc1_legend), f's repeated grouped five-fold range, permutation
-      count and n (f1o2n_prediction_legend); d's legend keys as option 2's. The legend's n are stored
-      cells: the Nature-only legend keys f1o2n_c_n_* (C2_estimates model n; B2_descriptive_summaries,
+      legend (annotation_panels_legend): a's n footer (f1o2h_design_legend), c's RES - SUS and
+      female - male CIs and n (f1o2h_cc1_legend), f's repeated grouped five-fold range, permutation
+      count and n (f1o2h_prediction_legend); d's legend keys as option 2's. The legend's n are stored
+      cells: the house-only legend keys f1o2h_c_n_* (C2_estimates model n; B2_descriptive_summaries,
       which stores each CC1 sex x group n as one cell; G_sample_sizes for the missing shared-occupancy
-      cell) and f1o2n_f_n. The PDF page is exactly 183 x 160 mm: cairo_pdf writes whole points (518 x
+      cell) and f1o2h_f_n. The PDF page is exactly 183 x 160 mm: cairo_pdf writes whole points (518 x
       453), and bh_pdf_mediabox appends an incremental update with the exact MediaBox.
     panels:
       - id: a
         letter: a
         builder: f1_panel_design
-        description: Design (Nature layout; the n footer moved to the legend)
-        args: {key_prefix: f1o2n_, typography: candidate, style: nature}
+        description: Design (house layout; the n footer moved to the legend)
+        args: {key_prefix: f1o2h_, typography: candidate, style: house}
         jitter_seed: null
         inputs: [ebb/A0_design_timeline]
         annotation_panels: []
-        annotation_panels_legend: [f1o2n_design_legend]
+        annotation_panels_legend: [f1o2h_design_legend]
         x: 4
         "y": 4
         w: 175
@@ -353,11 +353,11 @@ candidates:
       - id: b
         letter: b
         builder: f1_panel_combz
-        description: Later CombZ and the RES/SUS threshold (Nature layout; the figure group key on the header line)
-        args: {key_prefix: f1o2n_, style: nature, plot_top_mm: 8.1, axis_mm: 65.8}
+        description: Later CombZ and the RES/SUS threshold (house layout; the figure group key on the header line)
+        args: {key_prefix: f1o2h_, style: house, plot_top_mm: 8.1, axis_mm: 65.8}
         jitter_seed: 1
         inputs: [ebb/A4_combz_animals, ebb/A2b_combz_thresholds]
-        annotation_panels: [f1o2n_combz]
+        annotation_panels: [f1o2h_combz]
         x: 4
         "y": 18
         w: 46
@@ -366,14 +366,14 @@ candidates:
         letter: c
         builder: f1_panel_cc1
         description: >-
-          First active phase after CC1 (Nature layout): position-change rate and shared occupancy by sex
+          First active phase after CC1 (house layout): position-change rate and shared occupancy by sex
           and group, the RES/SUS model means with 95% CIs and the P-CC1 Holm P of the female - male
           difference in RES - SUS; the contrast CIs and the n are quoted by the legend
-        args: {key_prefix: f1o2n_, typography: candidate, style: nature, plot_top_mm: 8.1, axis_mm: 65.8}
+        args: {key_prefix: f1o2h_, typography: candidate, style: house, plot_top_mm: 8.1, axis_mm: 65.8}
         jitter_seed: [2, 2]
         inputs: [ebb/A1_animal_cc1, ebb/C2_estimates, ebb/E_multiplicity, ebb/B2_descriptive_summaries, ebb/G_sample_sizes]
-        annotation_panels: [f1o2n_cc1]
-        annotation_panels_legend: [f1o2n_cc1_legend]
+        annotation_panels: [f1o2h_cc1]
+        annotation_panels_legend: [f1o2h_cc1_legend]
         x: 53
         "y": 18
         w: 84
@@ -382,11 +382,11 @@ candidates:
         letter: d
         builder: s30_panel_light_compact
         description: >-
-          Light phase (exploratory), Nature layout: stored RES - SUS after CC1 (SIS only) for the RFID
+          Light phase (exploratory), house layout: stored RES - SUS after CC1 (SIS only) for the RFID
           position-change rate (Stage 29 secondary estimate, not tested) and sustained positional
           inactivity (>=40 s) (Stage 30 exploratory; local BH q, m = 6, one column for the F, M and
           F - M rows)
-        args: {q_rows: ["F", "M", "INT"], style: nature, plot_top_mm: 8.1, axis_mm: 65.8}
+        args: {q_rows: ["F", "M", "INT"], style: house, plot_top_mm: 8.1, axis_mm: 65.8}
         jitter_seed: null
         inputs: [ebb/C2_estimates, s30b/S1b_light_estimates, s30b/S1c_light_descriptives, s30b/S0_master_hypotheses, s30b/S2b_rate_inactivity_relationship]
         annotation_panels: [light_compact]
@@ -399,11 +399,11 @@ candidates:
       - id: e
         letter: e
         builder: f1_panel_association
-        description: Early RFID position-change rate vs later CombZ (Stage 09; Nature layout)
-        args: {key_prefix: f1o2n_, typography: candidate, style: nature, plot_top_mm: 3.4, axis_mm: 58.3}
+        description: Early RFID position-change rate vs later CombZ (Stage 09; house layout)
+        args: {key_prefix: f1o2h_, typography: candidate, style: house, plot_top_mm: 3.4, axis_mm: 58.3}
         jitter_seed: null
         inputs: [ebb/A2_prediction_animals, ebb/C2_estimates, ebb/E_multiplicity]
-        annotation_panels: [f1o2n_association]
+        annotation_panels: [f1o2h_association]
         x: 4
         "y": 92
         w: 60
@@ -412,24 +412,24 @@ candidates:
         letter: f
         builder: f1_panel_prediction
         description: >-
-          Held-out prediction of later CombZ and its permutation null (Stage 09; Nature layout: group
+          Held-out prediction of later CombZ and its permutation null (Stage 09; house layout: group
           shapes, direct labels; the resampling range and permutation count quoted by the legend)
-        args: {key_prefix: f1o2n_, typography: candidate, style: nature, plot_top_mm: 3.4, axis_mm: 58.3}
+        args: {key_prefix: f1o2h_, typography: candidate, style: house, plot_top_mm: 3.4, axis_mm: 58.3}
         jitter_seed: null
         inputs: [ebb/A2_prediction_animals, ebb/A3_permutation_draws, ebb/C2_estimates, ebb/E_multiplicity]
-        annotation_panels: [f1o2n_prediction]
-        annotation_panels_legend: [f1o2n_prediction_legend]
+        annotation_panels: [f1o2h_prediction]
+        annotation_panels_legend: [f1o2h_prediction_legend]
         x: 67
         "y": 92
         w: 112
         h: 64
 
   # ------------------------------------------------------------------ 2b
-  figure_01_option3_nature:
-    title: Figure 1, option 3 (Nature layout; design and behavioural architecture, CombZ and its components, CC1 with CON cage marks, CC1 to CC4, early rate vs CombZ, held-out prediction)
+  figure_01_option3_house:
+    title: Figure 1, option 3 (house layout; design and behavioural architecture, CombZ and its components, CC1 with CON cage marks, CC1 to CC4, early rate vs CombZ, held-out prediction)
     is_numbered_manuscript_figure: false
     promotion_status: not_promoted
-    intended_role: main-figure candidate (Figure 1); OPTION3_SPEC (2026-09-30), beside figure_01_option2_nature for comparison; the light phase stays in Extended Data X
+    intended_role: main-figure candidate (Figure 1); OPTION3_SPEC (2026-09-30), beside figure_01_option2_house for comparison; the light phase stays in Extended Data X
     width_mm: 183
     height_mm: 170
     layout_mode: absolute
@@ -437,13 +437,13 @@ candidates:
     page_margin_mm: 4
     panel_gap_mm: 3
     layout_notes: >-
-      OPTION3_SPEC 3 in the Nature profile (NATURE_REDESIGN_SPEC): 4-mm margins, 3-mm gutters, 183 x
+      OPTION3_SPEC 3 in the house profile (NATURE_REDESIGN_SPEC): 4-mm margins, 3-mm gutters, 183 x
       170 mm, one vector page. Four rows: a 175 x 25 (the timeline, CC1-CC4 as repeated cage-change
       episodes with the SIS / CON line, and the architecture schematic under it); b 175 x 35 (CombZ at
       its stored rank within sex over the group strip and the six-component heatmap, F | M); row 3 at
       y = 70, 53 high: c 110 (first active phase after CC1, each measure with its compact RES - SUS
       sidecar) and d 62 (CC1 -> CC4, rate over occupancy, F | M); row 4 at y = 126, 40 high: e 58 and
-      f 114 (option 2 Nature's builders at option 3's boxes). Row frames: plot tops 9.54 mm (row 3) and
+      f 114 (option 2 the house style's builders at option 3's boxes). Row frames: plot tops 9.54 mm (row 3) and
       3.4 mm (row 4) below the box top, x-axis lines at 50.0 and 34.3 mm (plot_top_mm, axis_mm). The
       heatmap uses the manuscript's diverging palette (config/manuscript_palette.yml; symmetric limits
       capped at the manuscript's fixed z limit, +/-2, colourbar ends <= / >=; a missing cell is the
@@ -454,7 +454,7 @@ candidates:
     panels:
       - id: a
         letter: a
-        builder: f1o3n_panel_design
+        builder: f1o3h_panel_design
         description: >-
           Design and behavioural architecture: CC1-CC4 as repeated cage-change episodes (one line under
           all four: at every cage change SIS regrouped, CON an intact group moved in the same
@@ -462,63 +462,63 @@ candidates:
           around Movement (position-change rate) and behavioural organisation (social-spatial overlap,
           spatial and temporal organisation), with the stored tier of each metric (fsb F1) -> the HMM
           behavioural states as a downstream, exploratory layer
-        args: {key_prefix: f1o3n_}
+        args: {key_prefix: f1o3h_}
         jitter_seed: null
         inputs: [ebb/A0_design_timeline, fsb/F1_con_cage_means]
         annotation_panels: []
-        annotation_panels_legend: [f1o3n_design_legend]
+        annotation_panels_legend: [f1o3h_design_legend]
         x: 4
         "y": 4
         w: 175
         h: 25
       - id: b
         letter: b
-        builder: f1o3n_panel_combz
+        builder: f1o3h_panel_combz
         description: >-
           Later CombZ per animal at its stored rank within sex (fsb F2) with the stored threshold and
           CON-mean lines (ebb A2b), the group strip, and the six components' signed z as they enter
           CombZ (fsb F2; diverging palette, capped at +/-2), the RES/SUS boundary marked; the figure's
           group key
-        args: {key_prefix: f1o3n_}
+        args: {key_prefix: f1o3h_}
         jitter_seed: null
         inputs: [ebb/A2b_combz_thresholds, fsb/F2_combz_components, fsb/F2b_combz_definition]
-        annotation_panels: [f1o3n_combz]
-        annotation_panels_legend: [f1o3n_combz_legend]
+        annotation_panels: [f1o3h_combz]
+        annotation_panels_legend: [f1o3h_combz_legend]
         x: 4
         "y": 32
         w: 175
         h: 35
       - id: c
         letter: c
-        builder: f1o3n_panel_cc1
+        builder: f1o3h_panel_cc1
         description: >-
           First active phase after CC1: position-change rate and shared occupancy by sex and group
           (animals, ebb A1; RES/SUS CC1_BY_SEX model means and 95% CIs, ebb C2; the CON descriptive mean
           and the three CON cage means, fsb F1b / F1), and beside each measure the stored RES - SUS
           contrasts F, M and the female - male difference (ebb C2) with the P-CC1 Holm P only
-        args: {key_prefix: f1o3n_, plot_top_mm: 9.54, axis_mm: 50.0}
+        args: {key_prefix: f1o3h_, plot_top_mm: 9.54, axis_mm: 50.0}
         jitter_seed: [2, 2]
         inputs: [ebb/A1_animal_cc1, ebb/B2_descriptive_summaries, ebb/C2_estimates, ebb/E_multiplicity, fsb/F1_con_cage_means, fsb/F1b_con_reference_means]
-        annotation_panels: [f1o3n_cc1]
-        annotation_panels_plotted: [f1o3n_cc1_contrasts]
-        annotation_panels_legend: [f1o3n_cc1_contrasts, f1o3n_cc1_legend]
+        annotation_panels: [f1o3h_cc1]
+        annotation_panels_plotted: [f1o3h_cc1_contrasts]
+        annotation_panels_legend: [f1o3h_cc1_contrasts, f1o3h_cc1_legend]
         x: 4
         "y": 70
         w: 110
         h: 53
       - id: d
         letter: d
-        builder: f1o3n_panel_trajectory
+        builder: f1o3h_panel_trajectory
         description: >-
           CC1 -> CC4 (option, for judgement): the RES/SUS TR_BY_SEX means and 95% CIs (ebb C2), the CON
           descriptive mean (dashed) and the three CON cage means per cage change (fsb F1b / F1), and one
           line under the header for the registered Q2b of both measures with their P-TR Holm P (ebb
           E_multiplicity); the F statistics and the FU-TR Holm P are quoted by the legend
-        args: {key_prefix: f1o3n_, plot_top_mm: 9.54, axis_mm: 50.0}
+        args: {key_prefix: f1o3h_, plot_top_mm: 9.54, axis_mm: 50.0}
         jitter_seed: null
         inputs: [ebb/C2_estimates, ebb/C3_joint_tests, ebb/E_multiplicity, fsb/F1_con_cage_means, fsb/F1b_con_reference_means]
-        annotation_panels: [f1o3n_trajectory]
-        annotation_panels_legend: [f1o3n_trajectory_legend]
+        annotation_panels: [f1o3h_trajectory]
+        annotation_panels_legend: [f1o3h_trajectory_legend]
         x: 117
         "y": 70
         w: 62
@@ -526,11 +526,11 @@ candidates:
       - id: e
         letter: e
         builder: f1_panel_association
-        description: Early RFID position-change rate vs later CombZ (Stage 09; option 2 Nature's builder at option 3's box)
-        args: {key_prefix: f1o3n_, typography: candidate, style: nature, plot_top_mm: 3.4, axis_mm: 34.3}
+        description: Early RFID position-change rate vs later CombZ (Stage 09; option 2 the house style's builder at option 3's box)
+        args: {key_prefix: f1o3h_, typography: candidate, style: house, plot_top_mm: 3.4, axis_mm: 34.3}
         jitter_seed: null
         inputs: [ebb/A2_prediction_animals, ebb/C2_estimates, ebb/E_multiplicity]
-        annotation_panels: [f1o3n_association]
+        annotation_panels: [f1o3h_association]
         x: 4
         "y": 126
         w: 58
@@ -538,12 +538,12 @@ candidates:
       - id: f
         letter: f
         builder: f1_panel_prediction
-        description: Held-out prediction of later CombZ and its permutation null (Stage 09; option 2 Nature's builder at option 3's box)
-        args: {key_prefix: f1o3n_, typography: candidate, style: nature, plot_top_mm: 3.4, axis_mm: 34.3}
+        description: Held-out prediction of later CombZ and its permutation null (Stage 09; option 2 the house style's builder at option 3's box)
+        args: {key_prefix: f1o3h_, typography: candidate, style: house, plot_top_mm: 3.4, axis_mm: 34.3}
         jitter_seed: null
         inputs: [ebb/A2_prediction_animals, ebb/A3_permutation_draws, ebb/C2_estimates, ebb/E_multiplicity]
-        annotation_panels: [f1o3n_prediction]
-        annotation_panels_legend: [f1o3n_prediction_legend]
+        annotation_panels: [f1o3h_prediction]
+        annotation_panels_legend: [f1o3h_prediction_legend]
         x: 65
         "y": 126
         w: 114
@@ -554,7 +554,7 @@ candidates:
     title: Figure 1, option 3 panel d alone (CC1 to CC4 with the CON cage marks), for judgement
     is_numbered_manuscript_figure: false
     promotion_status: not_promoted
-    intended_role: stand-alone copy of figure_01_option3_nature panel d, so its main-figure place can be judged
+    intended_role: stand-alone copy of figure_01_option3_house panel d, so its main-figure place can be judged
     width_mm: 70
     height_mm: 61
     layout_mode: absolute
@@ -569,24 +569,24 @@ candidates:
     panels:
       - id: d
         letter: ""
-        builder: f1o3n_panel_trajectory
-        description: The figure_01_option3_nature panel d, alone
-        args: {key_prefix: f1o3n_, plot_top_mm: 9.54, axis_mm: 50.0}
+        builder: f1o3h_panel_trajectory
+        description: The figure_01_option3_house panel d, alone
+        args: {key_prefix: f1o3h_, plot_top_mm: 9.54, axis_mm: 50.0}
         jitter_seed: null
         inputs: [ebb/C2_estimates, ebb/C3_joint_tests, ebb/E_multiplicity, fsb/F1_con_cage_means, fsb/F1b_con_reference_means]
-        annotation_panels: [f1o3n_trajectory]
-        annotation_panels_legend: [f1o3n_trajectory_legend]
+        annotation_panels: [f1o3h_trajectory]
+        annotation_panels_legend: [f1o3h_trajectory_legend]
         x: 4
         "y": 4
         w: 62
         h: 53
 
   # ------------------------------------------------------------------ 2d
-  figure_01_option3b_nature:
-    title: Figure 1, option 3b (Nature layout; option 3 with c showing the post hoc CON, RES and SUS means and contrasts and a simplified CC1 to CC4 panel d)
+  figure_01_option3b_house:
+    title: Figure 1, option 3b (house layout; option 3 with c showing the post hoc CON, RES and SUS means and contrasts and a simplified CC1 to CC4 panel d)
     is_numbered_manuscript_figure: false
     promotion_status: not_promoted
-    intended_role: main-figure candidate (Figure 1); OPTION3B_SPEC (2026-09-30), beside figure_01_option3_nature for comparison
+    intended_role: main-figure candidate (Figure 1); OPTION3B_SPEC (2026-09-30), beside figure_01_option3_house for comparison
     width_mm: 183
     height_mm: 170
     layout_mode: absolute
@@ -609,26 +609,26 @@ candidates:
     panels:
       - id: a
         letter: a
-        builder: f1o3n_panel_design
-        description: As figure_01_option3_nature a (same builder, arguments, inputs and box)
-        args: {key_prefix: f1o3n_}
+        builder: f1o3h_panel_design
+        description: As figure_01_option3_house a (same builder, arguments, inputs and box)
+        args: {key_prefix: f1o3h_}
         jitter_seed: null
         inputs: [ebb/A0_design_timeline, fsb/F1_con_cage_means]
         annotation_panels: []
-        annotation_panels_legend: [f1o3n_design_legend]
+        annotation_panels_legend: [f1o3h_design_legend]
         x: 4
         "y": 4
         w: 175
         h: 25
       - id: b
         letter: b
-        builder: f1o3n_panel_combz
-        description: As figure_01_option3_nature b (same builder, arguments, inputs and box)
-        args: {key_prefix: f1o3n_}
+        builder: f1o3h_panel_combz
+        description: As figure_01_option3_house b (same builder, arguments, inputs and box)
+        args: {key_prefix: f1o3h_}
         jitter_seed: null
         inputs: [ebb/A2b_combz_thresholds, fsb/F2_combz_components, fsb/F2b_combz_definition]
-        annotation_panels: [f1o3n_combz]
-        annotation_panels_legend: [f1o3n_combz_legend]
+        annotation_panels: [f1o3h_combz]
+        annotation_panels_legend: [f1o3h_combz_legend]
         x: 4
         "y": 32
         w: 175
@@ -670,11 +670,11 @@ candidates:
       - id: e
         letter: e
         builder: f1_panel_association
-        description: As figure_01_option3_nature e (same builder, arguments, inputs and box)
-        args: {key_prefix: f1o3n_, typography: candidate, style: nature, plot_top_mm: 3.4, axis_mm: 34.3}
+        description: As figure_01_option3_house e (same builder, arguments, inputs and box)
+        args: {key_prefix: f1o3h_, typography: candidate, style: house, plot_top_mm: 3.4, axis_mm: 34.3}
         jitter_seed: null
         inputs: [ebb/A2_prediction_animals, ebb/C2_estimates, ebb/E_multiplicity]
-        annotation_panels: [f1o3n_association]
+        annotation_panels: [f1o3h_association]
         x: 4
         "y": 126
         w: 58
@@ -682,12 +682,12 @@ candidates:
       - id: f
         letter: f
         builder: f1_panel_prediction
-        description: As figure_01_option3_nature f (same builder, arguments, inputs and box)
-        args: {key_prefix: f1o3n_, typography: candidate, style: nature, plot_top_mm: 3.4, axis_mm: 34.3}
+        description: As figure_01_option3_house f (same builder, arguments, inputs and box)
+        args: {key_prefix: f1o3h_, typography: candidate, style: house, plot_top_mm: 3.4, axis_mm: 34.3}
         jitter_seed: null
         inputs: [ebb/A2_prediction_animals, ebb/A3_permutation_draws, ebb/C2_estimates, ebb/E_multiplicity]
-        annotation_panels: [f1o3n_prediction]
-        annotation_panels_legend: [f1o3n_prediction_legend]
+        annotation_panels: [f1o3h_prediction]
+        annotation_panels_legend: [f1o3h_prediction_legend]
         x: 65
         "y": 126
         w: 114

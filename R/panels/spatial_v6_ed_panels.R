@@ -25,7 +25,7 @@
 # strongest phenotype-associated difference is.
 
 s6_ed7_qualified <- function() {
-  a <- nv_read_csv(repo_path("results", "tables", "11_spatial_systems", "atlas",
+  a <- hv_read_csv(repo_path("results", "tables", "11_spatial_systems", "atlas",
                              "protein_spatial_cell_affinity.csv"))
   h <- a[a$is_sus_res_fdr_supported %in% TRUE, , drop = FALSE]
   cls <- as.character(h$CA2_SLM_robustness_class)
@@ -46,7 +46,7 @@ s6_unit_positions <- function(dataset) {
 }
 
 s6_ed7_origin_destination <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nv_palette()$typography$family
+  fam <- hv_palette()$typography$family
   h <- s6_ed7_qualified()
   n_all <- nrow(h)
   n_drop <- sum(!h$qualified)
@@ -89,7 +89,7 @@ s6_ed7_origin_destination <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   p <- ggplot2::ggplot(z) +
     ggplot2::geom_segment(ggplot2::aes(x = 1, xend = 2, y = y0, yend = y1,
                                        colour = elsewhere),
-                          linewidth = nv_lw("reference_pt"), alpha = 0.8) +
+                          linewidth = hv_lw("reference_pt"), alpha = 0.8) +
     ggplot2::geom_point(ggplot2::aes(x = 1, y = y0), size = 0.85,
                         colour = "grey45") +
     ggplot2::geom_point(ggplot2::aes(x = 2, y = y1, colour = elsewhere),
@@ -98,10 +98,10 @@ s6_ed7_origin_destination <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                        yend = lab_y),
                           colour = "grey72", linewidth = 0.12) +
     ggplot2::geom_text(ggplot2::aes(x = 2.075, y = lab_y, label = GeneSymbol),
-                       hjust = 0, family = fam, size = nv_size(4.6),
+                       hjust = 0, family = fam, size = hv_size(4.6),
                        colour = "grey20") +
     ggplot2::geom_text(data = lab, ggplot2::aes(x = 0.93, y = ypos, label = lab),
-                       hjust = 1, family = fam, size = nv_size(4.6),
+                       hjust = 1, family = fam, size = hv_size(4.6),
                        colour = "grey35") +
     ggplot2::scale_colour_manual(
       values = c("TRUE" = "#C0442C", "FALSE" = "#9E9A92"), guide = "none") +
@@ -121,7 +121,7 @@ s6_ed7_origin_destination <- function(panel, svg_path, csv_path, w_mm, h_mm) {
         nrow(z), n_all,
         sum(z$qc_class == "robust_to_missingness_and_QC"),
         sum(z$qc_class == "not_in_CA2_SLM_never_at_risk"), n_drop)) +
-    nv_theme() +
+    hv_theme() +
     ggplot2::theme(
       axis.text.y = ggplot2::element_blank(),
       axis.ticks.y = ggplot2::element_blank(),
@@ -140,14 +140,14 @@ s6_ed7_origin_destination <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "where the protein is most abundant at baseline; nothing moves, these are ",
     "two separate spatial statements about the same protein")
   write_csv_safe(out, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
 # Alternative encoding (brief section 31): a compact marked matrix instead of an
 # origin-destination plot, built so the two can be compared directly.
 s6_ed7_location_matrix <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nv_palette()$typography$family
+  fam <- hv_palette()$typography$family
   h <- s6_ed7_qualified()
   z <- h[h$qualified, , drop = FALSE]
   z <- z[order(z$dataset, z$effect_unit, z$baseline_unit, z$GeneSymbol), ,
@@ -189,12 +189,12 @@ s6_ed7_location_matrix <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                       linewidth = 0.45, colour = "grey25") +
     ggplot2::annotate("text", x = blocks$compartment$mid, y = y_comp,
                       label = blocks$compartment$label, family = fam,
-                      size = nv_size(5.2), fontface = "bold", colour = "grey15") +
+                      size = hv_size(5.2), fontface = "bold", colour = "grey15") +
     ggplot2::annotate("text", x = blocks$region$mid, y = y_reg,
                       label = blocks$region$label, family = fam,
-                      size = nv_size(4.8), colour = "grey30") +
+                      size = hv_size(4.8), colour = "grey30") +
     ggplot2::labs(x = NULL, y = NULL) +
-    nv_theme_tile() +
+    hv_theme_tile() +
     ggplot2::theme(axis.text.x = ggplot2::element_text(size = 4.7),
                    axis.text.y = ggplot2::element_text(size = 4.7),
                    legend.position = "bottom",
@@ -207,7 +207,7 @@ s6_ed7_location_matrix <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                linewidth = 0.42, colour = "grey25")
   }
   write_csv_safe(m, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -220,8 +220,8 @@ s6_ed7_location_matrix <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # explicitly that this is similarity between spatial proteomic profiles and NOT
 # anatomical connectivity, so network edges are never read as projections.
 s6_ed8_similarity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nv_palette()$typography$family
-  e <- nv_read_csv(repo_path("results", "tables", "11_spatial_systems",
+  fam <- hv_palette()$typography$family
+  e <- hv_read_csv(repo_path("results", "tables", "11_spatial_systems",
                              "networks",
                              "CON_spatial_molecular_similarity_matrix.csv"))
   e$a <- sg_resolve_unit(e$node_a, e$dataset)
@@ -255,7 +255,7 @@ s6_ed8_similarity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                        ggplot2::aes(xf, yf)) +
     ggplot2::geom_tile(ggplot2::aes(fill = v), colour = "white",
                        linewidth = 0.12) +
-    nv_diverging(limits = lim, name = "median\nsimilarity") +
+    hv_diverging(limits = lim, name = "median\nsimilarity") +
     ggplot2::scale_x_discrete(labels = relab, drop = TRUE) +
     ggplot2::scale_y_discrete(labels = relab, drop = TRUE) +
     ggplot2::facet_wrap(~comp, nrow = 1, scales = "free") +
@@ -267,7 +267,7 @@ s6_ed8_similarity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
         "units' protein profiles,\nnot a projection. CON animals only ",
         "(n = 3); the stored median across CON animals. The diagonal is ",
         "self-similarity and is left empty.")) +
-    nv_theme_tile() +
+    hv_theme_tile() +
     ggplot2::theme(
       axis.text.x = ggplot2::element_text(size = 4.4, angle = 90, hjust = 1,
                                           vjust = 0.5, colour = "grey30"),
@@ -286,6 +286,6 @@ s6_ed8_similarity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "similarity between spatial proteomic PROFILES, not anatomical ",
     "connectivity; CON animals only")
   write_csv_safe(out, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }

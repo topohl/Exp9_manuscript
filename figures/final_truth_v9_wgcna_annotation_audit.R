@@ -22,7 +22,7 @@
 source(file.path("R", "paths.R"))
 source(repo_path("R", "null_coalescing.R"))
 source(repo_path("R", "integration_utils.R"))
-source(repo_path("R", "nature_v2_figure_utils.R"))
+source(repo_path("R", "house_v2_figure_utils.R"))
 Sys.setenv(PROTEOMICS_SCRIPT_ID = "figures/final_truth_v9_wgcna_annotation_audit.R")
 
 args <- commandArgs(trailingOnly = TRUE)
@@ -38,18 +38,18 @@ dir_create(OUT); dir_create(REP)
 FDR <- 0.05
 DATASETS <- c("neuron_neuropil", "neuron_soma", "microglia")
 
-aff <- nv_read_csv(repo_path("results", "tables", "11_spatial_systems", "atlas",
+aff <- hv_read_csv(repo_path("results", "tables", "11_spatial_systems", "atlas",
                              "WGCNA_module_spatial_cell_affinity.csv"))
-hubs <- nv_read_csv(repo_path("results", "reviewer_audit",
+hubs <- hv_read_csv(repo_path("results", "reviewer_audit",
                               "wgcna_label_adjudication",
                               "WGCNA_module_top25_hubs.csv"))
-nam <- nv_read_csv(file.path(OUT, "wgcna_module_naming_audit.csv"))
+nam <- hv_read_csv(file.path(OUT, "wgcna_module_naming_audit.csv"))
 
 read_ds <- function(ds, file) {
   p <- repo_path("results", "tables", "06_modules_WGCNA", "01_WGCNA", ds,
                  "modules", file)
   if (!file.exists(p)) return(NULL)
-  x <- nv_read_csv(p); x$dataset <- ds; x
+  x <- hv_read_csv(p); x$dataset <- ds; x
 }
 go <- do.call(rbind, lapply(DATASETS, read_ds,
                             file = "WGCNA_module_GO_enrichment_long.csv"))

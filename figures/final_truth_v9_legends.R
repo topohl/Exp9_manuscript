@@ -16,7 +16,7 @@
 source(file.path("R", "paths.R"))
 source(repo_path("R", "null_coalescing.R"))
 source(repo_path("R", "integration_utils.R"))
-source(repo_path("R", "nature_v2_figure_utils.R"))
+source(repo_path("R", "house_v2_figure_utils.R"))
 source(repo_path("R", "final_truth_v9_figure_utils.R"))
 Sys.setenv(PROTEOMICS_SCRIPT_ID = "figures/final_truth_v9_legends.R")
 
@@ -34,7 +34,7 @@ dir_create(REP); dir_create(TAB)
 
 sidecar <- function(fig, id) {
   p <- file.path(SD, fig, paste0(id, "_source_data.csv"))
-  if (file.exists(p)) nv_read_csv(p) else NULL
+  if (file.exists(p)) hv_read_csv(p) else NULL
 }
 
 # ------------------------------------------------- eps-floor disclosure (PB-03)
@@ -54,7 +54,7 @@ sidecar <- function(fig, id) {
 GSEA_EPS <- 1e-10
 
 f9_eps_floor_disclosure <- function(eps = GSEA_EPS) {
-  th <- nv_read_csv(repo_path(
+  th <- hv_read_csv(repo_path(
     "source_data", "pRoteomics", "supplementary_selection_inventories",
     "pathway_enrichment_inventory.csv"))
   seven <- c("rna_processing_splicing_rnp", "ribosome_translation",
@@ -119,19 +119,19 @@ MICROGLIA <- paste0(
   "cannot establish a cell-intrinsic microglial property.")
 STRIPKEY <- paste0(
   "The three-cell strip prints its NES; its colour uses the same fixed NES ",
-  "scale as the atlas colourbar (limit ", format(nv_diverging_limit("nes")),
+  "scale as the atlas colourbar (limit ", format(hv_diverging_limit("nes")),
   "), and a value beyond the limit takes full colour.")
 # Where a heatmap's colour saturates: the manuscript's fixed limit of its measure
 # (config/manuscript_palette.yml diverging_limits, palette v3.2), read from the
 # palette so a legend cannot drift from its panel.
 SATURATES <- function(measure, what) paste0(
-  "Colour saturates at ", what, " ", format(nv_diverging_limit(measure)),
+  "Colour saturates at ", what, " ", format(hv_diverging_limit(measure)),
   " in either direction; values beyond take full colour, and the source data ",
   "keep every value.")
 # The Figure 3 cards print every NES; their colour follows the same fixed scale.
 CARDKEY <- paste0(
   "Tile colour uses the manuscript's fixed NES scale and saturates at ",
-  format(nv_diverging_limit("nes")), " in either direction; every tile prints ",
+  format(hv_diverging_limit("nes")), " in either direction; every tile prints ",
   "its NES.")
 # Extended Data 6 is drawn from upstream inputs this repository records as
 # provenance only, so its panels can predate palette v3.2. Its legends state the
@@ -143,14 +143,14 @@ drawn_nes_limit <- function(id, col) {
 }
 DRAWN_ATLAS <- function(id) {
   lim <- drawn_nes_limit(id, "shared_NES_scale_limit")
-  if (!is.finite(lim) || isTRUE(all.equal(lim, nv_diverging_limit("nes"))))
+  if (!is.finite(lim) || isTRUE(all.equal(lim, hv_diverging_limit("nes"))))
     return(SATURATES("nes", "a median NES of"))
   sprintf(paste0("Colour uses one symmetric NES scale to %.2f in either ",
                  "direction, shared by the three contrast atlases."), lim)
 }
 DRAWN_STRIP <- function(id) {
   lim <- drawn_nes_limit(id, "shared_NES_strip_limit")
-  if (!is.finite(lim) || isTRUE(all.equal(lim, nv_diverging_limit("nes"))))
+  if (!is.finite(lim) || isTRUE(all.equal(lim, hv_diverging_limit("nes"))))
     return(STRIPKEY)
   sprintf(paste0("The three-cell strip prints its NES; its colour uses one ",
                  "symmetric NES scale to %.2f, shared by the three strips."), lim)
@@ -492,12 +492,12 @@ ED_DEFAULT_LEGEND <- list(
     "neuropil units and -0.33 for the four soma and four microglia units. ",
     "Neither region-level block contains a positive value. The colour limit ",
     "is the manuscript's fixed correlation limit of ",
-    format(nv_diverging_limit("correlation")), ", ",
+    format(hv_diverging_limit("correlation")), ", ",
     local({
       d <- sidecar("extended_data", "v9_ed_similarity")
       v <- if (is.null(d)) NA_real_ else suppressWarnings(as.numeric(d$median_similarity))
       if (length(v) && all(is.finite(v)) &&
-          max(abs(v)) <= nv_diverging_limit("correlation"))
+          max(abs(v)) <= hv_diverging_limit("correlation"))
         "inside which every value of the panel lies" else
         "and a value beyond it takes full colour"
     }), "; the omitted diagonal is grey. ", DESCRIPTIVE),

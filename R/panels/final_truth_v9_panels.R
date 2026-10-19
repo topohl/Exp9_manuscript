@@ -11,8 +11,8 @@
 # that work. The key is reduced to three two-line entries and the drawing is
 # given the larger share of the panel.
 f9_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  dcol <- nv_dataset_colours()
+  fam <- hf_fam()
+  dcol <- hv_dataset_colours()
   np <- unname(dcol[["neuron_neuropil"]])
   so_col <- unname(dcol[["neuron_soma"]])
   mg_col <- unname(dcol[["microglia"]])
@@ -89,14 +89,14 @@ f9_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                           colour = "grey62", linewidth = 0.2) +
     ggplot2::geom_text(data = lyr,
                        ggplot2::aes(x = xe - 0.05, y = ye, label = l),
-                       colour = lyr$col, family = fam, size = nf_sz(5.0),
+                       colour = lyr$col, family = fam, size = hf_sz(5.0),
                        hjust = 1) +
     ggplot2::geom_text(data = rlab, ggplot2::aes(x, y, label = l), family = fam,
-                       size = nf_sz(5.8), fontface = "bold", colour = "grey12") +
+                       size = hf_sz(5.8), fontface = "bold", colour = "grey12") +
     ggplot2::annotate("text", x = 0.44, y = -0.98, label = "DG", family = fam,
-                      size = nf_sz(5.8), fontface = "bold", colour = "grey12") +
+                      size = hf_sz(5.8), fontface = "bold", colour = "grey12") +
     ggplot2::annotate("text", x = 0, y = 1.92, label = "both hemispheres",
-                      family = fam, size = nf_sz(5.0), colour = "grey35") +
+                      family = fam, size = hf_sz(5.0), colour = "grey35") +
     ggplot2::coord_equal(xlim = c(-2.25, 1.95), ylim = c(-1.30, 2.05),
                          expand = FALSE) +
     ggplot2::theme_void(base_family = fam)
@@ -117,10 +117,10 @@ f9_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                         ggplot2::aes(x = 0.042, y = row), shape = 18,
                         size = 1.4, colour = mg_col) +
     ggplot2::geom_text(ggplot2::aes(0.12, row + 0.16, label = name), hjust = 0,
-                       family = fam, size = nf_sz(5.2), fontface = "bold",
+                       family = fam, size = hf_sz(5.2), fontface = "bold",
                        colour = "grey12") +
     ggplot2::geom_text(ggplot2::aes(0.12, row - 0.20, label = res), hjust = 0,
-                       family = fam, size = nf_sz(5.0), colour = "grey40") +
+                       family = fam, size = hf_sz(5.0), colour = "grey40") +
     ggplot2::scale_colour_manual(
       values = c(neuropil = np, soma = so_col, microglia = mg_col),
       guide = "none") +
@@ -137,7 +137,7 @@ f9_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "Sampling and replicate counts are stated in the figure legend, not on the ",
     "artwork.")
   write_csv_safe(out, csv_path)
-  nv_save_panel(pl, svg_path, w_mm, h_mm)
+  hv_save_panel(pl, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -158,8 +158,8 @@ f9_short_contrast <- function(x) {
 }
 
 f9_external_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  k <- nv_read_csv(repo_path(panel$primary_source))
+  fam <- hf_fam()
+  k <- hv_read_csv(repo_path(panel$primary_source))
   k <- k[k$expected_match %in% TRUE, , drop = FALSE]
   k$level <- ifelse(grepl("strata", k$validation_domain),
                     "CA1 laminar identity", "Regional identity")
@@ -171,11 +171,11 @@ f9_external_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   k$ypos <- seq_len(nrow(k))
 
   p <- ggplot2::ggplot(k, ggplot2::aes(NES, ypos)) +
-    ggplot2::geom_vline(xintercept = 0, linewidth = nv_lw("reference_pt"),
+    ggplot2::geom_vline(xintercept = 0, linewidth = hv_lw("reference_pt"),
                         colour = "grey65") +
     ggplot2::geom_segment(ggplot2::aes(x = 0, xend = NES, yend = ypos,
                                        colour = level),
-                          linewidth = nv_lw("reference_pt")) +
+                          linewidth = hv_lw("reference_pt")) +
     ggplot2::geom_point(ggplot2::aes(colour = level, shape = sig), size = 1.1,
                         fill = "white", stroke = 0.4) +
     ggplot2::scale_shape_manual(values = c("TRUE" = 16, "FALSE" = 21),
@@ -185,10 +185,10 @@ f9_external_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                  "CA1 laminar identity" = "#C2A878"), name = NULL) +
     ggplot2::scale_y_continuous(breaks = k$ypos, labels = k$lab,
                                 expand = ggplot2::expansion(add = 0.8)) +
-    ggplot2::scale_x_continuous(labels = nv_minus_labels) +
+    ggplot2::scale_x_continuous(labels = hv_minus_labels) +
     ggplot2::labs(x = "NES vs external hippocampal signature", y = NULL) +
-    nf_theme(grid = "x") +
-    ggplot2::theme(axis.text.y = ggplot2::element_text(size = NF_MIN_PT),
+    hf_theme(grid = "x") +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(size = HF_MIN_PT),
                    legend.position = "none")
   nreg <- sum(k$level == "Regional identity")
   if (nreg > 0 && nreg < nrow(k)) {
@@ -202,13 +202,13 @@ f9_external_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "artwork")
   write_csv_safe(k[, c("internal_contrast", "external_signature", "level",
                        "NES", "p_adjust", "legend_text_moved")], csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
 f9_internal_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  g <- nv_read_csv(repo_path(panel$primary_source))
+  fam <- hf_fam()
+  g <- hv_read_csv(repo_path(panel$primary_source))
   g$level <- ifelse(grepl("CA1_strata", g$contrast),
                     "CA1 laminar identity", "Regional identity")
   g$level <- factor(g$level, levels = c("Regional identity", "CA1 laminar identity"))
@@ -220,11 +220,11 @@ f9_internal_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   g$sig <- is.finite(g$p_adjust) & g$p_adjust < 0.05
 
   p <- ggplot2::ggplot(g, ggplot2::aes(NES, ypos)) +
-    ggplot2::geom_vline(xintercept = 0, linewidth = nv_lw("reference_pt"),
+    ggplot2::geom_vline(xintercept = 0, linewidth = hv_lw("reference_pt"),
                         colour = "grey65") +
     ggplot2::geom_segment(ggplot2::aes(x = 0, xend = NES, yend = ypos,
                                        colour = level),
-                          linewidth = nv_lw("reference_pt")) +
+                          linewidth = hv_lw("reference_pt")) +
     ggplot2::geom_point(ggplot2::aes(colour = level, shape = sig), size = 1.2,
                         fill = "white", stroke = 0.4) +
     ggplot2::scale_shape_manual(values = c("TRUE" = 16, "FALSE" = 21),
@@ -235,8 +235,8 @@ f9_internal_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::scale_y_continuous(breaks = g$ypos, labels = g$lab,
                                 expand = ggplot2::expansion(add = 0.8)) +
     ggplot2::labs(x = "NES, internal anatomical GO program", y = NULL) +
-    nf_theme(grid = "x") +
-    ggplot2::theme(axis.text.y = ggplot2::element_text(size = NF_MIN_PT),
+    hf_theme(grid = "x") +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(size = HF_MIN_PT),
                    legend.position = "none")
   nreg <- sum(g$level == "Regional identity")
   if (nreg > 0 && nreg < nrow(g)) {
@@ -251,7 +251,7 @@ f9_internal_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "for the same visual channel and the sizes are in the source data.")
   write_csv_safe(g[, c("contrast", "Description", "level", "NES", "p_adjust",
                        "setSize", "legend_text_moved")], csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -263,8 +263,8 @@ f9_internal_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # FDR-supported and robustness-qualified, and carries the two totals inline so
 # the reader gets 37 / 15 without counting cells.
 f9_dap_track <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  z <- nf_dap_counts()
+  fam <- hf_fam()
+  z <- hf_dap_counts()
   b <- sg_blocks(z$unit, z$dataset)
   o <- b$order
   z$xpos <- match(paste(z$dataset, z$unit), paste(o$dataset, o$unit))
@@ -288,20 +288,20 @@ f9_dap_track <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_tile(fill = "grey97", colour = "white", linewidth = 0.35,
                        width = 1, height = 1) +
     ggplot2::geom_text(ggplot2::aes(label = txt), colour = long$col,
-                       family = fam, size = nf_sz(5.4),
+                       family = fam, size = hf_sz(5.4),
                        fontface = ifelse(long$n > 0, "bold", "plain")) +
     ggplot2::geom_text(data = lab,
-                       ggplot2::aes(x = 0.5 - NF_LAB + 0.2, y = y, label = l),
+                       ggplot2::aes(x = 0.5 - HF_LAB + 0.2, y = y, label = l),
                        inherit.aes = FALSE, hjust = 0, family = fam,
-                       size = nf_sz(5.0), colour = "grey15") +
-    ggplot2::scale_x_continuous(limits = c(0.5 - NF_LAB, n + 0.5),
+                       size = hf_sz(5.0), colour = "grey15") +
+    ggplot2::scale_x_continuous(limits = c(0.5 - HF_LAB, n + 0.5),
                                 expand = c(0, 0)) +
     ggplot2::scale_y_continuous(breaks = c(2, 1), labels = NULL,
                                 limits = c(0.4, 2.6), expand = c(0, 0)) +
     ggplot2::labs(x = NULL, y = NULL) +
-    nf_theme_tile() +
+    hf_theme_tile() +
     ggplot2::theme(axis.text = ggplot2::element_blank(),
-                   plot.margin = ggplot2::margin(1, NF_RGT, 0, 1, "mm"))
+                   plot.margin = ggplot2::margin(1, HF_RGT, 0, 1, "mm"))
   cend <- utils::head(b$compartment$end, -1)
   if (length(cend)) {
     p <- p + ggplot2::annotate("segment", x = cend + 0.5, xend = cend + 0.5,
@@ -317,7 +317,7 @@ f9_dap_track <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     n_zero, tot_c, tot_q, z$canonical[z$unit == "CA2_slm"],
     z$claimable[z$unit == "CA2_slm"])
   write_csv_safe(out, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -369,7 +369,7 @@ f9_prot_values <- function(program_key, top_n = 7L) {
                    prog$dataset[1], "forward", "per_file",
                    sprintf("%s%s_%s%s.csv", tok, cb[1], tok, cb[2]))
     if (!file.exists(f)) next
-    da <- nv_read_csv(f)
+    da <- hv_read_csv(f)
     sym <- intersect(c("official_gene_symbol", "gene_symbol"), names(da))[1]
     m <- match(keep, da[[sym]])
     rows[[length(rows) + 1L]] <- data.frame(
@@ -390,7 +390,7 @@ f9_protein_zoom_plot <- function(z, lim, show_legend = FALSE,
                                  fdr_min = min(z$BH_FDR, na.rm = TRUE),
                                  mark_significant = FALSE,
                                  legend_position = "inside") {
-  fam <- nf_fam()
+  fam <- hf_fam()
   z$contrast <- factor(z$contrast,
                        levels = contrast_raw, labels = contrast_display)
   ordg <- unique(z$gene[order(-abs(z$rank_statistic))])
@@ -412,13 +412,13 @@ f9_protein_zoom_plot <- function(z, lim, show_legend = FALSE,
   # Contrast colours follow the group palette (v3): RES - CON a darker RES grey
   # (the light RES itself is too faint for small points), SUS - CON the SUS red,
   # SUS - RES neutral ink. The old red-orange RES - CON read as SUS.
-  gc <- nv_group_colours()
-  COL <- stats::setNames(c(nv_darken(gc[["RES"]]), gc[["SUS"]], "grey20"),
+  gc <- hv_group_colours()
+  COL <- stats::setNames(c(hv_darken(gc[["RES"]]), gc[["SUS"]], "grey20"),
                          contrast_display)
   SHP <- stats::setNames(c(16, 17, 15), contrast_display)
 
   p <- ggplot2::ggplot(z, ggplot2::aes(log2FC, gene)) +
-    ggplot2::geom_vline(xintercept = 0, linewidth = nv_lw("reference_pt"),
+    ggplot2::geom_vline(xintercept = 0, linewidth = hv_lw("reference_pt"),
                         colour = "grey70") +
     ggplot2::geom_line(ggplot2::aes(group = gene), colour = "grey86",
                        linewidth = 0.26) +
@@ -434,20 +434,20 @@ f9_protein_zoom_plot <- function(z, lim, show_legend = FALSE,
     ggplot2::scale_shape_manual(values = SHP, name = "Contrast",
                                 guide = ggplot2::guide_legend(order = 1)) +
     ggplot2::scale_x_continuous(limits = c(-lim, lim), breaks = axis_breaks,
-                                labels = nv_minus_labels) +
+                                labels = hv_minus_labels) +
     ggplot2::labs(x = "log2 fold change", y = NULL) +
-    nf_theme(grid = "y") +
+    hf_theme(grid = "y") +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(size = NF_MIN_PT),
-      axis.title.x = ggplot2::element_text(size = nf_pt(5.4)),
-      axis.text.y = ggplot2::element_text(size = NF_MIN_PT, face = "italic"),
+      axis.text.x = ggplot2::element_text(size = HF_MIN_PT),
+      axis.title.x = ggplot2::element_text(size = hf_pt(5.4)),
+      axis.text.y = ggplot2::element_text(size = HF_MIN_PT, face = "italic"),
       legend.position = if (show_legend) legend_position else "none",
       legend.position.inside = if (identical(legend_position, "inside"))
         c(0.80, 0.74) else NULL,
       legend.background = ggplot2::element_rect(fill = "white", colour = NA),
       legend.margin = ggplot2::margin(0.5, 0.5, 0.5, 0.5, "mm"),
-      legend.title = ggplot2::element_text(size = nf_pt(5.4)),
-      legend.text = ggplot2::element_text(size = NF_MIN_PT),
+      legend.title = ggplot2::element_text(size = hf_pt(5.4)),
+      legend.text = ggplot2::element_text(size = HF_MIN_PT),
       legend.key.size = ggplot2::unit(2.6, "mm"),
       plot.margin = ggplot2::margin(1, 1, 1, 1, "mm"))
   z$shared_scale_note <- sprintf(paste0(
@@ -471,7 +471,7 @@ f9_protein_zoom <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     z, f9_prot_limit(),
     show_legend = isTRUE(as.logical(panel$show_legend %||% FALSE)))
   write_csv_safe(result$source_data, csv_path)
-  nv_save_panel(result$plot, svg_path, w_mm, h_mm)
+  hv_save_panel(result$plot, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -484,7 +484,7 @@ f9_gsea_curve_plot <- function(prog, ev, tr, lim, idx,
                                  "the protein panel directly below shows the ",
                                  "leading-edge proteins of the same program and ",
                                  "repeats no context")) {
-  fam <- nf_fam()
+  fam <- hf_fam()
   acc <- prog$accent[1]
   N <- ev$N
   curve <- data.frame(rank = seq_len(N), es = as.numeric(ev$runes))
@@ -492,26 +492,26 @@ f9_gsea_curve_plot <- function(prog, ev, tr, lim, idx,
   ticks <- data.frame(rank = which(ev$hits))
 
   top <- ggplot2::ggplot(curve, ggplot2::aes(rank, es)) +
-    ggplot2::geom_hline(yintercept = 0, linewidth = nv_lw("reference_pt"),
+    ggplot2::geom_hline(yintercept = 0, linewidth = hv_lw("reference_pt"),
                         colour = "grey78") +
     ggplot2::geom_line(colour = acc, linewidth = 0.45) +
     ggplot2::annotate("segment", x = ev$peak, xend = ev$peak, y = 0,
-                      yend = ev$ES, linewidth = nv_lw("reference_pt"),
+                      yend = ev$ES, linewidth = hv_lw("reference_pt"),
                       colour = "grey55", linetype = "22") +
     ggplot2::scale_x_continuous(expand = x_expand, limits = c(1, N),
                                 breaks = c(1, N), labels = c("SUS", "RES")) +
-    ggplot2::scale_y_continuous(labels = nv_minus_labels) +
+    ggplot2::scale_y_continuous(labels = hv_minus_labels) +
     ggplot2::labs(x = NULL, y = "ES") +
-    nf_theme() +
+    hf_theme() +
     ggplot2::theme(plot.margin = ggplot2::margin(0.5, 1, 0, 1, "mm"),
-                   axis.title.y = ggplot2::element_text(size = NF_MIN_PT))
+                   axis.title.y = ggplot2::element_text(size = HF_MIN_PT))
   mid <- ggplot2::ggplot(ticks, ggplot2::aes(rank)) +
     ggplot2::geom_segment(ggplot2::aes(x = rank, xend = rank, y = 0, yend = 1),
                           colour = acc, linewidth = 0.12) +
     ggplot2::scale_x_continuous(expand = x_expand, limits = c(1, N)) +
     ggplot2::scale_y_continuous(expand = c(0, 0)) +
     ggplot2::labs(x = NULL, y = NULL) +
-    nf_theme() +
+    hf_theme() +
     ggplot2::theme(axis.text = ggplot2::element_blank(),
                    axis.line = ggplot2::element_blank(),
                    axis.ticks = ggplot2::element_blank(),
@@ -529,22 +529,22 @@ f9_gsea_curve_plot <- function(prog, ev, tr, lim, idx,
   # manuscript's fixed NES limit. A value beyond it takes full colour, and the
   # tile prints its NES. `lim` is recorded in the source data and must be that
   # limit, because a strip has no colourbar to disclose any other
-  if (!isTRUE(all.equal(as.numeric(lim), nv_diverging_limit("nes"))))
+  if (!isTRUE(all.equal(as.numeric(lim), hv_diverging_limit("nes"))))
     stop("f9_gsea_curve_plot: lim must be the manuscript's fixed NES limit (",
-         nv_diverging_limit("nes"), "), got ", lim, call. = FALSE)
+         hv_diverging_limit("nes"), "), got ", lim, call. = FALSE)
   bot <- ggplot2::ggplot(tr, ggplot2::aes(short, 1, fill = NES)) +
-    ggplot2::geom_tile(colour = nv_tile_border(), linewidth = nv_lw("tile_border_pt")) +
+    ggplot2::geom_tile(colour = hv_tile_border(), linewidth = hv_lw("tile_border_pt")) +
     ggplot2::geom_text(ggplot2::aes(label = sprintf("%.1f", NES)), family = fam,
-                       size = nf_sz(5.0)) +
+                       size = hf_sz(5.0)) +
     ggplot2::geom_point(data = tr[tr$sig, , drop = FALSE],
                         ggplot2::aes(short, 1.44), size = 0.4, colour = "black",
                         inherit.aes = FALSE) +
-    nv_diverging(measure = "nes", name = NULL, guide = "none") +
+    hv_diverging(measure = "nes", name = NULL, guide = "none") +
     ggplot2::scale_y_continuous(limits = c(0.5, 1.62), expand = c(0, 0)) +
     ggplot2::labs(x = NULL, y = NULL) +
-    nf_theme_tile() +
+    hf_theme_tile() +
     ggplot2::theme(axis.text.y = ggplot2::element_blank(),
-                   axis.text.x = ggplot2::element_text(size = NF_MIN_PT),
+                   axis.text.x = ggplot2::element_text(size = HF_MIN_PT),
                    plot.margin = ggplot2::margin(0, 1, 0.5, 1, "mm"))
 
   # the COLUMN HEADER: this identifies the whole d/g, e/h or f/i column, so the
@@ -556,14 +556,14 @@ f9_gsea_curve_plot <- function(prog, ev, tr, lim, idx,
     ggplot2::annotate("segment", x = 0, xend = 1, y = 1.05, yend = 1.05,
                       colour = acc, linewidth = 0.5) +
     ggplot2::annotate("text", x = 0.012, y = 0.955, hjust = 0, vjust = 1,
-                      family = fam, size = nf_sz(5.4), fontface = "bold",
+                      family = fam, size = hf_sz(5.4), fontface = "bold",
                       colour = "grey10",
                       label = paste0(idx, "  ", comp, "  ", unit)) +
     ggplot2::annotate("text", x = 0.012, y = 0.63, hjust = 0, vjust = 1,
-                      family = fam, size = nf_sz(5.2), colour = acc,
+                      family = fam, size = hf_sz(5.2), colour = acc,
                       fontface = "bold", label = prog$label[1]) +
     ggplot2::annotate("text", x = 0.012, y = 0.28, hjust = 0, vjust = 1,
-                      family = fam, size = nf_sz(5.0), colour = "grey35",
+                      family = fam, size = hf_sz(5.0), colour = "grey35",
                       label = sprintf("NES %.2f   FDR %.0e", ev$NES, ev$FDR)) +
     ggplot2::coord_cartesian(xlim = c(0, 1), ylim = c(-0.08, 1.02),
                              expand = FALSE) +
@@ -588,13 +588,13 @@ f9_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   prog <- pr[pr$key == as.character(panel$program_key), , drop = FALSE]
   if (!nrow(prog)) stop("f9_gsea_curve: unknown program key", call. = FALSE)
   ev <- s4_gsea_scores(prog)
-  th <- nv_read_csv(repo_path(as.character(unlist(panel$input_dependencies))[1]))
+  th <- hv_read_csv(repo_path(as.character(unlist(panel$input_dependencies))[1]))
   tr <- th[th$dataset == prog$dataset[1] & th$spatial_unit == prog$unit[1] &
              th$GO_ID == prog$term[1], , drop = FALSE]
   result <- f9_gsea_curve_plot(prog, ev, tr, f9_nes_strip_limit(th),
                                panel$column_index %||% "")
   write_csv_safe(result$source_data, csv_path)
-  nv_save_panel(result$plot, svg_path, w_mm, h_mm)
+  hv_save_panel(result$plot, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -609,9 +609,9 @@ f9_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # says "these three programs occur HERE" rather than reading as one anatomy icon
 # beside three unrelated mini-plots.
 f9_anatomy_bridge <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  dcol <- nv_dataset_colours()
-  rows <- nf_bridge_rows()
+  fam <- hf_fam()
+  dcol <- hv_dataset_colours()
+  rows <- hf_bridge_rows()
   ex <- s6_exemplars()
   ex$accent <- unname(dcol[ex$dataset])
   ex$comp <- sg_compartment_label(ex$dataset)
@@ -702,9 +702,9 @@ f9_anatomy_bridge <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                         shape = 21, fill = "white", colour = num$col,
                         stroke = 0.55) +
     ggplot2::geom_text(data = num, ggplot2::aes(x, y, label = l), family = fam,
-                       size = nf_sz(5.2), fontface = "bold", colour = num$col) +
+                       size = hf_sz(5.2), fontface = "bold", colour = num$col) +
     ggplot2::geom_text(data = rl, ggplot2::aes(x, y, label = l), family = fam,
-                       size = nf_sz(5.0), colour = "grey50") +
+                       size = hf_sz(5.0), colour = "grey50") +
     ggplot2::coord_equal(xlim = c(-2.05, 2.05), ylim = c(-1.95, 2.00),
                          expand = FALSE) +
     ggplot2::theme_void(base_family = fam)
@@ -718,27 +718,27 @@ f9_anatomy_bridge <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       ggplot2::annotate("point", x = 0.022, y = 0.90, size = 2.9, shape = 21,
                         fill = "white", colour = ex$accent[i], stroke = 0.55) +
       ggplot2::annotate("text", x = 0.022, y = 0.90, label = as.character(i),
-                        family = fam, size = nf_sz(5.2), fontface = "bold",
+                        family = fam, size = hf_sz(5.2), fontface = "bold",
                         colour = ex$accent[i]) +
       ggplot2::annotate("text", x = 0.075, y = 1.0, hjust = 0, vjust = 1,
-                        family = fam, size = nf_sz(5.2), fontface = "bold",
+                        family = fam, size = hf_sz(5.2), fontface = "bold",
                         colour = "grey10",
                         label = paste0(ex$comp[i], "  ", ex$unit_label[i])) +
       ggplot2::annotate("text", x = 0.075, y = 0.60, hjust = 0, vjust = 1,
-                        family = fam, size = nf_sz(5.0), colour = ex$accent[i],
+                        family = fam, size = hf_sz(5.0), colour = ex$accent[i],
                         label = ex$program[i]) +
       ggplot2::annotate("text", x = 0.075, y = 0.22, hjust = 0, vjust = 1,
-                        family = fam, size = nf_sz(5.0), colour = "grey40",
+                        family = fam, size = hf_sz(5.0), colour = "grey40",
                         label = ex$shape[i]) +
       ggplot2::coord_cartesian(xlim = c(0, 1), ylim = c(-0.18, 1.06),
                                expand = FALSE) +
       ggplot2::theme_void(base_family = fam)
     strip <- ggplot2::ggplot(z, ggplot2::aes(NES, contrast)) +
-      ggplot2::geom_vline(xintercept = 0, linewidth = nv_lw("reference_pt"),
+      ggplot2::geom_vline(xintercept = 0, linewidth = hv_lw("reference_pt"),
                           colour = "grey65") +
       ggplot2::geom_segment(ggplot2::aes(x = 0, xend = NES, yend = contrast),
                             colour = ex$accent[i],
-                            linewidth = nv_lw("reference_pt")) +
+                            linewidth = hv_lw("reference_pt")) +
       ggplot2::geom_point(ggplot2::aes(shape = supported), size = 1.2,
                           fill = "white", colour = ex$accent[i], stroke = 0.4) +
       ggplot2::scale_shape_manual(values = c("TRUE" = 16, "FALSE" = 21),
@@ -746,8 +746,8 @@ f9_anatomy_bridge <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       ggplot2::scale_x_continuous(limits = c(-lim, lim), breaks = c(-2, 0, 2)) +
       ggplot2::scale_y_discrete(limits = rev(levels(z$contrast))) +
       ggplot2::labs(x = NULL, y = NULL) +
-      nf_theme(grid = "x") +
-      ggplot2::theme(axis.text = ggplot2::element_text(size = NF_MIN_PT),
+      hf_theme(grid = "x") +
+      ggplot2::theme(axis.text = ggplot2::element_text(size = HF_MIN_PT),
                      plot.margin = ggplot2::margin(0, 1, 0, 1, "mm"))
     patchwork::wrap_plots(hdr, strip, ncol = 1, heights = c(0.44, 0.56))
   }
@@ -759,7 +759,7 @@ f9_anatomy_bridge <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "the numerals 1-3 identify the same three programs again as the column ",
     "headers of d-i; filled point = FDR < 0.05, open = not FDR-supported")
   write_csv_safe(out, csv_path)
-  nv_save_panel(pl, svg_path, w_mm, h_mm)
+  hv_save_panel(pl, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -791,7 +791,7 @@ f9_anatomy_bridge <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 
 # the limit shared by the three atlases: the manuscript's fixed NES limit. `th`
 # is unused and kept for the callers.
-f9_atlas_limit <- function(th = NULL) nv_diverging_limit("nes")
+f9_atlas_limit <- function(th = NULL) hv_diverging_limit("nes")
 
 # the cell aggregation, identical to the frozen v7 rule
 f9_atlas_cells <- function(th, contrast) {
@@ -836,8 +836,8 @@ f9_atlas_themes <- function() {
 }
 
 f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  th <- nv_read_csv(repo_path(panel$primary_source))
+  fam <- hf_fam()
+  th <- hv_read_csv(repo_path(panel$primary_source))
   contrast <- as.character(panel$contrast %||% "SUS - RES")
   cells <- f9_atlas_cells(th, contrast)
   cells$sg_unit <- sg_resolve_unit(cells$spatial_unit, cells$dataset)
@@ -852,20 +852,20 @@ f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   cells$ypos <- match(cells$theme_id, rev(ord))
   n <- nrow(o); ny <- length(ord)
   y_comp <- ny + 2.3; y_reg <- ny + 1.05
-  lab_w <- as.numeric(panel$label_units %||% NF_LAB)
+  lab_w <- as.numeric(panel$label_units %||% HF_LAB)
   shared <- f9_atlas_limit(th)
 
   p <- ggplot2::ggplot(cells, ggplot2::aes(xpos, ypos)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = median_NES), colour = nv_tile_border(),
+    ggplot2::geom_tile(ggplot2::aes(fill = median_NES), colour = hv_tile_border(),
                        linewidth = 0.1) +
     ggplot2::geom_point(data = cells[cells$n_fdr > 0, , drop = FALSE],
                         ggplot2::aes(xpos, ypos), size = 0.45,
                         colour = "grey10") +
-    nv_diverging(measure = "nes", name = "Median normalised\nenrichment score") +
+    hv_diverging(measure = "nes", name = "Median normalised\nenrichment score") +
     ggplot2::geom_text(
       data = data.frame(y = seq_len(ny), l = unname(SHORT[rev(ord)])),
       ggplot2::aes(x = 0.5 - lab_w + 0.2, y = y, label = l),
-      inherit.aes = FALSE, hjust = 0, family = fam, size = nf_sz(5.0),
+      inherit.aes = FALSE, hjust = 0, family = fam, size = hf_sz(5.0),
       colour = "grey20") +
     ggplot2::scale_x_continuous(breaks = seq_len(n), labels = sg_axis_labels(b),
                                 limits = c(0.5 - lab_w, n + 0.5),
@@ -879,9 +879,9 @@ f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                       linewidth = 0.45, colour = "grey25") +
     ggplot2::annotate("text", x = b$compartment$mid, y = y_comp,
                       label = b$compartment$label, family = fam,
-                      size = nf_sz(5.4), fontface = "bold", colour = "grey12") +
+                      size = hf_sz(5.4), fontface = "bold", colour = "grey12") +
     ggplot2::annotate("text", x = b$region$mid, y = y_reg,
-                      label = b$region$label, family = fam, size = nf_sz(5.0),
+                      label = b$region$label, family = fam, size = hf_sz(5.0),
                       colour = "grey30") +
     ggplot2::labs(x = NULL, y = NULL,
                   caption = paste0(
@@ -894,9 +894,9 @@ f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                     sprintf("\u00b1%g", shared), "; values beyond it take full ",
                     "colour), shared by all three contrast atlases, so they can ",
                     "be compared directly.")) +
-    nf_theme_tile() +
+    hf_theme_tile() +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(size = NF_MIN_PT, colour = "grey25"),
+      axis.text.x = ggplot2::element_text(size = HF_MIN_PT, colour = "grey25"),
       axis.text.y = ggplot2::element_blank(),
       legend.position = "right",
       legend.key.width = ggplot2::unit(1.6, "mm"),
@@ -904,9 +904,9 @@ f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 
   # PB-01. A panel that carries the column labels for a track drawn above it is
   # contracted to behave as ONE block with that track: the same left gutter,
-  # reserved in DATA units as NF_LAB, and the same right gutter, reserved in mm
-  # as NF_RGT. The left half of that contract was honoured here and the right
-  # half was not. A right-hand ggplot legend takes layout width that NF_RGT
+  # reserved in DATA units as HF_LAB, and the same right gutter, reserved in mm
+  # as HF_RGT. The left half of that contract was honoured here and the right
+  # half was not. A right-hand ggplot legend takes layout width that HF_RGT
   # knows nothing about, so this panel's plot region was 10.5 mm narrower than
   # the track's, the two column pitches differed by 1.18 pt, and the track's
   # counts came to sit almost a full column to the right of the labels meant to
@@ -925,14 +925,14 @@ f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       ggplot2::theme(
         legend.position = "bottom",
         legend.justification = "left",
-        legend.title = ggplot2::element_text(size = NF_MIN_PT, colour = "grey30",
+        legend.title = ggplot2::element_text(size = HF_MIN_PT, colour = "grey30",
                                              vjust = 1),
         legend.key.width = ggplot2::unit(10, "mm"),
         legend.key.height = ggplot2::unit(1.5, "mm"),
         legend.margin = ggplot2::margin(0, 0, 0, 0),
         legend.box.margin = ggplot2::margin(-2, 0, -1, 0),
         legend.box.spacing = ggplot2::unit(1, "mm"),
-        plot.margin = ggplot2::margin(1, NF_RGT, 0, 1, "mm"))
+        plot.margin = ggplot2::margin(1, HF_RGT, 0, 1, "mm"))
   }
   cend <- utils::head(b$compartment$end, -1)
   rend <- setdiff(utils::head(b$region$end, -1), cend)
@@ -949,6 +949,6 @@ f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "palette.yml diverging_limits), shared by every GO-term NES panel; a median ",
     "NES beyond it takes full colour and is kept here uncapped")
   write_csv_safe(cells, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }

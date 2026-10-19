@@ -175,11 +175,11 @@ f3a_adaptation_states <- function(inventory) {
 }
 
 f3a_dap_burden <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  z <- nv_read_csv(repo_path(panel$primary_source))
+  z <- hv_read_csv(repo_path(panel$primary_source))
   need <- c("dataset", "unit", "display", "canonical", "claimable", "xpos")
   if (!all(need %in% names(z)) || nrow(z) != 18L)
     stop("Frozen Figure 3a source is malformed.", call. = FALSE)
-  fam <- nf_fam()
+  fam <- hf_fam()
   long <- rbind(
     data.frame(xpos = z$xpos, row = 2L, n = z$canonical),
     data.frame(xpos = z$xpos, row = 1L, n = z$claimable))
@@ -193,26 +193,26 @@ f3a_dap_burden <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   p <- ggplot2::ggplot(long, ggplot2::aes(xpos, row)) +
     ggplot2::geom_tile(fill = "grey97", colour = "white", linewidth = 0.3) +
     ggplot2::geom_text(ggplot2::aes(label = label), colour = long$colour,
-                       family = fam, size = nf_sz(5.2),
+                       family = fam, size = hf_sz(5.2),
                        fontface = ifelse(long$n > 0, "bold", "plain")) +
     ggplot2::geom_text(data = labs,
       ggplot2::aes(x = -3.2, y = row, label = label), inherit.aes = FALSE,
-      hjust = 0, family = fam, size = nf_sz(5.0), colour = "grey18") +
+      hjust = 0, family = fam, size = hf_sz(5.0), colour = "grey18") +
     ggplot2::scale_x_continuous(limits = c(-3.4, 18.5), expand = c(0, 0)) +
     ggplot2::scale_y_continuous(limits = c(0.45, 2.55), expand = c(0, 0)) +
-    ggplot2::labs(x = NULL, y = NULL) + nf_theme_tile() +
+    ggplot2::labs(x = NULL, y = NULL) + hf_theme_tile() +
     ggplot2::theme(axis.text = ggplot2::element_blank(),
                    plot.margin = ggplot2::margin(0.5, 1, 0, 1, "mm"))
   z$summary_rule <- paste0(
     "Canonical SUS-RES FDR-supported proteins and the existing CA2-SLM ",
     "robustness qualification; no new differential analysis.")
   write_csv_safe(z, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
 f3a_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  inv <- nv_read_csv(repo_path(panel$primary_source))
+  inv <- hv_read_csv(repo_path(panel$primary_source))
   cells <- f3a_programme_cells(inv)
   cells <- cells[cells$contrast == "SUS - RES", , drop = FALSE]
   programmes <- f3a_programmes()
@@ -237,10 +237,10 @@ f3a_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   }
   supported <- cells[cells$n_fdr_supported > 0, , drop = FALSE]
   selected <- cells[!is.na(cells$exemplar), , drop = FALSE]
-  fam <- nf_fam()
+  fam <- hf_fam()
   p <- ggplot2::ggplot(cells,
       ggplot2::aes(spatial_unit_label, programme_label)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = median_NES), colour = nv_tile_border(),
+    ggplot2::geom_tile(ggplot2::aes(fill = median_NES), colour = hv_tile_border(),
                        linewidth = 0.15) +
     ggplot2::geom_point(data = supported,
       ggplot2::aes(size = n_fdr_supported), shape = 21, fill = "white",
@@ -251,12 +251,12 @@ f3a_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     # cell's own count dot stays visible and keeps its area meaning.
     ggplot2::geom_label(data = selected,
       ggplot2::aes(label = exemplar), family = fam, fontface = "bold",
-      size = nf_sz(4.6), colour = "black", fill = scales::alpha("white", 0.9),
+      size = hf_sz(4.6), colour = "black", fill = scales::alpha("white", 0.9),
       linewidth = 0, label.padding = ggplot2::unit(0.08, "mm"),
       nudge_x = -0.34, nudge_y = 0.24) +
     # the manuscript's fixed NES limit (palette v3.2), shared with ED6 and the
     # cards: a median NES beyond it takes full colour, the sidecar keeps it
-    nv_diverging(measure = "nes", name = "Median NES\n(SUS - RES)") +
+    hv_diverging(measure = "nes", name = "Median NES\n(SUS - RES)") +
     ggplot2::scale_size_area(
       name = "FDR-supported\nconstituent GO terms",
       breaks = c(1, 5, 10, 20), limits = c(1, max(supported$n_fdr_supported)),
@@ -269,16 +269,16 @@ f3a_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                       theme = ggplot2::theme(legend.key.height = grid::unit(26, "pt"))),
                     size = ggplot2::guide_legend(order = 2)) +
     ggplot2::facet_grid(. ~ compartment, scales = "free_x", space = "free_x") +
-    ggplot2::labs(x = NULL, y = NULL) + nf_theme_tile() +
+    ggplot2::labs(x = NULL, y = NULL) + hf_theme_tile() +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(size = NF_MIN_PT, angle = 55,
+      axis.text.x = ggplot2::element_text(size = HF_MIN_PT, angle = 55,
                                           hjust = 1, vjust = 1),
-      axis.text.y = ggplot2::element_text(size = NF_MIN_PT, colour = "grey15"),
-      strip.text.x = ggplot2::element_text(size = nf_pt(5.3), face = "bold"),
+      axis.text.y = ggplot2::element_text(size = HF_MIN_PT, colour = "grey15"),
+      strip.text.x = ggplot2::element_text(size = hf_pt(5.3), face = "bold"),
       panel.spacing.x = ggplot2::unit(1.4, "mm"),
       legend.position = "right",
-      legend.title = ggplot2::element_text(size = NF_MIN_PT),
-      legend.text = ggplot2::element_text(size = NF_MIN_PT),
+      legend.title = ggplot2::element_text(size = HF_MIN_PT),
+      legend.text = ggplot2::element_text(size = HF_MIN_PT),
       # the two stacked keys are taller than the tile area they were centred
       # on, which pushed the top title line out of the box: hang them from the
       # top, with tight spacing
@@ -291,14 +291,14 @@ f3a_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "BH FDR < 0.05; outlined 1-3 cells link to exemplar cards")
   # the colour limit this panel draws, recorded so the audits compare it with
   # the other NES panels (ED6 a/b record theirs the same way)
-  cells$shared_NES_scale_limit <- nv_diverging_limit("nes")
+  cells$shared_NES_scale_limit <- hv_diverging_limit("nes")
   write_csv_safe(cells, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
 f3a_state_map <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  inv <- nv_read_csv(repo_path(panel$primary_source))
+  inv <- hv_read_csv(repo_path(panel$primary_source))
   z <- f3a_adaptation_states(inv)
   programmes <- f3a_programmes()
   cols <- stats::setNames(programmes$colour, programmes$programme_short)
@@ -339,7 +339,7 @@ f3a_state_map <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   })
   ex$label_x <- vapply(pick, `[[`, numeric(1), 1L)
   ex$label_y <- vapply(pick, `[[`, numeric(1), 2L)
-  fam <- nf_fam()
+  fam <- hf_fam()
   p <- ggplot2::ggplot(z, ggplot2::aes(RES_CON_median_NES,
                                        SUS_CON_median_NES)) +
     ggplot2::geom_hline(yintercept = 0, colour = "grey75", linewidth = 0.25) +
@@ -349,7 +349,7 @@ f3a_state_map <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_text(data = ann,
       ggplot2::aes(x, y, label = label, angle = angle, hjust = hjust,
                    vjust = vjust),
-      inherit.aes = FALSE, family = fam, size = nf_sz(4.6),
+      inherit.aes = FALSE, family = fam, size = hf_sz(4.6),
       colour = "grey42", lineheight = 0.88) +
     ggplot2::geom_point(ggplot2::aes(colour = programme_short,
                                     shape = compartment,
@@ -359,25 +359,25 @@ f3a_state_map <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       shape = 21, fill = NA, colour = "black", size = 3.0, stroke = 0.65) +
     ggplot2::geom_label(data = ex,
       ggplot2::aes(label_x, label_y, label = exemplar), colour = "black",
-      family = fam, fontface = "bold", size = nf_sz(4.8),
+      family = fam, fontface = "bold", size = hf_sz(4.8),
       fill = scales::alpha("white", 0.85), linewidth = 0,
       label.padding = ggplot2::unit(0.2, "mm")) +
     ggplot2::scale_colour_manual(values = cols, name = "GO programme") +
     ggplot2::scale_shape_manual(values = c(16, 17, 15), name = "Compartment") +
     ggplot2::scale_alpha_manual(values = c("FALSE" = 0.28, "TRUE" = 0.88),
       guide = "none") +
-    ggplot2::scale_x_continuous(labels = nv_minus_labels) +
-    ggplot2::scale_y_continuous(labels = nv_minus_labels) +
+    ggplot2::scale_x_continuous(labels = hv_minus_labels) +
+    ggplot2::scale_y_continuous(labels = hv_minus_labels) +
     ggplot2::coord_equal(xlim = c(-lim, lim), ylim = c(-lim, lim),
                          expand = FALSE) +
     ggplot2::labs(x = "Median NES (RES - CON)",
-                  y = "Median NES (SUS - CON)") + nf_theme(grid = "both") +
+                  y = "Median NES (SUS - CON)") + hf_theme(grid = "both") +
     ggplot2::theme(
-      axis.text = ggplot2::element_text(size = NF_MIN_PT),
-      axis.title = ggplot2::element_text(size = nf_pt(5.2)),
+      axis.text = ggplot2::element_text(size = HF_MIN_PT),
+      axis.title = ggplot2::element_text(size = hf_pt(5.2)),
       legend.position = "right",
-      legend.title = ggplot2::element_text(size = NF_MIN_PT),
-      legend.text = ggplot2::element_text(size = NF_MIN_PT),
+      legend.title = ggplot2::element_text(size = HF_MIN_PT),
+      legend.text = ggplot2::element_text(size = HF_MIN_PT),
       legend.key.height = ggplot2::unit(2.4, "mm"),
       # hung from the top: centred, the two keys pushed the 'GO programme'
       # title above the panel box (as in 3b)
@@ -385,12 +385,12 @@ f3a_state_map <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       legend.margin = ggplot2::margin(0, 0, 0, 0),
       plot.margin = ggplot2::margin(0.5, 1, 0.5, 1, "mm"))
   write_csv_safe(z, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
 f3a_pattern_burden <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  inv <- nv_read_csv(repo_path(panel$primary_source))
+  inv <- hv_read_csv(repo_path(panel$primary_source))
   z <- f3a_adaptation_states(inv)
   patterns <- c("resilience-specific remodeling",
                 "susceptibility-specific remodeling", "shared / parallel",
@@ -421,7 +421,7 @@ f3a_pattern_burden <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   # stressed group takes that group's colour; the shared and the opposing arm
   # take neutral hues that no group or GO programme (panel c) uses; "little
   # detectable" is an empty circle. A dark rim keeps the light RES grey visible.
-  gc <- nv_group_colours()
+  gc <- hv_group_colours()
   fills <- c(gc[["RES"]], gc[["SUS"]], "#708A75", "#3D3D3D", "white")
   ink <- c("black", "black", "black", "white", "black")
   out$count_ink <- ink[match(out$adaptation_pattern, patterns)]
@@ -429,27 +429,27 @@ f3a_pattern_burden <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_point(ggplot2::aes(size = fraction, fill = adaptation_pattern),
                         shape = 21, colour = "grey25", stroke = 0.3, alpha = 0.9) +
     ggplot2::geom_text(ggplot2::aes(label = n, colour = count_ink),
-                       family = nf_fam(), size = nf_sz(4.7)) +
+                       family = hf_fam(), size = hf_sz(4.7)) +
     ggplot2::scale_fill_manual(values = stats::setNames(fills, patterns),
                                guide = "none") +
     ggplot2::scale_colour_identity() +
     ggplot2::scale_size_area(max_size = 7, limits = c(0, 1),
       breaks = c(0.25, 0.5, 0.75), labels = scales::percent,
       name = "Fraction") +
-    ggplot2::labs(x = NULL, y = NULL) + nf_theme(grid = "none") +
+    ggplot2::labs(x = NULL, y = NULL) + hf_theme(grid = "none") +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(size = NF_MIN_PT, angle = 35,
+      axis.text.x = ggplot2::element_text(size = HF_MIN_PT, angle = 35,
                                           hjust = 1, vjust = 1),
-      axis.text.y = ggplot2::element_text(size = NF_MIN_PT),
+      axis.text.y = ggplot2::element_text(size = HF_MIN_PT),
       axis.ticks = ggplot2::element_blank(),
       legend.position = "right",
-      legend.title = ggplot2::element_text(size = NF_MIN_PT),
-      legend.text = ggplot2::element_text(size = NF_MIN_PT),
+      legend.title = ggplot2::element_text(size = HF_MIN_PT),
+      legend.text = ggplot2::element_text(size = HF_MIN_PT),
       legend.key.width = ggplot2::unit(3, "mm"),
       legend.box.spacing = ggplot2::unit(0.5, "mm"),
       plot.margin = ggplot2::margin(1, 0.5, 0.5, 0.5, "mm"))
   write_csv_safe(out[, setdiff(names(out), "count_ink"), drop = FALSE], csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -479,7 +479,7 @@ f3a_card_data <- function(inventory, exemplar_id, n_terms = 3L) {
 }
 
 f3a_exemplar_card <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  inv <- nv_read_csv(repo_path(panel$primary_source))
+  inv <- hv_read_csv(repo_path(panel$primary_source))
   idx <- as.integer(panel$exemplar)
   z <- f3a_card_data(inv, idx)
   ex <- f3a_exemplars()[f3a_exemplars()$exemplar == idx, , drop = FALSE]
@@ -499,31 +499,31 @@ f3a_exemplar_card <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   z$supported <- is.finite(z$BH_FDR) & z$BH_FDR < 0.05
   title <- paste0(idx, "  ", ex$location_label, "\n", prog$programme_label)
   p <- ggplot2::ggplot(z, ggplot2::aes(contrast, term_label)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = NES), colour = nv_tile_border(),
+    ggplot2::geom_tile(ggplot2::aes(fill = NES), colour = hv_tile_border(),
                        linewidth = 0.2) +
     ggplot2::geom_tile(data = z[z$supported, , drop = FALSE], fill = NA,
                        colour = "black", linewidth = 0.55) +
     # black: at least 5:1 also on the saturated blue end
     ggplot2::geom_text(ggplot2::aes(label = sprintf("%.1f", NES)),
-                       family = nf_fam(), size = nf_sz(4.8), colour = "black") +
+                       family = hf_fam(), size = hf_sz(4.8), colour = "black") +
     # the same fixed NES limit as the atlas (palette v3.2): a term beyond it
     # takes full colour, and every tile prints its NES
-    nv_diverging(measure = "nes", name = "NES") +
+    hv_diverging(measure = "nes", name = "NES") +
     ggplot2::labs(title = title, x = NULL, y = NULL,
                   caption = "outlined = constituent GO FDR < 0.05") +
-    nf_theme_tile() +
+    hf_theme_tile() +
     ggplot2::theme(
-      plot.title = ggplot2::element_text(size = nf_pt(5.4), face = "bold",
+      plot.title = ggplot2::element_text(size = hf_pt(5.4), face = "bold",
                                          lineheight = 0.95),
-      plot.caption = ggplot2::element_text(size = NF_MIN_PT, colour = "grey45"),
-      axis.text.x = ggplot2::element_text(size = NF_MIN_PT, face = "bold"),
-      axis.text.y = ggplot2::element_text(size = NF_MIN_PT, lineheight = 0.85),
+      plot.caption = ggplot2::element_text(size = HF_MIN_PT, colour = "grey45"),
+      axis.text.x = ggplot2::element_text(size = HF_MIN_PT, face = "bold"),
+      axis.text.y = ggplot2::element_text(size = HF_MIN_PT, lineheight = 0.85),
       legend.position = "none",
       plot.margin = ggplot2::margin(0.5, 1, 0.5, 1, "mm"))
   # the colour limit the tiles draw (no colourbar: the printed NES disclose it)
-  z$shared_NES_strip_limit <- nv_diverging_limit("nes")
+  z$shared_NES_strip_limit <- hv_diverging_limit("nes")
   write_csv_safe(z, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -531,8 +531,8 @@ f3a_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   idx <- as.integer(panel$exemplar)
   ex <- f3a_exemplars()[f3a_exemplars()$exemplar == idx, , drop = FALSE]
   src <- repo_path("source_data", "pRoteomics", "figure_03_adaptation")
-  selection <- nv_read_csv(file.path(src, "selection.csv"))
-  curves <- nv_read_csv(file.path(src, "running_enrichment_curves.csv"))
+  selection <- hv_read_csv(file.path(src, "selection.csv"))
+  curves <- hv_read_csv(file.path(src, "running_enrichment_curves.csv"))
   s <- selection[selection$GO_ID == ex$term_id &
                    selection$dataset == ex$dataset &
                    selection$spatial_unit == ex$spatial_unit, , drop = FALSE]
@@ -552,22 +552,22 @@ f3a_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::scale_x_continuous(limits = c(1, s$n_ranked),
       breaks = c(1, s$n_ranked), labels = c("SUS", "RES"),
       expand = c(0, 0)) +
-    ggplot2::scale_y_continuous(labels = nv_minus_labels) +
+    ggplot2::scale_y_continuous(labels = hv_minus_labels) +
     ggplot2::labs(title = paste0(s$GO_description, "  (", s$GO_ID, ")"),
       subtitle = sprintf("NES %.2f; FDR %.2g", s$NES, s$BH_FDR),
-      x = NULL, y = "Running ES") + nf_theme(grid = "none") +
+      x = NULL, y = "Running ES") + hf_theme(grid = "none") +
     ggplot2::theme(
-      plot.title = ggplot2::element_text(size = nf_pt(5.2), face = "bold"),
-      plot.subtitle = ggplot2::element_text(size = NF_MIN_PT, colour = "grey40"),
-      axis.text = ggplot2::element_text(size = NF_MIN_PT),
-      axis.title.y = ggplot2::element_text(size = nf_pt(5.0)),
+      plot.title = ggplot2::element_text(size = hf_pt(5.2), face = "bold"),
+      plot.subtitle = ggplot2::element_text(size = HF_MIN_PT, colour = "grey40"),
+      axis.text = ggplot2::element_text(size = HF_MIN_PT),
+      axis.title.y = ggplot2::element_text(size = hf_pt(5.0)),
       plot.margin = ggplot2::margin(0.5, 1, 0, 1, "mm"))
   rug <- ggplot2::ggplot(ticks, ggplot2::aes(rank)) +
     ggplot2::geom_segment(ggplot2::aes(xend = rank, y = 0, yend = 1),
                           colour = prog$colour, linewidth = 0.13) +
     ggplot2::scale_x_continuous(limits = c(1, s$n_ranked), expand = c(0, 0)) +
     ggplot2::scale_y_continuous(limits = c(0, 1), expand = c(0, 0)) +
-    ggplot2::theme_void(base_family = nf_fam()) +
+    ggplot2::theme_void(base_family = hf_fam()) +
     ggplot2::theme(plot.margin = ggplot2::margin(0, 1, 0.5, 1, "mm"))
   p <- patchwork::wrap_plots(curve, rug, ncol = 1, heights = c(0.82, 0.18))
   z$dataset <- ex$dataset
@@ -577,7 +577,7 @@ f3a_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   z$BH_FDR <- s$BH_FDR
   z$selection_rule <- s$selection_rule
   write_csv_safe(z, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -586,7 +586,7 @@ f3a_protein_limit <- local({
   function() {
     if (!is.null(cache)) return(cache)
     ex <- f3a_exemplars()
-    z <- nv_read_csv(repo_path("source_data", "pRoteomics",
+    z <- hv_read_csv(repo_path("source_data", "pRoteomics",
                                "figure_03_adaptation",
                                "protein_zoom_values.csv"))
     z <- z[z$GO_ID %in% ex$term_id, , drop = FALSE]
@@ -598,7 +598,7 @@ f3a_protein_limit <- local({
 f3a_proteins <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   idx <- as.integer(panel$exemplar)
   ex <- f3a_exemplars()[f3a_exemplars()$exemplar == idx, , drop = FALSE]
-  z <- nv_read_csv(repo_path(panel$primary_source))
+  z <- hv_read_csv(repo_path(panel$primary_source))
   z <- z[z$GO_ID == ex$term_id & z$dataset == ex$dataset &
            z$spatial_unit == ex$spatial_unit, , drop = FALSE]
   if (!nrow(z) || nrow(z) != 3L * length(unique(z$gene)))
@@ -614,7 +614,7 @@ f3a_proteins <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   result$plot <- result$plot +
     ggplot2::labs(title = "Top contributing proteins") +
     ggplot2::theme(plot.title = ggplot2::element_text(
-      size = nf_pt(5.2), face = "bold"))
+      size = hf_pt(5.2), face = "bold"))
   result$source_data$GO_ID <- ex$term_id
   result$source_data$dataset <- ex$dataset
   result$source_data$spatial_unit <- ex$spatial_unit
@@ -622,6 +622,6 @@ f3a_proteins <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "up to seven leading-edge genes ranked by absolute stored GSEA rank ",
     "statistic; protein effects are descriptive and not independent validation")
   write_csv_safe(result$source_data, csv_path)
-  nv_save_panel(result$plot, svg_path, w_mm, h_mm)
+  hv_save_panel(result$plot, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }

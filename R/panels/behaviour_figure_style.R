@@ -10,8 +10,8 @@
 #   GROUP_COL / GROUP_LEV / GROUP_SHAPE / SEX_SHAPE / CON_MARK   group and sex encoding
 #   INK / MUTED / RULE / GREEN_* / NEUTRAL_BOX                    inks
 #   BASE_PT / BODY_PT / NOTE_PT                                   type sizes (pt)
-#   BH_NATURE, bh_style_nature()                                  the opt-in Nature style profile
-#   theme_f1()                                                    the Figure 1 theme (style = "nature": the profile)
+#   BH_HOUSE, bh_style_house()                                  the opt-in house style profile
+#   theme_f1()                                                    the Figure 1 theme (style = "house": the profile)
 #   BH_FOREST, bh_forest_zero(), bh_forest_ci(), bh_forest_point(), bh_forest_int_point()
 #                                                                 forest marks of the behaviour ED renderer
 #                                                                 (interaction rows: white diamond)
@@ -26,9 +26,9 @@ suppressPackageStartupMessages(library(ggplot2))
 # ---------------------------------------------------------------- house style
 # Group colours from the manuscript palette (config/manuscript_palette.yml group, v3: slate blue CON, warm grey RES,
 # red SUS), the one CON/RES/SUS palette of every figure; MMMSociability pins the same values
-# (Functions/manuscript_palette.R). The vendored R/plotting_nature.R stays byte-identical to pRoteomics and its older
+# (Functions/manuscript_palette.R). The vendored R/plotting_figure_style.R stays byte-identical to pRoteomics and its older
 # group trio is not used. Shape carries group redundantly.
-source(repo_path("R", "plotting_nature.R"))
+source(repo_path("R", "plotting_figure_style.R"))
 GROUP_COL <- unlist(yaml::read_yaml(repo_path("config", "manuscript_palette.yml"))$group)[c("CON", "RES", "SUS")]
 GROUP_LEV <- c("CON", "RES", "SUS")
 GROUP_SHAPE <- c(CON = 21L, RES = 24L, SUS = 22L)
@@ -48,15 +48,15 @@ GREEN_DARK <- "#2F6F62"; GREEN_MID <- "#6FA79B"; GREEN_LIGHT <- "#A8D5CF"; NEUTR
 BASE_PT <- 7; BODY_PT <- 6.5; NOTE_PT <- 6
 
 # ---------------------------------------------------------------- style profiles
-# "figure1" is the Figure 1 house style above (the default everywhere). "nature" is the opt-in
-# profile of the Nature-layout candidate (NATURE_REDESIGN_SPEC 1-3): two text sizes (5 pt for
+# "figure1" is the Figure 1 house style above (the default everywhere). "house" is the opt-in
+# profile of the house-layout candidate (NATURE_REDESIGN_SPEC 1-3): two text sizes (5 pt for
 # ticks, keys, direct labels and on-panel statistics; 5.5 pt for axis titles, facet strips and
 # the few one-line headers; the 8-pt letters are the assembler's), 0.47-pt open L-axes with
 # 1.5-pt outward ticks, and one animal-mark vocabulary. It changes sizes and weights only: every
 # ink, fill and shape is one of the constants above, and nothing here carries a value.
 # Line widths are ggplot2 linewidths (mm-based: 0.22 draws 0.47 pt); point sizes and strokes are
 # ggplot2 size / stroke (0.95 with stroke 0.26 draws a 2.4-pt circle with a 0.37-pt outline).
-BH_NATURE <- list(
+BH_HOUSE <- list(
   text_pt = 5, title_pt = 5.5,
   axis_lw = 0.22, tick_len_pt = 1.5,
   point_size = 0.95, point_stroke = 0.26, point_colour = "grey20",  # animal marks (b, c, e, f), opaque
@@ -65,20 +65,20 @@ BH_NATURE <- list(
   forest = list(point_size = 1.1, point_stroke = 0.25, int_size = 1.0, int_stroke = 0.25, ci_linewidth = 0.3),  # d: lighter than c
   rule_lw = 0.14, identity_lw = 0.235, bracket_lw = 0.23,           # CON-mean rule, identity line, a's brackets
   header_indent_mm = 3.2)                                           # a header on the letter's line starts here
-BH_STYLES <- c("figure1", "nature")
+BH_STYLES <- c("figure1", "house")
 
-#' TRUE for the Nature profile, FALSE for the Figure 1 house style (the default everywhere).
-bh_style_nature <- function(style) {
+#' TRUE for the house profile, FALSE for the Figure 1 house style (the default everywhere).
+bh_style_house <- function(style) {
   if (!is.character(style) || length(style) != 1L || !style %in% BH_STYLES)
     stop("style must be one of ", paste(sprintf('"%s"', BH_STYLES), collapse = ", "), ".", call. = FALSE)
-  identical(style, "nature")
+  identical(style, "house")
 }
 
-#' The Figure 1 theme. `style = "nature"` returns the same theme at the Nature profile's sizes and
-#' weights (BH_NATURE); the default draws Figure 1 exactly as before.
+#' The Figure 1 theme. `style = "house"` returns the same theme at the house profile's sizes and
+#' weights (BH_HOUSE); the default draws Figure 1 exactly as before.
 theme_f1 <- function(base = BASE_PT, style = "figure1") {
-  nature <- bh_style_nature(style)
-  if (nature) base <- BH_NATURE$title_pt
+  house <- bh_style_house(style)
+  if (house) base <- BH_HOUSE$title_pt
   th <- theme_classic(base_size = base, base_family = "sans") +
     theme(
       axis.text = element_text(size = BODY_PT, colour = INK),
@@ -98,8 +98,8 @@ theme_f1 <- function(base = BASE_PT, style = "figure1") {
       plot.caption = element_text(size = NOTE_PT, colour = INK, hjust = 0, lineheight = 1.05, margin = margin(t = 1.5)),
       # 4 mm of top margin: the assembler draws the panel letter over the top-left corner.
       plot.margin = margin(11.5, 3, 3, 3))
-  if (!nature) return(th)
-  N <- BH_NATURE
+  if (!house) return(th)
+  N <- BH_HOUSE
   th + theme(
     axis.text = element_text(size = N$text_pt, colour = INK),
     axis.title = element_text(size = N$title_pt, colour = INK),

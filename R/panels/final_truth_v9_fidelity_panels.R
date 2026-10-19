@@ -48,7 +48,7 @@
 # so one colour means one NES in every NES panel. A value beyond it takes full
 # colour; every strip prints its NES, so nothing is hidden. `th` is unused and
 # kept for the callers.
-f9_nes_strip_limit <- function(th = NULL) nv_diverging_limit("nes")
+f9_nes_strip_limit <- function(th = NULL) hv_diverging_limit("nes")
 
 # ==========================================================================
 # ED6 c/d/e. The detailed GSEA curve, on the shared strip limit
@@ -56,7 +56,7 @@ f9_nes_strip_limit <- function(th = NULL) nv_diverging_limit("nes")
 #
 # Derived from the frozen s4_gsea_curve. Two changes only: the NES strip uses
 # the shared fixed NES limit (f9_nes_strip_limit()) instead of a per-panel
-# maximum, and the theme is nf_theme so every label clears the 5 pt floor.
+# maximum, and the theme is hf_theme so every label clears the 5 pt floor.
 #
 # The curve itself is read from the frozen Figure 3 enrichment-curve export
 # (source_data/pRoteomics/figure_03_adaptation), which carries the same three
@@ -72,7 +72,7 @@ f9_frozen_curve <- function(prog, deps) {
     if (length(p) != 1L)
       stop("f9_ed_gsea_curve: the panel must declare ", name,
            " as an input dependency", call. = FALSE)
-    nv_read_csv(repo_path(p))
+    hv_read_csv(repo_path(p))
   }
   sel <- pick("selection.csv")
   cur <- pick("running_enrichment_curves.csv")
@@ -99,7 +99,7 @@ f9_frozen_curve <- function(prog, deps) {
 }
 
 f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
+  fam <- hf_fam()
   pr <- s4_programs()
   prog <- pr[pr$key == as.character(panel$program_key), , drop = FALSE]
   if (!nrow(prog)) stop("f9_ed_gsea_curve: unknown program key", call. = FALSE)
@@ -112,32 +112,32 @@ f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   ticks <- data.frame(rank = which(ev$hits))
 
   top <- ggplot2::ggplot(curve, ggplot2::aes(rank, es)) +
-    ggplot2::geom_hline(yintercept = 0, linewidth = nv_lw("reference_pt"),
+    ggplot2::geom_hline(yintercept = 0, linewidth = hv_lw("reference_pt"),
                         colour = "grey75") +
     ggplot2::geom_line(colour = acc, linewidth = 0.45) +
     ggplot2::annotate("segment", x = ev$peak, xend = ev$peak, y = 0,
-                      yend = ev$ES, linewidth = nv_lw("reference_pt"),
+                      yend = ev$ES, linewidth = hv_lw("reference_pt"),
                       colour = "grey55", linetype = "22") +
     ggplot2::scale_x_continuous(expand = c(0, 0), limits = c(1, N),
                                 breaks = c(1, N), labels = c("SUS", "RES")) +
-    ggplot2::scale_y_continuous(labels = nv_minus_labels) +
+    ggplot2::scale_y_continuous(labels = hv_minus_labels) +
     ggplot2::labs(x = NULL, y = "enrichment score") +
-    nf_theme() +
+    hf_theme() +
     ggplot2::theme(plot.margin = ggplot2::margin(1, 1, 0, 1, "mm"),
-                   axis.title.y = ggplot2::element_text(size = nf_pt(5.4)))
+                   axis.title.y = ggplot2::element_text(size = hf_pt(5.4)))
   mid <- ggplot2::ggplot(ticks, ggplot2::aes(rank)) +
     ggplot2::geom_segment(ggplot2::aes(x = rank, xend = rank, y = 0, yend = 1),
                           colour = acc, linewidth = 0.12) +
     ggplot2::scale_x_continuous(expand = c(0, 0), limits = c(1, N)) +
     ggplot2::scale_y_continuous(expand = c(0, 0)) +
     ggplot2::labs(x = NULL, y = NULL) +
-    nf_theme() +
+    hf_theme() +
     ggplot2::theme(axis.text = ggplot2::element_blank(),
                    axis.line = ggplot2::element_blank(),
                    axis.ticks = ggplot2::element_blank(),
                    plot.margin = ggplot2::margin(0, 1, 0, 1, "mm"))
 
-  th <- nv_read_csv(repo_path(deps[1]))
+  th <- hv_read_csv(repo_path(deps[1]))
   tr <- th[th$dataset == prog$dataset[1] & th$spatial_unit == prog$unit[1] &
              th$GO_ID == prog$term[1], , drop = FALSE]
   tr <- tr[match(c("RES - CON", "SUS - CON", "SUS - RES"), tr$contrast), ]
@@ -148,26 +148,26 @@ f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   lim <- f9_nes_strip_limit(th)
 
   bot <- ggplot2::ggplot(tr, ggplot2::aes(short, 1, fill = NES)) +
-    ggplot2::geom_tile(colour = nv_tile_border(), linewidth = nv_lw("tile_border_pt")) +
+    ggplot2::geom_tile(colour = hv_tile_border(), linewidth = hv_lw("tile_border_pt")) +
     ggplot2::geom_text(ggplot2::aes(label = sprintf("%.1f", NES)), family = fam,
-                       size = nf_sz(5.0)) +
+                       size = hf_sz(5.0)) +
     ggplot2::geom_point(data = tr[tr$sig, , drop = FALSE],
                         ggplot2::aes(short, 1.44), size = 0.4, colour = "black",
                         inherit.aes = FALSE) +
-    nv_diverging(measure = "nes", name = NULL, guide = "none") +
+    hv_diverging(measure = "nes", name = NULL, guide = "none") +
     ggplot2::scale_y_continuous(limits = c(0.5, 1.62), expand = c(0, 0)) +
     ggplot2::labs(x = NULL, y = NULL) +
-    nf_theme_tile() +
+    hf_theme_tile() +
     ggplot2::theme(axis.text.y = ggplot2::element_blank(),
-                   axis.text.x = ggplot2::element_text(size = NF_MIN_PT),
+                   axis.text.x = ggplot2::element_text(size = HF_MIN_PT),
                    plot.margin = ggplot2::margin(0, 1, 0.5, 1, "mm"))
 
   hdr <- ggplot2::ggplot() +
     ggplot2::annotate("text", x = 0, y = 1, hjust = 0, vjust = 1, family = fam,
-                      size = nf_sz(5.4), fontface = "bold", colour = acc,
+                      size = hf_sz(5.4), fontface = "bold", colour = acc,
                       label = prog$label[1]) +
     ggplot2::annotate("text", x = 0, y = 0.25, hjust = 0, vjust = 1,
-                      family = fam, size = nf_sz(5.0), colour = "grey35",
+                      family = fam, size = hf_sz(5.0), colour = "grey35",
                       label = sprintf("NES %.2f  FDR %.0e  %d/%d leading edge",
                                       ev$NES, ev$FDR, ev$n_leading,
                                       sum(ev$hits))) +
@@ -192,7 +192,7 @@ f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       "strip; a value beyond it takes full colour and the tile prints its NES"),
     stringsAsFactors = FALSE)
   write_csv_safe(out, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -206,27 +206,27 @@ f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # them and makes the panel's stated reading - that the enumeration had
 # resolution far below 0.05 and still found nothing - directly readable.
 f9_ed_nulls <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  n <- nv_read_csv(repo_path(panel$primary_source))
+  fam <- hf_fam()
+  n <- hv_read_csv(repo_path(panel$primary_source))
   z <- data.frame(dataset = n$dataset, p = n$exact_p,
                   floor = n$min_attainable_p, n_edges = n$n_edges,
                   stringsAsFactors = FALSE)
-  z$lab <- nv_dataset_label(z$dataset)
-  z$lab <- factor(z$lab, levels = nv_dataset_label(
+  z$lab <- hv_dataset_label(z$dataset)
+  z$lab <- factor(z$lab, levels = hv_dataset_label(
     c("neuron_neuropil", "neuron_soma", "microglia")))
   lo <- 10^floor(log10(min(z$floor, na.rm = TRUE)))
 
   p <- ggplot2::ggplot(z, ggplot2::aes(p, lab)) +
     # a neutral reference line (palette v3: red would read as the SUS group)
     ggplot2::geom_vline(xintercept = 0.05, linetype = "22",
-                        linewidth = nv_lw("reference_pt"), colour = "grey35") +
+                        linewidth = hv_lw("reference_pt"), colour = "grey35") +
     ggplot2::geom_segment(ggplot2::aes(x = floor, xend = p, yend = lab),
-                          colour = "grey85", linewidth = nv_lw("reference_pt")) +
+                          colour = "grey85", linewidth = hv_lw("reference_pt")) +
     ggplot2::geom_point(ggplot2::aes(x = floor), colour = "grey60", size = 1,
                         shape = 1) +
     ggplot2::geom_point(size = 1.4, colour = "#1F3D52") +
     ggplot2::geom_text(ggplot2::aes(label = sprintf("p = %.2f", p)),
-                       hjust = -0.3, family = fam, size = nf_sz(5.0)) +
+                       hjust = -0.3, family = fam, size = hf_sz(5.0)) +
     ggplot2::scale_x_log10(limits = c(lo, 22),
                            breaks = c(0.001, 0.01, 0.05, 1),
                            labels = c("0.001", "0.01", "0.05", "1")) +
@@ -235,9 +235,9 @@ f9_ed_nulls <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                   caption = paste0(
                     "Open circle = smallest
 attainable p. Log axis.")) +
-    nf_theme(grid = "x") +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(size = NF_MIN_PT),
-                   axis.text.y = ggplot2::element_text(size = NF_MIN_PT))
+    hf_theme(grid = "x") +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(size = HF_MIN_PT),
+                   axis.text.y = ggplot2::element_text(size = HF_MIN_PT))
   z$reading <- paste0(
     "an informative null: the enumeration had resolution to ",
     sprintf("%.4f", min(z$floor, na.rm = TRUE)),
@@ -245,7 +245,7 @@ attainable p. Log axis.")) +
     "on a linear axis the attainable floor and the 0.05 rule both collapse ",
     "onto the y axis")
   write_csv_safe(z, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -261,8 +261,8 @@ attainable p. Log axis.")) +
 # bars. The two subsets that are the SAME 15 proteins under two definitions are
 # labelled as such instead of reading as independent agreement.
 f9_ed_identity_subsets <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  c1 <- nv_read_csv(repo_path(panel$primary_source))
+  fam <- hf_fam()
+  c1 <- hv_read_csv(repo_path(panel$primary_source))
   c1$lab <- gsub("_", " ", c1$subset)
   # S23: "claimable" is pipeline language and must not reach a reader
   c1$lab <- sub("^claimable across datasets$",
@@ -287,7 +287,7 @@ f9_ed_identity_subsets <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                     label = sprintf("%d/%d",
                                                     effect_outside_baseline_affinity,
                                                     n_hits)),
-                       hjust = -0.22, family = fam, size = nf_sz(5.0),
+                       hjust = -0.22, family = fam, size = hf_sz(5.0),
                        colour = "grey25") +
     ggplot2::scale_colour_manual(values = c("TRUE" = "#1F3D52",
                                             "FALSE" = "#7C8A93"),
@@ -302,15 +302,15 @@ f9_ed_identity_subsets <- function(panel, svg_path, csv_path, w_mm, h_mm) {
         "count outside the control-animal affinity set. † marks two rows ",
         "that ",
         "are the SAME 15 proteins under two subset definitions.")) +
-    nf_theme(grid = "x") +
-    ggplot2::theme(axis.text.y = ggplot2::element_text(size = NF_MIN_PT),
-                   axis.text.x = ggplot2::element_text(size = NF_MIN_PT))
+    hf_theme(grid = "x") +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(size = HF_MIN_PT),
+                   axis.text.x = ggplot2::element_text(size = HF_MIN_PT))
   c1$note <- paste0(
     "the result survives every robustness restriction; bar length encodes the ",
     "subset size n, which ranges from 7 to 37 and was not visible when the ",
     "panel plotted percentages on a 0-122 axis")
   write_csv_safe(c1, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -342,7 +342,7 @@ f9_sina_offset <- function(v, nbin = 34L, wmax = 0.40) {
 }
 
 f9_depth_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
+  fam <- hf_fam()
   # PB-02. This panel used to read the tidy CSV that the manuscript_figures_v2
   # entry point writes into results/source_data/manuscript/figure_02/. That made
   # a candidate figure depend on the output of the generation it was meant to
@@ -361,7 +361,7 @@ f9_depth_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     }
     as.data.frame(readxl::read_excel(src), stringsAsFactors = FALSE)
   } else {
-    nv_read_csv(src)
+    hv_read_csv(src)
   }
   cn <- intersect(c("Proteins.Identified", "n_proteins", "proteins_identified"),
                   names(d))[1]
@@ -408,7 +408,7 @@ f9_depth_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                           colour = "grey20", fill = NA) +
     ggplot2::scale_colour_manual(
       values = stats::setNames(
-        unname(nv_dataset_colours()[sg_compartment_levels()]),
+        unname(hv_dataset_colours()[sg_compartment_levels()]),
         sg_compartments()$short), guide = "none") +
     ggplot2::scale_x_continuous(breaks = 1:3, labels = sg_compartments()$short,
                                 limits = c(0.5, 3.5)) +
@@ -417,11 +417,11 @@ f9_depth_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                     "%s spatial acquisitions\n%d animals; 3/group"),
                     paste(as.integer(acq[sg_compartments()$short]),
                           collapse = " / "), n_animals)) +
-    nf_theme(grid = "y") +
+    hf_theme(grid = "y") +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(size = NF_MIN_PT, angle = 30,
+      axis.text.x = ggplot2::element_text(size = HF_MIN_PT, angle = 30,
                                           hjust = 1),
-      plot.caption = ggplot2::element_text(size = NF_MIN_PT, colour = "grey35",
+      plot.caption = ggplot2::element_text(size = HF_MIN_PT, colour = "grey35",
                                            hjust = 0, lineheight = 1.15))
   out <- d[, c("dataset", "val")]
   out$n_acquisitions_in_compartment <- as.integer(acq[as.character(d$lab)])
@@ -432,7 +432,7 @@ f9_depth_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "replicate is the animal, not the acquisition, and no group comparison is ",
     "made in this panel")
   write_csv_safe(out, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -446,8 +446,8 @@ f9_depth_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # plot would overlap in 6 of 10 rows - but censored tiles are now marked and
 # BOTH the displayed and the true value are written to the sidecar.
 f9_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  d <- nv_read_csv(repo_path(panel$primary_source))
+  fam <- hf_fam()
+  d <- hv_read_csv(repo_path(panel$primary_source))
   mcol <- intersect(c("marker_label", "marker_gene", "marker", "GeneSymbol",
                       "gene"), names(d))[1]
   ccol <- intersect(c("compartment", "dataset", "celltype_layer",
@@ -478,12 +478,12 @@ f9_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   cen <- d[d$censored, , drop = FALSE]
 
   p <- ggplot2::ggplot(d, ggplot2::aes(xpos, ypos)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = val), colour = nv_tile_border(),
+    ggplot2::geom_tile(ggplot2::aes(fill = val), colour = hv_tile_border(),
                        linewidth = 0.15) +
     # only the tail that actually saturates is marked, so the colourbar
     # never implies an overflow bin that does not exist
-    nv_diverging(limits = lim, name = NULL, labels = function(b) {
-      s <- nv_minus(format(b, trim = TRUE))
+    hv_diverging(limits = lim, name = NULL, labels = function(b) {
+      s <- hv_minus(format(b, trim = TRUE))
       hi <- any(is.finite(d$true_val) & d$true_val > lim[2] + 1e-9)
       lo <- any(is.finite(d$true_val) & d$true_val < lim[1] - 1e-9)
       ok <- which(is.finite(b))
@@ -502,16 +502,16 @@ f9_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                 limits = c(0.5, length(mk) + 0.5),
                                 expand = c(0, 0)) +
     ggplot2::labs(x = NULL, y = NULL) +
-    nf_theme_tile() +
+    hf_theme_tile() +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(size = NF_MIN_PT, colour = "grey15",
+      axis.text.x = ggplot2::element_text(size = HF_MIN_PT, colour = "grey15",
                                           face = "bold"),
-      axis.text.y = ggplot2::element_text(size = NF_MIN_PT, face = "italic"),
+      axis.text.y = ggplot2::element_text(size = HF_MIN_PT, face = "italic"),
       legend.position = "bottom",
       legend.key.height = ggplot2::unit(1.6, "mm"),
       legend.key.width = ggplot2::unit(5, "mm"),
       legend.margin = ggplot2::margin(0, 0, 0, 0),
-      plot.caption = ggplot2::element_text(size = NF_MIN_PT, colour = "grey30",
+      plot.caption = ggplot2::element_text(size = HF_MIN_PT, colour = "grey30",
                                            hjust = 0))
   if (nrow(cen)) {
     # a censored tile is marked and its true value printed, so the colour ramp
@@ -522,7 +522,7 @@ f9_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       ggplot2::geom_text(data = cen,
                          ggplot2::aes(xpos, ypos,
                                       label = sprintf("%.1f", true_val)),
-                         family = fam, size = nf_sz(5.0), colour = "grey10",
+                         family = fam, size = hf_sz(5.0), colour = "grey10",
                          fontface = "bold") +
       ggplot2::labs(caption = sprintf(paste0(
         "Colour mapping saturates at %.1f for display; %d cells exceed this ",
@@ -534,7 +534,7 @@ f9_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   names(out) <- c("marker", "dataset", "compartment", "displayed_value",
                   "true_value", "colour_scale_censored")
   write_csv_safe(out, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -551,8 +551,8 @@ f9_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # was relegated to a fill colour. Animals now sit in three labelled group blocks
 # with their two hemispheres joined, so pairing and group are both positional.
 f9_ed_ca2_missingness <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  s <- nv_read_csv(repo_path(panel$primary_source))
+  fam <- hf_fam()
+  s <- hv_read_csv(repo_path(panel$primary_source))
   s$AnimalID <- as.character(s$AnimalID)
   s$flag <- ifelse(s$qc_flag == "PASS", "", as.character(s$qc_flag))
   grp <- c("CON", "RES", "SUS")
@@ -571,7 +571,7 @@ f9_ed_ca2_missingness <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                lo = min(z$slot) - 0.42, hi = max(z$slot) + 0.42,
                stringsAsFactors = FALSE)))
   ytop <- max(s$fraction_missing_preimputation) * 1.26
-  gc <- nv_group_colours()
+  gc <- hv_group_colours()
 
   p <- ggplot2::ggplot(s) +
     ggplot2::geom_line(ggplot2::aes(x = x, y = fraction_missing_preimputation,
@@ -584,7 +584,7 @@ f9_ed_ca2_missingness <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_text(data = s[nzchar(s$flag), , drop = FALSE],
                        ggplot2::aes(x = x, y = fraction_missing_preimputation,
                                     label = flag),
-                       vjust = -0.85, family = fam, size = nf_sz(5.0),
+                       vjust = -0.85, family = fam, size = hf_sz(5.0),
                        colour = "grey20") +
     ggplot2::geom_segment(data = hdr,
                           ggplot2::aes(x = lo, xend = hi, y = ytop, yend = ytop),
@@ -592,7 +592,7 @@ f9_ed_ca2_missingness <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                           linewidth = 0.3) +
     ggplot2::geom_text(data = hdr,
                        ggplot2::aes(x = mid, y = ytop * 1.06, label = g),
-                       inherit.aes = FALSE, family = fam, size = nf_sz(5.4),
+                       inherit.aes = FALSE, family = fam, size = hf_sz(5.4),
                        fontface = "bold", colour = "grey15") +
     ggplot2::scale_colour_manual(values = gc, guide = "none") +
     ggplot2::scale_shape_manual(values = c("L" = 1, "R" = 16), name = NULL) +
@@ -605,9 +605,9 @@ f9_ed_ca2_missingness <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                     "One point per acquisition, the two hemispheres of an ",
                     "animal joined. Both QC failures are a single hemisphere ",
                     "of an animal whose other hemisphere passes.")) +
-    nf_theme(grid = "y") +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(size = NF_MIN_PT),
-                   axis.text.y = ggplot2::element_text(size = NF_MIN_PT),
+    hf_theme(grid = "y") +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(size = HF_MIN_PT),
+                   axis.text.y = ggplot2::element_text(size = HF_MIN_PT),
                    legend.position = "right",
                    legend.key.size = ggplot2::unit(2.6, "mm"))
   s$pairing_note <- paste0(
@@ -615,7 +615,7 @@ f9_ed_ca2_missingness <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "paired within animal so the unilateral nature of both QC failures is ",
     "visible without reading the caption")
   write_csv_safe(s, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -633,8 +633,8 @@ f9_ed_ca2_missingness <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # names all 28 proteins and blocks the 6 that qualify, so the panel that
 # underwrites "28 canonical -> 6 qualified" finally identifies the survivors.
 f9_ed_ca2_sensitivity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  r <- nv_read_csv(repo_path(panel$primary_source))
+  fam <- hf_fam()
+  r <- hv_read_csv(repo_path(panel$primary_source))
   z <- data.frame(
     gene = r$gene_symbol, canonical = r$canonical_log2FC_SUS_minus_RES,
     hemi = r$effect_dropping_QC_failed_hemispheres,
@@ -653,7 +653,7 @@ f9_ed_ca2_sensitivity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   COL <- f9_qc_class_colours()
 
   p <- ggplot2::ggplot(z) +
-    ggplot2::geom_vline(xintercept = 0, linewidth = nv_lw("reference_pt"),
+    ggplot2::geom_vline(xintercept = 0, linewidth = hv_lw("reference_pt"),
                         colour = "grey78") +
     ggplot2::geom_segment(ggplot2::aes(x = canonical, xend = hemi, y = ypos,
                                        yend = ypos, colour = cls),
@@ -663,13 +663,13 @@ f9_ed_ca2_sensitivity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_point(ggplot2::aes(x = hemi, y = ypos, colour = cls),
                         size = 1.05, shape = 21, fill = "white", stroke = 0.4) +
     ggplot2::geom_text(ggplot2::aes(x = -3.15, y = ypos, label = gene),
-                       hjust = 0, family = fam, size = nf_sz(5.0),
+                       hjust = 0, family = fam, size = hf_sz(5.0),
                        colour = "grey20", fontface = "italic") +
     ggplot2::scale_colour_manual(values = COL, name = NULL,
                                  labels = f9_qc_class_label,
                                  guide = ggplot2::guide_legend(order = 1)) +
     ggplot2::scale_x_continuous(limits = c(-3.2, 2.1), breaks = c(-2, -1, 0, 1, 2),
-                                labels = nv_minus_labels, expand = c(0, 0)) +
+                                labels = hv_minus_labels, expand = c(0, 0)) +
     ggplot2::facet_wrap(~col_id, nrow = 1) +
     ggplot2::labs(
       x = "log2FC (SUS − RES):  filled = canonical,  open = QC-failed hemispheres dropped",
@@ -678,12 +678,12 @@ f9_ed_ca2_sensitivity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
         "Segment length is the magnitude lost when the two QC-failed SUS ",
         "acquisitions are removed. Rows are grouped by robustness class, so ",
         "the ", sum(z$cls == ORD[1]), " qualifying proteins read as one block.")) +
-    nf_theme(grid = "x") +
+    hf_theme(grid = "x") +
     ggplot2::theme(
       axis.text.y = ggplot2::element_blank(),
       axis.ticks.y = ggplot2::element_blank(),
       axis.line.y = ggplot2::element_blank(),
-      axis.text.x = ggplot2::element_text(size = NF_MIN_PT),
+      axis.text.x = ggplot2::element_text(size = HF_MIN_PT),
       strip.text = ggplot2::element_blank(),
       legend.position = "bottom",
       legend.key.height = ggplot2::unit(1.8, "mm"),
@@ -693,7 +693,7 @@ f9_ed_ca2_sensitivity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "towards zero when the QC-failed hemispheres were dropped; both endpoints ",
     "are log2FC on one shared axis, so no aspect-ratio distortion is possible")
   write_csv_safe(z, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -713,8 +713,8 @@ f9_ed_ca2_sensitivity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # label or phenotype statistic enters the sort. Ties break on the gene symbol,
 # so the order is deterministic.
 f9_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  z <- nv_read_csv(repo_path(panel$primary_source))
+  fam <- hf_fam()
+  z <- hv_read_csv(repo_path(panel$primary_source))
   z$sg_unit <- sg_resolve_unit(z$spatial_unit, z$dataset)
   b <- sg_blocks(z$sg_unit, z$dataset)
   o <- b$order
@@ -742,9 +742,9 @@ f9_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   # the manuscript's fixed z limit (palette v3.2, two SD): a single-protein z
   # beyond it takes full colour, and the sidecar keeps the uncapped con_z
   p <- ggplot2::ggplot(z, ggplot2::aes(xpos, ypos)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = con_z), colour = nv_tile_border(),
+    ggplot2::geom_tile(ggplot2::aes(fill = con_z), colour = hv_tile_border(),
                        linewidth = 0.1) +
-    nv_diverging(measure = "z", name = "Baseline abundance\n(CON z-score)") +
+    hv_diverging(measure = "z", name = "Baseline abundance\n(CON z-score)") +
     ggplot2::scale_x_continuous(breaks = seq_len(n),
                                 labels = sg_axis_labels(b),
                                 limits = c(0.5, n + 0.5), expand = c(0, 0)) +
@@ -757,9 +757,9 @@ f9_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                       linewidth = 0.45, colour = "grey25") +
     ggplot2::annotate("text", x = b$compartment$mid, y = y_comp,
                       label = b$compartment$label, family = fam,
-                      size = nf_sz(5.4), fontface = "bold", colour = "grey12") +
+                      size = hf_sz(5.4), fontface = "bold", colour = "grey12") +
     ggplot2::annotate("text", x = b$region$mid, y = y_reg,
-                      label = b$region$label, family = fam, size = nf_sz(5.0),
+                      label = b$region$label, family = fam, size = hf_sz(5.0),
                       colour = "grey30") +
     ggplot2::labs(x = NULL, y = NULL,
                   caption = paste0(
@@ -769,11 +769,11 @@ f9_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 Each gene ",
                     "is standardised across its own compartment; rows are ",
                     "ordered by baseline peak unit.")) +
-    nf_theme_tile() +
+    hf_theme_tile() +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(size = NF_MIN_PT, colour = "grey25"),
-      axis.text.y = ggplot2::element_text(size = NF_MIN_PT, face = "italic"),
-      legend.title = ggplot2::element_text(size = nf_pt(5.4)),
+      axis.text.x = ggplot2::element_text(size = HF_MIN_PT, colour = "grey25"),
+      axis.text.y = ggplot2::element_text(size = HF_MIN_PT, face = "italic"),
+      legend.title = ggplot2::element_text(size = hf_pt(5.4)),
       legend.position = "right",
       legend.key.width = ggplot2::unit(1.6, "mm"),
       legend.key.height = ggplot2::unit(3.6, "mm"))
@@ -797,9 +797,9 @@ Each gene ",
     "rows are seriated by baseline peak spatial unit, taken from CON-only ",
     "con_z; no phenotype information enters the ordering. Ties break on gene ",
     "symbol, so the order is deterministic")
-  out$colour_limit <- nv_diverging_limit("z")   # the limit the tiles draw
+  out$colour_limit <- hv_diverging_limit("z")   # the limit the tiles draw
   write_csv_safe(out, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -829,7 +829,7 @@ f9_qc_class_label <- function(x) {
 # claimable) and a mid neutral grey for insufficient data. Palette v3: the old
 # vermillion read as the SUS red and the old light warm grey as the RES grey.
 f9_qc_class_colours <- function() {
-  cl <- nv_claim_colours()
+  cl <- hv_claim_colours()
   c(robust_to_missingness_and_QC = unname(cl[["claimable"]]),
     not_claimable_due_to_QC = unname(cl[["not_claimable"]]),
     insufficient_observed_data = "grey60")
@@ -846,8 +846,8 @@ f9_qc_class_colours <- function() {
 # median intraclass correlations are stated as descriptive precision context.
 # No significance test is applied here and none is implied.
 f9_ed_precision <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nf_fam()
-  d <- nv_read_csv(repo_path(panel$primary_source))
+  fam <- hf_fam()
+  d <- hv_read_csv(repo_path(panel$primary_source))
   n_all <- nrow(d)
   d <- d[is.finite(d$ICC_single_side) & is.finite(d$ICC_bilateral_mean), ,
          drop = FALSE]
@@ -874,18 +874,18 @@ f9_ed_precision <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     cls = z$cls[1], ymid = z$ymid[1], n = nrow(z),
     single = stats::median(z$ICC_single_side),
     bilateral = stats::median(z$ICC_bilateral_mean), stringsAsFactors = FALSE)))
-  SINGLE <- unname(nv_evidence_colours()["descriptive"])
-  BOTH <- unname(nv_evidence_colours()["supported"])
+  SINGLE <- unname(hv_evidence_colours()["descriptive"])
+  BOTH <- unname(hv_evidence_colours()["supported"])
   ytop <- nrow(sm) + 0.72
 
   p <- ggplot2::ggplot() +
     ggplot2::geom_segment(data = d,
       ggplot2::aes(x = ICC_single_side, xend = ICC_bilateral_mean,
                    y = ypos, yend = ypos),
-      colour = "grey88", linewidth = nv_lw("reference_pt")) +
+      colour = "grey88", linewidth = hv_lw("reference_pt")) +
     ggplot2::geom_segment(data = sm,
       ggplot2::aes(x = single, xend = bilateral, y = ymid, yend = ymid),
-      colour = "grey45", linewidth = nv_lw("data_pt") * 1.6,
+      colour = "grey45", linewidth = hv_lw("data_pt") * 1.6,
       arrow = grid::arrow(length = ggplot2::unit(1.1, "mm"), type = "closed")) +
     ggplot2::geom_point(data = sm, ggplot2::aes(single, ymid), shape = 21,
                         fill = "white", colour = SINGLE, stroke = 0.6,
@@ -896,12 +896,12 @@ f9_ed_precision <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::annotate("point", x = 0.60, y = ytop, shape = 21, fill = "white",
                       colour = SINGLE, stroke = 0.6, size = 1.5) +
     ggplot2::annotate("text", x = 0.625, y = ytop, hjust = 0, family = fam,
-                      size = nf_sz(5.0), colour = "grey30",
+                      size = hf_sz(5.0), colour = "grey30",
                       label = "one hemisphere") +
     ggplot2::annotate("point", x = 0.82, y = ytop, shape = 21, fill = BOTH,
                       colour = BOTH, size = 1.5) +
     ggplot2::annotate("text", x = 0.845, y = ytop, hjust = 0, family = fam,
-                      size = nf_sz(5.0), colour = "grey30",
+                      size = hf_sz(5.0), colour = "grey30",
                       label = "bilateral mean") +
     ggplot2::scale_y_continuous(breaks = sm$ymid, labels = as.character(sm$cls),
                                 limits = c(0.4, ytop + 0.3)) +
@@ -917,16 +917,16 @@ f9_ed_precision <- function(panel, svg_path, csv_path, w_mm, h_mm) {
         " for ", paste(as.character(sm$cls), collapse = " / "),
         ".\n", n_drop_note,
         "Descriptive precision context; no significance test is applied.")) +
-    nf_theme(grid = "x") +
-    ggplot2::theme(axis.text.y = ggplot2::element_text(size = NF_MIN_PT),
-                   axis.text.x = ggplot2::element_text(size = NF_MIN_PT))
+    hf_theme(grid = "x") +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(size = HF_MIN_PT),
+                   axis.text.x = ggplot2::element_text(size = HF_MIN_PT))
   out <- d[, c("endpoint_class", "endpoint_id", "dataset", "ICC_single_side",
                "ICC_bilateral_mean")]
   out$reading <- paste0(
     "open symbol = one hemisphere, filled symbol = bilateral mean; the panel ",
     "is descriptive reliability context and carries no hypothesis test")
   write_csv_safe(out, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -940,8 +940,8 @@ f9_ed_precision <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # single correlation has very little power, so the panel now says that
 # explicitly rather than letting the null read as evidence of absence.
 f9_ed_coupling <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  x <- nv_read_csv(repo_path(panel$primary_source))
-  fam <- nv_palette()$typography$family
+  x <- hv_read_csv(repo_path(panel$primary_source))
+  fam <- hv_palette()$typography$family
   keep <- c("Edge", "Outcome", "Change", "window", "estimate",
             "conf.low", "conf.high", "p.value", "n",
             "p.adj_BH_within_outcome", "p.adj_BH_all_edge_phenotype_tests")
@@ -970,22 +970,22 @@ f9_ed_coupling <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   u$ypos <- as.integer(factor(u$edge_lab, levels = rev(sort(unique(u$edge_lab))))) +
     (u$row - mean(unique(u$row))) * 0.22
   p <- ggplot2::ggplot(u, ggplot2::aes(estimate, ypos)) +
-    ggplot2::geom_vline(xintercept = 0, linewidth = nv_lw("reference_pt"),
+    ggplot2::geom_vline(xintercept = 0, linewidth = hv_lw("reference_pt"),
                         colour = "grey55") +
     ggplot2::geom_segment(ggplot2::aes(x = conf.low, xend = conf.high,
                                        yend = ypos, colour = excludes_zero),
-                          linewidth = nv_lw("reference_pt")) +
+                          linewidth = hv_lw("reference_pt")) +
     ggplot2::geom_point(ggplot2::aes(colour = excludes_zero), size = 0.7) +
     # an interval excluding zero in the palette's 'supported' ink, the rest grey
     # (palette v3: the old red would read as the SUS group)
-    ggplot2::scale_colour_manual(values = c("TRUE" = unname(nv_evidence_colours()[["supported"]]),
+    ggplot2::scale_colour_manual(values = c("TRUE" = unname(hv_evidence_colours()[["supported"]]),
                                             "FALSE" = "grey60"),
                                  guide = "none") +
     ggplot2::scale_y_continuous(
       breaks = seq_along(unique(u$edge_lab)),
       labels = rev(sort(unique(u$edge_lab))), expand = ggplot2::expansion(add = 0.6)) +
     ggplot2::scale_x_continuous(limits = c(-1, 1), breaks = c(-1, -0.5, 0, 0.5, 1),
-                                labels = nv_minus_labels) +
+                                labels = hv_minus_labels) +
     ggplot2::facet_wrap(~out_lab, nrow = 1) +
     ggplot2::labs(x = "Pearson r (95% CI), n = 9 animals", y = NULL,
                   subtitle = sprintf(paste0(
@@ -999,7 +999,7 @@ f9_ed_coupling <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::labs(caption = paste0(
       "With n = 9 animals a single correlation has very low power; this ",
       "is a limited-power negative result, not evidence of absence.")) +
-    nf_theme(grid = "x") +
+    hf_theme(grid = "x") +
     ggplot2::theme(axis.text.y = ggplot2::element_text(size = 5),
                    panel.spacing.x = ggplot2::unit(1.6, "mm"),
                    plot.subtitle = ggplot2::element_text(size = 5, colour = "grey20"))
@@ -1013,7 +1013,7 @@ f9_ed_coupling <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     nrow(x), nrow(u), sum(u$excludes_zero), nrow(u),
     min(u$p.adj_BH_within_outcome), min(u$p.adj_BH_all_edge_phenotype_tests))
   write_csv_safe(u, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -1025,8 +1025,8 @@ f9_ed_coupling <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # unchanged and only the displayed label changes, because "not claimable due
 # to QC" is pipeline language.
 f9_ed_ca2_classes <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  r <- nv_read_csv(repo_path(panel$primary_source))
-  fam <- nv_palette()$typography$family
+  r <- hv_read_csv(repo_path(panel$primary_source))
+  fam <- hv_palette()$typography$family
   z <- as.data.frame(table(cls = r$CA2_SLM_robustness_class),
                      stringsAsFactors = FALSE)
   z$lab <- f9_qc_class_label(z$cls)
@@ -1038,13 +1038,13 @@ f9_ed_ca2_classes <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   p <- ggplot2::ggplot(z, ggplot2::aes(Freq, lab)) +
     ggplot2::geom_col(fill = z$col, width = 0.6) +
     ggplot2::geom_text(ggplot2::aes(label = Freq), hjust = -0.35,
-                       family = fam, size = nv_size(5.4)) +
+                       family = fam, size = hv_size(5.4)) +
     ggplot2::scale_x_continuous(limits = c(0, max(z$Freq) * 1.22),
                                 expand = c(0, 0)) +
     ggplot2::labs(x = "proteins of the canonical 28", y = NULL) +
-    nv_theme(grid = "x") +
+    hv_theme(grid = "x") +
     ggplot2::theme(axis.text.y = ggplot2::element_text(size = 5))
   write_csv_safe(z[, c("cls", "Freq")], csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }

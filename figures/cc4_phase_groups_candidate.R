@@ -1,6 +1,6 @@
 # Candidate only: all estimates and intervals arrive frozen from Stage 31b.
 source(file.path("R", "paths.R"))
-source(repo_path("R", "vendor", "plotting_nature.R"))
+source(repo_path("R", "vendor", "plotting_figure_style.R"))
 source(repo_path("R", "panels", "cc4_phase_groups_candidate.R"))
 render_cc4_phase_groups <- function(bundle_id, output_dir) {
   if (!grepl("^cc4_phase_groups_[A-Za-z0-9_-]+$",bundle_id)) stop("Invalid CC4 bundle ID.",call.=FALSE)
@@ -17,7 +17,7 @@ render_cc4_phase_groups <- function(bundle_id, output_dir) {
     ggplot2::ggsave(file.path(output_dir,paste0(name,".svg")), plots[[name]], device=svglite::svglite, width=183,height=height,units="mm",bg="white")
   }
   evidence <- c(file.path(src,"manifest.csv"),repo_path("R","panels","cc4_phase_groups_candidate.R"),
-    repo_path("R","vendor","plotting_nature.R"),repo_path("figures","cc4_phase_groups_candidate.R"))
+    repo_path("R","vendor","plotting_figure_style.R"),repo_path("figures","cc4_phase_groups_candidate.R"))
   utils::write.csv(data.frame(Path=evidence,SHA256=unname(tools::sha256sum(evidence))),file.path(output_dir,"render_inputs.csv"),row.names=FALSE)
   files <- list.files(output_dir,full.names=TRUE)
   utils::write.csv(data.frame(File=basename(files),SHA256=unname(tools::sha256sum(files))),file.path(output_dir,"render_manifest.csv"),row.names=FALSE)

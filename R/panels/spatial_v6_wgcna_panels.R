@@ -18,10 +18,10 @@
 # lookup. Values come from the phenotype-blind CON baseline. Nothing is refitted
 # and no phenotype effect enters.
 s6_module_fingerprint_table <- function(min_members = 5L) {
-  base <- nv_read_csv(path_results("tables", "manuscript_candidates",
+  base <- hv_read_csv(path_results("tables", "manuscript_candidates",
                                    "spatial_v6",
                                    "spatial_v6_con_baseline_profile_long.csv"))
-  mem <- nv_read_csv(repo_path("results", "tables", "10_biological_integration",
+  mem <- hv_read_csv(repo_path("results", "tables", "10_biological_integration",
                                "wgcna_candidate_protein_shortlist", "global",
                                "wgcna_candidate_proteins_all.csv"))
   mem <- unique(mem[, c("dataset", "ProteinGroupID", "ModuleID")])
@@ -42,7 +42,7 @@ s6_module_fingerprint_table <- function(min_members = 5L) {
   out$mean_con_z[out$n_members < min_members] <- NA_real_
 
   # annotation tracks from the canonical module table
-  wa <- nv_read_csv(repo_path("results", "tables", "11_spatial_systems", "atlas",
+  wa <- hv_read_csv(repo_path("results", "tables", "11_spatial_systems", "atlas",
                               "WGCNA_module_spatial_cell_affinity.csv"))
   keep <- c("dataset", "ModuleID", "canonical_display_label",
             "bilateral_reproducibility_class", "external_celltype_all",
@@ -57,7 +57,7 @@ s6_module_fingerprint_table <- function(min_members = 5L) {
 }
 
 s6_ed_module_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nv_palette()$typography$family
+  fam <- hv_palette()$typography$family
   z <- s6_module_fingerprint_table()
   z <- z[!is.na(z$mean_con_z), , drop = FALSE]
   z$sg_unit <- sg_resolve_unit(z$spatial_unit, z$dataset)
@@ -80,7 +80,7 @@ s6_ed_module_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   p <- ggplot2::ggplot(z, ggplot2::aes(unit_f, mod_f)) +
     ggplot2::geom_tile(ggplot2::aes(fill = mean_con_z), colour = "white",
                        linewidth = 0.1) +
-    nv_diverging(limits = lim, name = "mean\nCON z") +
+    hv_diverging(limits = lim, name = "mean\nCON z") +
     ggplot2::scale_x_discrete(labels = function(x) unname(disp[as.character(x)]),
                               drop = TRUE) +
     ggplot2::scale_y_discrete(drop = TRUE) +
@@ -95,7 +95,7 @@ s6_ed_module_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                     "structurally inapplicable cell is drawn. Descriptive: ",
                     "WGCNA is not\nrecomputed and no phenotype effect enters ",
                     "this panel.")) +
-    nv_theme_tile() +
+    hv_theme_tile() +
     ggplot2::theme(
       axis.text.x = ggplot2::element_text(size = 4.8, colour = "grey25"),
       axis.text.y = ggplot2::element_text(size = 4.6),
@@ -110,7 +110,7 @@ s6_ed_module_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       plot.caption = ggplot2::element_text(size = 4.6, colour = "grey35",
                                            hjust = 0, lineheight = 1.15))
   write_csv_safe(z, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -124,9 +124,9 @@ s6_ed_module_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # imply inferential support, so the null is stated on the panel and no cell is
 # starred.
 s6_ed_wgcna_phenotype <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nv_palette()$typography$family
-  z <- nv_read_csv(repo_path(panel$primary_source))
-  wa <- nv_read_csv(repo_path("results", "tables", "11_spatial_systems", "atlas",
+  fam <- hv_palette()$typography$family
+  z <- hv_read_csv(repo_path(panel$primary_source))
+  wa <- hv_read_csv(repo_path("results", "tables", "11_spatial_systems", "atlas",
                               "WGCNA_module_spatial_cell_affinity.csv"))
 
   # This source carries BOTH an all-empty `ModuleID` column and the populated
@@ -198,7 +198,7 @@ s6_ed_wgcna_phenotype <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   p <- ggplot2::ggplot(z, ggplot2::aes(xpos, ypos)) +
     ggplot2::geom_tile(ggplot2::aes(fill = val), colour = "white",
                        linewidth = 0.14) +
-    nv_diverging(limits = lim, name = "effect") +
+    hv_diverging(limits = lim, name = "effect") +
     # the scale limit must leave room for the annotation tracks: a scale limit
     # narrower than the annotation x positions silently DROPS them, which is
     # not the same as clipping them
@@ -214,7 +214,7 @@ s6_ed_wgcna_phenotype <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                     "colour scale must not be read\nas evidence of a group ",
                     "difference. Row labels carry each module's baseline ",
                     "spatial peak. WGCNA is not recomputed.")) +
-    nv_theme_tile() +
+    hv_theme_tile() +
     ggplot2::theme(
       axis.text.x = ggplot2::element_text(size = 5),
       axis.text.y = ggplot2::element_text(size = 4.8),
@@ -235,23 +235,23 @@ s6_ed_wgcna_phenotype <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                     label = ifelse(is.na(bilateral_reproducibility_class),
                                                    "", bilateral_reproducibility_class)),
                        inherit.aes = FALSE, hjust = 0, family = fam,
-                       size = nv_size(4.3), colour = "grey35") +
+                       size = hv_size(4.3), colour = "grey35") +
     ggplot2::geom_text(data = tr,
                        ggplot2::aes(x = x2, y = ypos,
                                     label = ifelse(is.na(external_celltype_all),
                                                    "", external_celltype_all)),
                        inherit.aes = FALSE, hjust = 0, family = fam,
-                       size = nv_size(4.3), colour = "grey35") +
+                       size = hv_size(4.3), colour = "grey35") +
     ggplot2::annotate("text", x = c(length(cl) + 0.9, length(cl) + 1.9),
                       y = ny + 0.35, hjust = 0, family = fam,
-                      size = nv_size(4.5), fontface = "bold", colour = "grey20",
+                      size = hv_size(4.5), fontface = "bold", colour = "grey20",
                       label = c("bilateral class", "external cell type")) +
     ggplot2::coord_cartesian(xlim = c(0.5, length(cl) + 3.6),
                              ylim = c(0.5, ny + 0.8), clip = "off")
 
   z$inferential_status <- "0 of 45 module x contrast cells FDR-supported"
   write_csv_safe(z, csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
 
@@ -262,8 +262,8 @@ s6_ed_wgcna_phenotype <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # So the reader immediately knows the QC problem sits in neuropil, region CA2,
 # layer SLM - rather than having to decode the string "CA2_slm".
 s6_ed_ca2_locator <- function(panel, svg_path, csv_path, w_mm, h_mm) {
-  fam <- nv_palette()$typography$family
-  accent <- unname(nv_dataset_colours()[["neuron_neuropil"]])
+  fam <- hv_palette()$typography$family
+  accent <- unname(hv_dataset_colours()[["neuron_neuropil"]])
   ex <- data.frame(arc_frac = 0.45, band = "slm", stringsAsFactors = FALSE)
 
   arcdf <- function(cx, cy, r, t0, t1, n = 90) {
@@ -310,13 +310,13 @@ s6_ed_ca2_locator <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_text(data = rl,
                        ggplot2::aes(x, y, label = l, colour = hit,
                                     fontface = ifelse(hit, 2, 1)),
-                       family = fam, size = nv_size(4.8), show.legend = FALSE) +
+                       family = fam, size = hv_size(4.8), show.legend = FALSE) +
     ggplot2::scale_colour_manual(values = c("TRUE" = accent, "FALSE" = "grey62"),
                                  guide = "none") +
     ggplot2::annotate("text", x = 0, y = -1.32, label = "neuropil",
-                      family = fam, size = nv_size(5.0), colour = "grey30") +
+                      family = fam, size = hv_size(5.0), colour = "grey30") +
     ggplot2::annotate("text", x = 0, y = -1.62, label = "CA2  SLM",
-                      family = fam, size = nv_size(6.0), fontface = "bold",
+                      family = fam, size = hv_size(6.0), fontface = "bold",
                       colour = accent) +
     ggplot2::coord_equal(xlim = c(-1.75, 1.75), ylim = c(-1.85, 1.62),
                          expand = FALSE) +
@@ -327,6 +327,6 @@ s6_ed_ca2_locator <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     analysis_key = "CA2_slm",
     note = "locator only; carries no quantity", stringsAsFactors = FALSE),
     csv_path)
-  nv_save_panel(p, svg_path, w_mm, h_mm)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }

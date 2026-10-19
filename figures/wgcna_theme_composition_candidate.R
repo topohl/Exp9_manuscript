@@ -4,8 +4,8 @@
 # composition, enrichment or module statistic is recomputed. Not promoted: candidate only.
 
 source(file.path("R", "paths.R"))
-source(repo_path("R", "panels", "nature_v2_figure_utils.R"))
-source(repo_path("R", "panels", "nature_final_v7_panels.R"))
+source(repo_path("R", "panels", "house_v2_figure_utils.R"))
+source(repo_path("R", "panels", "house_final_v7_panels.R"))
 source(repo_path("R", "panels", "spatial_grammar_utils.R"))
 source(repo_path("R", "panels", "final_truth_v9_panels.R"))
 source(repo_path("R", "panels", "figure3_adaptation_panels.R"))
@@ -20,8 +20,8 @@ wtc_render <- function(out) {
       stop("Required plotting package is unavailable: ", pkg, call. = FALSE)
   if (file.exists(out)) stop("Candidate output already exists: ", out, call. = FALSE)
   x <- wtc_read()
-  tag <- ggplot2::theme(plot.tag = ggplot2::element_text(size = nv_pt("panel_label_pt"), face = "bold",
-                                                         family = nf_fam()))
+  tag <- ggplot2::theme(plot.tag = ggplot2::element_text(size = hv_pt("panel_label_pt"), face = "bold",
+                                                         family = hf_fam()))
   a <- wtc_wheel_plot(x) + ggplot2::labs(tag = "a") + tag
   key <- wtc_wheel_key(x)
   b <- wtc_matrix_plot(x) + ggplot2::labs(tag = "b") + tag
@@ -60,7 +60,7 @@ wtc_render <- function(out) {
   inputs <- c(file.path(frozen, WTC_FILES),
               repo_path("source_data", "pRoteomics", "manifest.csv"),
               repo_path("config", "manuscript_palette.yml"),
-              repo_path("R", "panels", c("nature_v2_figure_utils.R", "nature_final_v7_panels.R",
+              repo_path("R", "panels", c("house_v2_figure_utils.R", "house_final_v7_panels.R",
                                          "spatial_grammar_utils.R", "final_truth_v9_panels.R",
                                          "figure3_adaptation_panels.R", "wgcna_theme_composition_panels.R")),
               repo_path("figures", "wgcna_theme_composition_candidate.R"))

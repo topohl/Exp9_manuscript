@@ -3,7 +3,7 @@
 # Part-24: the vector-export audit, and the final story write-up.
 #
 # Parts 16-23 shipped PDFs that were a single full-page 300 dpi raster with zero
-# font objects, because nv_pdf() falls back to ImageMagick when rsvg is absent.
+# font objects, because hv_pdf() falls back to ImageMagick when rsvg is absent.
 # This audit proves the final_truth_v9 PDFs are genuine vector: embedded fonts,
 # real text-showing operators, and no page-sized raster.
 #
@@ -12,7 +12,7 @@
 
 source(file.path("R", "paths.R"))
 source(repo_path("R", "integration_utils.R"))
-source(repo_path("R", "nature_v2_figure_utils.R"))
+source(repo_path("R", "house_v2_figure_utils.R"))
 source(repo_path("R", "editorial_v8_export.R"))
 source(repo_path("R", "final_truth_v9_figure_utils.R"))
 suppressPackageStartupMessages({ library(readr) })

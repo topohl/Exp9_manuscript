@@ -1,7 +1,7 @@
 source(testthat::test_path("..","..","R","paths.R"))
-source(repo_path("R","vendor","plotting_nature.R"))
+source(repo_path("R","vendor","plotting_figure_style.R"))
 source(repo_path("R","panels","cc4_phase_groups_candidate.R"))
-source(repo_path("R","panels","cc4_phase_groups_nature.R"))
+source(repo_path("R","panels","cc4_phase_groups_house.R"))
 source(repo_path("R","panels","cc4_phenotype_candidate.R"))
 
 phenotype_fixture<-function() {
