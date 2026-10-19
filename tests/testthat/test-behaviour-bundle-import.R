@@ -57,7 +57,7 @@ test_that("the bundle carries the frozen design's families and counts", {
   g <- behaviour_bundle_table("G_sample_sizes")
   cc1 <- g[g$CC == "CC1" & g$Group %in% c("RES", "SUS"), ]
   counts <- stats::setNames(tapply(cc1$n_animals, paste(cc1$Sex, cc1$Group), sum), NULL)
-  expect_equal(sort(as.integer(counts)), sort(c(28L, 18L, 25L, 16L)))
+  expect_equal(sort(as.integer(counts)), sort(c(26L, 20L, 25L, 16L)))
   expect_equal(sum(g$n_windows[g$CC != "all"]), 444L)
 })
 

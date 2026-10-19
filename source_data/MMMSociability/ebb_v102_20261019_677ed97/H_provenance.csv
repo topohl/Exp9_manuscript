@@ -1,0 +1,33 @@
+key,value
+bundle_id,ebb_v102_20261019_677ed97
+status,FROZEN
+generated_at,2026-10-19T17:58:59+0200
+generator,Analysis/16b_canonical_behavior_bundle.R
+mmm_git_commit,677ed9771388a82319cc3fee8ea793440d290115
+mmm_branch,refactor/rfid-four-domain-characterization
+stage29_run_commit,a46be6a288032d97392a5f16f8eb81d7d1bd2890
+config_id,E9_SIS_RFID_BEHAVIOR_CANONICAL
+config_version,1.0.2
+config_sha256,90018f9ca242685e9e59a7bb95a91ae643b5481985698086139590d62e310a5c
+stage29_started_at,2026-10-19T17:35:21+0200
+r_version,R version 4.5.1 (2025-06-13 ucrt)
+packages,lme4 2.0.1; lmerTest 3.2.1; pbkrtest 0.5.5; glmmTMB 1.1.14; clubSandwich 0.7.0; sandwich 3.1.1; data.table 1.18.2.1; Matrix 1.7.5; reformulas 0.4.4
+active_window,"first full active phase after each cage change: [anchor, anchor + 43,200 s) on the RFID logger clock"
+primary_population,animals not on Analysis/con_animals.csv (outcome_group RES or SUS)
+stage29_finished_at,2026-10-19T17:42:16+0200
+stage29_run_mode,RELEASE
+stage29_output_dir,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/analysis_ready/pipeline/29_canonical_behavior_releases/v102_dv2_a46be6a
+data_version,v2_cage_label_correction_2026-09-28
+data_version_tag,dv2
+data_manifest_sha256,bb33a111980913f4ddf97c40872ccdd96dd73accdbdc5c5867954b51aad2c571
+preprocessed_dir,S:/Lab_Member/Tobi/Experiments/Exp9_Social-Stress/Analysis/Behavior/RFID/MMMSociability/data_versions/v2_cage_label_correction_2026-09-28/preprocessed_data
+analytic_parent_config_version,1.0.0
+analytic_parent_config_sha256,33d22430b0e6d3a45a28bea8546a185c523aedf72055ddf5ae208cff51f8950e
+analytic_identity_ok,TRUE
+change_class,v1.0.2: outcome-version binding (corrected CombZ and RES/SUS labels); no analytic change; changed after outcome inspection (erratum E13)
+supersedes_bundle,ebb_v101_20260929_b2ce507
+manuscript_facing,TRUE
+errata_doc,docs/BEHAVIOR_CONFIG_v1.0.0_ERRATA.md
+errata_doc_sha256,42f84325c442638d7194d92e6debbaa2012b9d62082dc2dd86930ad541e4d8eb
+errata_doc_git_blob,f655068464dda3af7cea153b07197bdbc82ae08e
+release_record,docs/STAGE29_RELEASE_v1.0.2_ov2.md

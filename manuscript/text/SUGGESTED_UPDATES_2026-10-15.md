@@ -1,5 +1,7 @@
 # Suggested updates for the Word text
 
+> Behavioural numbers below are historical. Use [the corrected behavioural results of 19 October](SUGGESTED_UPDATES_2026-10-19_behaviour.md) for the current Figure 1 and behavioural Extended Data. The remaining assessments retain the dated scope stated below.
+
 Basis: the snapshot of 2026-10-15 (`manuscript_resiliencandsusceptibility_2026-10-15.txt`; "line N" is a line of that file) and the claim register `provenance/claims/docx_claims.csv` (115 claims; 45 are looked up in the pinned source tables with `tools/check_claims.R`, of which 32 agree and 13 are the older bridge values at lines 16-17; the others were read against the sources, and the register and this note were then re-read independently on 2026-10-16 and corrected). Nothing here was applied to the Word file. Replacement numbers marked "looked up" can be re-checked with the tool; wording is a proposal.
 
 ## 1. Numbers to replace (Results 1, lines 16-17)
