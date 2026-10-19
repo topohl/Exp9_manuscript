@@ -114,8 +114,8 @@ test_that("small positive probability annotations do not round to zero", {
     row <- amap[amap$key == key, , drop = FALSE]
     expect_equal(nrow(row), 1L, info = key)
     displayed <- as.numeric(resolve(row))
-    expect_gt(displayed, 0, info = key)
-    expect_lte(displayed, 1, info = key)
+    expect_gt(displayed, 0, label = key)
+    expect_lte(displayed, 1, label = key)
   }
 })
 

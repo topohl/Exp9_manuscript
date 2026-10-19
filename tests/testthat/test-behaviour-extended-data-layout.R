@@ -17,9 +17,9 @@ test_that("behavioural Extended Data panels stay inside the assembled page", {
     for (panel in panels) {
       x <- attribute(panel, "x"); y <- attribute(panel, "y")
       width <- attribute(panel, "width"); height <- attribute(panel, "height")
-      expect_gte(x, 0, info = id); expect_gte(y, 0, info = id)
-      expect_lte(x + width, view[3], info = id)
-      expect_lte(y + height, view[4], info = id)
+      expect_gte(x, 0, label = id); expect_gte(y, 0, label = id)
+      expect_lte(x + width, view[3], label = id)
+      expect_lte(y + height, view[4], label = id)
     }
   }
 })
