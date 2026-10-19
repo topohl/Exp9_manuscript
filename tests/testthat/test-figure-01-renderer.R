@@ -106,6 +106,19 @@ test_that("every annotation key resolves to exactly one bundle cell", {
   }
 })
 
+test_that("small positive probability annotations do not round to zero", {
+  skip_if_not(have_pin, "no behaviour bundle pinned")
+  amap <- rd(AMAP_PATH)
+  probability_keys <- c("d_q_female", "d_q_male", "e_perm_p")
+  for (key in probability_keys) {
+    row <- amap[amap$key == key, , drop = FALSE]
+    expect_equal(nrow(row), 1L, info = key)
+    displayed <- as.numeric(resolve(row))
+    expect_gt(displayed, 0, info = key)
+    expect_lte(displayed, 1, info = key)
+  }
+})
+
 test_that("the rendered panels print exactly the bundle values (value-for-value)", {
   skip_if_not(have_pin, "no behaviour bundle pinned")
   skip_if_not(dir.exists(PANELS), "figure 1 panels not rendered")

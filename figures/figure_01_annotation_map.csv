@@ -102,9 +102,9 @@ c_g_Inactive_Male_RESCON_rest_like_posinact40,1c,fsb,D1_domain_heatmap_cells,hed
 c_g_Inactive_Male_RESSUS_rest_like_posinact40,1c,fsb,D1_domain_heatmap_cells,hedges_g,heatmap_id=all_blocks;variant=picked;PhaseClass=Inactive;Sex=Male;contrast=RES-SUS;row_key=rest_like_posinact40,%.2f,"Hedges g, Rest-like (≥40 s), Male Inactive phase, RES-SUS (Stage 14, stored)"
 c_g_Inactive_Male_SUSCON_rest_like_posinact40,1c,fsb,D1_domain_heatmap_cells,hedges_g,heatmap_id=all_blocks;variant=picked;PhaseClass=Inactive;Sex=Male;contrast=SUS-CON;row_key=rest_like_posinact40,%.2f,"Hedges g, Rest-like (≥40 s), Male Inactive phase, SUS-CON (Stage 14, stored)"
 d_rho_female,1d,fsb,E1_movement_combz_spearman_by_sex,spearman_rho,Sex=Female;feature=Movement_mean,%.2f,"Female Spearman rho, early movement vs later CombZ (Stage 09, descriptive, sex-stratified)"
-d_q_female,1d,fsb,E1_movement_combz_spearman_by_sex,spearman_p_bh_within_sex,Sex=Female;feature=Movement_mean,%.3f,Female BH q within sex over Stage 09's three features
+d_q_female,1d,fsb,E1_movement_combz_spearman_by_sex,spearman_p_bh_within_sex,Sex=Female;feature=Movement_mean,%.2g,Female BH q within sex over Stage 09's three features
 d_rho_male,1d,fsb,E1_movement_combz_spearman_by_sex,spearman_rho,Sex=Male;feature=Movement_mean,%.2f,"Male Spearman rho, early movement vs later CombZ (Stage 09, descriptive, sex-stratified)"
-d_q_male,1d,fsb,E1_movement_combz_spearman_by_sex,spearman_p_bh_within_sex,Sex=Male;feature=Movement_mean,%.3f,Male BH q within sex over Stage 09's three features
+d_q_male,1d,fsb,E1_movement_combz_spearman_by_sex,spearman_p_bh_within_sex,Sex=Male;feature=Movement_mean,%.2g,Male BH q within sex over Stage 09's three features
 e_loao,1e,ebb,C2_estimates,estimate,source=stage09;construct=movement_mean;estimand=LOAO_R2,%.3f,LOAO R2 movement-mean model
 e_base,1e,ebb,C2_estimates,estimate,source=stage09;construct=mean_only;estimand=LOAO_R2,%.3f,intercept-only baseline LOAO R2
 e_perm_p,1e,ebb,E_multiplicity,p_adjusted,family_id=PR2;member=permutation|movement_mean,%.2g,PR2 Holm-adjusted permutation p

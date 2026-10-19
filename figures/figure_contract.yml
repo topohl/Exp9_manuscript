@@ -1206,7 +1206,7 @@ figures:
         hemisphere_handling: not_applicable_behavioural
         row: 1
         col: 1
-        colspan: 2
+        colspan: 1
       - id: 05b
         description: >-
           The five a-priori prediction models with leave-one-animal-out R2, the
@@ -1230,7 +1230,7 @@ figures:
           point. No per-repeat distribution exists upstream and none is invented.
         row: 2
         col: 1
-        colspan: 2
+        colspan: 1
 
   ED_behaviour_secondary:
     title: Extended Data Figure 9
