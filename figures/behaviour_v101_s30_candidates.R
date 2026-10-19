@@ -3,7 +3,7 @@
 # Script: figures/behaviour_v101_s30_candidates.R
 # Stage: manuscript_candidates (generation behaviour_v101_s30)
 # Scope: candidate figures only; nothing is promoted
-# Consumes: the pinned Stage 29 v1.0.1 behaviour bundle (config/behaviour_bundle.yml,
+# Consumes: the current corrected-outcome Stage 29 behaviour bundle (config/behaviour_bundle.yml,
 #           read through R/behaviour_bundle.R), the pinned Stage 30 figure bundle
 #           (config/stage30_bundle.yml, read through R/stage30_bundle.R) and the pinned
 #           figure-support bundle (config/figure_support_bundle.yml, read through
