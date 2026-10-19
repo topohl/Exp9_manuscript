@@ -3,10 +3,11 @@
 # Script: figures/extended_data_behaviour_panels.R
 # Stage: manuscript_figures
 # Scope: global
-# Consumes: required source_data/MMMSociability/behavior_prediction_model_ladder.csv;
-#           required source_data/MMMSociability/behavior_sex_effect_contract.csv
-# Produces: results/figures/manuscript/extended_data_behaviour_panels/
-# Notes: Rendering only. Reads frozen imported contracts; computes no statistic.
+# Consumes: the pinned canonical behaviour bundle (config/behaviour_bundle.yml) and the pinned figure-support
+#           bundle (config/figure_support_bundle.yml), source_data/MMMSociability/<bundle_id>/, through
+#           R/behaviour_bundle.R and R/figure_support_bundle.R
+# Produces: results/figures/manuscript/extended_data_behaviour_panels/ and its render record
+# Notes: Rendering only. Reads stored bundle cells; computes no statistic.
 # ================================================================
 #
 # Behavioural Extended Data. Figure 1 shows one model and one association. This
@@ -14,24 +15,29 @@
 # chosen after the fact: the complete a-priori model ladder, and the formal
 # feature-by-sex interaction tests.
 #
-# Both tables are frozen upstream in topohl/MMMSociability and imported
-# byte-identically with SHA-256 into source_data/MMMSociability/ (the bridge's
-# pRoteomics prefix manuscript/figure1_bridge_mmmsociability/, which the
-# contract still records).
-# Nothing here is fitted, resampled or corrected. Every value printed is a cell
-# of one of those two tables.
+# Every value comes from the bundles Figure 1 is drawn from (corrected-label rerun, 2026-10-17; until then these
+# panels read the frozen bridge contracts of MMMSociability 53bc7e9, which predate the corrections of 2026-09-20 and
+# 2026-10-16 and the first-night seeding fix of 2026-09-22):
+#   ebb C2_estimates (source stage09): the ladder's LOAO and repeated-CV R2, the three early-feature associations and
+#       the three feature-by-sex interaction estimates, each with its stored interval;
+#   ebb E_multiplicity: PR1 (BH q of the associations), PR2 (permutation P of the ladder), PR3 (BH q and the
+#       reject flag of the interactions);
+#   fsb E1: Stage 09's sex-stratified Spearman rho (descriptive context);
+#   fsb E3 (fsb_v5 on): Stage 09's early-window coverage summary.
+# Nothing here is fitted, resampled or corrected. Every value printed is a cell of one of those tables.
 #
 # Panels:
-#   a  the five a-priori models: leave-one-animal-out R2, the repeated grouped
-#      five-fold interval, and the permutation P where one was run
-#   b  the three feature-by-sex interaction tests with 95% CI and BH q
-#   c  the sex-stratified correlations, drawn as descriptive context only
+#   ED5 a  early-window coverage (fsb E3)
+#   ED5 b  the five a-priori models: leave-one-animal-out R2, the repeated grouped five-fold interval, and the
+#          permutation P where one was run
+#   ED9 a  the two secondary early features against later CombZ
+#   ED9 b  the three feature-by-sex interaction tests with 95% CI and BH q
+#   ED9 c  the sex-stratified correlations, drawn as descriptive context only
 #
 # WORDING DISCIPLINE. The sex panels exist to license a negative statement and
-# to block a positive one. The upstream contract carries an explicit prohibited
-# wording list, and this script refuses to render if every interaction row is
-# not classified FORMAL_INTERACTION_NOT_SUPPORTED - because the moment one is,
-# panel c stops being descriptive context and the figure has to be rethought.
+# to block a positive one. This script refuses to render if any interaction is
+# rejected in its stored family (PR3) - because the moment one is, panel c stops
+# being descriptive context and the figure has to be rethought.
 #
 # The ladder panel likewise states no winner. The models differ by amounts far
 # smaller than their own intervals, and no test compares them; the panel is
@@ -43,70 +49,90 @@ suppressPackageStartupMessages({
 
 paths_file <- if (file.exists(file.path("R", "paths.R"))) file.path("R", "paths.R") else file.path("..", "R", "paths.R")
 source(paths_file)
+source(repo_path("R", "behaviour_bundle.R"))
+source(repo_path("R", "stage30_bundle.R"))
+source(repo_path("R", "figure_support_bundle.R"))
 
-BRIDGE <- repo_path("source_data", "MMMSociability")
+PIN <- behaviour_bundle_pin()
+behaviour_bundle_verify(PIN)
+FSB <- fsb_bundle_pin()
+fsb_bundle_verify(FSB)
 OUT <- path_results("figures", "manuscript", "extended_data_behaviour_panels")
 dir.create(OUT, recursive = TRUE, showWarnings = FALSE)
 
-need <- function(f) {
-  p <- file.path(BRIDGE, f)
-  if (!file.exists(p))
-    stop("missing_required_input: ", p,
-         "\nThe frozen behavioural contracts must be imported first.",
-         call. = FALSE)
-  utils::read.csv(p, stringsAsFactors = FALSE)
-}
-ladder <- need("behavior_prediction_model_ladder.csv")
-sexc <- need("behavior_sex_effect_contract.csv")
-assoc <- need("early_behavior_later_outcome_association.csv")
+C2 <- behaviour_bundle_table("C2_estimates", PIN)
+EM <- behaviour_bundle_table("E_multiplicity", PIN)
+E1 <- fsb_bundle_table("E1_movement_combz_spearman_by_sex", FSB)
+s09 <- C2[C2$source == "stage09", , drop = FALSE]
+cell <- function(tab, column, ...) bundle_cell(tab, column, ...)
 
-# Early-window coverage is an aggregate in the frozen bundle: the number of
-# animals, how many contributed every expected slot, and the mean and minimum
-# coverage fraction. No per-animal coverage vector is exported, so the panel
-# states those figures and draws the split it can support. It does not draw a
-# distribution, because there is none to draw.
-tl_cov <- need(file.path("source_data", "figure1a_timeline_source.csv"))
-COV <- tl_cov[!is.na(tl_cov$n_animals), , drop = FALSE]
-if (!nrow(COV))
-  stop("figure1a_timeline_source.csv carries no coverage row.", call. = FALSE)
-COV <- COV[1, , drop = FALSE]
+# The registered Stage 09 ladder, in registry order, with each model's role (the registry's, carried here as display
+# metadata only: the bundle stores the estimates, not the role words) and the one headline model Figure 1 draws.
+LADDER_ROLE <- c(mean_only = "reference_baseline", movement_mean = "primary_behavior_only",
+                 primary_behavior_family = "primary_behavior_only", movement_mean_sex = "sex_adjusted_sensitivity",
+                 primary_behavior_family_sex = "sex_adjusted_sensitivity")
+HEADLINE_MODEL <- "movement_mean"
+FEATURES <- c("Movement_mean", "Movement_rmssd", "Entropy_acf1")
+
+perm_p <- function(m) { r <- EM[EM$family_id == "PR2" & EM$member == paste0("permutation|", m), , drop = FALSE]
+  if (nrow(r) == 1L) r$p_raw else if (!nrow(r)) NA_real_ else stop("PR2 lists ", m, " more than once.", call. = FALSE) }
+ladder <- do.call(rbind, lapply(names(LADDER_ROLE), function(m) {
+  id <- paste0("stage09_", m)
+  data.frame(model_id = m,
+             loao_r2 = cell(s09, "estimate", model_id = id, estimand = "LOAO_R2"),
+             repeated_cv_mean_r2 = cell(s09, "estimate", model_id = id, estimand = "repeated_CV_mean_R2"),
+             cv_r2_q025 = cell(s09, "ci_low", model_id = id, estimand = "repeated_CV_mean_R2"),
+             cv_r2_q975 = cell(s09, "ci_high", model_id = id, estimand = "repeated_CV_mean_R2"),
+             permutation_p = perm_p(m),
+             n = cell(s09, "n", model_id = id, estimand = "LOAO_R2"),
+             primary_or_exploratory = LADDER_ROLE[[m]],
+             current_status = if (m == HEADLINE_MODEL) "HEADLINE PRIMARY" else "registered",
+             stringsAsFactors = FALSE)
+}))
+pr3 <- function(f, col) cell(EM, col, family_id = "PR3", member = paste0("feature_x_Sex|", f))
+e1 <- function(f, sex) cell(E1, "spearman_rho", Sex = sex, feature = f)
+sexc <- do.call(rbind, lapply(FEATURES, function(f) data.frame(
+  feature = f,
+  interaction_estimate = cell(s09, "estimate", model_id = "stage09_feature_x_sex", construct = f),
+  interaction_ci_low = cell(s09, "ci_low", model_id = "stage09_feature_x_sex", construct = f),
+  interaction_ci_high = cell(s09, "ci_high", model_id = "stage09_feature_x_sex", construct = f),
+  interaction_p = pr3(f, "p_raw"), interaction_q_bh = pr3(f, "p_adjusted"),
+  interaction_rejected = as.logical(pr3(f, "reject_at_alpha_adjusted")),
+  female_rho = e1(f, "Female"), male_rho = e1(f, "Male"), stringsAsFactors = FALSE)))
+pr1 <- function(f, col) cell(EM, col, family_id = "PR1", member = paste0("spearman|", f))
+assoc <- do.call(rbind, lapply(FEATURES, function(f) data.frame(
+  predictor = f, outcome = "CombZ",
+  n = cell(s09, "n", model_id = "stage09_association", construct = f),
+  rho = cell(s09, "estimate", model_id = "stage09_association", construct = f),
+  ci_low = cell(s09, "ci_low", model_id = "stage09_association", construct = f),
+  ci_high = cell(s09, "ci_high", model_id = "stage09_association", construct = f),
+  p_raw = pr1(f, "p_raw"), q_bh = pr1(f, "p_adjusted"), stringsAsFactors = FALSE)))
+
+# Early-window coverage: the Stage 09 summary (fsb E3, fsb_v5 on). An older figure-support bundle does not carry it;
+# then the other panels are drawn for preview and no render record is written, so nothing can be promoted.
+E3 <- tryCatch(fsb_bundle_table("E3_early_window_coverage", FSB), error = function(e) NULL)
+COV <- if (is.null(E3)) NULL else {
+  if (nrow(E3) != 1L) stop("fsb E3 must hold exactly one coverage row.", call. = FALSE)
+  E3
+}
 
 # ------------------------------------------------------------------ contracts
 #
 # These are not defensive niceties. Each one guards a sentence the manuscript is
 # allowed to write only while the guarded condition holds.
 
-REQ_LADDER <- c("model_id", "features", "sex_scope", "cv_design", "loao_r2",
-                "repeated_cv_mean_r2", "cv_r2_q025", "cv_r2_q975",
-                "permutation_p", "n", "primary_or_exploratory", "current_status")
-absent <- setdiff(REQ_LADDER, names(ladder))
-if (length(absent))
-  stop("behavior_prediction_model_ladder.csv is missing: ",
-       paste(absent, collapse = ", "), call. = FALSE)
-
-REQ_SEX <- c("feature", "interaction_estimate", "interaction_ci_low",
-             "interaction_ci_high", "interaction_p", "interaction_q_bh",
-             "female_rho", "male_rho", "classification", "allowed_wording",
-             "prohibited_wording")
-absent <- setdiff(REQ_SEX, names(sexc))
-if (length(absent))
-  stop("behavior_sex_effect_contract.csv is missing: ",
-       paste(absent, collapse = ", "), call. = FALSE)
-
 # Panel c is drawn as descriptive context. That is only honest while no formal
 # interaction is supported. If upstream ever changes one, this figure must be
 # redesigned rather than quietly redrawn.
-if (!all(sexc$classification == "FORMAL_INTERACTION_NOT_SUPPORTED"))
-  stop("At least one feature-by-sex interaction is no longer classified ",
-       "FORMAL_INTERACTION_NOT_SUPPORTED. Panel c presents stratified ",
-       "correlations as descriptive context, which is no longer defensible. ",
+if (any(sexc$interaction_rejected))
+  stop("At least one feature-by-sex interaction is rejected in its stored family (PR3). Panel c presents ",
+       "stratified correlations as descriptive context, which is no longer defensible. ",
        "Redesign the panel; do not re-render it.", call. = FALSE)
 
-# The manuscript's headline model must remain the one Figure 1 draws.
-headline <- ladder$model_id[ladder$current_status == "HEADLINE PRIMARY"]
-if (length(headline) != 1L || headline != "movement_mean")
-  stop("The ladder no longer names movement_mean as the single headline ",
-       "primary model; Figure 1 and this panel would disagree.", call. = FALSE)
+# The manuscript's headline model must remain the one Figure 1 draws, and the permutation was run for exactly the
+# behaviour-only models (PR2): an absent P is then a design fact, printed as "not run".
+if (!identical(sort(ladder$model_id[!is.na(ladder$permutation_p)]), sort(c("movement_mean", "primary_behavior_family"))))
+  stop("PR2 no longer holds exactly the two behaviour-only models.", call. = FALSE)
 
 if (length(unique(ladder$n)) != 1L)
   stop("The ladder models are not all fitted on the same animals.", call. = FALSE)
@@ -381,47 +407,45 @@ p_assoc <- ggplot(as2, aes(y = .data$label)) +
 
 # ============================ early-window coverage (ED5 a)
 #
-# Aggregate only. The bundle records the expected slot count, how many animals
-# contributed all of them, and the mean and minimum coverage fraction. It does
-# not export a per-animal coverage vector, so this states the split it can
-# support and does not imply a distribution it cannot.
-n_tot <- as.integer(COV$n_animals)
-n_full <- as.integer(COV$n_animals_complete_slots)
-n_part <- n_tot - n_full
-cov_mean <- as.numeric(COV$mean_coverage_fraction)
-cov_min <- as.numeric(COV$min_coverage_fraction)
-
-cv <- data.frame(
-  grp = factor(c("All expected slots", "Leading slots missing only"),
-               levels = rev(c("All expected slots", "Leading slots missing only"))),
-  n = c(n_full, n_part), stringsAsFactors = FALSE)
-cv$lab <- sprintf("%d of %d animals", cv$n, n_tot)
-
-p_cov <- ggplot(cv, aes(.data$n, .data$grp)) +
-  geom_col(fill = c(GREEN_MID, GREEN_LIGHT)[as.integer(cv$grp)],
-           colour = "grey30", linewidth = 0.25, width = 0.6) +
-  geom_text(aes(label = .data$lab), hjust = -0.08, size = NOTE_PT / .pt,
-            colour = INK) +
-  scale_x_continuous(limits = c(0, n_tot * 1.42), expand = c(0, 0)) +
-  labs(x = "Animals", y = NULL,
-       title = "Early-window coverage",
-       subtitle = paste0(
-         "A fixed 12-h window binned at 10 min gives ", COV$detail[1], "",
-         "mean coverage ", fmt(100 * cov_mean, 1), "%, minimum ",
-         fmt(100 * cov_min, 1), "%.\n",
-         "No animal has an interior or trailing gap, so the shortfall is\n",
-         "entirely leading slots. Aggregate figures; the bundle exports no\n",
-         "per-animal coverage vector.")) +
-  theme_ed() +
-  theme(axis.line.y = element_blank(), axis.ticks.y = element_blank())
+# Aggregate only: Stage 09's coverage summary of the fixed early window (fsb E3). It records the expected slot count,
+# how many animals contributed all of them and how many miss leading, interior or trailing slots, and the mean and
+# minimum coverage fraction. No per-animal coverage vector is exported, so the panel states the split it can support.
+p_cov <- if (!is.null(COV)) {
+  n_tot <- as.integer(COV$n_animals)
+  n_full <- as.integer(COV$n_animals_complete)
+  n_lead <- as.integer(COV$n_animals_missing_leading_only)
+  n_gap <- as.integer(COV$n_animals_interior_missing) + as.integer(COV$n_animals_trailing_missing)
+  slots <- as.integer(COV$expected_target_slots_per_animal)
+  cov_mean <- as.numeric(COV$mean_coverage_fraction); cov_min <- as.numeric(COV$min_coverage_fraction)
+  cv <- data.frame(grp = c("All expected slots", "Leading slots missing only", "Interior or trailing slots missing"),
+                   n = c(n_full, n_lead, n_gap), stringsAsFactors = FALSE)
+  cv <- cv[cv$n > 0L | cv$grp == "All expected slots", , drop = FALSE]
+  cv$grp <- factor(cv$grp, levels = rev(cv$grp))
+  cv$lab <- sprintf("%d of %d animals", cv$n, n_tot)
+  ggplot(cv, aes(.data$n, .data$grp)) +
+    geom_col(fill = c(GREEN_MID, GREEN_LIGHT, "grey80")[seq_len(nrow(cv))][rev(as.integer(cv$grp))],
+             colour = "grey30", linewidth = 0.25, width = 0.6) +
+    geom_text(aes(label = .data$lab), hjust = -0.08, size = NOTE_PT / .pt, colour = INK) +
+    scale_x_continuous(limits = c(0, n_tot * 1.42), expand = c(0, 0)) +
+    labs(x = "Animals", y = NULL,
+         title = "Early-window coverage",
+         subtitle = paste0(
+           "A fixed ", COV$target_window_hours, "-h window binned at ", COV$bin_size_min, " min gives ", slots,
+           " expected slots per animal; mean coverage ", fmt(100 * cov_mean, 1), "%, minimum ", fmt(100 * cov_min, 1), "%.\n",
+           if (n_full == n_tot) "Every animal contributed every slot." else
+             paste0(n_tot - n_full, " animals miss slots (leading only: ", n_lead, ")."),
+           " Aggregate figures; the bundle exports no\nper-animal coverage vector.")) +
+    theme_ed() +
+    theme(axis.line.y = element_blank(), axis.ticks.y = element_blank())
+}
 
 # ---------------------------------------------------------------- write out
 # Authored at the exact placed size, so scale = 1.0 and native pt == printed pt.
 # Two equal rows of 52 mm place 48 mm image boxes; a spans both columns.
 DIMS <- list(ed09a = c(173, 48), ed09b = c(84.5, 48), ed09c = c(84.5, 48),
              ed05a = c(173, 48), ed05b = c(173, 48))
-PLOTS <- list(ed09a = p_assoc, ed09b = p_sex, ed09c = p_rho,
-              ed05a = p_cov, ed05b = p_ladder)
+PLOTS <- list(ed09a = p_assoc, ed09b = p_sex, ed09c = p_rho, ed05a = p_cov, ed05b = p_ladder)
+PLOTS <- PLOTS[!vapply(PLOTS, is.null, TRUE)]
 
 save_svg <- function(p, id) {
   d <- DIMS[[id]]
@@ -438,6 +462,29 @@ cat("Behavioural Extended Data panels ->", OUT, "\n")
 for (id in names(written))
   cat(sprintf("  extended_data_behaviour_%s.svg  %6d bytes  %.1f x %.0f mm\n",
               id, file.size(written[[id]]), DIMS[[id]][1], DIMS[[id]][2]))
-cat("  models:", nrow(ladder), "| interaction tests:", nrow(sexc),
+cat("  bundles", PIN$bundle_id, "and", FSB$bundle_id, "| models:", nrow(ladder), "| interaction tests:", nrow(sexc),
     "| animals:", N_ANIMALS, "\n")
-cat("  every value read from the frozen bridge contracts; nothing computed\n")
+cat("  every value read from stored bundle cells; nothing computed\n")
+
+# ---------------------------------------------------------------- render record
+# Which commit drew these panels, whether that code was clean, the bundles, and the hash of every panel, so that
+# tools/promote_manuscript_render.R extended_data_05 / extended_data_09 can refuse panels drawn from other or
+# uncommitted code. Without fsb E3 (an older figure-support bundle) ED5 a is missing and no record is written.
+if (is.null(COV)) {
+  message("NOTE: the pinned figure-support bundle ", FSB$bundle_id, " has no E3 (fsb_v5 on); ED5 a not drawn and no ",
+          "render record written: these panels cannot be promoted.")
+} else {
+  code <- git_code_state()
+  record_dir <- path_results("logs", "manuscript_figures", "extended_data_behaviour_panels")
+  dir.create(record_dir, recursive = TRUE, showWarnings = FALSE)
+  yaml::write_yaml(list(
+    timestamp = format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z"),
+    producer = "figures/extended_data_behaviour_panels.R",
+    behaviour_bundle_id = PIN$bundle_id, behaviour_bundle_manifest_sha256 = PIN$manifest_sha256,
+    figure_support_bundle_id = FSB$bundle_id, figure_support_bundle_manifest_sha256 = FSB$manifest_sha256,
+    render_git_commit = code$commit, render_code_clean = code$code_clean, render_code_dirty = code$dirty,
+    files = lapply(unname(written), function(x) list(path = relative_to(x), sha256 = unname(tools::sha256sum(x))))),
+    file.path(record_dir, "render_record.yml"))
+  cat("  render record", relative_to(file.path(record_dir, "render_record.yml")), "at", substr(code$commit, 1, 7),
+      if (isTRUE(code$code_clean)) "(clean code)\n" else "(UNCOMMITTED CODE)\n")
+}
