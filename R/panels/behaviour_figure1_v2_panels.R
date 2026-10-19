@@ -45,7 +45,8 @@ F1V2_ARENA <- "grey84"
 F1V2_LINE <- "grey20"; F1V2_BAND_ALPHA <- 0.22
 F1V2_SEX_SHAPE <- c(Female = 21L, Male = 24L)
 # e: the permutation-null inset, in fractions of the scatter's plot panel; the builder stops if an animal lies under it
-F1V2_INSET <- c(left = 0.50, bottom = 0.72, right = 1, top = 1)
+# Corrected-outcome points reach 0.7403 of the panel height; retain clearance.
+F1V2_INSET <- c(left = 0.50, bottom = 0.78, right = 1, top = 1)
 
 f1v2_num <- function(x) as.numeric(as.character(x))
 #' "P<min>-<max>" for a design step, from its two annotation keys (each a stored T1 cell).
