@@ -47,7 +47,10 @@ CONVENTIONAL_TESTS <- c("extended_data_10", "extended_data_11", "extended_data_1
 v9_record <- function(key) c("logs", "manuscript_candidates", "final_truth_v9", key, "render_record.yml")
 PRODUCER_RECORD <- c(
   list(figure_01 = c("logs", "manuscript_figures", "figure_01_panels", "render_record.yml"),
-       figure_02 = v9_record("figure_02"), figure_03 = v9_record("figure_03")),
+       figure_02 = v9_record("figure_02"), figure_03 = v9_record("figure_03"),
+       # ED5 and ED9 render from the pinned behaviour and figure-support bundles (since 2026-10-17), drawn by one producer
+       extended_data_05 = c("logs", "manuscript_figures", "extended_data_behaviour_panels", "render_record.yml"),
+       extended_data_09 = c("logs", "manuscript_figures", "extended_data_behaviour_panels", "render_record.yml")),
   sapply(setdiff(grep("^extended_data_", SELF_RENDERED, value = TRUE), CONVENTIONAL_TESTS),
          function(id) v9_record("extended_data"), simplify = FALSE),
   sapply(CONVENTIONAL_TESTS, function(id) c("logs", "manuscript_figures", "conventional_tests", "render_record.yml"), simplify = FALSE))
@@ -126,9 +129,8 @@ plan_promotion <- function(pid) {
     source(repo_path("R", "behaviour_bundle.R"))
     p$pin <- behaviour_bundle_pin()
     behaviour_bundle_verify(p$pin)
-    # Only an identity whose contract renders from the pinned bundle has this route:
-    # ED5 and ED9 are MMMSociability analyses too, but are packaged from the frozen
-    # bridge copies in source_data/pRoteomics.
+    # Only an identity whose contract renders from the pinned bundle has this route (Figure 1, and ED5 / ED9
+    # since their renderer reads the pinned bundles, 2026-10-17).
     if (!identical(as.character(contract$behaviour_bundle_id %||% ""), p$pin$bundle_id))
       stop(pid, " does not render from the pinned behaviour bundle ", p$pin$bundle_id,
            "; it has no promotion route.", call. = FALSE)
