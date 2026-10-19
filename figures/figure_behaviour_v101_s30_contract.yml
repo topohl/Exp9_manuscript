@@ -1,3 +1,4 @@
+# Current corrected-outcome bundles are bound below. The historical generation namespace is retained for path compatibility.
 # Candidate figure contract: behaviour generation behaviour_v101_s30.
 #
 # THIS IS NOT THE MANUSCRIPT CONTRACT. figures/figure_contract.yml remains the
@@ -85,18 +86,18 @@ bundles:
   ebb:
     pin: config/behaviour_bundle.yml
     reader: R/behaviour_bundle.R
-    bundle_id: ebb_v101_20260929_b2ce507
-    manifest_sha256: ec59aa337fc63511de4aa2bf3e1ee1f4b34b84d6d671565f74e0bb3939f7226c
+    bundle_id: ebb_v102_20261019_677ed97
+    manifest_sha256: 41b8ce8170de64b739b4c3517e7280d4c1282332d873b75794e674220c6b7ff9
   s30b:
     pin: config/stage30_bundle.yml
     reader: R/stage30_bundle.R
-    bundle_id: s30b_v10_20260929_5394f2f
-    manifest_sha256: 8930d8bf5ee93ace00f9d187377803f664036f858df4c7ae8d6b8f8804a3f87d
+    bundle_id: s30b_v11_20261019_5482c43
+    manifest_sha256: 905e4c38d13f0bb258abd662c1dfa8b2001dbc7bfc362c949802505651d09d42
   fsb:
     pin: config/figure_support_bundle.yml
     reader: R/figure_support_bundle.R
-    bundle_id: fsb_v4_20261012_f4c2ba6
-    manifest_sha256: c826dab157a50e7dc1acf7431201faf62675c6f0c2df9d55f6f53dfc5f16363c
+    bundle_id: fsb_v5_20261019_8212df4
+    manifest_sha256: bc3aaf0d94a31b18bea3a114a6a0c0b8ac6ef401f6c8c4565bf2032f4da37ebb
 libraries:
   - R/panels/behaviour_figure_style.R
   - R/panels/behaviour_figure1_panels.R
