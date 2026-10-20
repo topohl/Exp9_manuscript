@@ -105,8 +105,8 @@ for (cf in c("figures/figure_contract.yml",
   ## panels at the same results/ paths. Figure 2 and the proteomics Extended
   ## Data pages are rendered here too (figures/final_truth_v9_figure_02.R and
   ## figures/final_truth_v9_extended_data.R) and promoted from those renders.
-  LOCALLY_RENDERED <- c("figure_02", "figure_03", "extended_data_01", "extended_data_02",
-                        "extended_data_03", "extended_data_06", "extended_data_08")
+  LOCALLY_RENDERED <- c("figure_02", "figure_03", "extended_data_06", "extended_data_07",
+                        "extended_data_08", "extended_data_09", "extended_data_10")   # numbering of 2026-10-20
   if (!is.null(y$figures))
     y$figures <- Filter(function(f)
       (!identical(f$analysis_repository, "topohl/MMMSociability") ||

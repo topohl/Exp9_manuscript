@@ -27,7 +27,8 @@ testthat::test_that("the publication registry is internally coherent", {
 
   # Identities are unique and stable.
   testthat::expect_false(anyDuplicated(r$publication_id) > 0L)
-  testthat::expect_true(all(grepl("^(figure|extended_data)_[0-9]{2}$", r$publication_id)))
+  # a numbered identity carries its number; a withheld one has none (since 2026-10-20)
+  testthat::expect_true(all(grepl("^(figure|extended_data)_[0-9]{2}$|^withheld_[a-z_]+$", r$publication_id)))
 
   # Every row is either canonical with an artefact and a hash, or withheld
   # with its identity reserved and no artefact.
@@ -42,7 +43,7 @@ testthat::test_that("the publication registry is internally coherent", {
   testthat::expect_identical(sum(canon), 13L)
   testthat::expect_identical(sum(!canon), 2L)
   testthat::expect_setequal(r$publication_id[!canon],
-                            c("extended_data_04", "extended_data_07"))
+                            c("withheld_wgcna", "withheld_identity_locations"))
 })
 
 testthat::test_that("canonical figures reproduce the frozen artefact hashes", {

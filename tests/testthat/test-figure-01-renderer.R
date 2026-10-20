@@ -154,7 +154,8 @@ test_that("the rendered panels and assembly are vector, not rasterised", {
   txt <- paste(readLines(file.path(FIG, "assembled", "figure_01.svg"), warn = FALSE), collapse = "")
   expect_false(grepl("data:image/png", txt, fixed = TRUE))
   expect_false(grepl("data:image/jpeg", txt, fixed = TRUE))
-  expect_true(grepl("data:image/svg+xml", txt, fixed = TRUE))
+  expect_false(grepl("data:image/svg+xml", txt, fixed = TRUE))
+  expect_true(grepl('<g id="panel_a"', txt, fixed = TRUE))
 })
 
 test_that("the figure contract registers the five bundle-backed panels", {

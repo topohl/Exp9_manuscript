@@ -243,8 +243,8 @@ f3a_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_tile(ggplot2::aes(fill = median_NES), colour = hv_tile_border(),
                        linewidth = 0.15) +
     ggplot2::geom_point(data = supported,
-      ggplot2::aes(size = n_fdr_supported), shape = 21, fill = "white",
-      colour = "grey12", stroke = 0.3, alpha = 0.9) +
+      ggplot2::aes(size = n_fdr_supported), shape = 16, colour = "grey15",
+      alpha = 0.9) +
     ggplot2::geom_tile(data = selected, fill = NA, colour = "black",
                        linewidth = 0.65) +
     # The exemplar number sits in the outlined cell's top-left corner, so the
@@ -420,22 +420,27 @@ f3a_pattern_burden <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   # Pattern fills follow the group palette (v3): an arm that remodels in one
   # stressed group takes that group's colour; the shared and the opposing arm
   # take neutral hues that no group or GO programme (panel c) uses; "little
-  # detectable" is an empty circle. A dark rim keeps the light RES grey visible.
+  # detectable" is a pale grey. Symbols carry no outline (house style).
   gc <- hv_group_colours()
-  fills <- c(gc[["RES"]], gc[["SUS"]], "#708A75", "#3D3D3D", "white")
+  fills <- c(gc[["RES"]], gc[["SUS"]], "#708A75", "#3D3D3D", "grey88")
   ink <- c("black", "black", "black", "white", "black")
   out$count_ink <- ink[match(out$adaptation_pattern, patterns)]
   p <- ggplot2::ggplot(out, ggplot2::aes(pattern_short, compartment)) +
-    ggplot2::geom_point(ggplot2::aes(size = fraction, fill = adaptation_pattern),
-                        shape = 21, colour = "grey25", stroke = 0.3, alpha = 0.9) +
-    ggplot2::geom_text(ggplot2::aes(label = n, colour = count_ink),
+    ggplot2::geom_point(ggplot2::aes(size = fraction, colour = adaptation_pattern),
+                        shape = 16, alpha = 0.9) +
+    ggplot2::geom_text(data = out[out$count_ink == "black", , drop = FALSE],
+                       ggplot2::aes(label = n), colour = "black",
                        family = hf_fam(), size = hf_sz(4.7)) +
-    ggplot2::scale_fill_manual(values = stats::setNames(fills, patterns),
-                               guide = "none") +
-    ggplot2::scale_colour_identity() +
+    ggplot2::geom_text(data = out[out$count_ink == "white", , drop = FALSE],
+                       ggplot2::aes(label = n), colour = "white",
+                       family = hf_fam(), size = hf_sz(4.7)) +
+    ggplot2::scale_colour_manual(values = stats::setNames(fills, patterns),
+                                 guide = "none") +
     ggplot2::scale_size_area(max_size = 7, limits = c(0, 1),
       breaks = c(0.25, 0.5, 0.75), labels = scales::percent,
       name = "Fraction") +
+    ggplot2::guides(size = ggplot2::guide_legend(
+      override.aes = list(colour = "grey60"))) +
     ggplot2::labs(x = NULL, y = NULL) + hf_theme(grid = "none") +
     ggplot2::theme(
       axis.text.x = ggplot2::element_text(size = HF_MIN_PT, angle = 35,

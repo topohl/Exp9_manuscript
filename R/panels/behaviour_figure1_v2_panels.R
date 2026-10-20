@@ -1,6 +1,7 @@
 # Figure 1, consolidated layout (Tobias, 2026-10-12): the panel builders a-e that draw the Figure 1 he had
 # assembled by hand from the pipelines, from the pinned bundles. Rendering only: fits no model, computes
-# no statistic. Opt-in house profile (BH_HOUSE), the manuscript palette, circles coloured by group.
+# no statistic. Opt-in house profile (BH_HOUSE), the manuscript palette, borderless circles coloured by group,
+# square scatters.
 #
 #   a  f1v2_panel_timeline    the SIS design (RFID implant; social instability stress between shuffle start and
 #                             shuffle stop; behaviour; samples) and the five behavioural tests, each with the
@@ -43,7 +44,7 @@ F1V2_FILL_RFID <- "#1F4A41"; F1V2_FILL_SIS <- GREEN_DARK; F1V2_FILL_BEHAVIOUR <-
 F1V2_ARENA <- "grey84"
 # d: the display line and its band (the diverging scale's low end, light)
 F1V2_LINE <- "grey20"; F1V2_BAND_ALPHA <- 0.22
-F1V2_SEX_SHAPE <- c(Female = 21L, Male = 24L)
+F1V2_SEX_SHAPE <- c(Female = 16L, Male = 17L)
 # e: the permutation-null inset, in fractions of the scatter's plot panel; the builder stops if an animal lies under it
 # Corrected-outcome points reach 0.7403 of the panel height; retain clearance.
 F1V2_INSET <- c(left = 0.50, bottom = 0.78, right = 1, top = 1)
@@ -135,17 +136,17 @@ f1v2_combz_block <- function(s, ani, hm, gone, bnd, thr, legend, colourbar, fill
   vline <- geom_vline(xintercept = b$x, linewidth = F1H$axis_lw, colour = INK, linetype = "22")
   no_x <- theme(axis.line.x = element_blank(), axis.ticks.x = element_blank(), axis.text.x = element_blank(), axis.title.x = element_blank())
   row_theme <- theme(axis.line.y = element_blank(), axis.ticks.y = element_blank(), plot.margin = margin(0, 1, 0.5, 1))
-  key_aes <- list(size = F1H$point_size, stroke = F1H$point_stroke, colour = F1H$point_colour)
+  key_aes <- list(size = F1H$point_size)
   p_dots <- ggplot(a, aes(x, CombZ)) +
     geom_hline(yintercept = t$control_mean_combz, linewidth = F1H$rule_lw, colour = RULE) +
     geom_hline(yintercept = t$susceptibility_threshold, linewidth = 0.45, colour = INK, linetype = "22") +
     vline +
-    geom_point(aes(fill = Group), shape = 21, size = F1H$point_size, stroke = F1H$point_stroke, colour = F1H$point_colour) +
+    geom_point(aes(colour = Group), shape = 16, size = F1H$point_size) +
     annotate("label", x = b$lo + 0.4, y = t$susceptibility_threshold, label = t$label, hjust = 0, vjust = -0.25, size = f1h_text(),
              colour = INK, fill = "white", linewidth = 0, label.padding = unit(0.5, "pt")) +
     annotate("text", x = b$lo + 0.4, y = Inf, label = s, hjust = 0, vjust = 1.3, size = f1h_text(F1H$title_pt), colour = INK) +
-    xs + scale_fill_manual(values = GROUP_COL, name = NULL, drop = FALSE) +
-    guides(fill = if (legend) guide_legend(override.aes = key_aes) else "none") +
+    xs + scale_colour_manual(values = GROUP_COL, name = NULL, drop = FALSE) +
+    guides(colour = if (legend) guide_legend(override.aes = key_aes) else "none") +
     scale_y_continuous(labels = f1_minus_labels, breaks = c(-1, 0, 1), expand = expansion(mult = c(0.05, 0.12))) +
     labs(y = sub(" ", "\n", F1V2_OUTCOME, fixed = TRUE)) +
     theme_f1(style = "house") + no_x +
@@ -298,17 +299,17 @@ f1v2_panel_movement <- function(tab, fsb, an, w_mm, h_mm) {
     ggplot(a, aes(Movement_mean, observed_CombZ)) +
       geom_ribbon(data = l, aes(x = x, ymin = ci_low, ymax = ci_high), inherit.aes = FALSE, fill = band_fill, alpha = F1V2_BAND_ALPHA) +
       geom_line(data = l, aes(x = x, y = fit), inherit.aes = FALSE, linewidth = 0.4, colour = F1V2_LINE) +
-      geom_point(aes(fill = Group), shape = 21, size = F1H$point_size + 0.25, stroke = F1H$point_stroke, colour = F1H$point_colour) +
+      geom_point(aes(colour = Group), shape = 16, size = F1H$point_size + 0.25) +
       gtxt(s, 0.8, INK, bold = TRUE) +
       annotation_custom(f1h_math_grob(stat[[1]], x = right, y = grid::unit(1, "npc") - grid::unit(4.9, "mm"), hjust = 1)) +
       annotation_custom(f1h_math_grob(stat[[2]], x = right, y = grid::unit(1, "npc") - grid::unit(7.1, "mm"), hjust = 1)) +
       gtxt("CON", 8.2, GROUP_COL[["CON"]]) + gtxt("RES", 10.4, s14_darken(GROUP_COL[["RES"]], 0.25)) + gtxt("SUS", 12.6, GROUP_COL[["SUS"]]) +
-      scale_fill_manual(values = GROUP_COL, guide = "none") +
+      scale_colour_manual(values = GROUP_COL, guide = "none") +
       scale_y_continuous(labels = f1_minus_labels, breaks = c(-1, 0, 1), expand = expansion(mult = c(0.04, 0.10))) +
       scale_x_continuous(labels = f1_minus_labels) +
       labs(x = "Movement", y = "Integrated Resilience (*z*)") +
       theme_f1(style = "house") +
-      theme(axis.title.y = f1h_markdown(margin = margin(r = 1)), axis.title.x = element_text(margin = margin(t = 1.5)),
+      theme(aspect.ratio = 1, axis.title.y = f1h_markdown(margin = margin(r = 1)), axis.title.x = element_text(margin = margin(t = 1.5)),
             plot.margin = margin(1, 1, if (bottom) 1 else 3, 1))
   }
   pd <- patchwork::wrap_plots(one("Female", FALSE), one("Male", TRUE), ncol = 1) +
@@ -334,24 +335,24 @@ f1v2_panel_prediction <- function(tab, an, w_mm, h_mm) {
   txt <- function(label, x, y, hjust = 0, vjust = 1, col = INK, pt = F1H$text_pt)
     grid::textGrob(label, x = x, y = y, hjust = hjust, vjust = vjust, gp = grid::gpar(fontsize = pt, fontfamily = "sans", col = col))
   pt_key <- function(pch, y) grid::pointsGrob(x = left + grid::unit(0.9, "mm"), y = y, pch = pch, size = grid::unit(1.9, "mm"),
-                                              gp = grid::gpar(col = F1H$point_colour, fill = "grey35", lwd = 0.6))
+                                              gp = grid::gpar(col = "grey35"))
   key_y <- c(Female = 7.4, Male = 9.6)
   scatter <- ggplot(A2, aes(observed_CombZ, heldout_prediction)) +
     geom_abline(slope = 1, intercept = 0, linetype = "22", linewidth = F1H$identity_lw, colour = "grey55") +
-    geom_point(aes(fill = Group, shape = Sex), size = F1H$point_size + 0.35, stroke = F1H$point_stroke, colour = F1H$point_colour) +
-    scale_fill_manual(values = GROUP_COL, guide = "none") + scale_shape_manual(values = F1V2_SEX_SHAPE, guide = "none") +
+    geom_point(aes(colour = Group, shape = Sex), size = F1H$point_size + 0.35) +
+    scale_colour_manual(values = GROUP_COL, guide = "none") + scale_shape_manual(values = F1V2_SEX_SHAPE, guide = "none") +
     scale_x_continuous(labels = f1_minus_labels) + scale_y_continuous(labels = f1_minus_labels) +
     coord_cartesian(xlim = lim, ylim = lim) +
     annotation_custom(f1h_math_grob(f1h_expr("'LOAO ' * italic('R² ') * '= ' * %s", fa("e_loao")), x = left, y = top(2.4), hjust = 0)) +
     annotation_custom(f1h_math_grob(f1h_expr("'Baseline ' * italic('R² ') * '= ' * %s", fa("e_base")), x = left, y = top(4.6), hjust = 0)) +
-    annotation_custom(pt_key(21, top(key_y[["Female"]]))) + annotation_custom(txt("Female", left + grid::unit(2.2, "mm"), top(key_y[["Female"]] - 0.9))) +
-    annotation_custom(pt_key(24, top(key_y[["Male"]]))) + annotation_custom(txt("Male", left + grid::unit(2.2, "mm"), top(key_y[["Male"]] - 0.9))) +
+    annotation_custom(pt_key(F1V2_SEX_SHAPE[["Female"]], top(key_y[["Female"]]))) + annotation_custom(txt("Female", left + grid::unit(2.2, "mm"), top(key_y[["Female"]] - 0.9))) +
+    annotation_custom(pt_key(F1V2_SEX_SHAPE[["Male"]], top(key_y[["Male"]]))) + annotation_custom(txt("Male", left + grid::unit(2.2, "mm"), top(key_y[["Male"]] - 0.9))) +
     annotation_custom(txt("CON", left, top(11.4), col = GROUP_COL[["CON"]])) +
     annotation_custom(txt("RES", left, top(13.5), col = s14_darken(GROUP_COL[["RES"]], 0.25))) +
     annotation_custom(txt("SUS", left, top(15.6), col = GROUP_COL[["SUS"]])) +
     labs(x = "Observed Integrated Resilience", y = "Held-out predicted Integrated Resilience") +
     theme_f1(style = "house") +
-    theme(axis.title.x = element_text(margin = margin(t = 1.5)), plot.margin = margin(1, 1, 1, 1))
+    theme(aspect.ratio = 1, axis.title.x = element_text(margin = margin(t = 1.5)), plot.margin = margin(1, 1, 1, 1))
   inset <- ggplot(nulls, aes(performance_value)) +
     geom_histogram(bins = 24, fill = "grey78", colour = "white", linewidth = 0.12) +
     geom_vline(xintercept = obs, linewidth = 0.45, colour = GROUP_COL[["SUS"]]) +

@@ -11,6 +11,20 @@ manuscript_figure_contract_path <- function() {
   repo_path("figures", "figure_contract.yml")
 }
 
+# Extended Data numbers live in one place, the extended_data_number of each figure
+# in figures/figure_contract.yml (renumbered by first citation on 2026-10-20). The
+# vendored output-namespace helper carries its own fixed key -> stub list; it is
+# replaced here by the list the contract implies, so the vendored file stays
+# byte-identical to pRoteomics and no number is written twice.
+local({
+  if (requireNamespace("yaml", quietly = TRUE) && file.exists(manuscript_figure_contract_path())) {
+    figs <- yaml::read_yaml(manuscript_figure_contract_path())$figures
+    ed <- Filter(function(f) !is.null(f$extended_data_number), figs)
+    MANUSCRIPT_EXTENDED_DATA_STUBS <<- vapply(ed, function(f)
+      sprintf("extended_data_%02d", as.integer(f$extended_data_number)), "")
+  }
+})
+
 manuscript_figure_args <- function(args = commandArgs(trailingOnly = TRUE)) {
   value_for <- function(flag) {
     exact <- which(args == flag)
@@ -368,10 +382,37 @@ manuscript_figure_placeholder_svg <- function(path, panel_id) {
   invisible(path)
 }
 
-manuscript_figure_assemble_svg <- function(panel_paths, panels, figure, target) {
-  if (!requireNamespace("base64enc", quietly = TRUE)) {
-    stop("Package 'base64enc' is required for self-contained SVG assembly.", call. = FALSE)
+# A panel SVG drawn inline as one group, scaled and centred into its box as
+# preserveAspectRatio "xMidYMid meet" would place it, with its ids renamed so
+# that the clip paths of different panels cannot collide. Panels used to be
+# embedded as <image> data URIs, which Illustrator cannot open (it reports a
+# missing linked file "").
+manuscript_figure_inline_panel <- function(path, x, y, w, h, key, label) {
+  attr_of <- function(tag, n) sub(paste0(".*\\s", n, "=['\"]([^'\"]*)['\"].*"), "\\1", tag)
+  inner <- paste(readLines(path, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  inner <- sub("^\\s*<\\?xml[^>]*\\?>\\s*", "", inner)
+  open <- regmatches(inner, regexpr("<svg\\s[^>]*>", inner))
+  if (!length(open) || !grepl("viewBox=", open, fixed = TRUE)) {
+    stop("Panel SVG has no viewBox: ", path, call. = FALSE)
   }
+  vb <- as.numeric(strsplit(trimws(attr_of(open, "viewBox")), "[ ,]+")[[1]])
+  s <- min(w / vb[3], h / vb[4])
+  tx <- x + (w - vb[3] * s) / 2 - vb[1] * s
+  ty <- y + (h - vb[4] * s) / 2 - vb[2] * s
+  ids <- unique(regmatches(inner, gregexpr("(?<=\\sid=['\"])[^'\"]+", inner, perl = TRUE))[[1]])
+  for (j in seq_along(ids)) {
+    new <- sprintf("p%d_%d", key, j)
+    inner <- gsub(paste0("url(#", ids[j], ")"), paste0("url(#", new, ")"), inner, fixed = TRUE)
+    for (q in c("'", '"')) {
+      inner <- gsub(paste0(" id=", q, ids[j], q), paste0(" id=", q, new, q), inner, fixed = TRUE)
+      inner <- gsub(paste0("href=", q, "#", ids[j], q), paste0("href=", q, "#", new, q), inner, fixed = TRUE)
+    }
+  }
+  inner <- sub("<svg\\s[^>]*>", sprintf('<g id="panel_%s" transform="translate(%.4f %.4f) scale(%.6f)">', label, tx, ty, s), inner)
+  sub("</svg>\\s*$", "</g>", inner)
+}
+
+manuscript_figure_assemble_svg <- function(panel_paths, panels, figure, target) {
   width <- as.numeric(figure$width_mm)
   height <- as.numeric(figure$height_mm)
 
@@ -412,8 +453,8 @@ manuscript_figure_assemble_svg <- function(panel_paths, panels, figure, target) 
     w <- cell_width * colspan + gap * (colspan - 1L)
     h <- cell_height
     }
-    uri <- base64enc::dataURI(file = panel_paths[[as.character(panel$id)]], mime = "image/svg+xml")
     label <- sub("^[0-9]+", "", as.character(panel$id))
+    path <- panel_paths[[as.character(panel$id)]]
     items <- if (absolute) {
       # Match the producing layer's own composition exactly: the panel occupies
       # its whole declared box and the letter is drawn over the top-left corner.
@@ -425,13 +466,15 @@ manuscript_figure_assemble_svg <- function(panel_paths, panels, figure, target) 
       # points. 8 pt is the producing layer's panel_label_pt, and the baseline
       # offset reproduces the grid placement it uses.
       lab_mm <- 8 * 25.4 / 72
+      # a single-panel figure has no letter (its panel id is the bare number)
       c(items,
-        sprintf('<image x="%.3f" y="%.3f" width="%.3f" height="%.3f" preserveAspectRatio="xMidYMid meet" href="%s"/>', x, y, w, h, uri),
-        sprintf('<text x="%.3f" y="%.3f" fill="black" font-family="Arial" font-size="%.3f" font-weight="bold">%s</text>',
-                x, y + lab_mm * 0.92, lab_mm, label))
+        manuscript_figure_inline_panel(path, x, y, w, h, i, label),
+        if (nzchar(label))
+          sprintf('<text x="%.3f" y="%.3f" fill="black" font-family="Arial" font-size="%.3f" font-weight="bold">%s</text>',
+                  x, y + lab_mm * 0.92, lab_mm, label))
     } else {
       c(items,
-        sprintf('<image x="%.3f" y="%.3f" width="%.3f" height="%.3f" preserveAspectRatio="xMidYMid meet" href="%s"/>', x, y + 4, w, h - 4, uri),
+        manuscript_figure_inline_panel(path, x, y + 4, w, h - 4, i, label),
         sprintf('<rect x="%.3f" y="%.3f" width="7" height="7" fill="white" fill-opacity="0.9"/>', x, y),
         sprintf('<text x="%.3f" y="%.3f" fill="black" font-family="Arial" font-size="5" font-weight="bold">%s</text>', x + 0.8, y + 5.2, label))
     }
@@ -439,7 +482,7 @@ manuscript_figure_assemble_svg <- function(panel_paths, panels, figure, target) 
   dir_create(dirname(target))
   writeLines(c(
     '<?xml version="1.0" encoding="UTF-8"?>',
-    sprintf('<svg xmlns="http://www.w3.org/2000/svg" width="%smm" height="%smm" viewBox="0 0 %s %s">', width, height, width, height),
+    sprintf('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="%smm" height="%smm" viewBox="0 0 %s %s">', width, height, width, height),
     '<rect width="100%" height="100%" fill="white"/>',
     items,
     '</svg>'
@@ -447,62 +490,11 @@ manuscript_figure_assemble_svg <- function(panel_paths, panels, figure, target) 
   invisible(target)
 }
 
-# Rasterise an assembled page at `dpi`, on white. The assembler embeds each
-# panel as an <image> data URI, and librsvg (magick) rasterises such an image at
-# the panel's intrinsic size and then scales it, so a raster of the assembled
-# SVG read as one document is blurred (the behaviour candidates work around the
-# same thing with inline_for_raster()). Here each embedded panel is rasterised
-# on its own at the resolution of its box and placed as the <image> places it
-# (preserveAspectRatio "xMidYMid meet"); the rest of the page - panel letters
-# and their white boxes - is the page rendered without its images, drawn on top.
-# A page with no embedded SVG panels is read as one document, as before.
+# Rasterise an assembled page at `dpi`, on white. The panels are drawn inline
+# as vectors, so librsvg (magick) renders the whole page at full resolution.
 manuscript_figure_rasterize <- function(svg_path, dpi = 300) {
-  x <- readLines(svg_path, warn = FALSE, encoding = "UTF-8")
-  embedded <- grepl('^<image .*href="data:image/svg\\+xml;base64,', x)
-  if (!any(embedded)) {
-    image <- magick::image_read(svg_path, density = dpi)
-    return(magick::image_background(image, "white", flatten = TRUE))
-  }
-  at <- function(a, n) as.numeric(sub(paste0('.*\\s', n, '="([-0-9.]+)".*'), "\\1", a))
-  px <- function(mm) as.integer(round(mm * dpi / 25.4))
-  # the assembler's viewBox is the page in millimetres
-  view <- as.numeric(strsplit(sub('.*viewBox="([^"]+)".*', "\\1", x[grep("^<svg ", x)[1]]), " ")[[1]])
-  tmp <- tempfile(fileext = ".svg")
-  on.exit(unlink(tmp), add = TRUE)
-  draw <- function(lines) {
-    writeLines(lines, tmp, useBytes = TRUE)
-    image <- magick::image_background(magick::image_read(tmp, density = dpi), "white", flatten = TRUE)
-    if (!identical(as.integer(unlist(magick::image_info(image)[c("width", "height")])),
-                   px(view[3:4])))
-      image <- magick::image_resize(image, sprintf("%dx%d!", px(view[3]), px(view[4])))
-    image
-  }
-  # the empty page, drawn like the rest so it carries the same resolution
-  page <- draw(x[grepl("^(<\\?xml|<svg |</svg>)", x)])
-  for (a in x[embedded]) {
-    box <- c(at(a, "x"), at(a, "y"), at(a, "width"), at(a, "height"))
-    writeBin(base64enc::base64decode(sub('.*href="data:image/svg\\+xml;base64,([^"]+)".*', "\\1", a)), tmp)
-    panel <- magick::image_read(tmp, density = dpi)
-    natural <- unlist(magick::image_info(panel)[c("width", "height")])
-    fit <- min(px(box[3]) / natural[1], px(box[4]) / natural[2])
-    # a panel authored at another size is re-read at the density that fits it
-    if (abs(fit - 1) > 0.005) panel <- magick::image_read(tmp, density = dpi * fit)
-    size <- pmax(1L, as.integer(round(natural * fit)))
-    if (!identical(as.integer(unlist(magick::image_info(panel)[c("width", "height")])), size))
-      panel <- magick::image_resize(panel, sprintf("%dx%d!", size[1], size[2]))
-    page <- magick::image_composite(page, panel, offset = sprintf("+%d+%d",
-      px(box[1]) + (px(box[3]) - size[1]) %/% 2L, px(box[2]) + (px(box[4]) - size[2]) %/% 2L))
-  }
-  # librsvg as called by magick always paints an opaque background, so the rest
-  # is rendered on white (W) and on black (B): drawn over the panels it is
-  # exactly B + page * (W - B)
-  rest <- x[!embedded & x != '<rect width="100%" height="100%" fill="white"/>']
-  on_white <- draw(rest)
-  on_black <- draw(append(rest, '<rect width="100%" height="100%" fill="black"/>',
-                          after = grep("^<svg ", rest)[1]))
-  page <- magick::image_composite(page, operator = "Multiply",
-    magick::image_composite(on_white, on_black, operator = "Difference"))
-  magick::image_composite(page, on_black, operator = "Plus")
+  image <- magick::image_read(svg_path, density = dpi)
+  magick::image_background(image, "white", flatten = TRUE)
 }
 
 manuscript_figure_raster_companions <- function(svg_path, png_path, pdf_path) {

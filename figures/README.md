@@ -92,14 +92,14 @@ from the frozen imports in `source_data/pRoteomics/`, grouped by the single
 `tools/promote_manuscript_render.R figure_03`. (In the superseded v2 grid,
 Figure 3e was a WGCNA_m12 filter of the three-module display source.)
 
-Figure 2 and the proteomics Extended Data (1, 2, 3, 6 and 8) are rendered here
+Figure 2 and the proteomics Extended Data (6 to 10) are rendered here
 too, by `figures/final_truth_v9_figure_02.R` and
 `figures/final_truth_v9_extended_data.R`, and published from `figures/main/`
 and `figures/extended_data/`. Identities rendered at one commit are promoted
 together, in one call:
 
 ```powershell
-Rscript "tools/promote_manuscript_render.R" figure_02 figure_03 extended_data_01 extended_data_02 extended_data_03 extended_data_06 extended_data_08
+Rscript "tools/promote_manuscript_render.R" figure_02 figure_03 extended_data_06 extended_data_07 extended_data_08 extended_data_09 extended_data_10
 ```
 
 The three inputs recorded as PROVENANCE_ONLY (above the import size ceiling)

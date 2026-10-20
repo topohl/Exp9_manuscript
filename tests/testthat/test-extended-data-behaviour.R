@@ -59,11 +59,12 @@ testthat::test_that("the contract declares the panels the renderer writes, from 
   source(repo_path("R", "manuscript_figure_utils.R"))
   testthat::skip_if_not_installed("yaml")
   B <- ed_bundles()
-  cov <- manuscript_figure_contract("ED_behaviour_coverage"); sec <- manuscript_figure_contract("ED_behaviour_secondary")
-  testthat::expect_identical(vapply(cov$panels, function(x) as.character(x$id), character(1)), c("05a", "05b"))
-  testthat::expect_identical(vapply(sec$panels, function(x) as.character(x$id), character(1)), c("09a", "09b", "09c"))
-  testthat::expect_identical(as.character(cov$canonical_publication_id), "extended_data_05")
-  testthat::expect_identical(as.character(sec$canonical_publication_id), "extended_data_09")
+  cov <- manuscript_figure_contract("ED_behaviour_models"); sec <- manuscript_figure_contract("ED_behaviour_secondary")
+  # one panel, so no letter
+  testthat::expect_identical(vapply(cov$panels, function(x) as.character(x$id), character(1)), "04")
+  testthat::expect_identical(vapply(sec$panels, function(x) as.character(x$id), character(1)), c("05a", "05b", "05c"))
+  testthat::expect_identical(as.character(cov$canonical_publication_id), "extended_data_04")
+  testthat::expect_identical(as.character(sec$canonical_publication_id), "extended_data_05")
   for (fig in list(cov, sec)) {
     testthat::expect_identical(as.character(fig$behaviour_bundle_id), B$pin$bundle_id)
     testthat::expect_identical(as.character(fig$figure_support_bundle_id), B$fsb$bundle_id)
@@ -73,7 +74,7 @@ testthat::test_that("the contract declares the panels the renderer writes, from 
       src <- as.character(panel$primary_source)
       testthat::expect_true(startsWith(src, paste0("source_data/MMMSociability/", B$pin$bundle_id, "/")) ||
                               startsWith(src, paste0("source_data/MMMSociability/", B$fsb$bundle_id, "/")), info = src)
-      if (!(panel$id == "05a" && is.null(B$E3))) testthat::expect_true(file.exists(repo_path(src)), info = src)
+      testthat::expect_true(file.exists(repo_path(src)), info = src)
     }
   }
 })
@@ -87,7 +88,7 @@ testthat::test_that("ED9 a is honest about what it can draw: effect sizes, no pe
   testthat::expect_setequal(B$EM$member[B$EM$family_id == "PR1"], paste0("spearman|", c("Movement_mean", "Movement_rmssd", "Entropy_acf1")))
 })
 
-testthat::test_that("ED5 a states the coverage aggregate Stage 09 exports (fsb E3, fsb_v5 on)", {
+testthat::test_that("the early-window coverage the ED4 legend states is the Stage 09 aggregate (fsb E3)", {
   B <- ed_bundles()
   testthat::skip_if(is.null(B$E3), "the pinned figure-support bundle has no E3 (fsb_v5 on)")
   testthat::expect_identical(nrow(B$E3), 1L)
@@ -97,10 +98,11 @@ testthat::test_that("ED5 a states the coverage aggregate Stage 09 exports (fsb E
 
 testthat::test_that("the Extended Data namespace resolves and still fails closed", {
   source(testthat::test_path("..", "..", "R", "paths.R"))
-  source(repo_path("R", "output_namespace_utils.R"))
+  # the manuscript layer derives the Extended Data stubs from the contract's numbers
+  source(repo_path("R", "manuscript_figure_utils.R"))
   paths <- output_namespace_manuscript_figure_paths("/tmp/root", "ED_behaviour_secondary")
-  testthat::expect_true(grepl("extended_data_09$", paths$figures))
-  testthat::expect_true(grepl("extended_data_09$", paths$source_data))
+  testthat::expect_true(grepl("extended_data_05$", paths$figures))
+  testthat::expect_true(grepl("extended_data_05$", paths$source_data))
   testthat::expect_true(grepl("figure_01$", output_namespace_manuscript_figure_paths("/tmp/root", "01")$figures))
   testthat::expect_error(output_namespace_manuscript_figure_paths("/tmp/root", "07"), "must be one of")
   testthat::expect_error(output_namespace_manuscript_figure_paths("/tmp/root", "ED_nonsense"), "must be one of")

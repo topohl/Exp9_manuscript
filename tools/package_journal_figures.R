@@ -51,7 +51,7 @@ if (!file.exists(REGISTRY)) {
 reg <- utils::read.csv(REGISTRY, stringsAsFactors = FALSE)
 canon <- reg[reg$status == "CANONICAL", , drop = FALSE]
 
-## Journal naming: figure_02 -> Figure_2, extended_data_01 -> Extended_Data_Figure_1
+## Journal naming: figure_02 -> Figure_2, extended_data_01 -> Extended_Data_Figure_1 (the id carries the number)
 journal_name <- function(pid) {
   n <- as.integer(sub("^.*_", "", pid))
   if (startsWith(pid, "figure_")) sprintf("Figure_%d", n)

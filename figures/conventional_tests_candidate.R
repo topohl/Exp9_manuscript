@@ -48,12 +48,11 @@ ct_render <- function(out) {
        (patchwork::wrap_elements(full = ct_combz_spread(X)) / patchwork::wrap_elements(full = ct_ratio_forest(X)) + patchwork::plot_layout(heights = c(1, 1.05))) +
        patchwork::plot_layout(widths = c(.8, 1.2))) +
     patchwork::plot_layout(heights = c(62, 108)), P)
-  ed12 <- ct_tag(ct_validation(X) + patchwork::plot_annotation(title = "Males",
-    theme = ggplot2::theme(plot.title = ggplot2::element_text(face = "bold", size = P$typography$axis_title_pt, family = P$typography$family))), P)
+  ed12 <- ct_tag(ct_validation(X), P)   # males only, which the legend states
 
   dir.create(out, recursive = TRUE)
-  ct_save(ed10, file.path(out, "extended_data_10_candidate")); ct_save(ed11, file.path(out, "extended_data_11_candidate"))
-  ct_save(ed12, file.path(out, "extended_data_12_candidate"), h = 64)   # square panels: the height follows the width
+  ct_save(ed10, file.path(out, "conventional_tests_page")); ct_save(ed11, file.path(out, "physiology_page"))
+  ct_save(ed12, file.path(out, "scoring_validation_page"), h = 64)   # square panels: the height follows the width
 
   # per-panel source data: the bundle rows each panel draws, plus the stored rows its legend quotes
   w <- function(x, f) utils::write.csv(x, file.path(out, f), row.names = FALSE, na = "")
@@ -87,12 +86,13 @@ ct_render <- function(out) {
 # The three pages under their publication identities: the assembled page, one source-data table per panel (the panel's tables
 # stacked, column "table"), a run manifest per identity and one producer render record, all naming the commit and whether the
 # code was clean, so that the promotion tool refuses a render of other or uncommitted code.
-CT_PUB <- c(extended_data_10 = "extended_data_10_candidate", extended_data_11 = "extended_data_11_candidate", extended_data_12 = "extended_data_12_candidate")
+# publication ids follow figures/figure_contract.yml (Extended Data 1-3 since the renumbering of 2026-10-20)
+CT_PUB <- c(extended_data_01 = "scoring_validation_page", extended_data_02 = "conventional_tests_page", extended_data_03 = "physiology_page")
 CT_PANEL_TABLES <- list(
-  extended_data_10 = list(a = c("ed10a_values", "ed10a_group_means", "ed10a_brackets"), b = "ed10b_heatmap",
+  extended_data_02 = list(a = c("ed10a_values", "ed10a_group_means", "ed10a_brackets"), b = "ed10b_heatmap",
                           c = c("ed10c_values", "ed10c_group_means", "ed10c_contrasts", "ed10c_interaction"), d = "ed10d_sessions"),
-  extended_data_11 = list(a = c("ed11a_values", "ed11a_group_means", "ed11a_brackets"), b = "ed11b_heatmap", c = c("ed11c_combz_values", "ed11c_combz_tails"), d = "ed11d_spread"),
-  extended_data_12 = list(a = "Plus maze", b = "Novel object", c = "Social tests"))
+  extended_data_03 = list(a = c("ed11a_values", "ed11a_group_means", "ed11a_brackets"), b = "ed11b_heatmap", c = c("ed11c_combz_values", "ed11c_combz_tails"), d = "ed11d_spread"),
+  extended_data_01 = list(a = "Plus maze", b = "Novel object", c = "Social tests"))
 CT_RECORD <- c("logs", "manuscript_figures", "conventional_tests", "render_record.yml")
 
 ct_stack <- function(tabs) { tabs <- Filter(function(x) nrow(x) > 0, tabs); cols <- unique(unlist(lapply(tabs, names)))
@@ -100,7 +100,7 @@ ct_stack <- function(tabs) { tabs <- Filter(function(x) nrow(x) > 0, tabs); cols
 ct_panel_source_data <- function(dir, pid, out) {
   rd <- function(f) utils::read.csv(file.path(dir, paste0(f, ".csv")), check.names = FALSE, stringsAsFactors = FALSE)
   vapply(names(CT_PANEL_TABLES[[pid]]), function(p) { spec <- CT_PANEL_TABLES[[pid]][[p]]
-    tab <- if (pid == "extended_data_12") {
+    tab <- if (pid == "extended_data_01") {
       pr <- rd("ed12_validation_pairs"); ag <- rd("ed12_agreement"); assay <- c(`Plus maze` = "EPM", `Novel object` = "NOR", `Social tests` = "SocP")[[spec]]
       ct_stack(list(cbind(table = "pairs", pr[pr$block == spec, ]), cbind(table = "agreement", ag[ag$assay == assay, ])))
     } else ct_stack(lapply(spec, function(f) { x <- rd(f); if (nrow(x)) cbind(table = sub("^ed[0-9]+[a-d]_", "", f), x) else x }))

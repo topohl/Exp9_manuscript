@@ -199,18 +199,18 @@ s5_ed_ca2_displacement <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   b$flag <- ifelse(b$qc_flag == "PASS", "", b$qc_flag)
   p <- ggplot2::ggplot(b, ggplot2::aes(fraction_missing_preimputation,
                                        mean_centred_value_of_always_observed_proteins)) +
-    # group by shape as well as fill, with a dark rim: the palette's RES (v3) is
-    # light and nearly grey, so colour alone must not carry group
-    ggplot2::geom_point(ggplot2::aes(fill = StressGroup, shape = StressGroup),
-                        size = 1.3, colour = "grey20", stroke = 0.3) +
+    # group by shape as well as colour: the palette's RES (v3) is light and
+    # nearly grey, so colour alone must not carry group (no symbol outlines)
+    ggplot2::geom_point(ggplot2::aes(colour = StressGroup, shape = StressGroup),
+                        size = 1.4) +
     ggplot2::geom_text(ggplot2::aes(label = flag), family = fam, size = hv_size(5),
                        vjust = -0.9, colour = "grey25") +
-    ggplot2::scale_fill_manual(values = hv_group_colours(), name = NULL) +
-    ggplot2::scale_shape_manual(values = c(CON = 21, RES = 24, SUS = 22), name = NULL) +
-    ggplot2::labs(x = "fraction missing before imputation",
-                  y = "centred value of proteins\nobserved in every sample") +
+    ggplot2::scale_colour_manual(values = hv_group_colours(), name = NULL) +
+    ggplot2::scale_shape_manual(values = c(CON = 16, RES = 17, SUS = 15), name = NULL) +
+    ggplot2::labs(x = "Fraction missing before imputation",
+                  y = "Centred value of proteins\nobserved in every sample") +
     hv_theme(grid = "y") +
-    ggplot2::theme(legend.position = "right")
+    ggplot2::theme(legend.position = "right", aspect.ratio = 1)
   b$mechanism <- paste0(
     "per-sample median centring uses observed values only, so a heavily ",
     "missing sample gets an inflated median and every one of its proteins is ",
@@ -465,19 +465,27 @@ s5_ed_network_distance <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   d$off <- (stats::ave(seq_len(nrow(d)), paste(d$lab, d$Group),
                        FUN = seq_along) - 2) * 0.16
   d$xpos <- as.integer(d$Group) + d$off
+  # the exact whole-network permutation p of each compartment, printed in its
+  # facet (it replaced a separate panel that showed only these three values)
+  nt <- hv_read_csv(repo_path(as.character(unlist(panel$input_dependencies))[1]))
+  pl <- data.frame(lab = factor(hv_dataset_label(nt$dataset), levels = levels(d$lab)),
+                   label = sprintf("P = %.2f", nt$exact_p), stringsAsFactors = FALSE)
   p <- ggplot2::ggplot(d, ggplot2::aes(xpos, value)) +
     ggplot2::stat_summary(ggplot2::aes(x = as.integer(Group)), fun = mean,
                           geom = "crossbar", width = 0.5, linewidth = 0.2,
                           colour = "grey55") +
-    # a dark rim keeps the light RES grey (palette v3) visible on white
-    ggplot2::geom_point(ggplot2::aes(fill = Group), shape = 21, size = 1.3,
-                        colour = "grey20", stroke = 0.3) +
-    ggplot2::scale_fill_manual(values = grp, guide = "none") +
+    ggplot2::geom_point(ggplot2::aes(colour = Group), shape = 16, size = 1.4) +
+    ggplot2::geom_text(data = pl, ggplot2::aes(x = 3.45, y = Inf, label = label),
+                       inherit.aes = FALSE, hjust = 1, vjust = 1.3, family = fam,
+                       size = hv_size(5), colour = "grey25") +
+    ggplot2::scale_colour_manual(values = grp, guide = "none") +
     ggplot2::scale_x_continuous(breaks = 1:3, labels = c("CON", "RES", "SUS"),
                                 limits = c(0.5, 3.5)) +
     ggplot2::facet_wrap(~lab, nrow = 1, scales = "free_y") +
-    ggplot2::labs(x = NULL, y = "network distance from CON consensus") +
+    ggplot2::labs(x = NULL, y = "Network distance\nfrom CON consensus") +
     hv_theme(grid = "y")
+  d$exact_permutation_p <- nt$exact_p[match(as.character(d$dataset), nt$dataset)]
+  d$min_attainable_p <- nt$min_attainable_p[match(as.character(d$dataset), nt$dataset)]
   d$reading <- paste0("each point is one animal-level network replicate; CON ",
                       "animals use a leave-one-CON-out centroid so no animal ",
                       "is compared against a centroid containing itself; ",

@@ -87,7 +87,6 @@ testthat::test_that("incomplete candidates require an explicit output root", {
 testthat::test_that("SVG assembly is self-contained and preserves panel letters", {
   source(testthat::test_path("..", "..", "R", "paths.R"))
   source(repo_path("R", "manuscript_figure_utils.R"))
-  testthat::skip_if_not_installed("base64enc")
   root <- tempfile("figure-assembly-")
   dir.create(root)
   a <- file.path(root, "a.svg")
@@ -104,10 +103,43 @@ testthat::test_that("SVG assembly is self-contained and preserves panel letters"
     list(width_mm = 183, height_mm = 80), target
   )
   text <- paste(readLines(target, warn = FALSE), collapse = "\n")
-  testthat::expect_match(text, "data:image/svg+xml;base64", fixed = TRUE)
+  testthat::expect_match(text, '<g id="panel_a"', fixed = TRUE)
+  testthat::expect_match(text, 'fill="blue"', fixed = TRUE)
   testthat::expect_match(text, ">a</text>", fixed = TRUE)
   testthat::expect_match(text, ">b</text>", fixed = TRUE)
   testthat::expect_false(grepl(a, text, fixed = TRUE))
+})
+
+testthat::test_that("assembly inlines each panel with its own ids, as Illustrator can open it", {
+  source(testthat::test_path("..", "..", "R", "paths.R"))
+  source(repo_path("R", "manuscript_figure_utils.R"))
+  testthat::skip_if_not_installed("xml2")
+  root <- tempfile("figure-inline-")
+  dir.create(root)
+  panel <- function(path, fill) writeLines(c(
+    "<?xml version='1.0' encoding='UTF-8' ?>",
+    sprintf("<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='20pt' height='10pt' viewBox='0 0 20 10'><defs><clipPath id='cp1'><rect width='20' height='10'/></clipPath></defs><rect width='20' height='10' fill='%s' clip-path='url(#cp1)'/></svg>", fill)
+  ), path)
+  a <- file.path(root, "a.svg")
+  b <- file.path(root, "b.svg")
+  panel(a, "red")
+  panel(b, "blue")
+  target <- file.path(root, "assembled.svg")
+  manuscript_figure_assemble_svg(
+    c("9a" = a, "9b" = b),
+    list(list(id = "9a", x = 0, y = 0, w = 40, h = 40), list(id = "9b", x = 50, y = 0, w = 40, h = 40)),
+    list(width_mm = 100, height_mm = 50, layout_mode = "absolute"), target
+  )
+  text <- paste(readLines(target, warn = FALSE), collapse = "\n")
+  doc <- xml2::read_xml(target)
+  testthat::expect_false(grepl("data:image/svg", text, fixed = TRUE))
+  testthat::expect_false(grepl("<image", text, fixed = TRUE))
+  ids <- xml2::xml_attr(xml2::xml_find_all(doc, "//*[@id]"), "id")
+  testthat::expect_false(anyDuplicated(ids) > 0)
+  testthat::expect_true(all(c("panel_a", "panel_b") %in% ids))
+  # a 20 x 10 panel in a 40 x 40 box: scale 2, centred vertically
+  testthat::expect_match(text, 'id="panel_b" transform="translate(50.0000 10.0000) scale(2.000000)"', fixed = TRUE)
+  testthat::expect_match(text, "url(#p2_1)", fixed = TRUE)
 })
 
 testthat::test_that("the figure entry points live here and fit no models", {
@@ -131,7 +163,6 @@ testthat::test_that("an assembled page is rasterised with each panel drawn at th
   source(testthat::test_path("..", "..", "R", "paths.R"))
   source(repo_path("R", "manuscript_figure_utils.R"))
   testthat::skip_if_not_installed("magick")
-  testthat::skip_if_not_installed("base64enc")
   dir <- tempfile("raster_")
   dir.create(dir)
   on.exit(unlink(dir, recursive = TRUE), add = TRUE)
@@ -146,8 +177,8 @@ testthat::test_that("an assembled page is rasterised with each panel drawn at th
   grey <- as.integer(magick::image_data(magick::image_convert(img, colorspace = "gray"), "gray"))[, , 1]
   testthat::expect_identical(dim(grey), c(354L, 591L))
   # The black box spans x = 15-35 mm of the page (pixels 177.2-413.4) and the
-  # row is its middle. Read as one document, the embedded panel was scaled up
-  # from a low-resolution raster and this edge smeared over about 12 pixels.
+  # row is its middle. A panel embedded as an <image> was scaled up from a
+  # low-resolution raster and this edge smeared over about 12 pixels.
   row <- grey[178, ]
   testthat::expect_lt(row[181], 30)
   testthat::expect_gt(row[175], 225)

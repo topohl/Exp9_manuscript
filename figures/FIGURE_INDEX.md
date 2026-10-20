@@ -18,18 +18,16 @@ The **entry point** is what you run: it selects and validates the promoted artef
 
 | Identity | Renderer | Status |
 | --- | --- | --- |
-| extended_data_01 | `figures/final_truth_v9_extended_data.R` | CANONICAL |
-| extended_data_02 | `figures/final_truth_v9_extended_data.R` | CANONICAL |
-| extended_data_03 | `figures/final_truth_v9_extended_data.R` | CANONICAL |
-| extended_data_04 | `figures/final_truth_v9_extended_data.R` | WITHHELD_SCOPE_AND_UNSUPPORTED_SPATIAL_LABELS |
+| extended_data_01 | `figures/conventional_tests_candidate.R` | CANONICAL |
+| extended_data_02 | `figures/conventional_tests_candidate.R` | CANONICAL |
+| extended_data_03 | `figures/conventional_tests_candidate.R` | CANONICAL |
+| extended_data_04 | `figures/extended_data_behaviour_panels.R` | CANONICAL |
 | extended_data_05 | `figures/extended_data_behaviour_panels.R` | CANONICAL |
 | extended_data_06 | `figures/final_truth_v9_extended_data.R` | CANONICAL |
-| extended_data_07 | `figures/final_truth_v9_extended_data.R` | WITHHELD_UNUSED_AND_ARCHIVABLE |
+| extended_data_07 | `figures/final_truth_v9_extended_data.R` | CANONICAL |
 | extended_data_08 | `figures/final_truth_v9_extended_data.R` | CANONICAL |
-| extended_data_09 | `figures/extended_data_behaviour_panels.R` | CANONICAL |
-| extended_data_10 | `figures/conventional_tests_candidate.R` | CANONICAL |
-| extended_data_11 | `figures/conventional_tests_candidate.R` | CANONICAL |
-| extended_data_12 | `figures/conventional_tests_candidate.R` | CANONICAL |
+| extended_data_09 | `figures/final_truth_v9_extended_data.R` | CANONICAL |
+| extended_data_10 | `figures/final_truth_v9_extended_data.R` | CANONICAL |
 
 ## Every file in `figures/`
 

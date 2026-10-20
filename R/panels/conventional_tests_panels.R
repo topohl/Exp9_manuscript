@@ -74,7 +74,7 @@ CT_TITLE <- c(epm_open_pct = "Plus maze, open arms (%)", oft_centre_pct = "Open 
 # one short name per test, the same on every page
 CT_TESTSHORT <- c(`Elevated plus maze` = "Plus maze", `Open field` = "Open field", `Novel object recognition` = "Novel object", `Social preference` = "Social tests",
                   `Body weight` = "Body weight", `Organ weights` = "Organs", Corticosterone = "Corticosterone", `Sucrose preference` = "Sucrose")
-CT_FOREST <- c(`Integrated Resilience (CombZ)` = "CombZ", `Elevated plus maze: Open-arm share of time (%)` = "Plus maze, open arms",
+CT_FOREST <- c(`Integrated Resilience (CombZ)` = "Integrated resilience", `Elevated plus maze: Open-arm share of time (%)` = "Plus maze, open arms",
                `Open field: Time in centre (%)` = "Open field, centre", `Social preference: Social preference (D2)` = "Social preference D2",
                `Social preference: Social novelty preference (D2)` = "Social novelty D2",
                `Weight gain` = "Weight gain, weighings 2–6")   # the CombZ component, not the weight gain of the dot panel
@@ -232,7 +232,7 @@ ct_combz_spread <- function(X) {
     ggplot2::scale_linetype_identity() + ggplot2::scale_colour_manual(values = unlist(P$group)) +
     ggplot2::scale_x_continuous(breaks = 1:2, labels = c("CON", "SIS"), limits = c(.5, 2.5), expand = c(0, 0)) +
     ggplot2::scale_y_continuous(labels = ct_num, expand = ggplot2::expansion(mult = c(.05, .05))) +
-    ggplot2::facet_wrap(~panel, nrow = 1) + ggplot2::labs(x = NULL, y = "CombZ") + ct_theme(P) +
+    ggplot2::facet_wrap(~panel, nrow = 1) + ggplot2::labs(x = NULL, y = "Integrated resilience") + ct_theme(P) +
     ggplot2::theme(strip.text = ggplot2::element_text(face = "bold", size = T$axis_title_pt, colour = "black", hjust = 0))
 }
 

@@ -458,7 +458,7 @@ panels:
       - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
   - id: v9_ed_atlas_rescon
     renderer: f9_gsea_atlas
-    label_units: 3.5
+    label_units: 4.6
     role: gsea_support_three_contrast_pattern
     contrast: RES - CON
     spatial_axes: compartment+region+layer
@@ -468,7 +468,7 @@ panels:
     primary_source: results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
   - id: v9_ed_atlas_suscon
     renderer: f9_gsea_atlas
-    label_units: 3.5
+    label_units: 4.6
     role: gsea_support_three_contrast_pattern
     contrast: SUS - CON
     spatial_axes: compartment+region+layer
@@ -500,7 +500,7 @@ panels:
     main_or_ed: ed_unique
     narrative: >-
       CON molecular-similarity matrices with facet width proportional to unit
-      count, and the not-connectivity statement promoted into the title.
+      count; that this is not connectivity is stated in the legend.
     primary_source: results/tables/11_spatial_systems/networks/CON_spatial_molecular_similarity_matrix.csv
   - id: v9_ed_network_distance
     renderer: s5_ed_network_distance
@@ -508,8 +508,12 @@ panels:
     spatial_axes: compartment
     phenotype_axes: CON+RES+SUS
     main_or_ed: ed_unique
-    narrative: animal-level network distance from the CON consensus.
+    narrative: >-
+      animal-level network distance from the CON consensus, with each
+      compartment's exact whole-network permutation p printed in its facet.
     primary_source: results/tables/11_spatial_systems/networks/animal_network_distance_from_CON.csv
+    input_dependencies:
+      - results/tables/11_spatial_systems/networks/network_global_multivariate_test.csv
   - id: v9_ed_nulls
     renderer: f9_ed_nulls
     role: network_null
@@ -589,14 +593,15 @@ figures:
   - name: ED3_FINAL_V9
     figure_key: extended_data
     width_mm: 183
-    height_mm: 168
+    height_mm: 112
     question: Why the canonical DA table is unchanged while CA2-SLM interpretation is restricted.
+    # the class counts are carried by the key of the sensitivity panel; the
+    # three-bar count panel (v9_ed_ca2_classes) was dropped on 2026-10-20
     layout:
       - {panel: v9_ed_ca2_locator,     label: a, x: 4,   "y": 4,   w: 34,  h: 44}
       - {panel: v9_ed_ca2_missing,     label: b, x: 42,  "y": 4,   w: 137, h: 44}
-      - {panel: v9_ed_ca2_displacement, label: c, x: 4,  "y": 52,  w: 88,  h: 52}
-      - {panel: v9_ed_ca2_classes,     label: d, x: 96,  "y": 52,  w: 83,  h: 52}
-      - {panel: v9_ed_ca2_sensitivity, label: e, x: 4,   "y": 110, w: 175, h: 54}
+      - {panel: v9_ed_ca2_displacement, label: c, x: 4,  "y": 52,  w: 62,  h: 56}
+      - {panel: v9_ed_ca2_sensitivity, label: d, x: 70,  "y": 52,  w: 109, h: 56}
 
   - name: ED_WGCNA_FINAL_V9
     figure_key: extended_data
@@ -635,8 +640,9 @@ figures:
     width_mm: 183
     height_mm: 168
     question: What a spatial molecular network is, and what does not differ between groups.
+    # the whole-network permutation p values are printed in panel b's facets;
+    # the separate three-value panel (v9_ed_nulls) was dropped on 2026-10-20
     layout:
       - {panel: v9_ed_similarity,       label: a, x: 4,   "y": 4,   w: 175, h: 66}
-      - {panel: v9_ed_network_distance, label: b, x: 4,   "y": 74,  w: 110, h: 44}
-      - {panel: v9_ed_nulls,            label: c, x: 118, "y": 74,  w: 61,  h: 44}
-      - {panel: v9_ed_coupling,         label: d, x: 4,   "y": 122, w: 175, h: 42}
+      - {panel: v9_ed_network_distance, label: b, x: 4,   "y": 74,  w: 175, h: 44}
+      - {panel: v9_ed_coupling,         label: c, x: 4,   "y": 122, w: 175, h: 42}

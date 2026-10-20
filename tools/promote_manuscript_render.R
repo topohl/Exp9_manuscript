@@ -31,37 +31,36 @@
 #
 # Usage: Rscript tools/promote_manuscript_render.R figure_01
 #        Rscript tools/promote_manuscript_render.R figure_03
-#        Rscript tools/promote_manuscript_render.R figure_02 extended_data_01 extended_data_02 \
-#          extended_data_03 extended_data_06 extended_data_08
-#        Rscript tools/promote_manuscript_render.R extended_data_10 extended_data_11 extended_data_12
+#        Rscript tools/promote_manuscript_render.R figure_02 extended_data_06 extended_data_07 \
+#          extended_data_08 extended_data_09 extended_data_10
+#        Rscript tools/promote_manuscript_render.R extended_data_01 extended_data_02 extended_data_03
 #          (after Rscript figures/conventional_tests_candidate.R --publication at a clean HEAD)
 
 suppressWarnings(source(file.path("R", "paths.R")))
 
-SELF_RENDERED <- c("figure_02", "figure_03", "extended_data_01", "extended_data_02",
-                   "extended_data_03", "extended_data_06", "extended_data_08",
-                   "extended_data_10", "extended_data_11", "extended_data_12")
-CONVENTIONAL_TESTS <- c("extended_data_10", "extended_data_11", "extended_data_12")   # drawn from the pinned SISanalyzer bundle
-# where the producing layer of each self-rendered identity records its render;
-# one producer draws every Extended Data page, so those share its record
+REG <- repo_path("provenance", "publication_registry", "canonical_publication_registry.csv")
+reg <- utils::read.csv(REG, stringsAsFactors = FALSE, colClasses = "character")
+# The routes follow the registry rather than a list of numbers (the Extended Data
+# were renumbered on 2026-10-20): an identity rendered here or from the SISanalyzer
+# bundle is self-rendered, and its producer's render record follows its renderer.
+SELF_RENDERED <- reg$publication_id[reg$status == "CANONICAL" &
+                                    reg$originating_analysis %in% c("this repository", "SISanalyzer")]
 v9_record <- function(key) c("logs", "manuscript_candidates", "final_truth_v9", key, "render_record.yml")
+PRODUCER_BY_RENDERER <- list(
+  "figures/final_truth_v9_extended_data.R" = v9_record("extended_data"),
+  "figures/extended_data_behaviour_panels.R" = c("logs", "manuscript_figures", "extended_data_behaviour_panels", "render_record.yml"),
+  "figures/conventional_tests_candidate.R" = c("logs", "manuscript_figures", "conventional_tests", "render_record.yml"))
 PRODUCER_RECORD <- c(
   list(figure_01 = c("logs", "manuscript_figures", "figure_01_panels", "render_record.yml"),
-       figure_02 = v9_record("figure_02"), figure_03 = v9_record("figure_03"),
-       # ED5 and ED9 render from the pinned behaviour and figure-support bundles (since 2026-10-17), drawn by one producer
-       extended_data_05 = c("logs", "manuscript_figures", "extended_data_behaviour_panels", "render_record.yml"),
-       extended_data_09 = c("logs", "manuscript_figures", "extended_data_behaviour_panels", "render_record.yml")),
-  sapply(setdiff(grep("^extended_data_", SELF_RENDERED, value = TRUE), CONVENTIONAL_TESTS),
-         function(id) v9_record("extended_data"), simplify = FALSE),
-  sapply(CONVENTIONAL_TESTS, function(id) c("logs", "manuscript_figures", "conventional_tests", "render_record.yml"), simplify = FALSE))
+       figure_02 = v9_record("figure_02"), figure_03 = v9_record("figure_03")),
+  Filter(Negate(is.null), stats::setNames(lapply(reg$canonical_renderer, function(r) PRODUCER_BY_RENDERER[[r]]),
+                                          reg$publication_id)))
 
 args <- commandArgs(trailingOnly = TRUE)
 if (!length(args))
   stop("usage: Rscript tools/promote_manuscript_render.R <publication_id> [<publication_id> ...]",
        call. = FALSE)
 if (anyDuplicated(args)) stop("a publication id is named twice", call. = FALSE)
-REG <- repo_path("provenance", "publication_registry", "canonical_publication_registry.csv")
-reg <- utils::read.csv(REG, stringsAsFactors = FALSE, colClasses = "character")
 sha <- function(p) unname(tools::sha256sum(p))
 figures <- yaml::read_yaml(repo_path("figures", "figure_contract.yml"))$figures
 head <- git_commit_sha()

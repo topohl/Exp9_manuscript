@@ -276,7 +276,7 @@ hf_pca_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       values = stats::setNames(unname(hv_dataset_colours()[ds]),
                                sg_compartments()$short), name = NULL) +
     ggplot2::guides(colour = ggplot2::guide_legend(
-      nrow = 1, override.aes = list(size = 1.1))) +
+      ncol = 1, override.aes = list(size = 1.1))) +
     # typographic minus on both PC axes (2026-10-07), as on every v9 axis
     ggplot2::scale_x_continuous(labels = hv_minus_labels) +
     ggplot2::scale_y_continuous(labels = hv_minus_labels) +
@@ -284,11 +284,14 @@ hf_pca_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                   caption = "compartment only; region is not encoded at this size") +
     hf_theme() +
     ggplot2::theme(
-      legend.position = "bottom",
+      # a scatter is drawn square (house style); the key goes to the side so
+      # the square can use the box's height
+      aspect.ratio = 1,
+      legend.position = "right",
       legend.margin = ggplot2::margin(0, 0, 0, 0),
-      legend.box.margin = ggplot2::margin(-2, 0, 0, 0),
+      legend.box.margin = ggplot2::margin(0, 0, 0, -1),
       legend.key.size = ggplot2::unit(2.4, "mm"),
-      plot.margin = ggplot2::margin(1, 2, 1, 1, "mm"))
+      plot.margin = ggplot2::margin(1, 1, 1, 1, "mm"))
   write_csv_safe(d[, c("Sample", "PC1", "PC2", "dataset")], csv_path)
   hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))

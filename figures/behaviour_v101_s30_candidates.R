@@ -32,8 +32,7 @@
 #      draft legend: contract annotation_panels_legend, resolved here and not drawn), and the
 #      stored bundle rows behind those keys (row filtering only);
 #   5. assembles the candidate (manuscript_figure_assemble_svg, absolute layout, 8-pt letters)
-#      and rasterises it (manuscript_figure_raster_companions: PNG and raster PDF at 300 dpi,
-#      from a copy of the assembled page with the panels inlined, see inline_for_raster()); a
+#      and rasterises it (manuscript_figure_raster_companions: PNG and raster PDF at 300 dpi); a
 #      candidate with `assembly: vector_page` is instead drawn as ONE vector page (bh_save_page:
 #      the same panel plots at their boxes on one device, letters as the assembler draws them;
 #      SVG with live text and a cairo PDF with Arial embedded) with a 300-dpi PNG preview of the
@@ -325,28 +324,6 @@ bind_fill <- function(blocks) {
   }))
 }
 
-# The rasterisation source of an assembled SVG. manuscript_figure_assemble_svg embeds each panel as
-# an <image> data URI; librsvg (magick) rasterises such an image at the panel's intrinsic size and
-# then scales it, so a 300-dpi raster of the assembled SVG is blurred. This writes the same page
-# with each embedded panel inlined as a nested <svg> at the same box (x, y, width, height,
-# preserveAspectRatio as the <image>), which librsvg draws as vectors at the target density.
-# String handling only; the assembled SVG itself is the deliverable and is not changed.
-inline_for_raster <- function(assembled_svg, target) {
-  x <- readLines(assembled_svg, warn = FALSE, encoding = "UTF-8")
-  for (i in grep("^<image ", x)) {
-    a <- x[i]
-    at <- function(n) sub(paste0('.*\\b', n, '="([^"]+)".*'), "\\1", a)
-    inner <- rawToChar(base64enc::base64decode(sub('.*href="data:image/svg\\+xml;base64,([^"]+)".*', "\\1", a)))
-    Encoding(inner) <- "UTF-8"
-    inner <- sub("^<\\?xml[^>]*\\?>\\s*", "", inner)
-    inner <- sub("(<svg [^>]*?) width='[^']*' height='[^']*'", "\\1", inner, perl = TRUE)
-    x[i] <- sub("<svg ", sprintf('<svg x="%s" y="%s" width="%s" height="%s" preserveAspectRatio="%s" ',
-                                 at("x"), at("y"), at("width"), at("height"), at("preserveAspectRatio")), inner, fixed = TRUE)
-  }
-  writeLines(enc2utf8(x), target, useBytes = TRUE)
-  target
-}
-
 write_csv_utf8 <- function(d, path) {
   dir_create(dirname(path))
   utils::write.csv(d, path, row.names = FALSE, na = "", fileEncoding = "UTF-8")
@@ -457,10 +434,8 @@ for (key in names(CONTRACT$candidates)) {
   } else {
     figure <- list(width_mm = cand$width_mm, height_mm = cand$height_mm, layout_mode = "absolute")
     manuscript_figure_assemble_svg(asm_paths, asm, figure, asm_svg)
-    raster_src <- inline_for_raster(asm_svg, file.path(tempdir(), paste0(key, "_raster_source.svg")))
-    raster <- manuscript_figure_raster_companions(raster_src, file.path(dirs$assembled, paste0(key, ".png")),
+    raster <- manuscript_figure_raster_companions(asm_svg, file.path(dirs$assembled, paste0(key, ".png")),
                                                   file.path(dirs$assembled, paste0(key, ".pdf")))
-    unlink(raster_src)
   }
   if (length(raster) != 2L) stop(key, ": the PNG/PDF companions were not written.", call. = FALSE)
   note_output(key, "assembled_svg", asm_svg)

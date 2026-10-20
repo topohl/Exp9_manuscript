@@ -1,4 +1,4 @@
-# The conventional-tests Extended Data candidates (figures/conventional_tests_candidate.R): Extended Data 10 to 12.
+# The conventional-tests Extended Data (figures/conventional_tests_candidate.R): Extended Data 1 to 3 (10 to 12 until 2026-10-20).
 #
 # Portable: the pinned SISanalyzer bundle and the panel library only. The entry script is never sourced, so nothing is
 # rendered; each check compares what the panels would draw with the frozen bundle.
@@ -111,22 +111,23 @@ testthat::test_that("the automated validation values are the values the tests an
 })
 
 testthat::test_that("the numbers the legends quote from the locomotion interaction are the stored ones", {
-  leg <- function(n) paste(readLines(repo_path("manuscript", "legends", sprintf("extended_data_%d_legend.md", n)), encoding = "UTF-8", warn = FALSE), collapse = " ")
+  leg <- function(n) paste(readLines(repo_path("manuscript", "legends", sprintf("extended_data_%02d_legend.md", n)), encoding = "UTF-8", warn = FALSE), collapse = " ")
   i <- X$loco_int[X$loco_int$Test == "Group x sex", ]
-  testthat::expect_true(grepl(sprintf("F(%d, %d) = %.2f, P = %.3f", i$df1, i$df2, i$F, i$p), leg(10), fixed = TRUE))
-  for (n in 10:12) testthat::expect_true(grepl(X$pin$bundle_id, leg(n), fixed = TRUE), info = n)
+  testthat::expect_true(grepl(sprintf("F(%d, %d) = %.2f, P = %.3f", i$df1, i$df2, i$F, i$p), leg(2), fixed = TRUE))
+  for (n in 1:3) testthat::expect_true(grepl(X$pin$bundle_id, leg(n), fixed = TRUE), info = n)
 })
 
-testthat::test_that("the contract and the registry name the pinned bundle and this renderer for Extended Data 10 to 12", {
+testthat::test_that("the contract and the registry name the pinned bundle and this renderer for Extended Data 1 to 3", {
   y <- yaml::read_yaml(repo_path("figures", "figure_contract.yml"))$figures
   reg <- utils::read.csv(repo_path("provenance", "publication_registry", "canonical_publication_registry.csv"), colClasses = "character")
-  for (n in 10:12) {
-    f <- y[[sprintf("ED_%d", n)]]; pid <- sprintf("extended_data_%d", n); r <- reg[reg$publication_id == pid, ]
+  keys <- c("ED_scoring_validation", "ED_conventional_tests", "ED_physiology")
+  for (n in 1:3) {
+    f <- y[[keys[n]]]; pid <- sprintf("extended_data_%02d", n); r <- reg[reg$publication_id == pid, ]
     testthat::expect_identical(as.character(f$sisanalyzer_bundle_id), X$pin$bundle_id, info = pid)
     testthat::expect_identical(as.character(f$canonical_publication_id), pid)
     testthat::expect_false(isTRUE(f$rendering_repository_computes_statistics))
     testthat::expect_identical(nrow(r), 1L)
-    testthat::expect_identical(r$contract_key, sprintf("ED_%d", n))
+    testthat::expect_identical(r$contract_key, keys[n])
     testthat::expect_identical(r$originating_analysis, "SISanalyzer")
     testthat::expect_identical(r$canonical_renderer, "figures/conventional_tests_candidate.R")
     testthat::expect_identical(r$panels, paste(vapply(f$panels, function(p) as.character(p$id), ""), collapse = ","))

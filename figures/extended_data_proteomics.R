@@ -15,6 +15,7 @@
 source(file.path("R", "paths.R"))
 source(repo_path("R", "manuscript_figure_utils.R"))
 
-for (fig in c("ED_01", "ED_02", "ED_03", "ED_06", "ED_08")) {
+for (fig in c("ED_bilateral_precision", "ED_spatial_identity", "ED_ca2_slm_qc",
+              "ED_enrichment_atlas", "ED_spatial_networks")) {
   manuscript_figure_main(fig)
 }

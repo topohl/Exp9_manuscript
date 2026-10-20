@@ -25,8 +25,8 @@ f9_ed_bilateral_full <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   su$lab <- sub(" vs mean other", " vs rest", gsub("_", " ", su$contrast))
   su$ypos <- rev(seq_len(nrow(su)))
 
-  metrics <- c(pearson_r = "Pearson r", spearman_rho = "Spearman rho",
-               sign_agreement_fraction = "sign agreement")
+  metrics <- c(pearson_r = "Pearson r", spearman_rho = "Spearman ρ",
+               sign_agreement_fraction = "Sign agreement")
   metrics <- metrics[names(metrics) %in% names(su)]
   long <- do.call(rbind, lapply(names(metrics), function(m) data.frame(
     ypos = su$ypos, lab = su$lab, level = su$level,
@@ -48,12 +48,7 @@ f9_ed_bilateral_full <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                 expand = ggplot2::expansion(add = 0.8)) +
     ggplot2::scale_x_continuous(limits = c(0, 1.28), breaks = c(0, 0.5, 1)) +
     ggplot2::facet_wrap(~metric, nrow = 1) +
-    ggplot2::labs(x = NULL, y = NULL,
-                  caption = paste0(
-                    "Complete stored bilateral metric inventory for every ",
-                    "prespecified anatomical contrast. Main Figure 2f shows ",
-                    "only the left-right correlation and the ",
-                    "regional-versus-laminar split.")) +
+    ggplot2::labs(x = NULL, y = NULL) +
     hf_theme(grid = "x") +
     ggplot2::theme(axis.text.y = ggplot2::element_text(size = HF_MIN_PT),
                    legend.position = "bottom",
@@ -112,38 +107,35 @@ f9_ed_external_full <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   lim <- max(abs(k$NES), na.rm = TRUE) * c(-1, 1)
 
   p <- ggplot2::ggplot(k, ggplot2::aes(xpos, ypos)) +
-    ggplot2::geom_point(ggplot2::aes(fill = NES, size = kind, shape = kind,
-                                     colour = sig)) +
+    # significance is full colour against faded, not an outline (house style:
+    # no symbol borders)
+    ggplot2::geom_point(ggplot2::aes(colour = NES, size = kind, shape = kind,
+                                     alpha = sig)) +
     hv_diverging(limits = lim, name = "Normalised\nenrichment score",
                  labels = function(b) hv_minus(format(b, trim = TRUE)),
-                 guide = ggplot2::guide_colourbar(order = 2)) +
-    ggplot2::scale_shape_manual(values = c("expected pairing" = 21,
-                                           "specificity comparison" = 22),
+                 aesthetics = "colour",
+                 guide = ggplot2::guide_colourbar(order = 3)) +
+    ggplot2::scale_alpha_manual(values = c("TRUE" = 1, "FALSE" = 0.3),
+                                breaks = c("TRUE", "FALSE"),
+                                labels = c("FDR < 0.05", "not supported"),
+                                name = NULL,
+                                guide = ggplot2::guide_legend(order = 2,
+                                  override.aes = list(shape = 16, size = 1.8,
+                                                      colour = "grey30"))) +
+    ggplot2::scale_shape_manual(values = c("expected pairing" = 16,
+                                           "specificity comparison" = 15),
                                 name = NULL,
                                 guide = ggplot2::guide_legend(order = 1)) +
     ggplot2::scale_size_manual(values = c("expected pairing" = 2.4,
                                           "specificity comparison" = 1.5),
                                name = NULL,
                                guide = ggplot2::guide_legend(order = 1)) +
-    ggplot2::scale_colour_manual(values = c("TRUE" = "grey10", "FALSE" = "grey70"),
-                                 guide = "none") +
     ggplot2::scale_x_continuous(
       breaks = seq_along(sort(unique(k$external_signature))),
       labels = sort(unique(k$external_signature)), expand = c(0, 0.6)) +
     ggplot2::scale_y_continuous(breaks = seq_along(ord), labels = rev(ord),
                                 expand = c(0, 0.6)) +
-    ggplot2::labs(x = "external hippocampal signature", y = NULL,
-                  caption = paste0(
-                    "All ", nrow(k), " tested contrast-signature pairings: ",
-                    sum(k$kind == "expected pairing"), " expected (circles) and ",
-                    sum(k$kind == "specificity comparison"),
-                    " specificity comparisons (squares). Dark outline = ",
-                    "signature-family FDR < 0.05.\nThe ", length(ord), " contrasts and ",
-                    length(unique(k$external_signature)), " signatures form a ",
-                    length(ord) * length(unique(k$external_signature)),
-                    "-cell grid; only the structurally applicable pairs were ",
-                    "tested and only those are drawn. Main Figure 2g shows the ",
-                    "expected pairings alone.")) +
+    ggplot2::labs(x = "External hippocampal signature", y = NULL) +
     hf_theme() +
     ggplot2::theme(axis.text.y = ggplot2::element_text(size = HF_MIN_PT),
                    axis.text.x = ggplot2::element_text(size = HF_MIN_PT),
@@ -498,11 +490,7 @@ f9_ed_similarity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     uk <- u[u$dataset == d, , drop = FALSE]
     blocks[[d]] <- list(dataset = d, units = uk$analysis_key,
                         display = uk$display, n = nrow(uk), x0 = xoff + GUT,
-                        title = cs$display[k],
-                        count = sprintf("%d %s", nrow(uk),
-                                        if (identical(cs$resolution[k],
-                                                      "region_x_layer"))
-                                          "spatial units" else "regions"))
+                        title = cs$display[k])
     xoff <- xoff + GUT + nrow(uk) + GAP
   }
   nmax <- max(vapply(blocks, function(b) b$n, numeric(1)))
@@ -519,16 +507,15 @@ f9_ed_similarity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     x = b$x0 + seq_len(b$n), y = -b$n - 0.65, l = b$display,
     stringsAsFactors = FALSE)))
   hdr <- do.call(rbind, lapply(blocks, function(b) data.frame(
-    x = b$x0 - GUT + 0.2, t = b$title, c = b$count, stringsAsFactors = FALSE)))
+    x = b$x0 - GUT + 0.2, t = b$title, stringsAsFactors = FALSE)))
 
   # The omitted diagonal is drawn as grey tiles: under the white-zero palette
   # (v3) a blank diagonal would read as a correlation of zero.
   diag <- do.call(rbind, lapply(blocks, function(b) data.frame(
     x = b$x0 + seq_len(b$n), y = -seq_len(b$n), stringsAsFactors = FALSE)))
   x_end <- 30.0
-  ybot <- -(nmax + 0.65 + 1.85)
-  # the notes column: line pitch is set in cell units, so it stays tight
-  # whatever the block size
+  # room below the blocks for the rotated column labels (the longest, "CA1 SLM")
+  ybot <- -(nmax + 0.65 + 2.6)
   # The metric and the zero reference are common to all three blocks, so ONE
   # global zero-centred diverging scale is retained deliberately. Per-block
   # rescaling would make an identical colour mean a different correlation in
@@ -538,21 +525,6 @@ f9_ed_similarity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   # data and is stated here rather than engineered away. The scale is the
   # manuscript's fixed correlation limit (palette v3.1, +/-0.6), inside which
   # every value of this panel lies.
-  notes <- data.frame(
-    l = c("A value is the correlation between",
-          "two units' protein profiles, not a",
-          "projection.",
-          "CON animals only (n = 3); median",
-          "across animals; diagonal in grey.",
-          "Rows and columns of a block carry",
-          "the same units in the same order.",
-          "One scale centred on zero for all",
-          "three blocks. Soma and microglia",
-          "hold no positive value; per-protein",
-          "centring puts the no-structure",
-          "reference near -0.11 / -0.33 / -0.33."),
-    y = c(0, 0.62, 1.24, 2.20, 2.82, 3.78, 4.40, 5.36, 5.98, 6.60, 7.22, 7.84),
-    stringsAsFactors = FALSE)
 
   p <- ggplot2::ggplot() +
     ggplot2::geom_tile(data = tile, ggplot2::aes(x, y, fill = v),
@@ -566,21 +538,12 @@ f9_ed_similarity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_text(data = clab, ggplot2::aes(x, y, label = l), hjust = 1,
                        angle = 90, family = fam, size = hf_sz(5.0),
                        colour = "grey30") +
-    ggplot2::geom_text(data = hdr, ggplot2::aes(x, 1.45, label = t), hjust = 0,
+    ggplot2::geom_text(data = hdr, ggplot2::aes(x, 1.0, label = t), hjust = 0,
                        family = fam, size = hf_sz(5.4), fontface = "bold",
                        colour = "grey12") +
-    ggplot2::geom_text(data = hdr, ggplot2::aes(x, 0.52, label = c), hjust = 0,
-                       family = fam, size = hf_sz(5.0), colour = "grey40") +
-    ggplot2::geom_text(data = notes, ggplot2::aes(x = x_end + 1.2,
-                                                y = 0.55 - y, label = l),
-                       hjust = 0, family = fam, size = hf_sz(5.0),
-                       colour = "grey35") +
-    ggplot2::coord_fixed(ratio = 1, xlim = c(0, 41.5), ylim = c(ybot, 2.1),
+    ggplot2::coord_fixed(ratio = 1, xlim = c(0, x_end + 0.3), ylim = c(ybot, 2.0),
                          expand = FALSE) +
-    ggplot2::labs(
-      x = NULL, y = NULL,
-      title = paste0("Molecular similarity between spatial proteomic profiles",
-                     " \u2014 NOT anatomical connectivity")) +
+    ggplot2::labs(x = NULL, y = NULL) +
     ggplot2::theme_void(base_family = fam) +
     ggplot2::theme(
       text = ggplot2::element_text(family = fam, size = HF_MIN_PT),
@@ -648,11 +611,7 @@ f9_ed_fingerprint_full <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                       size = hf_sz(5.4), fontface = "bold", colour = "grey12") +
     ggplot2::annotate("text", x = b$region$mid, y = y_reg, label = b$region$label,
                       family = fam, size = hf_sz(5.0), colour = "grey30") +
-    ggplot2::labs(x = NULL, y = NULL,
-                  caption = paste0(
-                    "CON only. Rows are external prespecified signatures; each ",
-                    "protein is standardised within its own compartment. Main ",
-                    "Figure 2d shows named proteins from CON-only contrasts.")) +
+    ggplot2::labs(x = NULL, y = NULL) +
     hf_theme_tile() +
     ggplot2::theme(
       axis.text.x = ggplot2::element_text(size = HF_MIN_PT, colour = "grey25"),
@@ -930,12 +889,13 @@ f9_ed_ca2_locator <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                        linewidth = 1.0) +
     ggplot2::geom_path(data = seg(slm, 0.62), ggplot2::aes(x, y),
                        colour = accent, linewidth = 1.8, lineend = "round") +
-    ggplot2::annotate("text", x = 0, y = -1.28, label = "neuropil",
-                      family = fam, size = hf_sz(5.0), colour = "grey35") +
+    # the labels sit below the arcs, clear of the highlighted segment
     ggplot2::annotate("text", x = 0, y = -1.62, label = "CA2  SLM",
                       family = fam, size = hf_pt(6.4) * 0.3527777,
                       fontface = "bold", colour = accent) +
-    ggplot2::coord_equal(xlim = c(-1.6, 1.6), ylim = c(-1.85, 1.45),
+    ggplot2::annotate("text", x = 0, y = -1.95, label = "neuropil",
+                      family = fam, size = hf_sz(5.0), colour = "grey35") +
+    ggplot2::coord_equal(xlim = c(-1.6, 1.6), ylim = c(-2.15, 1.45),
                          expand = FALSE) +
     ggplot2::theme_void(base_family = fam)
   write_csv_safe(data.frame(compartment = "neuron_neuropil", region = "CA2",

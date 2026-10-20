@@ -1,25 +1,21 @@
-# Check the assembled artifacts: a panel extending beyond the canvas can pass
-# source hashes while clipping both the data and its annotations.
+# A panel extending beyond the canvas can pass source hashes while clipping both
+# the data and its annotations. The assembler scales each panel into its declared
+# box, so the boxes must lie on the page, and the page must draw every panel.
 test_that("behavioural Extended Data panels stay inside the assembled page", {
   root <- file.path(testthat::test_path("..", ".."), "results", "figures", "manuscript")
-  attribute <- function(line, name) {
-    as.numeric(sub(paste0('.*\\s', name, '="([-0-9.]+)".*'), "\\1", line))
-  }
-  for (id in c("extended_data_05", "extended_data_09")) {
+  figs <- yaml::read_yaml(file.path(testthat::test_path("..", ".."), "figures", "figure_contract.yml"))$figures
+  for (key in c("ED_behaviour_models", "ED_behaviour_secondary")) {
+    f <- figs[[key]]
+    for (p in f$panels) {
+      expect_gte(p$x, 0, label = p$id); expect_gte(p$y, 0, label = p$id)
+      expect_lte(p$x + p$w, f$width_mm, label = p$id)
+      expect_lte(p$y + p$h, f$height_mm, label = p$id)
+    }
+    id <- as.character(f$canonical_publication_id)
     file <- file.path(root, id, "assembled", paste0(id, ".svg"))
     expect_true(file.exists(file), info = id)
     if (!file.exists(file)) next
-    text <- readLines(file, warn = FALSE, encoding = "UTF-8")
-    svg <- text[grepl("^<svg ", text)]
-    view <- as.numeric(strsplit(sub('.*viewBox="([^"]+)".*', "\\1", svg), " ")[[1]])
-    panels <- text[grepl("^<image ", text)]
-    expect_equal(length(panels), if (id == "extended_data_05") 2L else 3L)
-    for (panel in panels) {
-      x <- attribute(panel, "x"); y <- attribute(panel, "y")
-      width <- attribute(panel, "width"); height <- attribute(panel, "height")
-      expect_gte(x, 0, label = id); expect_gte(y, 0, label = id)
-      expect_lte(x + width, view[3], label = id)
-      expect_lte(y + height, view[4], label = id)
-    }
+    text <- paste(readLines(file, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+    expect_equal(lengths(regmatches(text, gregexpr('<g id="panel_', text, fixed = TRUE))), length(f$panels))
   }
 })

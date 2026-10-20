@@ -1,14 +1,14 @@
-# Conventional tests and physiology: Extended Data 10 to 12
+# Conventional tests and physiology: Extended Data 1 to 3
 
-Three pages, promoted as the identities `extended_data_10` to `_12` (the journal numbering is a separate decision):
+Three pages, promoted as the identities `extended_data_01` to `_03` (Extended Data 10, 11 and 12 until the renumbering by first citation of 2026-10-20):
 
-- **Extended Data 10**: conventional behaviour tests (main readouts per sex; d of the main readouts and of every measure with a significant comparison) and the exploratory locomotion-by-sex result.
-- **Extended Data 11**: physiology (main readouts; d of the main readouts and of every measure with a significant comparison) and the spread of CombZ after stress.
-- **Extended Data 12**: the analysed automated (SLEAP) values against manual (BORIS) scoring of the 20 batch 1 males, from `Analysis/Behavior/Validation` (SISanalyzer `behaviour_tests/rebuild_validation.R`). The agreement table of the SLEAPanalyzer release describes an earlier detector and is not used; that folder's README says why.
+- **Extended Data 2**: conventional behaviour tests (main readouts per sex; d of the main readouts and of every measure with a significant comparison) and the exploratory locomotion-by-sex result.
+- **Extended Data 3**: physiology (main readouts; d of the main readouts and of every measure with a significant comparison) and the spread of CombZ after stress.
+- **Extended Data 1**: the analysed automated (SLEAP) values against manual (BORIS) scoring of the 20 batch 1 males, from `Analysis/Behavior/Validation` (SISanalyzer `behaviour_tests/rebuild_validation.R`). The agreement table of the SLEAPanalyzer release describes an earlier detector and is not used; that folder's README says why.
 
 Panels carry short labels only; the sample sizes and which readouts are CombZ components are in the legends, the full measure names in the legends and the per-panel source data.
 
-Legends: `manuscript/legends/extended_data_10_legend.md` to `_12`. Cited in the suggested Results 1 wording (`manuscript/text/SUGGESTED_UPDATES_2026-10-15.md`): ED10a,b and ED11 from the paragraph on the heterogeneous response, ED10c,d from the exploratory locomotion paragraph. ED12 is for the text's "Supp. Fig. x" (the BORIS comparison).
+Legends: `manuscript/legends/extended_data_01_legend.md` to `_03`. Cited in the suggested Results 1 wording (`manuscript/text/SUGGESTED_UPDATES_2026-10-15.md`, written under the old numbers): ED2a,b and ED3 from the paragraph on the heterogeneous response, ED2c,d from the exploratory locomotion paragraph. ED1 is the text's "Supp. Fig. x" (the BORIS comparison).
 
 ## Where the numbers come from
 
@@ -21,7 +21,7 @@ Rscript tools/import_conventional_bundle.R <Analysis>/SIS_Analysis/bundles <bund
 Rscript tools/verify_source_bundles.R                                                    # includes the pinned bundle
 Rscript figures/conventional_tests_candidate.R [new_output_directory]                    # preview; default results/figures/manuscript_candidates/conventional_tests_v1
 Rscript figures/conventional_tests_candidate.R --publication                             # at a clean HEAD: the render that is promoted
-Rscript tools/promote_manuscript_render.R extended_data_10 extended_data_11 extended_data_12
+Rscript tools/promote_manuscript_render.R extended_data_01 extended_data_02 extended_data_03
 Rscript -e "testthat::test_file('tests/testthat/test-conventional-tests-candidate.R')"
 ```
 

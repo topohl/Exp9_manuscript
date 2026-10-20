@@ -495,14 +495,18 @@ test_that("the outputs exist, are authored at their boxes and equal the receipt"
     expect_match(run$render_git_commit, "^[0-9a-f]{40}$", info = k)
     outs <- do.call(rbind, lapply(run$outputs, as.data.frame, stringsAsFactors = FALSE))
     expect_setequal(outs$sha256, r$sha256[r$kind != "run_manifest"])
-    # panels authored at their boxes; the assembled SVG embeds exactly those panel files and draws the letters
+    # panels authored at their boxes; the assembled SVG draws exactly those panels (inline groups, or
+    # embedded panel files in a page assembled before 2026-10-20) and the letters
     # (a vector page embeds nothing: its own test below checks the page)
     asm <- paste(readLines(repo(r$path[r$kind == "assembled_svg"]), warn = FALSE), collapse = "\n")
     embedded <- regmatches(asm, gregexpr("data:image/svg\\+xml;base64,[A-Za-z0-9+/=]+", asm))[[1]]
-    expect_equal(length(embedded), if (vector_page(k)) 0L else n, info = k)
+    inline <- regmatches(asm, gregexpr('<g id="panel_[a-z]+"', asm))[[1]]
+    expect_equal(length(embedded) + length(inline), if (vector_page(k)) 0L else n, info = k)
     if (!vector_page(k)) {
-      got <- vapply(embedded, function(u) digest::digest(base64enc::base64decode(sub("^.*base64,", "", u)), algo = "sha256", serialize = FALSE), "")
-      expect_setequal(unname(got), r$sha256[r$kind == "panel_svg"])
+      if (length(embedded)) {
+        got <- vapply(embedded, function(u) digest::digest(base64enc::base64decode(sub("^.*base64,", "", u)), algo = "sha256", serialize = FALSE), "")
+        expect_setequal(unname(got), r$sha256[r$kind == "panel_svg"])
+      }
       drawn <- regmatches(asm, gregexpr('font-weight="bold">[a-z]*</text>', asm))[[1]]
       expect_setequal(sub('font-weight="bold">([a-z]*)</text>', "\\1", drawn),
                       vapply(CT$candidates[[k]]$panels, function(s) s$letter, ""))

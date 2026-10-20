@@ -384,8 +384,11 @@ ED_DEFAULT_LEGEND <- list(
   v9_ed_bilateral_full = paste0(
     "Complete stored bilateral metric inventory. ", DESCRIPTIVE),
   v9_ed_precision = paste0(
-    "Reliability gain from bilateral averaging. Open symbol = single ",
-    "hemisphere; filled symbol = bilateral mean. Intraclass correlation is ",
+    "Reliability gain from bilateral averaging. Light symbol = one ",
+    "hemisphere; dark symbol = bilateral mean; faint lines are individual ",
+    "endpoints and the arrow joins the class medians. Endpoints whose variance ",
+    "components were singular or whose fit did not converge are not drawn ",
+    "(their number is in the source data). Intraclass correlation is ",
     "reported as descriptive precision context; no significance test is ",
     "applied. ", DESCRIPTIVE),
   # This panel is the CON-only spatial fingerprint, not an external inventory.
@@ -429,7 +432,10 @@ ED_DEFAULT_LEGEND <- list(
     "robustness-qualified, QC-sensitive, or insufficient observed data."),
   v9_ed_ca2_sensitivity = paste0(
     "Effect sizes with and without the two QC-failed hemispheres, on one ",
-    "shared axis. Rows are grouped by robustness class. ", DESCRIPTIVE),
+    "shared axis: filled symbol, canonical log2 fold change; open symbol, ",
+    "with the QC-failed SUS acquisitions removed, so segment length is the ",
+    "magnitude lost. Rows are grouped by robustness class; the key gives the ",
+    "number of the 28 canonical CA2-SLM proteins in each class. ", DESCRIPTIVE),
   v9_ed_module_fingerprint = paste0(
     "Mean CON z-score of each module's MEMBER PROTEINS across spatial units. ",
     "This is not the module eigengene, which is shown in panel b. ",
@@ -507,7 +513,10 @@ ED_DEFAULT_LEGEND <- list(
     "consensus, so no animal is compared with a consensus containing itself; ",
     "RES and SUS animals were compared with the full CON consensus. This ",
     "construction was verified against the edge data, not against its label. ",
-    DESCRIPTIVE),
+    "Each facet prints the exact whole-network permutation P over animal ",
+    "labels (smallest attainable P 0.0036); the statistic is a symmetric ",
+    "three-group centroid deviation and does not use the CON consensus. No ",
+    "whole-network group difference was detected."),
   v9_ed_nulls = paste0(
     "Exact whole-network permutation over animal labels, with the smallest ",
     "attainable p shown so the null is informative rather than merely ",

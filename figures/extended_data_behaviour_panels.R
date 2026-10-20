@@ -22,12 +22,12 @@
 #       the three feature-by-sex interaction estimates, each with its stored interval;
 #   ebb E_multiplicity: PR1 (BH q of the associations), PR2 (permutation P of the ladder), PR3 (BH q and the
 #       reject flag of the interactions);
-#   fsb E1: Stage 09's sex-stratified Spearman rho (descriptive context);
-#   fsb E3 (fsb_v5 on): Stage 09's early-window coverage summary.
+#   fsb E1: Stage 09's sex-stratified Spearman rho (descriptive context).
 # Nothing here is fitted, resampled or corrected. Every value printed is a cell of one of those tables.
+# (Early-window coverage, fsb E3, is stated in the legend: every animal has every slot, so a panel of it
+# showed one full bar. It was dropped on 2026-10-20.)
 #
-# Panels:
-#   ED5 a  early-window coverage (fsb E3)
+# Panels (house style as Figure 1: no titles or explanatory text in the panels, borderless symbols):
 #   ED5 b  the five a-priori models: leave-one-animal-out R2, the repeated grouped five-fold interval, and the
 #          permutation P where one was run
 #   ED9 a  the two secondary early features against later CombZ
@@ -108,14 +108,6 @@ assoc <- do.call(rbind, lapply(FEATURES, function(f) data.frame(
   ci_high = cell(s09, "ci_high", model_id = "stage09_association", construct = f),
   p_raw = pr1(f, "p_raw"), q_bh = pr1(f, "p_adjusted"), stringsAsFactors = FALSE)))
 
-# Early-window coverage: the Stage 09 summary (fsb E3, fsb_v5 on). An older figure-support bundle does not carry it;
-# then the other panels are drawn for preview and no render record is written, so nothing can be promoted.
-E3 <- tryCatch(fsb_bundle_table("E3_early_window_coverage", FSB), error = function(e) NULL)
-COV <- if (is.null(E3)) NULL else {
-  if (nrow(E3) != 1L) stop("fsb E3 must hold exactly one coverage row.", call. = FALSE)
-  E3
-}
-
 # ------------------------------------------------------------------ contracts
 #
 # These are not defensive niceties. Each one guards a sentence the manuscript is
@@ -139,53 +131,45 @@ if (length(unique(ladder$n)) != 1L)
 N_ANIMALS <- unique(ladder$n)
 
 # ---------------------------------------------------------------- house style
-# Identical to figures/figure_01_panels.R, because this figure is read beside it.
+# The sizes, line weights and inks of Figure 1's house profile (R/panels/behaviour_figure_style.R) and the
+# proteomics Extended Data, because this figure is read beside them.
 source(repo_path("R", "plotting_figure_style.R"))
 
 INK <- "#2B2B2B"; MUTED <- "#6E6E6E"; RULE <- "#B5B5B5"
-GREEN_DARK <- "#2F6F62"
-GREEN_MID <- "#6FA79B"
-GREEN_LIGHT <- "#A8D5CF"
+DARK <- "#1F3D52"
+MID <- "#7C8A93"
+LIGHT <- "grey82"
 
-BASE_PT <- 7
-BODY_PT <- 6.5
-NOTE_PT <- 6
+BASE_PT <- 5.5
+BODY_PT <- 5
+NOTE_PT <- 5
 
 theme_ed <- function(base = BASE_PT) {
   theme_classic(base_size = base, base_family = "sans") +
     theme(
       axis.text = element_text(size = BODY_PT, colour = INK),
       axis.title = element_text(size = base, colour = INK),
-      axis.line = element_line(linewidth = 0.3, colour = "black"),
-      axis.ticks = element_line(linewidth = 0.3, colour = "black"),
-      axis.ticks.length = unit(2, "pt"),
+      axis.line = element_line(linewidth = 0.22, colour = "black"),
+      axis.ticks = element_line(linewidth = 0.22, colour = "black"),
+      axis.ticks.length = unit(1.5, "pt"),
       strip.background = element_blank(),
       strip.text = element_text(size = base, colour = INK, face = "italic",
                                 margin = margin(b = 1.5, t = 1)),
       legend.position = "top",
-      legend.justification = "left",
-      legend.key.height = unit(7, "pt"),
-      legend.key.width = unit(11.2, "pt"),
+      legend.justification = "right",
+      legend.key.height = unit(5, "pt"),
+      legend.key.width = unit(6, "pt"),
       legend.text = element_text(size = NOTE_PT),
       legend.title = element_blank(),
       legend.margin = margin(0, 0, 0, 0),
-      legend.box.margin = margin(0, 0, -3.5, 0),
+      legend.box.margin = margin(0, 0, -3, 0),
       panel.grid = element_blank(),
-      # Titles align to the figure, not to the plot panel. Every panel here is a
-      # horizontal forest whose y-axis labels are long sentences, so a
-      # panel-aligned title would start a third of the way across and sit
-      # nowhere near the panel letter. Figure 1 keeps the ggplot default because
-      # none of its panels has a label column of that width.
-      plot.title.position = "plot",
-      plot.caption.position = "plot",
-      # Indented past the 7 mm panel-letter box the assembler paints over the
-      # top-left corner of every panel. Figure-aligned titles start exactly
-      # where that box sits, so without this the first word is covered.
-      plot.title = element_text(size = base, colour = INK, hjust = 0,
-                                face = "plain", margin = margin(b = 0.5, l = 22)),
-      plot.subtitle = element_text(size = NOTE_PT, colour = "grey25",
-                                   margin = margin(b = 1.5, l = 22)),
-      plot.margin = margin(3.5, 3.5, 3.5, 3.5))
+      # explanatory text belongs in the legend, not in the artwork
+      plot.title = element_blank(),
+      plot.subtitle = element_blank(),
+      plot.caption = element_blank(),
+      # the top margin keeps the first row clear of the panel letter
+      plot.margin = margin(9, 3, 2, 2))
 }
 
 fmt <- function(x, d = 3) formatC(x, format = "f", digits = d)
@@ -214,9 +198,9 @@ if (length(absent))
        paste(absent, collapse = ", "),
        "\nA new model may not be rendered under a guessed name.", call. = FALSE)
 
-ROLE_FILL <- c(reference_baseline = "grey72",
-               primary_behavior_only = GREEN_DARK,
-               sex_adjusted_sensitivity = GREEN_MID)
+ROLE_FILL <- c(reference_baseline = "grey65",
+               primary_behavior_only = DARK,
+               sex_adjusted_sensitivity = MID)
 absent <- setdiff(ladder$primary_or_exploratory, names(ROLE_FILL))
 if (length(absent))
   stop("Unrecognised model role(s): ", paste(absent, collapse = ", "),
@@ -248,25 +232,18 @@ p_ladder <- ggplot(la, aes(y = .data$label)) +
   geom_vline(xintercept = 0, linetype = "22", linewidth = 0.3, colour = RULE) +
   geom_segment(aes(x = .data$cv_r2_q025, xend = .data$cv_r2_q975,
                    yend = .data$label),
-               linewidth = 1.6, colour = GREEN_LIGHT, lineend = "round") +
+               linewidth = 1.6, colour = LIGHT, lineend = "round") +
   geom_point(aes(x = .data$repeated_cv_mean_r2), shape = 124, size = 1.5,
              colour = MUTED) +
-  geom_point(aes(x = .data$loao_r2, fill = .data$role), shape = 21, size = 1.9,
-             stroke = 0.3, colour = "grey20") +
+  geom_point(aes(x = .data$loao_r2, colour = .data$role), shape = 16, size = 1.9) +
   geom_text(aes(x = x_text, label = .data$p_text), hjust = 0, size = NOTE_PT / .pt,
             colour = MUTED) +
-  scale_fill_manual(values = unname(ROLE_FILL[c("reference_baseline",
-                                                "primary_behavior_only",
-                                                "sex_adjusted_sensitivity")]),
-                    drop = FALSE, guide = "none") +
+  scale_colour_manual(values = unname(ROLE_FILL[c("reference_baseline",
+                                                  "primary_behavior_only",
+                                                  "sex_adjusted_sensitivity")]),
+                      drop = FALSE, guide = "none") +
   scale_x_continuous(expand = expansion(mult = c(0.03, 0.22))) +
-  labs(x = expression("Cross-validated " * italic(R)^2),
-       y = NULL,
-       title = "The complete a-priori model ladder",
-       subtitle = paste0(
-         "Point, leave-one-animal-out estimate; bar, 2.5-97.5% across repeated grouped five-fold\n",
-         "splits, with its mean as a tick. n = ", N_ANIMALS, " animals. Rows are in registry order, not\n",
-         "performance order, and no test compares two models.")) +
+  labs(x = expression("Cross-validated " * italic(R)^2), y = NULL) +
   theme_ed() +
   theme(axis.line.y = element_blank(), axis.ticks.y = element_blank())
 
@@ -299,18 +276,12 @@ p_sex <- ggplot(sx, aes(y = .data$label)) +
   geom_segment(aes(x = .data$interaction_ci_low, xend = .data$interaction_ci_high,
                    yend = .data$label),
                linewidth = 0.7, colour = MUTED, lineend = "round") +
-  geom_point(aes(x = .data$interaction_estimate), shape = 21, size = 1.9,
-             stroke = 0.3, fill = "white", colour = "grey20") +
+  geom_point(aes(x = .data$interaction_estimate), shape = 16, size = 1.9,
+             colour = DARK) +
   geom_text(aes(x = b_hi + b_pad, label = .data$q_text), hjust = 0,
             size = NOTE_PT / .pt, colour = MUTED) +
   scale_x_continuous(expand = expansion(mult = c(0.06, 0.34))) +
-  labs(x = "Feature x sex interaction estimate (95% CI)",
-       y = NULL,
-       title = "The association did not differ detectably by sex",
-       subtitle = paste0(
-         "One formal interaction test per early feature,\n",
-         "Benjamini-Hochberg across the three. Zero lies\n",
-         "inside every interval.")) +
+  labs(x = "Feature \u00d7 sex interaction (95% CI)", y = NULL) +
   theme_ed() +
   theme(axis.line.y = element_blank(), axis.ticks.y = element_blank())
 
@@ -335,24 +306,16 @@ link <- data.frame(
   hi = pmax(sexc$female_rho, sexc$male_rho),
   stringsAsFactors = FALSE)
 
-SEX_SHAPE <- c(Female = 21L, Male = 24L)
+SEX_SHAPE <- c(Female = 16L, Male = 17L)
 
 p_rho <- ggplot(rho, aes(y = .data$label)) +
   geom_vline(xintercept = 0, linetype = "22", linewidth = 0.3, colour = RULE) +
   geom_segment(data = link, aes(x = .data$lo, xend = .data$hi, yend = .data$label),
                linewidth = 0.5, colour = RULE) +
-  geom_point(aes(x = .data$rho, shape = .data$sex, fill = .data$sex), size = 1.9,
-             stroke = 0.3, colour = "grey20") +
+  geom_point(aes(x = .data$rho, shape = .data$sex), size = 1.9, colour = DARK) +
   scale_shape_manual(values = SEX_SHAPE) +
-  scale_fill_manual(values = c(Female = GREEN_DARK, Male = "white")) +
   scale_x_continuous(expand = expansion(mult = c(0.10, 0.10))) +
-  labs(x = "Spearman rho, early feature versus later CombZ",
-       y = NULL,
-       title = "Sex-stratified estimates, descriptive",
-       subtitle = paste0(
-         "Shown because panel b is a negative result. These\n",
-         "are not tests, carry no correction, and may not be\n",
-         "reported as a sex difference.")) +
+  labs(x = expression("Spearman" ~ rho ~ "with later integrated resilience"), y = NULL) +
   theme_ed() +
   theme(axis.line.y = element_blank(), axis.ticks.y = element_blank())
 
@@ -376,10 +339,6 @@ if (length(absent))
 as2 <- assoc[match(names(SECONDARY), assoc$predictor), , drop = FALSE]
 as2$label <- factor(unname(SECONDARY), levels = rev(unname(SECONDARY)))
 as2$q_text <- paste0("q = ", fmt(as2$q_bh, 3))
-# The evidence column is upstream's own adjudication and is printed verbatim,
-# so the panel cannot describe an uncertain association as a supported one.
-as2$ev <- ifelse(as2$ci_low < 0 & as2$ci_high > 0,
-                 "interval includes zero", "interval excludes zero")
 
 a_lo <- min(as2$ci_low); a_hi <- max(as2$ci_high)
 a_pad <- 0.06 * (a_hi - a_lo)
@@ -388,64 +347,20 @@ p_assoc <- ggplot(as2, aes(y = .data$label)) +
   geom_vline(xintercept = 0, linetype = "22", linewidth = 0.3, colour = RULE) +
   geom_segment(aes(x = .data$ci_low, xend = .data$ci_high, yend = .data$label),
                linewidth = 0.7, colour = MUTED, lineend = "round") +
-  geom_point(aes(x = .data$rho), shape = 21, size = 1.9, stroke = 0.3,
-             fill = GREEN_DARK, colour = "grey20") +
-  geom_text(aes(x = a_hi + a_pad, label = paste0(.data$q_text, "   ", .data$ev)),
+  geom_point(aes(x = .data$rho), shape = 16, size = 1.9, colour = DARK) +
+  geom_text(aes(x = a_hi + a_pad, label = .data$q_text),
             hjust = 0, size = NOTE_PT / .pt, colour = MUTED) +
-  scale_x_continuous(expand = expansion(mult = c(0.06, 0.58))) +
-  labs(x = expression("Spearman " * rho * ", early feature versus later CombZ"),
-       y = NULL,
-       title = "The two secondary early features",
-       subtitle = paste0(
-         "Point, Spearman rho; bar, 5000-sample percentile bootstrap interval;\n",
-         "q, Benjamini-Hochberg across the three prespecified features. n = ",
-         as2$n[1], " animals.\n",
-         "Drawn as effect sizes because the frozen bundle exports no per-animal\n",
-         "values for these two features.")) +
+  scale_x_continuous(expand = expansion(mult = c(0.06, 0.25))) +
+  labs(x = expression("Spearman" ~ rho ~ "with later integrated resilience"), y = NULL) +
   theme_ed() +
   theme(axis.line.y = element_blank(), axis.ticks.y = element_blank())
 
-# ============================ early-window coverage (ED5 a)
-#
-# Aggregate only: Stage 09's coverage summary of the fixed early window (fsb E3). It records the expected slot count,
-# how many animals contributed all of them and how many miss leading, interior or trailing slots, and the mean and
-# minimum coverage fraction. No per-animal coverage vector is exported, so the panel states the split it can support.
-p_cov <- if (!is.null(COV)) {
-  n_tot <- as.integer(COV$n_animals)
-  n_full <- as.integer(COV$n_animals_complete)
-  n_lead <- as.integer(COV$n_animals_missing_leading_only)
-  n_gap <- as.integer(COV$n_animals_interior_missing) + as.integer(COV$n_animals_trailing_missing)
-  slots <- as.integer(COV$expected_target_slots_per_animal)
-  cov_mean <- as.numeric(COV$mean_coverage_fraction); cov_min <- as.numeric(COV$min_coverage_fraction)
-  cv <- data.frame(grp = c("All expected slots", "Leading slots missing only", "Interior or trailing slots missing"),
-                   n = c(n_full, n_lead, n_gap), stringsAsFactors = FALSE)
-  cv <- cv[cv$n > 0L | cv$grp == "All expected slots", , drop = FALSE]
-  cv$grp <- factor(cv$grp, levels = rev(cv$grp))
-  cv$lab <- sprintf("%d of %d animals", cv$n, n_tot)
-  ggplot(cv, aes(.data$n, .data$grp)) +
-    geom_col(fill = c(GREEN_MID, GREEN_LIGHT, "grey80")[seq_len(nrow(cv))][rev(as.integer(cv$grp))],
-             colour = "grey30", linewidth = 0.25, width = 0.6) +
-    geom_text(aes(label = .data$lab), hjust = -0.08, size = NOTE_PT / .pt, colour = INK) +
-    scale_x_continuous(limits = c(0, n_tot * 1.42), expand = c(0, 0)) +
-    labs(x = "Animals", y = NULL,
-         title = "Early-window coverage",
-         subtitle = paste0(
-           "A fixed ", COV$target_window_hours, "-h window binned at ", COV$bin_size_min, " min gives ", slots,
-           " expected slots per animal; mean coverage ", fmt(100 * cov_mean, 1), "%, minimum ", fmt(100 * cov_min, 1), "%.\n",
-           if (n_full == n_tot) "Every animal contributed every slot." else
-             paste0(n_tot - n_full, " animals miss slots (leading only: ", n_lead, ")."),
-           " Aggregate figures; the bundle exports no\nper-animal coverage vector.")) +
-    theme_ed() +
-    theme(axis.line.y = element_blank(), axis.ticks.y = element_blank())
-}
-
 # ---------------------------------------------------------------- write out
-# Authored at the exact placed size, so scale = 1.0 and native pt == printed pt.
-# Two equal rows of 52 mm place 48 mm image boxes; a spans both columns.
-DIMS <- list(ed09a = c(173, 48), ed09b = c(84.5, 48), ed09c = c(84.5, 48),
-             ed05a = c(173, 48), ed05b = c(173, 48))
-PLOTS <- list(ed09a = p_assoc, ed09b = p_sex, ed09c = p_rho, ed05a = p_cov, ed05b = p_ladder)
-PLOTS <- PLOTS[!vapply(PLOTS, is.null, TRUE)]
+# Authored at the exact placed size (the absolute boxes of figures/figure_contract.yml), so scale = 1.0 and
+# native pt == printed pt.
+DIMS <- list(ed09a = c(175, 30), ed09b = c(85.5, 40), ed09c = c(85.5, 40),
+             ed05b = c(175, 44))
+PLOTS <- list(ed09a = p_assoc, ed09b = p_sex, ed09c = p_rho, ed05b = p_ladder)
 
 save_svg <- function(p, id) {
   d <- DIMS[[id]]
@@ -468,12 +383,8 @@ cat("  every value read from stored bundle cells; nothing computed\n")
 
 # ---------------------------------------------------------------- render record
 # Which commit drew these panels, whether that code was clean, the bundles, and the hash of every panel, so that
-# tools/promote_manuscript_render.R extended_data_05 / extended_data_09 can refuse panels drawn from other or
-# uncommitted code. Without fsb E3 (an older figure-support bundle) ED5 a is missing and no record is written.
-if (is.null(COV)) {
-  message("NOTE: the pinned figure-support bundle ", FSB$bundle_id, " has no E3 (fsb_v5 on); ED5 a not drawn and no ",
-          "render record written: these panels cannot be promoted.")
-} else {
+# tools/promote_manuscript_render.R can refuse panels drawn from other or uncommitted code.
+{
   code <- git_code_state()
   record_dir <- path_results("logs", "manuscript_figures", "extended_data_behaviour_panels")
   dir.create(record_dir, recursive = TRUE, showWarnings = FALSE)

@@ -861,7 +861,10 @@ f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_point(data = cells[cells$n_fdr > 0, , drop = FALSE],
                         ggplot2::aes(xpos, ypos), size = 0.45,
                         colour = "grey10") +
-    hv_diverging(measure = "nes", name = "Median normalised\nenrichment score") +
+    # the key names the contrast; nothing else on the panel says which it is
+    hv_diverging(measure = "nes",
+                 name = sprintf("Median NES\n(%s)", sub(" - ", " \u2212 ", contrast,
+                                                       fixed = TRUE))) +
     ggplot2::geom_text(
       data = data.frame(y = seq_len(ny), l = unname(SHORT[rev(ord)])),
       ggplot2::aes(x = 0.5 - lab_w + 0.2, y = y, label = l),
@@ -883,17 +886,7 @@ f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::annotate("text", x = b$region$mid, y = y_reg,
                       label = b$region$label, family = fam, size = hf_sz(5.0),
                       colour = "grey30") +
-    ggplot2::labs(x = NULL, y = NULL,
-                  caption = paste0(
-                    contrast, ". Dot = at least one constituent GO term is ",
-                    "FDR-supported; it is not a measure of how BROAD that ",
-                    "support is, which is tabulated per cell in ",
-                    "atlas_support_breadth_audit.csv.
-",
-                    "Colour scale is the manuscript's fixed NES scale (",
-                    sprintf("\u00b1%g", shared), "; values beyond it take full ",
-                    "colour), shared by all three contrast atlases, so they can ",
-                    "be compared directly.")) +
+    ggplot2::labs(x = NULL, y = NULL) +
     hf_theme_tile() +
     ggplot2::theme(
       axis.text.x = ggplot2::element_text(size = HF_MIN_PT, colour = "grey25"),

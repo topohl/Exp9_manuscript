@@ -179,12 +179,13 @@ testthat::test_that("Figure 2 and the proteomics Extended Data are registered fr
                                    "canonical_publication_registry.csv"),
                          stringsAsFactors = FALSE, colClasses = "character")
   sha <- function(p) unname(tools::sha256sum(p))
+  # Extended Data numbers of 2026-10-20 (renumbered by first citation)
   panels <- list(figure_02 = paste0("2", letters[1:8]),
-                 extended_data_01 = paste0("01", letters[1:2]),
-                 extended_data_02 = paste0("02", letters[1:2]),
-                 extended_data_03 = paste0("03", letters[1:5]),
-                 extended_data_06 = paste0("06", letters[1:5]),
-                 extended_data_08 = paste0("08", letters[1:4]))
+                 extended_data_06 = paste0("06", letters[1:2]),
+                 extended_data_07 = paste0("07", letters[1:2]),
+                 extended_data_08 = paste0("08", letters[1:4]),
+                 extended_data_09 = paste0("09", letters[1:5]),
+                 extended_data_10 = paste0("10", letters[1:3]))
   for (pid in names(panels)) {
     r <- reg[reg$publication_id == pid, , drop = FALSE]
     testthat::expect_identical(nrow(r), 1L, info = pid)
@@ -217,12 +218,12 @@ testthat::test_that("Figure 2 and the proteomics Extended Data are registered fr
     "figures", if (startsWith(pid, "figure_")) "main" else "extended_data", "source_data", pid,
     paste0(pid, panel, "_source_data.csv")), stringsAsFactors = FALSE)
   testthat::expect_equal(unique(rd("figure_02", "d")$colour_limit), 2)
-  testthat::expect_equal(unique(rd("extended_data_02", "a")$colour_limit), 1)
-  testthat::expect_equal(unique(rd("extended_data_08", "a")$colour_limit), 0.6)
+  testthat::expect_equal(unique(rd("extended_data_07", "a")$colour_limit), 1)
+  testthat::expect_equal(unique(rd("extended_data_10", "a")$colour_limit), 0.6)
   for (p in c("a", "b"))
-    testthat::expect_equal(unique(rd("extended_data_06", p)$shared_NES_scale_limit), 2)
-  # ED6 c-e: the curves of the frozen Figure 3 export, on the shared strip limit
-  curves <- do.call(rbind, lapply(c("c", "d", "e"), function(p) rd("extended_data_06", p)))
+    testthat::expect_equal(unique(rd("extended_data_09", p)$shared_NES_scale_limit), 2)
+  # ED9 c-e: the curves of the frozen Figure 3 export, on the shared strip limit
+  curves <- do.call(rbind, lapply(c("c", "d", "e"), function(p) rd("extended_data_09", p)))
   testthat::expect_equal(curves$shared_NES_strip_limit, c(2, 2, 2))
   testthat::expect_identical(unique(curves$curve_source),
     "source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv")

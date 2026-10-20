@@ -98,6 +98,15 @@ f9_frozen_curve <- function(prog, deps) {
        N = N, n_leading = sum(hits[lead]))
 }
 
+#' The curve header's statistics: NES and the FDR exponent with a true minus,
+#' and the leading-edge count. E-notation, because a plotmath exponent falls
+#' below the 5-pt floor and Arial has no superscript minus.
+f9_curve_stat_label <- function(nes, fdr, n_leading, n_set) {
+  e <- floor(log10(fdr)); m <- fdr / 10^e
+  gsub("-", "−", sprintf("NES %.2f, FDR %.1fe%d, leading edge %d/%d",
+                              nes, m, e, n_leading, n_set), fixed = TRUE)
+}
+
 f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   fam <- hf_fam()
   pr <- s4_programs()
@@ -121,7 +130,7 @@ f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::scale_x_continuous(expand = c(0, 0), limits = c(1, N),
                                 breaks = c(1, N), labels = c("SUS", "RES")) +
     ggplot2::scale_y_continuous(labels = hv_minus_labels) +
-    ggplot2::labs(x = NULL, y = "enrichment score") +
+    ggplot2::labs(x = NULL, y = "Enrichment score") +
     hf_theme() +
     ggplot2::theme(plot.margin = ggplot2::margin(1, 1, 0, 1, "mm"),
                    axis.title.y = ggplot2::element_text(size = hf_pt(5.4)))
@@ -149,7 +158,7 @@ f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 
   bot <- ggplot2::ggplot(tr, ggplot2::aes(short, 1, fill = NES)) +
     ggplot2::geom_tile(colour = hv_tile_border(), linewidth = hv_lw("tile_border_pt")) +
-    ggplot2::geom_text(ggplot2::aes(label = sprintf("%.1f", NES)), family = fam,
+    ggplot2::geom_text(ggplot2::aes(label = hv_minus(sprintf("%.1f", NES))), family = fam,
                        size = hf_sz(5.0)) +
     ggplot2::geom_point(data = tr[tr$sig, , drop = FALSE],
                         ggplot2::aes(short, 1.44), size = 0.4, colour = "black",
@@ -168,9 +177,8 @@ f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                       label = prog$label[1]) +
     ggplot2::annotate("text", x = 0, y = 0.25, hjust = 0, vjust = 1,
                       family = fam, size = hf_sz(5.0), colour = "grey35",
-                      label = sprintf("NES %.2f  FDR %.0e  %d/%d leading edge",
-                                      ev$NES, ev$FDR, ev$n_leading,
-                                      sum(ev$hits))) +
+                      label = f9_curve_stat_label(ev$NES, ev$FDR, ev$n_leading,
+                                                  sum(ev$hits))) +
     ggplot2::coord_cartesian(xlim = c(0, 1), ylim = c(-0.2, 1.05),
                              expand = FALSE) +
     ggplot2::theme_void(base_family = fam) +
@@ -595,16 +603,12 @@ f9_ed_ca2_missingness <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                        inherit.aes = FALSE, family = fam, size = hf_sz(5.4),
                        fontface = "bold", colour = "grey15") +
     ggplot2::scale_colour_manual(values = gc, guide = "none") +
-    ggplot2::scale_shape_manual(values = c("L" = 1, "R" = 16), name = NULL) +
+    ggplot2::scale_shape_manual(values = c("L" = 1, "R" = 16), name = "Hemisphere") +
     ggplot2::scale_x_continuous(breaks = an$slot, labels = an$AnimalID,
                                 expand = ggplot2::expansion(add = 0.6)) +
     ggplot2::scale_y_continuous(limits = c(0, ytop * 1.13),
                                 expand = c(0, 0)) +
-    ggplot2::labs(x = NULL, y = "fraction missing\nbefore imputation",
-                  caption = paste0(
-                    "One point per acquisition, the two hemispheres of an ",
-                    "animal joined. Both QC failures are a single hemisphere ",
-                    "of an animal whose other hemisphere passes.")) +
+    ggplot2::labs(x = NULL, y = "Fraction missing\nbefore imputation") +
     hf_theme(grid = "y") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(size = HF_MIN_PT),
                    axis.text.y = ggplot2::element_text(size = HF_MIN_PT),
@@ -650,44 +654,55 @@ f9_ed_ca2_sensitivity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   z$col_id <- rep(c(1L, 2L), times = c(half, n - half))
   z$row <- c(seq_len(half), seq_len(n - half))
   z$ypos <- -z$row
+  # gene names are each column's own axis labels, so no label can meet a segment
+  z$gene_f <- factor(z$gene, levels = rev(z$gene))
   COL <- f9_qc_class_colours()
+  # the class counts of all canonical CA2-SLM proteins, carried by the key (the
+  # separate count panel was dropped)
+  n_cls <- table(factor(r$CA2_SLM_robustness_class, levels = ORD))
+  pts <- rbind(
+    data.frame(x = z$canonical, gene_f = z$gene_f, cls = z$cls, col_id = z$col_id,
+               which = "canonical"),
+    data.frame(x = z$hemi, gene_f = z$gene_f, cls = z$cls, col_id = z$col_id,
+               which = "QC-failed hemispheres removed"))
 
   p <- ggplot2::ggplot(z) +
     ggplot2::geom_vline(xintercept = 0, linewidth = hv_lw("reference_pt"),
                         colour = "grey78") +
-    ggplot2::geom_segment(ggplot2::aes(x = canonical, xend = hemi, y = ypos,
-                                       yend = ypos, colour = cls),
+    ggplot2::geom_segment(ggplot2::aes(x = canonical, xend = hemi, y = gene_f,
+                                       yend = gene_f, colour = cls),
                           linewidth = 0.42, lineend = "round", alpha = 0.75) +
-    ggplot2::geom_point(ggplot2::aes(x = canonical, y = ypos, colour = cls),
-                        size = 1.05) +
-    ggplot2::geom_point(ggplot2::aes(x = hemi, y = ypos, colour = cls),
-                        size = 1.05, shape = 21, fill = "white", stroke = 0.4) +
-    ggplot2::geom_text(ggplot2::aes(x = -3.15, y = ypos, label = gene),
-                       hjust = 0, family = fam, size = hf_sz(5.0),
-                       colour = "grey20", fontface = "italic") +
+    ggplot2::geom_point(data = pts, ggplot2::aes(x = x, y = gene_f, colour = cls,
+                                                 shape = which),
+                        size = 1.05, fill = "white", stroke = 0.4) +
+    ggplot2::scale_shape_manual(values = c("canonical" = 16,
+                                           "QC-failed hemispheres removed" = 21),
+                                name = NULL,
+                                guide = ggplot2::guide_legend(order = 2,
+                                  override.aes = list(colour = "grey30"))) +
     ggplot2::scale_colour_manual(values = COL, name = NULL,
-                                 labels = f9_qc_class_label,
+                                 labels = function(k) sprintf("%s (%d)",
+                                   f9_qc_class_label(k), as.integer(n_cls[k])),
                                  guide = ggplot2::guide_legend(order = 1)) +
-    ggplot2::scale_x_continuous(limits = c(-3.2, 2.1), breaks = c(-2, -1, 0, 1, 2),
+    ggplot2::scale_x_continuous(limits = c(-3.0, 2.1), breaks = c(-2, -1, 0, 1, 2),
                                 labels = hv_minus_labels, expand = c(0, 0)) +
-    ggplot2::facet_wrap(~col_id, nrow = 1) +
-    ggplot2::labs(
-      x = "log2FC (SUS − RES):  filled = canonical,  open = QC-failed hemispheres dropped",
-      y = NULL,
-      caption = paste0(
-        "Segment length is the magnitude lost when the two QC-failed SUS ",
-        "acquisitions are removed. Rows are grouped by robustness class, so ",
-        "the ", sum(z$cls == ORD[1]), " qualifying proteins read as one block.")) +
+    ggplot2::facet_wrap(~col_id, nrow = 1, scales = "free_y") +
+    ggplot2::labs(x = "log2 fold change (SUS − RES)", y = NULL) +
     hf_theme(grid = "x") +
     ggplot2::theme(
-      axis.text.y = ggplot2::element_blank(),
+      axis.text.y = ggplot2::element_text(size = HF_MIN_PT, face = "italic",
+                                          colour = "grey20"),
       axis.ticks.y = ggplot2::element_blank(),
       axis.line.y = ggplot2::element_blank(),
       axis.text.x = ggplot2::element_text(size = HF_MIN_PT),
       strip.text = ggplot2::element_blank(),
       legend.position = "bottom",
+      legend.box = "vertical",
+      legend.spacing.y = ggplot2::unit(0, "mm"),
       legend.key.height = ggplot2::unit(1.8, "mm"),
-      panel.spacing.x = ggplot2::unit(3.0, "mm"))
+      panel.spacing.x = ggplot2::unit(3.0, "mm"),
+      # clear of the panel letter, which is drawn over the box's top-left corner
+      plot.margin = ggplot2::margin(3, 1, 1, 1, "mm"))
   z$reading <- paste0(
     "an open circle to the right of its filled circle means the effect shrank ",
     "towards zero when the QC-failed hemispheres were dropped; both endpoints ",
@@ -859,8 +874,8 @@ f9_ed_precision <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "%d of %d endpoints are not drawn: their variance components were ",
     "singular or the fit did not converge.\n"), n_drop, n_all) else ""
   lab <- c(wgcna_module_eigengene = "WGCNA modules",
-           reference_marker_score = "reference markers",
-           empirical_compartment_score = "compartment scores")
+           reference_marker_score = "Reference markers",
+           empirical_compartment_score = "Compartment scores")
   d$cls <- unname(lab[d$endpoint_class])
   d$cls <- factor(d$cls, levels = rev(unname(lab)))
   d$ymid <- as.numeric(d$cls)
@@ -887,18 +902,17 @@ f9_ed_precision <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       ggplot2::aes(x = single, xend = bilateral, y = ymid, yend = ymid),
       colour = "grey45", linewidth = hv_lw("data_pt") * 1.6,
       arrow = grid::arrow(length = ggplot2::unit(1.1, "mm"), type = "closed")) +
-    ggplot2::geom_point(data = sm, ggplot2::aes(single, ymid), shape = 21,
-                        fill = "white", colour = SINGLE, stroke = 0.6,
-                        size = 1.5) +
-    ggplot2::geom_point(data = sm, ggplot2::aes(bilateral, ymid), shape = 21,
-                        fill = BOTH, colour = BOTH, size = 1.5) +
+    ggplot2::geom_point(data = sm, ggplot2::aes(single, ymid), shape = 16,
+                        colour = SINGLE, size = 1.5) +
+    ggplot2::geom_point(data = sm, ggplot2::aes(bilateral, ymid), shape = 16,
+                        colour = BOTH, size = 1.5) +
     # the key, drawn in data space so it cannot drift from the marks
-    ggplot2::annotate("point", x = 0.60, y = ytop, shape = 21, fill = "white",
-                      colour = SINGLE, stroke = 0.6, size = 1.5) +
+    ggplot2::annotate("point", x = 0.60, y = ytop, shape = 16,
+                      colour = SINGLE, size = 1.5) +
     ggplot2::annotate("text", x = 0.625, y = ytop, hjust = 0, family = fam,
                       size = hf_sz(5.0), colour = "grey30",
                       label = "one hemisphere") +
-    ggplot2::annotate("point", x = 0.82, y = ytop, shape = 21, fill = BOTH,
+    ggplot2::annotate("point", x = 0.82, y = ytop, shape = 16,
                       colour = BOTH, size = 1.5) +
     ggplot2::annotate("text", x = 0.845, y = ytop, hjust = 0, family = fam,
                       size = hf_sz(5.0), colour = "grey30",
@@ -907,23 +921,20 @@ f9_ed_precision <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                 limits = c(0.4, ytop + 0.3)) +
     ggplot2::scale_x_continuous(limits = c(0, 1), breaks = c(0, 0.5, 1),
                                 expand = c(0, 0)) +
-    ggplot2::labs(
-      x = "ICC:  one hemisphere → bilateral mean", y = NULL,
-      caption = paste0(
-        "Faint lines are individual endpoints; the arrow joins the class ",
-        "medians. Median ICC rises from ",
-        paste(sprintf("%.2f", sm$single), collapse = " / "), " to ",
-        paste(sprintf("%.2f", sm$bilateral), collapse = " / "),
-        " for ", paste(as.character(sm$cls), collapse = " / "),
-        ".\n", n_drop_note,
-        "Descriptive precision context; no significance test is applied.")) +
+    ggplot2::labs(x = "ICC:  one hemisphere → bilateral mean", y = NULL) +
     hf_theme(grid = "x") +
     ggplot2::theme(axis.text.y = ggplot2::element_text(size = HF_MIN_PT),
-                   axis.text.x = ggplot2::element_text(size = HF_MIN_PT))
+                   axis.text.x = ggplot2::element_text(size = HF_MIN_PT),
+                   # room for the last tick label, "1.0", at the axis end
+                   plot.margin = ggplot2::margin(1, 3, 1, 1, "mm"))
   out <- d[, c("endpoint_class", "endpoint_id", "dataset", "ICC_single_side",
                "ICC_bilateral_mean")]
+  out$medians <- paste0(
+    "median ICC ", paste(sprintf("%.2f", sm$single), collapse = " / "), " -> ",
+    paste(sprintf("%.2f", sm$bilateral), collapse = " / "), " for ",
+    paste(as.character(sm$cls), collapse = " / "), "; ", n_drop_note)
   out$reading <- paste0(
-    "open symbol = one hemisphere, filled symbol = bilateral mean; the panel ",
+    "light symbol = one hemisphere, dark symbol = bilateral mean; the panel ",
     "is descriptive reliability context and carries no hypothesis test")
   write_csv_safe(out, csv_path)
   hv_save_panel(p, svg_path, w_mm, h_mm)
@@ -953,18 +964,26 @@ f9_ed_coupling <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   # the statistical content keeps every distinct test and drops only the
   # duplicated ones. Note this means BH was applied over 96 slots for 48 tests,
   # which is conservative and so cannot manufacture the null reported here.
-  u <- unique(x[, keep])
+  # Movement AUC is the one outcome with three distinct tests per edge (dark
+  # phase, light phase, and dark phase over the first change only); they are
+  # told apart by symbol, with a key
+  x$test <- ifelse(x$Outcome != "Movement_AUC_z_vs_CON", "one test",
+                   ifelse(x$Analysis == "firstChangeActive", "dark phase, first change",
+                          ifelse(x$Phase == "Active", "dark phase", "light phase")))
+  u <- unique(x[, c(keep, "test")])
   dupkey <- paste(x$Edge, x$Outcome, x$estimate, x$p.value, sep = "\r")
   u$n_stored_rows <- as.integer(table(dupkey)[
     paste(u$Edge, u$Outcome, u$estimate, u$p.value, sep = "\r")])
   u$excludes_zero <- u$conf.low > 0 | u$conf.high < 0
-  u$edge_lab <- gsub("_", " ", u$Edge)
-  u$out_lab <- c(CombZ = "behavioural composite z",
-                 delta_cort = "corticosterone change",
-                 Movement_AUC_z_vs_CON = "movement AUC vs CON",
-                 sucrose_pref = "sucrose preference")[u$Outcome]
+  u$edge_lab <- sub(" - ", "–", toupper(gsub("_", " ", u$Edge)), fixed = TRUE)
+  u$out_lab <- factor(c(CombZ = "Integrated resilience",
+                        delta_cort = "Corticosterone change",
+                        Movement_AUC_z_vs_CON = "Movement AUC vs CON",
+                        sucrose_pref = "Sucrose preference")[u$Outcome],
+                      levels = c("Integrated resilience", "Corticosterone change",
+                                 "Sucrose preference", "Movement AUC vs CON"))
   # deterministic within-cell ordering so repeated builds are byte-identical
-  u <- u[order(u$out_lab, u$edge_lab, u$window, u$Change, u$estimate), ]
+  u <- u[order(u$out_lab, u$edge_lab, u$test, u$window, u$Change, u$estimate), ]
   u$row <- stats::ave(seq_len(nrow(u)),
                       paste(u$out_lab, u$edge_lab), FUN = seq_along)
   u$ypos <- as.integer(factor(u$edge_lab, levels = rev(sort(unique(u$edge_lab))))) +
@@ -975,7 +994,15 @@ f9_ed_coupling <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_segment(ggplot2::aes(x = conf.low, xend = conf.high,
                                        yend = ypos, colour = excludes_zero),
                           linewidth = hv_lw("reference_pt")) +
-    ggplot2::geom_point(ggplot2::aes(colour = excludes_zero), size = 0.7) +
+    ggplot2::geom_point(ggplot2::aes(colour = excludes_zero, shape = test), size = 0.8) +
+    ggplot2::scale_shape_manual(values = c("one test" = 16, "dark phase" = 16,
+                                           "light phase" = 17,
+                                           "dark phase, first change" = 15),
+                                breaks = c("dark phase", "light phase",
+                                           "dark phase, first change"),
+                                name = "Movement AUC:",
+                                guide = ggplot2::guide_legend(
+                                  override.aes = list(colour = "grey40", size = 1.2))) +
     # an interval excluding zero in the palette's 'supported' ink, the rest grey
     # (palette v3: the old red would read as the SUS group)
     ggplot2::scale_colour_manual(values = c("TRUE" = unname(hv_evidence_colours()[["supported"]]),
@@ -987,22 +1014,14 @@ f9_ed_coupling <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::scale_x_continuous(limits = c(-1, 1), breaks = c(-1, -0.5, 0, 0.5, 1),
                                 labels = hv_minus_labels) +
     ggplot2::facet_wrap(~out_lab, nrow = 1) +
-    ggplot2::labs(x = "Pearson r (95% CI), n = 9 animals", y = NULL,
-                  subtitle = sprintf(paste0(
-                    "%d distinct tests; %d interval excludes zero; smallest BH ",
-                    "= %.2f within outcome and %.2f across the family. No ",
-                    "edge\u2013behaviour association survived multiple-testing ",
-                    "correction."),
-                    nrow(u), sum(u$excludes_zero),
-                    min(u$p.adj_BH_within_outcome),
-                    min(u$p.adj_BH_all_edge_phenotype_tests))) +
-    ggplot2::labs(caption = paste0(
-      "With n = 9 animals a single correlation has very low power; this ",
-      "is a limited-power negative result, not evidence of absence.")) +
+    ggplot2::labs(x = "Pearson r (95% CI)", y = NULL) +
     hf_theme(grid = "x") +
     ggplot2::theme(axis.text.y = ggplot2::element_text(size = 5),
                    panel.spacing.x = ggplot2::unit(1.6, "mm"),
-                   plot.subtitle = ggplot2::element_text(size = 5, colour = "grey20"))
+                   legend.position = "bottom",
+                   legend.margin = ggplot2::margin(0, 0, 0, 0),
+                   legend.box.margin = ggplot2::margin(-1, 0, 0, 0, "mm"),
+                   legend.key.size = ggplot2::unit(2.4, "mm"))
   u$reading <- sprintf(
     paste0("%d stored rows collapse to %d distinct tests; %d of %d intervals ",
            "exclude zero and the smallest BH value is %.2f within-outcome ",

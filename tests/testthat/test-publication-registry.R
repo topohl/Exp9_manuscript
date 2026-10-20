@@ -29,9 +29,7 @@ testthat::test_that("every numbered publication has exactly one canonical identi
   testthat::expect_false(anyDuplicated(ids) > 0L)
   testthat::expect_setequal(ids, c(
     "figure_01", "figure_02", "figure_03",
-    "extended_data_01", "extended_data_03", "extended_data_05",
-    "extended_data_02", "extended_data_06", "extended_data_08", "extended_data_09",
-    "extended_data_10", "extended_data_11", "extended_data_12"))
+    sprintf("extended_data_%02d", 1:10)))
 })
 
 testthat::test_that("no panel id is reused across publications", {
@@ -50,11 +48,14 @@ testthat::test_that("the registry matches the contract and records the withheld 
   testthat::skip_if_not(file.exists(reg), "registry not generated")
   r <- utils::read.csv(reg, stringsAsFactors = FALSE)
 
-  testthat::expect_identical(sum(r$status == "CANONICAL"), 13L)   # Phase 6A's 10 plus Extended Data 10-12
+  testthat::expect_identical(sum(r$status == "CANONICAL"), 13L)   # Figures 1-3 and Extended Data 1-10
   withheld <- r[r$status != "CANONICAL", ]
+  # Since the renumbering by first citation (2026-10-20) a withheld identity has no
+  # number; it keeps its former id in previous_publication_id.
   testthat::expect_setequal(withheld$publication_id,
+    c("withheld_wgcna", "withheld_identity_locations"))
+  testthat::expect_setequal(withheld$previous_publication_id,
     c("extended_data_04", "extended_data_07"))
-  # A withheld identity is RESERVED, not free: nothing may quietly take it.
   testthat::expect_true(all(is.na(withheld$hash) | !nzchar(withheld$hash)))
   testthat::expect_true(all(grepl("^WITHHELD_", withheld$status)))
 
@@ -84,8 +85,8 @@ testthat::test_that("the promoted Extended Data figures resolve to real assets",
   source(testthat::test_path("..", "..", "R", "paths.R"))
   testthat::skip_if_not_installed("yaml")
   y <- pub_contract()
-  for (k in c("ED_01", "ED_02", "ED_03", "ED_06", "ED_08",
-              "ED_behaviour_coverage", "ED_behaviour_secondary")) {
+  for (k in c("ED_bilateral_precision", "ED_spatial_identity", "ED_ca2_slm_qc", "ED_enrichment_atlas",
+              "ED_spatial_networks", "ED_behaviour_models", "ED_behaviour_secondary")) {
     f <- y$figures[[k]]
     testthat::expect_false(isTRUE(f$rendering_repository_computes_statistics))
     for (p in f$panels) {
@@ -118,7 +119,9 @@ testthat::test_that("the pre-restructure freeze manifest is complete", {
   testthat::skip_if_not(file.exists(reg), "registry not generated")
   r <- utils::read.csv(reg, stringsAsFactors = FALSE)
   # Identities created after the freeze (Extended Data 10-12, drawn from the SISanalyzer bundle) cannot be in it.
-  canon <- r$publication_id[r$status == "CANONICAL" & r$originating_analysis != "SISanalyzer"]
+  # the freeze predates the renumbering of 2026-10-20, so an identity is looked up under the id it had then
+  keep <- r$status == "CANONICAL" & r$originating_analysis != "SISanalyzer"
+  canon <- ifelse(nzchar(r$previous_publication_id[keep]), r$previous_publication_id[keep], r$publication_id[keep])
   testthat::expect_true(all(canon %in% m$publication_id[!is.na(m$publication_id)]))
 })
 
@@ -126,12 +129,12 @@ testthat::test_that("Extended Data 2 is promoted without the completeness misrep
   source(testthat::test_path("..", "..", "R", "paths.R"))
   testthat::skip_if_not_installed("yaml")
   y <- pub_contract()
-  f <- y$figures$ED_02
+  f <- y$figures$ED_spatial_identity
 
   # Panels a and b only. Panel c drew 14 of 2,826 FDR-supported positive GO
   # terms under a complete-inventory caption and is deliberately absent.
   testthat::expect_identical(
-    vapply(f$panels, function(p) as.character(p$id), character(1)), c("02a", "02b"))
+    vapply(f$panels, function(p) as.character(p$id), character(1)), c("07a", "07b"))
   testthat::expect_true(nzchar(as.character(f$withheld_panel %||% "")))
 
   src <- paste(readLines(repo_path("R", "final_truth_v9_ed_panels.R"), warn = FALSE),
