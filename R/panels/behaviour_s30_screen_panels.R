@@ -116,7 +116,7 @@ s30_screen_strip <- function(width_mm, left, face = "plain", heads = list(), hei
 #' `s30`       table getter, function(name) -> the pinned Stage 30 bundle table
 #'             (e.g. function(n) stage30_bundle_table(n));
 #' `an`        the resolver from bh_annotation() over a map holding the keys of
-#'             figures/behaviour_v101_s30_annotation_map.csv (panel screen_matrix, bundle label "s30b");
+#'             figures/contracts/behaviour_v101_s30_annotation_map.csv (panel screen_matrix, bundle label "s30b");
 #' `w_mm, h_mm` the box the panel is authored for (default 173 x 128);
 #' `pq_style`  how each cell prints its p and local q (all resolve to the same keys):
 #'             "stacked" "p = ..." over "q = ..." (default: two lines, like the row labels);

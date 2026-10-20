@@ -73,7 +73,7 @@ choose new bundle and output IDs for another run.
 
 ```powershell
 Rscript --vanilla 'tools/import_cc4_phenotypes.R' '<Stage31d output>' '<new cc4_phenotypes_ID>'
-Rscript --vanilla 'figures/cc4_phenotype_candidate.R' '<new cc4_phenotypes_ID>' 'cc4_phase_groups_20260929_v2' '<new candidate output>'
+Rscript --vanilla 'figures/candidates/cc4_phenotype_candidate.R' '<new cc4_phenotypes_ID>' 'cc4_phase_groups_20260929_v2' '<new candidate output>'
 Rscript --vanilla -e "testthat::test_file('tests/testthat/test-cc4-phenotype-candidate.R',reporter='summary',stop_on_failure=TRUE)"
 ```
 

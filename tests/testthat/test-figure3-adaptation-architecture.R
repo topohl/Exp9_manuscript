@@ -129,16 +129,16 @@ testthat::test_that("exemplar cards and frozen exact-context drill-downs agree",
 testthat::test_that("canonical Figure 3 contract is a through m", {
   testthat::skip_if_not_installed("yaml")
   producing <- yaml::read_yaml(repo_path(
-    "figures", "figure_final_truth_v9_contract.yml"))
+    "figures", "contracts", "proteomics_panels_contract.yml"))
   f <- Filter(function(x) x$figure_key == "figure_03", producing$figures)[[1]]
   testthat::expect_identical(
     vapply(f$layout, function(x) as.character(x$label), character(1)),
     letters[1:13])
-  manuscript <- yaml::read_yaml(repo_path("figures", "figure_contract.yml"))
+  manuscript <- yaml::read_yaml(repo_path("figures", "contracts", "figure_contract.yml"))
   testthat::expect_identical(
     as.character(manuscript$figures[["03"]]$assembled_pdf_source),
     paste0("results/figures/manuscript_candidates/final_truth_v9/figure_03/",
-           "assembled/F3_NATURE_FINAL_V9.pdf"))
+           "assembled/FIGURE_03.pdf"))
   testthat::expect_identical(
     vapply(manuscript$figures[["03"]]$panels,
            function(x) as.character(x$id), character(1)),
@@ -148,7 +148,7 @@ testthat::test_that("canonical Figure 3 contract is a through m", {
                          "assembled", "figure_03.pdf")
   producer_pdf <- repo_path(
     "results", "figures", "manuscript_candidates", "final_truth_v9",
-    "figure_03", "assembled", "F3_NATURE_FINAL_V9.pdf")
+    "figure_03", "assembled", "FIGURE_03.pdf")
   if (file.exists(final_pdf) && file.exists(producer_pdf))
     testthat::expect_identical(unname(tools::sha256sum(final_pdf)),
                                unname(tools::sha256sum(producer_pdf)))

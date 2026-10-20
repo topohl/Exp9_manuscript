@@ -19,7 +19,7 @@ source(file.path("R", "paths.R"))
 # the pre-restructure freeze, which is the point: this is a reproducibility
 # check on the citation graph, not a new artefact.
 OUT <- repo_path("provenance", "claims", "figure_panel_reference_audit.csv")
-contract <- yaml::read_yaml(repo_path("figures", "figure_contract.yml"))
+contract <- yaml::read_yaml(repo_path("figures", "contracts", "figure_contract.yml"))
 registry <- utils::read.csv(repo_path("provenance", "publication_registry", "canonical_publication_registry.csv"),
                             stringsAsFactors = FALSE)
 

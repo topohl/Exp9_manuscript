@@ -62,7 +62,7 @@ test_that("the bundle carries the frozen design's families and counts", {
 })
 
 test_that("nothing in the manuscript renders behaviour from the retired bridge path", {
-  code <- readLines(repo("figures", "figure_01_panels.R"), warn = FALSE)
+  code <- readLines(repo("figures", "scripts", "figure_01_panels.R"), warn = FALSE)
   code <- code[!grepl("^[[:space:]]*#", code)]
   expect_false(any(grepl("figure1_bridge_mmmsociability", code, fixed = TRUE)))
   expect_false(any(grepl("source_data/MMMSociability/source_data", code, fixed = TRUE)))

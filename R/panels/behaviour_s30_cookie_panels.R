@@ -18,7 +18,7 @@
 #   tab   the Stage 30 figure-bundle table getter, function(name) -> the pinned table
 #         (stage30_bundle_table() on the pinned copy);
 #   an    the annotation resolver from bh_annotation() over a map that declares the
-#         cookie keys (figures/behaviour_v101_s30_annotation_map.csv, panels cookie_*, bundle s30b);
+#         cookie keys (figures/contracts/behaviour_v101_s30_annotation_map.csv, panels cookie_*, bundle s30b);
 #   w_mm, h_mm   the box the panel is authored for (defaults: the CANDIDATE_SPEC box);
 # and returns bh_panel(plot, w_mm, h_mm), as the Figure 1 builders do ($plot is the
 # ggplot / patchwork object). No file I/O.

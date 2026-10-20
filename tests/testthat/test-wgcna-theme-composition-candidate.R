@@ -1,4 +1,4 @@
-# The WGCNA module wheel and theme composition candidate (figures/wgcna_theme_composition_candidate.R).
+# The WGCNA module wheel and theme composition candidate (figures/candidates/wgcna_theme_composition_candidate.R).
 #
 # Portable: frozen source data and the panel library only. The entry script is never sourced, so
 # nothing is rendered; each check compares what the panels would draw with the frozen export.
@@ -80,7 +80,7 @@ testthat::test_that("the coherence tiles restate the summary and the pips its se
 
 testthat::test_that("the candidate computes no statistic and draws no group effect", {
   files <- c(repo_path("R", "panels", "wgcna_theme_composition_panels.R"),
-             repo_path("figures", "wgcna_theme_composition_candidate.R"))
+             repo_path("figures", "candidates", "wgcna_theme_composition_candidate.R"))
   testthat::expect_true(hv_assert_no_model_fitting(files))
   code <- unlist(lapply(files, function(f) { x <- readLines(f, warn = FALSE); x[!grepl("^\\s*#", x)] }))
   for (pat in BEHAVIOUR_FORBIDDEN_STATS)

@@ -34,7 +34,7 @@
 #        Rscript tools/promote_manuscript_render.R figure_02 extended_data_06 extended_data_07 \
 #          extended_data_08 extended_data_09 extended_data_10
 #        Rscript tools/promote_manuscript_render.R extended_data_01 extended_data_02 extended_data_03
-#          (after Rscript figures/conventional_tests_candidate.R --publication at a clean HEAD)
+#          (after Rscript figures/scripts/extended_data_conventional_tests.R --publication at a clean HEAD)
 
 suppressWarnings(source(file.path("R", "paths.R")))
 
@@ -47,9 +47,9 @@ SELF_RENDERED <- reg$publication_id[reg$status == "CANONICAL" &
                                     reg$originating_analysis %in% c("this repository", "SISanalyzer")]
 v9_record <- function(key) c("logs", "manuscript_candidates", "final_truth_v9", key, "render_record.yml")
 PRODUCER_BY_RENDERER <- list(
-  "figures/final_truth_v9_extended_data.R" = v9_record("extended_data"),
-  "figures/extended_data_behaviour_panels.R" = c("logs", "manuscript_figures", "extended_data_behaviour_panels", "render_record.yml"),
-  "figures/conventional_tests_candidate.R" = c("logs", "manuscript_figures", "conventional_tests", "render_record.yml"))
+  "figures/scripts/extended_data_proteomics_panels.R" = v9_record("extended_data"),
+  "figures/scripts/extended_data_behaviour_panels.R" = c("logs", "manuscript_figures", "extended_data_behaviour_panels", "render_record.yml"),
+  "figures/scripts/extended_data_conventional_tests.R" = c("logs", "manuscript_figures", "conventional_tests", "render_record.yml"))
 PRODUCER_RECORD <- c(
   list(figure_01 = c("logs", "manuscript_figures", "figure_01_panels", "render_record.yml"),
        figure_02 = v9_record("figure_02"), figure_03 = v9_record("figure_03")),
@@ -62,7 +62,7 @@ if (!length(args))
        call. = FALSE)
 if (anyDuplicated(args)) stop("a publication id is named twice", call. = FALSE)
 sha <- function(p) unname(tools::sha256sum(p))
-figures <- yaml::read_yaml(repo_path("figures", "figure_contract.yml"))$figures
+figures <- yaml::read_yaml(repo_path("figures", "contracts", "figure_contract.yml"))$figures
 head <- git_commit_sha()
 
 # Both render layers - the producer that drew the panels and the manuscript layer

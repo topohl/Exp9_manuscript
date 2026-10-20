@@ -1,4 +1,4 @@
-# Panels of the conventional-tests Extended Data candidates (figures/conventional_tests_candidate.R):
+# Panels of the conventional-tests Extended Data candidates (figures/scripts/extended_data_conventional_tests.R):
 # Extended Data 10 (conventional behaviour tests, locomotion by sex), 11 (physiology, spread of CombZ) and 12 (automated
 # against manual scoring).
 #

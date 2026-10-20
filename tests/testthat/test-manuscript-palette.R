@@ -65,7 +65,7 @@ testthat::test_that("a panel's own limits keep ggplot's censor, so an out-of-ran
   testthat::expect_false(toupper(s$na.value) %in% c("WHITE", "#FFFFFF"))
 })
 
-# canonical and active renderers (figures/FIGURE_INDEX.md); superseded generations keep their own code
+# canonical and active renderers (figures/scripts/FIGURE_INDEX.md); superseded generations keep their own code
 PANELS <- c("house_v2_figure_utils.R", "final_truth_v9_panels.R", "final_truth_v9_fidelity_panels.R",
             "final_truth_v9_ed_panels.R", "final_truth_v9_figure_utils.R", "figure3_adaptation_panels.R",
             "manuscript_figure_utils.R", "behaviour_figure_style.R", "behaviour_figure1_panels.R",
@@ -74,10 +74,10 @@ PANELS <- c("house_v2_figure_utils.R", "final_truth_v9_panels.R", "final_truth_v
             "behaviour_s30_light_panels.R", "behaviour_s30_screen_panels.R", "behaviour_stage14_panels.R",
             "cc4_phase_groups_candidate.R",
             "cc4_phase_groups_house.R", "cc4_phenotype_candidate.R", "wgcna_theme_composition_panels.R")
-FIGURES <- c("figure_01_panels.R", "extended_data_behaviour_panels.R", "behaviour_v101_s30_candidates.R",
-             "figure_03_supplementary_go.R", "figure_03_go_atlas_appendix.R", "final_truth_v9_legends.R",
-             "manuscript_supporting_immunostaining_candidates.R", "manuscript_supporting_immunostaining_panel.R",
-             "wgcna_theme_composition_candidate.R")
+FIGURES <- c(file.path("scripts", c("figure_01_panels.R", "extended_data_behaviour_panels.R", "proteomics_legends.R")),
+             file.path("candidates", c("behaviour_v101_s30_candidates.R", "figure_03_supplementary_go.R",
+                                       "figure_03_go_atlas_appendix.R", "immunostaining_candidates.R",
+                                       "immunostaining_panel.R", "wgcna_theme_composition_candidate.R")))
 FILES <- c(file.path("R", "panels", PANELS), file.path("figures", FIGURES))
 code_of <- function(f) { x <- readLines(repo(f), warn = FALSE); x[!grepl("^\\s*#", x)] }
 HEXES <- toupper(c(unlist(PAL$group), PAL$diverging$low, PAL$diverging$high,  # current (white excepted)
@@ -119,7 +119,7 @@ testthat::test_that("everything a contract renderer reaches is held to the same 
     if (!is.null(x$renderer)) renderers <<- c(renderers, as.character(x$renderer))
     for (e in x) walk(e)
   }
-  for (f in c("figure_final_truth_v9_contract.yml", "figure_contract.yml")) walk(yaml::read_yaml(repo("figures", f)))
+  for (f in c("proteomics_panels_contract.yml", "figure_contract.yml")) walk(yaml::read_yaml(repo("figures", "contracts", f)))
   renderers <- unique(renderers[grepl("^[A-Za-z.][A-Za-z0-9._]*$", renderers)])
   defs <- list()
   for (f in list.files(repo("R", "panels"), pattern = "[.]R$", full.names = TRUE)) {

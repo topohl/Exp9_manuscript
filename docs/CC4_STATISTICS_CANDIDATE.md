@@ -20,7 +20,7 @@ Import and render from this repository using PowerShell:
 
 ```powershell
 Rscript --vanilla 'tools/import_cc4_phase_statistics.R' '<Stage31c output>' 'cc4_phase_statistics_20260929_v1'
-Rscript --vanilla 'figures/cc4_phase_statistics_candidate.R' 'cc4_phase_statistics_20260929_v1' '<new candidate directory>'
+Rscript --vanilla 'figures/candidates/cc4_phase_statistics_candidate.R' 'cc4_phase_statistics_20260929_v1' '<new candidate directory>'
 Rscript --vanilla -e "testthat::test_file('tests/testthat/test-cc4-phase-statistics-candidate.R', reporter='summary', stop_on_failure=TRUE)"
 ```
 

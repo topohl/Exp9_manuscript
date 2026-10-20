@@ -9,7 +9,7 @@
 repo_rel <- function(...) file.path(testthat::test_path("..", ".."), ...)
 contract <- function() {
   source(testthat::test_path("..", "..", "R", "paths.R"))
-  yaml::read_yaml(repo_rel("figures", "figure_contract.yml"))
+  yaml::read_yaml(repo_rel("figures", "contracts", "figure_contract.yml"))
 }
 
 testthat::test_that("exactly one canonical generation is declared per manuscript figure", {
@@ -43,7 +43,7 @@ testthat::test_that("exactly one canonical generation is declared per manuscript
 
 testthat::test_that("PB-02: no manuscript figure depends on the superseded export namespace", {
   testthat::skip_if_not_installed("yaml")
-  src <- paste(readLines(repo_rel("figures", "figure_final_truth_v9_contract.yml"),
+  src <- paste(readLines(repo_rel("figures", "contracts", "proteomics_panels_contract.yml"),
                          warn = FALSE), collapse = "\n")
   # The producing contract must not read anything the manuscript layer writes,
   # which is what made promoting-and-retiring impossible before.
@@ -61,7 +61,7 @@ testthat::test_that("PB-02: no manuscript figure depends on the superseded expor
 
 testthat::test_that("PB-02: the promoted panels resolve to canonical stage outputs", {
   testthat::skip_if_not_installed("yaml")
-  v9 <- yaml::read_yaml(repo_rel("figures", "figure_final_truth_v9_contract.yml"))
+  v9 <- yaml::read_yaml(repo_rel("figures", "contracts", "proteomics_panels_contract.yml"))
   byid <- setNames(v9$panels, vapply(v9$panels, function(p) as.character(p$id), character(1)))
 
   testthat::expect_identical(as.character(byid[["v9_depth"]]$primary_source),
@@ -76,8 +76,8 @@ testthat::test_that("PB-02: the promoted panels resolve to canonical stage outpu
 
 testthat::test_that("Figure 3 overview and atlas retain the same full-width box", {
   testthat::skip_if_not_installed("yaml")
-  v9 <- yaml::read_yaml(repo_rel("figures", "figure_final_truth_v9_contract.yml"))
-  f3 <- Filter(function(x) x$name == "F3_NATURE_FINAL_V9", v9$figures)[[1]]
+  v9 <- yaml::read_yaml(repo_rel("figures", "contracts", "proteomics_panels_contract.yml"))
+  f3 <- Filter(function(x) x$name == "FIGURE_03", v9$figures)[[1]]
   boxes <- setNames(f3$layout, vapply(f3$layout, function(x) as.character(x$panel), character(1)))
   testthat::expect_identical(as.numeric(boxes[["v9_dap_track"]]$x),
                              as.numeric(boxes[["v9_atlas"]]$x))
@@ -99,7 +99,7 @@ testthat::test_that("the redesigned overview and atlas render without placeholde
 })
 
 testthat::test_that("PB-03: the eps-floor disclosure is derived, not hard-coded", {
-  src <- paste(readLines(repo_rel("figures", "final_truth_v9_legends.R"), warn = FALSE),
+  src <- paste(readLines(repo_rel("figures", "scripts", "proteomics_legends.R"), warn = FALSE),
                collapse = "\n")
   testthat::expect_true(grepl("f9_eps_floor_disclosure", src, fixed = TRUE))
   # The stale literal must not come back as a live string. It survives only

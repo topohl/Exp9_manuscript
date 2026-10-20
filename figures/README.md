@@ -1,16 +1,17 @@
-# Manuscript figure entry points
+# Manuscript figures
 
-**New here? Read [FIGURE_INDEX.md](FIGURE_INDEX.md) first.** This directory
-holds every figure generation the manuscript has passed through, and all of
-them still run, so the file list alone does not say which is current. The index
-names, per figure, the entry point to run and the canonical renderer that
-produced the panels, and marks the remaining 36 files as superseded.
+| Folder | What is in it |
+| --- | --- |
+| `main/`, `extended_data/` | the published figures (SVG for editing in Illustrator; PDF, PNG) and their per-panel source data |
+| `scripts/` | what draws and assembles them; [scripts/FIGURE_INDEX.md](scripts/FIGURE_INDEX.md) names, per figure, the entry point to run and the script that draws its panels |
+| `candidates/` | candidate and exploratory renderers, not published |
+| `audits/` | audits, previews and READMEs of the rendered layer |
+| `contracts/` | figure contracts and annotation maps |
 
-This directory is the explicit manuscript layer for Figures 2 and 3. The
-scientific pipeline remains organized by analysis stage; these entry points
+The scientific pipeline remains organized by analysis stage; the entry points
 select and validate the exact downstream products promoted into the manuscript.
 
-`figure_contract.yml` is the authority for panel identity, producer, inputs,
+`contracts/figure_contract.yml` is the authority for panel identity, producer, inputs,
 scientific contract, biological unit, hemisphere handling, and assembly
 position. The scripts never select the newest matching file and never select a
 result because it is significant.
@@ -20,35 +21,35 @@ result because it is significant.
 From the repository root:
 
 ```powershell
-Rscript "figures/figure_02.R"
-Rscript "figures/figure_03.R"
+Rscript "figures/scripts/figure_02.R"
+Rscript "figures/scripts/figure_03.R"
 ```
 
 Validate without writing:
 
 ```powershell
-Rscript "figures/figure_02.R" --check-only
-Rscript "figures/figure_03.R" --check-only
+Rscript "figures/scripts/figure_02.R" --check-only
+Rscript "figures/scripts/figure_03.R" --check-only
 ```
 
 Inspect pipeline availability without writing or failing on absent generated
 artifacts:
 
 ```powershell
-Rscript "figures/figure_02.R" --dry-run
-Rscript "figures/figure_03.R" --dry-run
+Rscript "figures/scripts/figure_02.R" --dry-run
+Rscript "figures/scripts/figure_03.R" --dry-run
 ```
 
 Render one panel:
 
 ```powershell
-Rscript "figures/figure_03.R" --panel 3e
+Rscript "figures/scripts/figure_03.R" --panel 3e
 ```
 
 Use an isolated candidate root during review:
 
 ```powershell
-Rscript "figures/figure_03.R" --output-root "C:\path\to\candidate"
+Rscript "figures/scripts/figure_03.R" --output-root "C:\path\to\candidate"
 ```
 
 Figure 2a, the anatomy schematic, is rendered (`f9_schematic`) and validated,
@@ -86,15 +87,15 @@ is therefore runtime context rather than artifact identity.
 The entry points do not refit differential-abundance, enrichment, or WGCNA
 models and do not modify p-values, FDRs, module identities, or source results.
 Most panels are promoted from their validated stage-level SVG and source table.
-Figure 3 (panels a-m) is rendered here by `figures/final_truth_v9_figure_03.R`
+Figure 3 (panels a-m) is rendered here by `figures/scripts/figure_03_panels.R`
 from the frozen imports in `source_data/pRoteomics/`, grouped by the single
 `manuscript_go_themes_v3` registry in `f9_atlas_themes()`, and promoted with
 `tools/promote_manuscript_render.R figure_03`. (In the superseded v2 grid,
 Figure 3e was a WGCNA_m12 filter of the three-module display source.)
 
 Figure 2 and the proteomics Extended Data (6 to 10) are rendered here
-too, by `figures/final_truth_v9_figure_02.R` and
-`figures/final_truth_v9_extended_data.R`, and published from `figures/main/`
+too, by `figures/scripts/figure_02_panels.R` and
+`figures/scripts/extended_data_proteomics_panels.R`, and published from `figures/main/`
 and `figures/extended_data/`. Identities rendered at one commit are promoted
 together, in one call:
 
@@ -107,7 +108,7 @@ are materialised by hash before rendering, with
 `PROTEOMICS_ROOT=<pRoteomics checkout> Rscript tools/import_render_inputs.R --materialize-provenance-only`.
 Extended Data 4 (WGCNA) also reads a WGCNA shortlist table this workspace does
 not hold, so the Extended Data producer is run with
-`--pages=ED1_FINAL_V9,ED2_FINAL_V9,ED3_FINAL_V9,ED6_FINAL_V9,ED7_FINAL_V9,ED8_FINAL_V9`;
+`--pages=ED_BILATERAL_PRECISION,ED_SPATIAL_IDENTITY,ED_CA2_SLM_QC,ED_ENRICHMENT_ATLAS,ED_IDENTITY_LOCATIONS,ED_SPATIAL_NETWORKS`;
 its render record names the pages it drew, and the promotion refuses a page
 whose panels that record does not cover.
 

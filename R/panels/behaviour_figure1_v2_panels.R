@@ -18,7 +18,7 @@
 #   e  f1v2_panel_prediction  held-out predicted against observed CombZ (ebb A2; LOAO and baseline R2, ebb C2;
 #                             sex by shape, group by colour) with the permutation null as an inset (ebb A3; the
 #                             Holm P, ebb E_multiplicity).
-# Every printed number is an$fa() of one key of figures/figure_01_annotation_map.csv (bundle ebb or fsb); the
+# Every printed number is an$fa() of one key of figures/contracts/figure_01_annotation_map.csv (bundle ebb or fsb); the
 # value-for-value test reads the panel SVGs. The arithmetic here is layout only (box, icon and label positions).
 #
 # Requires: R/behaviour_bundle.R, R/figure_support_bundle.R, R/panels/behaviour_figure_style.R,

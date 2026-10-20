@@ -1,4 +1,4 @@
-# The conventional-tests Extended Data (figures/conventional_tests_candidate.R): Extended Data 1 to 3 (10 to 12 until 2026-10-20).
+# The conventional-tests Extended Data (figures/scripts/extended_data_conventional_tests.R): Extended Data 1 to 3 (10 to 12 until 2026-10-20).
 #
 # Portable: the pinned SISanalyzer bundle and the panel library only. The entry script is never sourced, so nothing is
 # rendered; each check compares what the panels would draw with the frozen bundle.
@@ -118,7 +118,7 @@ testthat::test_that("the numbers the legends quote from the locomotion interacti
 })
 
 testthat::test_that("the contract and the registry name the pinned bundle and this renderer for Extended Data 1 to 3", {
-  y <- yaml::read_yaml(repo_path("figures", "figure_contract.yml"))$figures
+  y <- yaml::read_yaml(repo_path("figures", "contracts", "figure_contract.yml"))$figures
   reg <- utils::read.csv(repo_path("provenance", "publication_registry", "canonical_publication_registry.csv"), colClasses = "character")
   keys <- c("ED_scoring_validation", "ED_conventional_tests", "ED_physiology")
   for (n in 1:3) {
@@ -129,13 +129,13 @@ testthat::test_that("the contract and the registry name the pinned bundle and th
     testthat::expect_identical(nrow(r), 1L)
     testthat::expect_identical(r$contract_key, keys[n])
     testthat::expect_identical(r$originating_analysis, "SISanalyzer")
-    testthat::expect_identical(r$canonical_renderer, "figures/conventional_tests_candidate.R")
+    testthat::expect_identical(r$canonical_renderer, "figures/scripts/extended_data_conventional_tests.R")
     testthat::expect_identical(r$panels, paste(vapply(f$panels, function(p) as.character(p$id), ""), collapse = ","))
   }
 })
 
 testthat::test_that("the candidate computes no statistic", {
-  files <- c(repo_path("R", "conventional_bundle.R"), repo_path("R", "panels", "conventional_tests_panels.R"), repo_path("figures", "conventional_tests_candidate.R"))
+  files <- c(repo_path("R", "conventional_bundle.R"), repo_path("R", "panels", "conventional_tests_panels.R"), repo_path("figures", "scripts", "extended_data_conventional_tests.R"))
   code <- unlist(lapply(files, function(f) { x <- readLines(f, warn = FALSE); x <- gsub('"(\\\\.|[^"\\\\])*"', '""', x, perl = TRUE); sub("#.*$", "", x) }))
   for (pat in c("(^|[^A-Za-z0-9._])lm\\(", "emmeans", "p\\.adjust", "t\\.test", "cor\\.test", "(^|[^A-Za-z0-9._])cor\\(", "anova\\(", "(^|[^A-Za-z0-9._])sd\\(",
                 "(^|[^A-Za-z0-9._])var\\(", "quantile\\(", "(^|[^A-Za-z0-9._])mean\\(", "geom_smooth"))

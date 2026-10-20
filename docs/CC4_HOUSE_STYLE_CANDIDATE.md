@@ -7,7 +7,7 @@ sessions. CON therefore is not an unexposed grid control.
 
 ## Source and output
 
-- Renderer: `figures/cc4_phase_groups_house_candidate.R`.
+- Renderer: `figures/candidates/cc4_phase_groups_house_candidate.R`.
 - Panel library: `R/panels/cc4_phase_groups_house.R`.
 - Test: `tests/testthat/test-cc4-house-candidate.R`.
 - Source bundle: `source_data/MMMSociability_candidates/cc4_phase_groups_20260929_v2/`.
@@ -67,7 +67,7 @@ associations.
 ## Reproduce into a new directory
 
 ```powershell
-Rscript --vanilla figures/cc4_phase_groups_house_candidate.R 'cc4_phase_groups_20260929_v2' '<new candidate directory>'
+Rscript --vanilla figures/candidates/cc4_phase_groups_house_candidate.R 'cc4_phase_groups_20260929_v2' '<new candidate directory>'
 Rscript --vanilla -e "testthat::test_file('tests/testthat/test-cc4-house-candidate.R', reporter='summary', stop_on_failure=TRUE)"
 ```
 

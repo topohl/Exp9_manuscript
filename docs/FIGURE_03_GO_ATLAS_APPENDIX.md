@@ -27,7 +27,7 @@ every strip prints its NES, and the limit and the uncapped values are stored in
 each panel's source data. Protein log2 fold-change axes use one symmetric limit
 per theme and are recorded in the protein source data.
 
-The renderer is `figures/figure_03_go_atlas_appendix.R`, adjacent to the
+The renderer is `figures/candidates/figure_03_go_atlas_appendix.R`, adjacent to the
 four-term exploratory renderer. It calls `f9_gsea_curve_plot()` and
 `f9_protein_zoom_plot()` from `R/panels/final_truth_v9_panels.R`. The
 protein function is also used by the current Figure 3k–m panels; the current
@@ -66,7 +66,7 @@ backfilled: CA2 SLM neuropil, SUS - CON; and CA1 SP soma, SUS - RES.
 Run from the manuscript repository root:
 
 ```powershell
-Rscript figures/figure_03_go_atlas_appendix.R
+Rscript figures/candidates/figure_03_go_atlas_appendix.R
 ```
 
 The output directory must not exist, so reruns require a new candidate name

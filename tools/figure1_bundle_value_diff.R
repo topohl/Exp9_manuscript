@@ -49,7 +49,7 @@ getter <- function(pin) {
   }
 }
 TABS <- lapply(PINS, getter)
-MAP <- repo_path("figures", "figure_01_annotation_map.csv")
+MAP <- repo_path("figures", "contracts", "figure_01_annotation_map.csv")
 AN <- lapply(TABS, function(t) bh_annotation(MAP, tables = list(ebb = t), cell = bundle_cell))
 raw <- function(v) if (is.numeric(v)) sprintf("%.15g", v) else as.character(v)
 rows <- list()

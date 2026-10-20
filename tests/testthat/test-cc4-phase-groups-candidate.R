@@ -30,6 +30,6 @@ testthat::test_that("CC4 rendering fails on tampered inputs and existing outputs
   cat("\n",file=file.path(tmp,"group_phase_summary.csv"),append=TRUE)
   testthat::expect_error(cc4_read_bundle(tmp),"hash mismatch")
   withr::local_dir(repo_root())
-  source(repo_path("figures","cc4_phase_groups_candidate.R"))
+  source(repo_path("figures","candidates", "cc4_phase_groups_candidate.R"))
   testthat::expect_error(render_cc4_phase_groups("cc4_phase_groups_20260929_v2",tmp),"already exists")
 })

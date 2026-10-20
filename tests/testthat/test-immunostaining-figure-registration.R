@@ -1,7 +1,7 @@
 source(testthat::test_path("..", "..", "R", "paths.R"))
 
 # Extracted from pRoteomics tests/testthat/test-immunostaining-candidate-comparison.R
-# in Phase 6C. Those two assertions read figures/figure_contract.yml, which is
+# in Phase 6C. Those two assertions read figures/contracts/figure_contract.yml, which is
 # the journal figure assembly contract and moved to this repository. The other
 # 169 assertions in that file are about the candidate comparison analysis and
 # stayed in pRoteomics.
@@ -13,7 +13,7 @@ library(testthat)
 
 contract <- function() {
   testthat::skip_if_not_installed("yaml")
-  yaml::read_yaml(repo_path("figures", "figure_contract.yml"))
+  yaml::read_yaml(repo_path("figures", "contracts", "figure_contract.yml"))
 }
 
 test_that("the figure is registered as manuscript-supporting, not a numbered figure", {

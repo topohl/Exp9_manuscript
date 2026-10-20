@@ -9,11 +9,11 @@
 #   w_mm, h_mm   the CANDIDATE_SPEC box (defaults below);
 # and returns bh_panel(plot, w_mm, h_mm) (or a named list of them), ready for bh_save_svg().
 #
-# Annotation keys (figures/behaviour_v101_s30_annotation_map.csv, bundle ebb):
+# Annotation keys (figures/contracts/behaviour_v101_s30_annotation_map.csv, bundle ebb):
 #   ED X    edx_<a|b|c>_<cr|sz|od|fr>_q2b_{df1,df2,f,holm}: the C3 Q2b joint test (TR_POOLED)
 #           and its Holm p in E_multiplicity (P-TR for cr/sz, S-TR-ORG for od/fr).
 #   Fig. 1 options  f1o1_<canonical key> and f1o2_<canonical key>: one row per number the
-#           option panels print, copied from figures/figure_01_annotation_map.csv (same
+#           option panels print, copied from figures/contracts/figure_01_annotation_map.csv (same
 #           table, column, filters and format) with the candidate panel id. The Figure 1
 #           builders ask for the canonical key names; edx_annotation_prefixed() maps them onto
 #           the candidate keys, so the option panels resolve through the candidate map and
@@ -33,7 +33,7 @@
 # b = shared occupancy; recommended) or as one 173 x 53 panel ("ab"); c is 173 x 53. The compact
 # header (no patchwork outer margin) gives them the plot height the spec's 58 mm gave before.
 EDX_BOX <- list(a = c(85.5, 53), b = c(85.5, 53), ab = c(173, 53), c = c(173, 53))
-# Figure 1 options (figures/figure_behaviour_v101_s30_contract.yml). Option 2 letters its panels
+# Figure 1 options (figures/contracts/behaviour_v101_s30_contract.yml). Option 2 letters its panels
 # in reading order: its compact light-phase panel d (35 x 62, s30_panel_light_compact in
 # R/panels/behaviour_s30_light_panels.R) sits in row 2, so association and prediction are e and f.
 F1OPT_BOX <- list(

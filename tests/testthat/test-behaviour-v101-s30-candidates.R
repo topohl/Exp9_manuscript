@@ -1,6 +1,6 @@
 # Guards for the behaviour candidate generation behaviour_v101_s30
-# (figures/behaviour_v101_s30_candidates.R, figures/figure_behaviour_v101_s30_contract.yml,
-# figures/behaviour_v101_s30_annotation_map.csv; CANDIDATE_SPEC D).
+# (figures/candidates/behaviour_v101_s30_candidates.R, figures/contracts/behaviour_v101_s30_contract.yml,
+# figures/contracts/behaviour_v101_s30_annotation_map.csv; CANDIDATE_SPEC D).
 #
 # The candidates plot stored values of two pinned bundles: the Stage 29 v1.0.2 behaviour bundle
 # (ebb) and the Stage 30 figure bundle (s30b). The risks are a statistic computed here, a number
@@ -14,12 +14,12 @@ source(repo("R", "stage30_bundle.R"))
 source(repo("R", "figure_support_bundle.R"))
 
 GEN <- "behaviour_v101_s30"
-CONTRACT_PATH <- repo("figures", "figure_behaviour_v101_s30_contract.yml")
-ENTRY <- repo("figures", "behaviour_v101_s30_candidates.R")
-MAP_PATH <- repo("figures", "behaviour_v101_s30_annotation_map.csv")
+CONTRACT_PATH <- repo("figures", "contracts", "behaviour_v101_s30_contract.yml")
+ENTRY <- repo("figures", "candidates", "behaviour_v101_s30_candidates.R")
+MAP_PATH <- repo("figures", "contracts", "behaviour_v101_s30_annotation_map.csv")
 # The option candidates were drawn as alternatives to the six-panel ebb_v101 Figure 1 (promoted 6a5cf75); their keys copy
 # that figure's map, kept as it was when the canonical Figure 1 moved to the consolidated layout (2026-10-12).
-CANON_MAP_PATH <- repo("figures", "figure_01_annotation_map_ebb_v101_six_panel.csv")
+CANON_MAP_PATH <- repo("figures", "contracts", "figure_01_annotation_map_ebb_v101_six_panel.csv")
 BEHAVIOUR_LIBS <- sort(list.files(repo("R", "panels"), pattern = "^behaviour_.*[.][Rr]$", full.names = TRUE))
 CT <- yaml::read_yaml(CONTRACT_PATH)
 KEYS <- names(CT$candidates)
@@ -191,8 +191,8 @@ test_that("the candidate contract is candidate-only and declares every panel com
   expect_equal(CT$status, "candidate_only_not_promoted")
   expect_false(isTRUE(CT$rendering_repository_computes_statistics))
   expect_equal(CT$scientific_recomputation, "none")
-  expect_equal(CT$entry_point, "figures/behaviour_v101_s30_candidates.R")
-  expect_equal(CT$annotation_map, "figures/behaviour_v101_s30_annotation_map.csv")
+  expect_equal(CT$entry_point, "figures/candidates/behaviour_v101_s30_candidates.R")
+  expect_equal(CT$annotation_map, "figures/contracts/behaviour_v101_s30_annotation_map.csv")
   expect_setequal(KEYS, c("figure_01_option1", "figure_01_option2", "figure_01_option2_house", "figure_01_option3_house", "figure_01_option3_panel_d", "figure_01_option3b_house", "light_phase_panel", "light_dependence_ed",
                           "cookie_ed", "screen_summary", "ed_behaviour_longitudinal_light", "ed_behaviour_cookie",
                           "ed_behaviour_domain_heatmap_picked", "ed_behaviour_domain_heatmap_all5min",
@@ -233,7 +233,7 @@ test_that("the candidate contract is candidate-only and declares every panel com
     }
   }
   # the candidate keys are not figures of the canonical contract
-  canon <- yaml::read_yaml(repo("figures", "figure_contract.yml"))
+  canon <- yaml::read_yaml(repo("figures", "contracts", "figure_contract.yml"))
   expect_equal(intersect(KEYS, names(canon$figures)), character(0))
   skip_if_not(have_pins, "bundles not pinned")
   expect_equal(CT$bundles$ebb$bundle_id, behaviour_bundle_pin()$bundle_id)
@@ -247,7 +247,7 @@ test_that("the candidate contract is candidate-only and declares every panel com
 test_that("no candidate key or the generation appears in the publication registry or the canonical contract", {
   reg <- list.files(repo("provenance", "publication_registry"), full.names = TRUE)
   expect_gt(length(reg), 0L)
-  for (f in c(reg, repo("figures", "figure_contract.yml"))) {
+  for (f in c(reg, repo("figures", "contracts", "figure_contract.yml"))) {
     txt <- paste(readLines(f, warn = FALSE), collapse = "\n")
     for (k in c(KEYS, GEN)) expect_false(grepl(k, txt, fixed = TRUE), info = paste(basename(f), "names", k))
   }

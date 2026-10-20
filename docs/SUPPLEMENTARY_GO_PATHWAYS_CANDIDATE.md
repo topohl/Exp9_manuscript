@@ -71,7 +71,7 @@ until explicitly reviewed and committed.
 From the manuscript repository root, render with:
 
 ```powershell
-Rscript --vanilla figures/figure_03_supplementary_go.R
+Rscript --vanilla figures/candidates/figure_03_supplementary_go.R
 ```
 
 By default the renderer writes only to the ignored candidate namespace
@@ -95,7 +95,7 @@ from this manuscript repository root (using a fresh directory name):
 ```powershell
 $parent = 'S:\Lab_Member\Tobi\Experiments\Exp9_Social-Stress\Analysis\proteomics\results\figures\manuscript_candidates'
 $newOutput = Join-Path $parent ('supplementary_go_pathways_appendix_' + (Get-Date -Format yyyyMMdd_HHmmss))
-Rscript --vanilla figures/figure_03_supplementary_go.R $newOutput
+Rscript --vanilla figures/candidates/figure_03_supplementary_go.R $newOutput
 ```
 
 The validated review copy from this run is

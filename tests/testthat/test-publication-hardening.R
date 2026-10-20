@@ -39,7 +39,7 @@ test_that("the frozen v9 contract still reaches every renderer it names", {
   # PH-001: five v9 panels are rendered from superseded layer files. That is
   # accepted and documented, but the renderers must remain DEFINED - moving or
   # renaming one would break the frozen figures' reproducibility silently.
-  ct <- yaml::read_yaml(repo("figures", "figure_final_truth_v9_contract.yml"))
+  ct <- yaml::read_yaml(repo("figures", "contracts", "proteomics_panels_contract.yml"))
   used <- unique(vapply(ct$panels, function(p)
     as.character(p$renderer %||% ""), character(1)))
   used <- used[nzchar(used)]
@@ -60,7 +60,7 @@ test_that("out-of-layer v9 renderers are exactly the five that are documented", 
   # If this count changes, a panel silently moved between generations. The
   # f3a_ renderers are the v9 layer's own Figure 3 adaptation panels, sourced
   # by s9f_renderer_sources(), not an older generation.
-  ct <- yaml::read_yaml(repo("figures", "figure_final_truth_v9_contract.yml"))
+  ct <- yaml::read_yaml(repo("figures", "contracts", "proteomics_panels_contract.yml"))
   used <- unique(vapply(ct$panels, function(p)
     as.character(p$renderer %||% ""), character(1)))
   used <- used[nzchar(used)]
@@ -73,7 +73,7 @@ test_that("out-of-layer v9 renderers are exactly the five that are documented", 
 test_that("the specificity gate matches the adjective, not only the adverb", {
   # PH-002. "spatially selective" is the spatial form of the banned
   # susceptibility-specific claim; matching only "selectively" let it through.
-  sem <- readLines(repo("figures", "final_truth_v9_semantics.R"), warn = FALSE)
+  sem <- readLines(repo("figures", "audits", "semantics_audit.R"), warn = FALSE)
   pat <- grep("selectiv", sem, value = TRUE)
   expect_true(any(grepl("selectiv[|]exclusiv", pat)))
   expect_true(any(grepl('RULE\\("selective"', sem)))
@@ -150,7 +150,7 @@ test_that("reader-facing prose uses spatially resolved, not restricted", {
 })
 
 test_that("the spatial wording contract is declared in the rulebook", {
-  sem <- readLines(repo("figures", "final_truth_v9_semantics.R"), warn = FALSE)
+  sem <- readLines(repo("figures", "audits", "semantics_audit.R"), warn = FALSE)
   expect_true(any(grepl('RULE("spatial wording"', sem, fixed = TRUE)))
   # the S9 scan must carry the guard, anchored to the adverb so that a
   # restricted INTERPRETATION or a specificity INVENTORY is not flagged

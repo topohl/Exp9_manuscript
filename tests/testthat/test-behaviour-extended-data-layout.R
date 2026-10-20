@@ -3,7 +3,7 @@
 # box, so the boxes must lie on the page, and the page must draw every panel.
 test_that("behavioural Extended Data panels stay inside the assembled page", {
   root <- file.path(testthat::test_path("..", ".."), "results", "figures", "manuscript")
-  figs <- yaml::read_yaml(file.path(testthat::test_path("..", ".."), "figures", "figure_contract.yml"))$figures
+  figs <- yaml::read_yaml(file.path(testthat::test_path("..", ".."), "figures", "contracts", "figure_contract.yml"))$figures
   for (key in c("ED_behaviour_models", "ED_behaviour_secondary")) {
     f <- figs[[key]]
     for (p in f$panels) {

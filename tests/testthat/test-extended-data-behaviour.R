@@ -70,7 +70,7 @@ testthat::test_that("the contract declares the panels the renderer writes, from 
     testthat::expect_identical(as.character(fig$figure_support_bundle_id), B$fsb$bundle_id)
     testthat::expect_false(isTRUE(fig$rendering_repository_computes_statistics))
     for (panel in fig$panels) {
-      testthat::expect_identical(as.character(panel$producer_script), "figures/extended_data_behaviour_panels.R")
+      testthat::expect_identical(as.character(panel$producer_script), "figures/scripts/extended_data_behaviour_panels.R")
       src <- as.character(panel$primary_source)
       testthat::expect_true(startsWith(src, paste0("source_data/MMMSociability/", B$pin$bundle_id, "/")) ||
                               startsWith(src, paste0("source_data/MMMSociability/", B$fsb$bundle_id, "/")), info = src)
@@ -110,7 +110,7 @@ testthat::test_that("the Extended Data namespace resolves and still fails closed
 
 testthat::test_that("the renderer computes no statistic and reads only the pinned bundles", {
   source(testthat::test_path("..", "..", "R", "paths.R"))
-  src <- readLines(repo_path("figures", "extended_data_behaviour_panels.R"), warn = FALSE)
+  src <- readLines(repo_path("figures", "scripts", "extended_data_behaviour_panels.R"), warn = FALSE)
   code <- paste(sub("#.*$", "", src), collapse = "\n")   # match calls, not prose
   forbidden <- c("cor", "cor.test", "lm", "glm", "lmer", "t.test", "wilcox.test", "p.adjust", "sample", "boot", "quantile", "aov", "anova",
                  "fisher.test", "chisq.test", "predict", "residuals")

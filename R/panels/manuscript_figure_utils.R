@@ -8,11 +8,11 @@ if (!exists("output_namespace_manuscript_figure_paths", mode = "function")) {
 }
 
 manuscript_figure_contract_path <- function() {
-  repo_path("figures", "figure_contract.yml")
+  repo_path("figures", "contracts", "figure_contract.yml")
 }
 
 # Extended Data numbers live in one place, the extended_data_number of each figure
-# in figures/figure_contract.yml (renumbered by first citation on 2026-10-20). The
+# in figures/contracts/figure_contract.yml (renumbered by first citation on 2026-10-20). The
 # vendored output-namespace helper carries its own fixed key -> stub list; it is
 # replaced here by the list the contract implies, so the vendored file stays
 # byte-identical to pRoteomics and no number is written twice.

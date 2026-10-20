@@ -30,8 +30,8 @@
 - `tests/testthat/test-manuscript-palette.R`: the contract, the limits and their
   labels, and every canonical renderer (including those in older modules,
   function by function) free of repeated or replaced colour literals.
-- `figures/final_truth_v9_heatmap_scale_audit.R` and
-  `figures/final_truth_v9_claim_audit.R`: no heatmap clips a value without
+- `figures/audits/heatmap_scale_audit.R` and
+  `figures/audits/claim_audit.R`: no heatmap clips a value without
   disclosure, and a quantity drawn in more than one panel is drawn on one scale.
 - `tools/palette_cvd_contact_sheet.R` writes
   `results/reports/manuscript_palette/cvd_<palette_version>/`: every canonical

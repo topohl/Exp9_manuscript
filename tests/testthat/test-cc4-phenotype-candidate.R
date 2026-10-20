@@ -78,6 +78,6 @@ testthat::test_that("eight panels use frozen values, shared scales and the behav
   testthat::expect_no_warning(patchwork::patchworkGrob(cc4g_figure(s,d)))
   testthat::expect_identical(d,original$d)
   old_wd<-getwd();on.exit(setwd(old_wd),add=TRUE);setwd(repo_path())
-  source(repo_path("figures","cc4_phenotype_candidate.R"))
+  source(repo_path("figures","candidates", "cc4_phenotype_candidate.R"))
   testthat::expect_error(render_cc4_phenotypes("cc4_phenotypes_test","cc4_phase_groups_test",tempdir()),"already exists")
 })

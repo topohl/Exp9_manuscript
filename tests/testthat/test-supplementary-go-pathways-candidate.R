@@ -30,7 +30,7 @@ testthat::test_that("supplementary GO candidate is selection-disclosed and sourc
   # and Extended Data 6 use; a value beyond it takes full colour and stays uncapped
   # in the regional source data
   testthat::expect_false(anyNA(regions$NES))
-  code <- readLines(repo_path("figures", "figure_03_supplementary_go.R"), warn = FALSE)
+  code <- readLines(repo_path("figures", "candidates", "figure_03_supplementary_go.R"), warn = FALSE)
   code <- code[!grepl("^\\s*#", code)]
   testthat::expect_true(any(grepl('nes_limit <- hv_diverging_limit("nes")', code, fixed = TRUE)))
   testthat::expect_true(any(grepl('hv_diverging(measure = "nes"', code, fixed = TRUE)))

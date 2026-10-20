@@ -150,7 +150,7 @@ testthat::test_that("the figure entry points live here and fit no models", {
   # in the repository that owns them and remain assembly-only; the inference
   # ban itself is enforced across the whole layer by
   # tests/testthat/test-no-analysis-in-manuscript.R.
-  for (s in c("figures/figure_02.R", "figures/figure_03.R")) {
+  for (s in c("figures/scripts/figure_02.R", "figures/scripts/figure_03.R")) {
     testthat::expect_true(file.exists(repo_path(s)), label = s)
     code <- readLines(repo_path(s), warn = FALSE)
     code <- sub("#.*$", "", code)

@@ -18,7 +18,7 @@ checks each copy against both and fails on an unlisted file or an unpinned copy.
 and `cc4_phase_statistics_20260929_v1`, imported on 2026-09-30 before the record existed,
 were recorded on 2026-10-07 with `tools/register_cc4_candidate_bundle.R`.
 
-Entry point: `figures/cc4_phase_groups_candidate.R`.
+Entry point: `figures/candidates/cc4_phase_groups_candidate.R`.
 Panel library: `R/panels/cc4_phase_groups_candidate.R`.
 Output: a new directory under `results/figures/manuscript_candidates/`, with
 three figures in PNG/PDF/SVG and render input/output hashes.
@@ -69,7 +69,7 @@ associated with the protocol or time since cage change.
 
 ```powershell
 Rscript --vanilla 'tools/import_cc4_phase_groups.R' '<new Stage31b output>' 'cc4_phase_groups_<new version>'
-Rscript --vanilla 'figures/cc4_phase_groups_candidate.R' 'cc4_phase_groups_<new version>' '<new candidate output directory>'
+Rscript --vanilla 'figures/candidates/cc4_phase_groups_candidate.R' 'cc4_phase_groups_<new version>' '<new candidate output directory>'
 Rscript --vanilla -e "testthat::test_file('tests/testthat/test-cc4-phase-groups-candidate.R')"
 ```
 

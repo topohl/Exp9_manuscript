@@ -12,7 +12,7 @@
 #         reading the pinned ebb_v101 bundle (R/behaviour_bundle.R) and the pinned
 #         Stage 30 figure bundle (R/stage30_bundle.R); the same list bh_annotation() takes;
 #   an    the resolver from bh_annotation() over a map holding the keys of
-#         figures/behaviour_v101_s30_annotation_map.csv (panels light_*);
+#         figures/contracts/behaviour_v101_s30_annotation_map.csv (panels light_*);
 #   w_mm, h_mm  the box the panel is authored for (defaults: CANDIDATE_SPEC boxes);
 #   top_margin_pt  (B2, B3, B4) the top margin: 11.5 pt leaves room for the panel letter
 #         (Figure 1); a letterless single-panel page passes a small one;

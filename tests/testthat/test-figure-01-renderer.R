@@ -14,12 +14,12 @@ source(repo("R", "stage30_bundle.R"))
 source(repo("R", "figure_support_bundle.R"))
 PANELS <- repo("results", "figures", "manuscript", "figure_01_panels")
 FIG <- repo("results", "figures", "manuscript", "figure_01")
-RENDERER <- repo("figures", "figure_01_panels.R")
+RENDERER <- repo("figures", "scripts", "figure_01_panels.R")
 # The renderer is a thin caller; its house style, annotation resolver and panel
 # builders live in the behaviour panel libraries R/panels/behaviour_*.R.
 BEHAVIOUR_LIBS <- sort(list.files(repo("R", "panels"), pattern = "^behaviour_.*[.][Rr]$", full.names = TRUE))
-ENTRY <- repo("figures", "figure_01.R")
-AMAP_PATH <- repo("figures", "figure_01_annotation_map.csv")
+ENTRY <- repo("figures", "scripts", "figure_01.R")
+AMAP_PATH <- repo("figures", "contracts", "figure_01_annotation_map.csv")
 LEGEND <- repo("manuscript", "legends", "figure1_legend.md")
 rd <- function(p) utils::read.csv(p, stringsAsFactors = FALSE)
 have_pin <- file.exists(repo("config", "behaviour_bundle.yml")) && file.exists(repo("config", "figure_support_bundle.yml"))
@@ -159,7 +159,7 @@ test_that("the rendered panels and assembly are vector, not rasterised", {
 })
 
 test_that("the figure contract registers the five bundle-backed panels", {
-  y <- yaml::read_yaml(repo("figures", "figure_contract.yml"))
+  y <- yaml::read_yaml(repo("figures", "contracts", "figure_contract.yml"))
   e <- y$figures[["01"]]
   expect_true(isTRUE(e$is_numbered_manuscript_figure))
   expect_false(isTRUE(e$rendering_repository_computes_statistics))
@@ -172,7 +172,7 @@ test_that("the figure contract registers the five bundle-backed panels", {
   expect_equal(e$figure_support_bundle_id, fsb$bundle_id)
   pinned <- paste0("source_data/MMMSociability/", c(pin$bundle_id, fsb$bundle_id), "/")
   for (p in e$panels) {
-    expect_equal(as.character(p$producer_script), "figures/figure_01_panels.R")
+    expect_equal(as.character(p$producer_script), "figures/scripts/figure_01_panels.R")
     for (src in c(as.character(p$primary_source), unlist(p$input_dependencies))) {
       expect_true(any(startsWith(src, pinned)), info = src)
       expect_true(file.exists(repo(src)), info = src)

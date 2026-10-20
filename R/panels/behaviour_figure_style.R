@@ -1,6 +1,6 @@
 # Shared house style for the behaviour figures (Figure 1 and its candidates).
 #
-# Extracted unchanged from figures/figure_01_panels.R so that the Figure 1
+# Extracted unchanged from figures/scripts/figure_01_panels.R so that the Figure 1
 # renderer and any candidate or Extended Data behaviour panel draw with the same
 # constants, theme, annotation resolver and SVG device. Nothing here computes a
 # statistic: the annotation resolver returns exactly one stored bundle cell per
@@ -118,7 +118,7 @@ theme_f1 <- function(base = BASE_PT, style = "figure1") {
 
 # ---------------------------------------------------------------- forest marks
 # The estimate / interval / zero-line marks of the behaviour Extended Data
-# renderer (figures/extended_data_behaviour_panels.R): point shape 21 size 1.9
+# renderer (figures/scripts/extended_data_behaviour_panels.R): point shape 21 size 1.9
 # stroke 0.3; interval linewidth 0.7 in MUTED with round ends; zero reference
 # dashed "22", linewidth 0.3, RULE.
 # Interaction rows (the Female - male difference) take their own shape, a white
@@ -166,7 +166,7 @@ bh_sci_minus <- function(x) sub("e-0*([0-9])", "e−\\1", x)
 #' `tables` is a named list of table getters, one per bundle label, each
 #' function(table_name) returning that bundle table as read from its pinned copy
 #' (e.g. list(ebb = <behaviour bundle getter>, s30b = <Stage 30 bundle getter>)).
-#' A map without a `bundle` column (figures/figure_01_annotation_map.csv) resolves
+#' A map without a `bundle` column (figures/contracts/figure_01_annotation_map.csv) resolves
 #' every row against `default_bundle`, the first getter. `filters` is
 #' "name=value;name=value" (value NA matches a missing cell); an empty filter
 #' selects the whole table, which bundle_cell() accepts only if it has one row.

@@ -114,7 +114,7 @@ microglia-enriched ROI is not a purified cell population.
 
     # this repository (import once, then render a new versioned directory)
     Rscript tools/import_wgcna_theme_composition.R <pRoteomics_root>
-    Rscript figures/wgcna_theme_composition_candidate.R [new_output_directory]
+    Rscript figures/candidates/wgcna_theme_composition_candidate.R [new_output_directory]
 
 Default output: `results/figures/manuscript_candidates/wgcna_theme_composition_v1/`
 with the sheet (SVG, PDF, PNG), per-panel source data, `render_inputs.csv` and

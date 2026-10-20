@@ -11,7 +11,7 @@ if (!exists("hv_contract", mode = "function")) {
   source(repo_path("R", "house_v2_figure_utils.R"))
 }
 
-s9f_contract_path <- function() repo_path("figures", "figure_final_truth_v9_contract.yml")
+s9f_contract_path <- function() repo_path("figures", "contracts", "proteomics_panels_contract.yml")
 s9f_contract_version <- function() "manuscript_final_truth_v9_figures_v2_adaptation"
 
 s9f_output_paths <- function(figure_key, output_root = path_results()) {
@@ -43,9 +43,9 @@ s9f_renderer_sources <- function() {
     repo_path("R", "final_truth_v9_figure_utils.R"),
     repo_path("R", "editorial_v8_export.R"),
     repo_path("R", "spatial_grammar_utils.R"),
-    repo_path("figures", "final_truth_v9_figure_02.R"),
-    repo_path("figures", "final_truth_v9_figure_03.R"),
-    repo_path("figures", "final_truth_v9_extended_data.R"))
+    repo_path("figures", "scripts", "figure_02_panels.R"),
+    repo_path("figures", "scripts", "figure_03_panels.R"),
+    repo_path("figures", "scripts", "extended_data_proteomics_panels.R"))
 }
 
 s9f_contract <- function(path = s9f_contract_path()) {

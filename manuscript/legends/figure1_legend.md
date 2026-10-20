@@ -2,7 +2,7 @@
 
 Draft legend for author review. It describes design, measures, models and
 sample sizes; every statistic is printed on the panels and resolves, through
-`figures/figure_01_annotation_map.csv`, to one cell of a pinned bundle: the
+`figures/contracts/figure_01_annotation_map.csv`, to one cell of a pinned bundle: the
 canonical behaviour bundle ebb_v102_20261019_677ed97 and figure-support bundle fsb_v5_20261019_8212df4, pinned in config/behaviour_bundle.yml and config/figure_support_bundle.yml. All statistics are computed upstream in MMMSociability. Configuration v1.0.2 reruns the original analytic definitions on the corrected outcome and retains the frozen v1.0.0 analytic parent. The corrected-outcome rerun follows inspection of the earlier results; the original hypotheses, model set and multiplicity rules are retained. The title and any interpretive
 sentence are left to the authors.
 

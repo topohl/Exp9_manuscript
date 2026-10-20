@@ -11,7 +11,7 @@ repo_rel <- function(...) file.path(testthat::test_path("..", ".."), ...)
 pub_contract <- function() {
   source(testthat::test_path("..", "..", "R", "paths.R"))
 source(testthat::test_path("..", "..", "R", "frozen_inputs.R"))
-  yaml::read_yaml(repo_rel("figures", "figure_contract.yml"))
+  yaml::read_yaml(repo_rel("figures", "contracts", "figure_contract.yml"))
 }
 
 testthat::test_that("every numbered publication has exactly one canonical identity", {
@@ -169,10 +169,10 @@ testthat::test_that("MT-04: the external panel uses the signature-family correct
 
 testthat::test_that("no artefact still points Figure 2h at a withdrawn panel", {
   source(testthat::test_path("..", "..", "R", "paths.R"))
-  for (f in c(repo_path("figures", "figure_contract.yml"),
-              repo_path("figures", "figure_final_truth_v9_contract.yml"),
+  for (f in c(repo_path("figures", "contracts", "figure_contract.yml"),
+              repo_path("figures", "contracts", "proteomics_panels_contract.yml"),
               repo_path("R", "final_truth_v9_panels.R"),
-              repo_path("figures", "final_truth_v9_legends.R"))) {
+              repo_path("figures", "scripts", "proteomics_legends.R"))) {
     s <- paste(readLines(f, warn = FALSE), collapse = " ")
     testthat::expect_false(grepl("complete evidence lives in ED2", s, fixed = TRUE),
                            info = basename(f))

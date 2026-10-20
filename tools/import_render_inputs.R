@@ -27,7 +27,7 @@
 # copied. Three declared assets are large scientific tables: the 251 MB
 # ontology-aware GSEA theme assignments, a 40 MB baseline profile and a 23 MB
 # bilateral protein-level table. In the active contract
-# (figures/figure_contract.yml) they appear only under input_dependencies, so
+# (figures/contracts/figure_contract.yml) they appear only under input_dependencies, so
 # the manuscript layer never reads their contents; only the superseded
 # generation contract lists them as primary_source. Copying 314 MB of
 # scientific tables here to satisfy an existence check on a provenance field
@@ -90,8 +90,8 @@ FIELDS <- c("figure_source", "primary_source", "input_dependencies",
             "legend_source")
 
 declared <- list()
-for (cf in c("figures/figure_contract.yml",
-             "figures/figure_final_truth_v9_contract.yml")) {
+for (cf in c("figures/contracts/figure_contract.yml",
+             "figures/contracts/proteomics_panels_contract.yml")) {
   p <- repo_path(cf)
   if (!file.exists(p)) next
   y <- yaml::read_yaml(p)
@@ -100,11 +100,11 @@ for (cf in c("figures/figure_contract.yml",
   ## never imported from pRoteomics, so this tool cannot overwrite them.
   ##
   ## Figures this repository renders itself are skipped for the same reason. The
-  ## a-m Figure 3 is produced here by figures/final_truth_v9_figure_03.R from
+  ## a-m Figure 3 is produced here by figures/scripts/figure_03_panels.R from
   ## source_data/pRoteomics, while pRoteomics still holds the superseded a-i
   ## panels at the same results/ paths. Figure 2 and the proteomics Extended
-  ## Data pages are rendered here too (figures/final_truth_v9_figure_02.R and
-  ## figures/final_truth_v9_extended_data.R) and promoted from those renders.
+  ## Data pages are rendered here too (figures/scripts/figure_02_panels.R and
+  ## figures/scripts/extended_data_proteomics_panels.R) and promoted from those renders.
   LOCALLY_RENDERED <- c("figure_02", "figure_03", "extended_data_06", "extended_data_07",
                         "extended_data_08", "extended_data_09", "extended_data_10")   # numbering of 2026-10-20
   if (!is.null(y$figures))

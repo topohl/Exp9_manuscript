@@ -1,6 +1,6 @@
 # Figure 1 panel builders (behaviour). Rendering only: fits no model, computes no statistic.
 #
-# Extracted unchanged from figures/figure_01_panels.R. Each builder takes
+# Extracted unchanged from figures/scripts/figure_01_panels.R. Each builder takes
 #   tab   a table getter, function(name) -> the pinned behaviour-bundle table;
 #   an    the annotation resolver from bh_annotation() (R/panels/behaviour_figure_style.R);
 #   w_mm, h_mm   the box the panel is authored for (defaults: the Figure 1 contract box);
@@ -57,7 +57,7 @@
 #
 # Requires: R/behaviour_bundle.R and R/panels/behaviour_figure_style.R sourced first.
 
-# Figure 1 contract boxes (figures/figure_contract.yml, absolute layout), w x h in mm.
+# Figure 1 contract boxes (figures/contracts/figure_contract.yml, absolute layout), w x h in mm.
 F1_BOX <- list(a = c(173, 36), b = c(58, 66), c = c(113, 66), d = c(173, 62), e = c(66, 58), f = c(105, 58))
 
 # Display labels for the two Stage 29 primary constructs (legacy identifiers as names),
