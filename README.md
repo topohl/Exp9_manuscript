@@ -14,14 +14,13 @@ repository.
 | Source | Owns | Frozen at |
 | --- | --- | --- |
 | [`topohl/pRoteomics`](https://github.com/topohl/pRoteomics) | preprocessing, QC, differential abundance, WGCNA, GSEA, spatial validation, spatial networks, all statistical models and canonical result tables | tag `pre-restructure-scientific-freeze-2026-09` (peels to `0f84a103dd895161711c643d0ba1c6e14082ba9a`); later exports are listed in `source_data/pRoteomics/manifest.csv` |
-| [`topohl/MMMSociability`](https://github.com/topohl/MMMSociability) | behavioural acquisition and analysis, CombZ outcome scoring, behaviour prediction models | bundles `ebb_v101_20260929_b2ce507` (MMMSociability `b2ce507`; Figure 1 and Stage 29), `fsb_v4_20261012_f4c2ba6` (`f4c2ba6`; Figure 1 support) and `s30b_v10_20260929_5394f2f` (`5394f2f`; Stage 30); Extended Data 5 and 9 stay at `53bc7e91f3a837c1814babbf5d2ad19553b12457` |
+| [`topohl/MMMSociability`](https://github.com/topohl/MMMSociability) | behavioural acquisition and analysis, CombZ outcome scoring, behaviour prediction models | bundles `ebb_v102_20261019_677ed97` (MMMSociability `677ed97`; Figure 1, Extended Data 5 and 9, Stage 29 on the corrected outcome), `fsb_v5_20261019_8212df4` (`8212df4`; Figure 1 support) and `s30b_v11_20261019_5482c43` (`5482c43`; Stage 30) |
 | SISanalyzer (local) | conventional behaviour tests, physiology, heterogeneity and locomotion analyses of all 117 animals; the manual-versus-automated scoring validation | bundle `ctp_v5_20261019_991bed1` (SISanalyzer `991bed1`); Extended Data 10 to 12 (`docs/CONVENTIONAL_TESTS_CANDIDATE.md`) |
 
 Notes on these pins (checked 2026-10-15):
 
 - The pRoteomics commit recorded here earlier (`6801edbce8a5d222f4af46e06b6db4e99f6a9761`, also named in `provenance/ai_assistance.md`) does not resolve in the local pRoteomics clone. Imports are verified by file hash against `provenance/source_manifests/prerestructure_freeze_manifest.csv`, so rendering does not depend on it.
-- The earlier Figure 1 freeze `30a2666198ca6f23795773da1b7d0ef34e78ac37` is superseded by the `ebb_v101` and `fsb_v4` bundles. It survives in `provenance/claims/figure1_bridge_provenance.csv`.
-- Extended Data 5 and 9 are registered at the `53bc7e9` freeze and rendered from `results/source_data/manuscript/`, not from the `ebb_v101` bundle used for Figure 1. Their behaviour values can therefore differ from the current Figure 1.
+- The earlier Figure 1 freeze `30a2666198ca6f23795773da1b7d0ef34e78ac37` and the Extended Data 5 and 9 freeze `53bc7e9` are superseded by the behaviour bundles; since 2026-10-19 Figure 1, Extended Data 5 and Extended Data 9 render from the same pinned bundles (corrected outcome). The bridge survives in `provenance/claims/figure1_bridge_provenance.csv`.
 - The local MMMSociability clone's `origin` is `https://github.com/topohl/BehavioralDynamics.git`, not `topohl/MMMSociability`.
 
 There is deliberately **no live cross-repository dependency**. Nothing here

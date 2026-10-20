@@ -1,6 +1,6 @@
 # Candidate legends for the corrected-outcome behavioural views
 
-These are alternative layouts for author review, separate from the numbered manuscript figures. The renderer namespace `behaviour_v101_s30` is retained for path compatibility. Current sources are `ebb_v102_20261019_677ed97`, `s30b_v11_20261019_5482c43` and `fsb_v5_20261019_8212df4`. The preceding drafts are preserved verbatim in `history/ov1_legends.md` and `history/ov1_results_text.md`; their old numerical statements do not describe these refreshed views.
+These are alternative layouts for author review, separate from the numbered manuscript figures. The renderer namespace `behaviour_v101_s30` is retained for path compatibility. Current sources are `ebb_v102_20261019_677ed97`, `s30b_v11_20261019_5482c43` and `fsb_v5_20261019_8212df4`. The preceding drafts are in git history (`git show 1e137c1:manuscript/candidates/behaviour_v101_s30/legends.md`, and `results_text.md` likewise); their numbers do not describe these refreshed views.
 
 Every displayed statistic resolves through `figures/behaviour_v101_s30_annotation_map.csv` to a stored bundle cell. Its value, format and role are also exported with each panel's source data. No model is fitted by the renderer. The original analytic definitions were rerun on the corrected outcome after earlier results had been inspected. These layouts do not provide independent replication.
 
