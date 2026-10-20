@@ -683,7 +683,9 @@ manuscript_figure_main <- function(figure_id) {
       manuscript_figure_copy(figure_source, panel_svg)
       source_mode <- as.character(panel$source_data_mode %||% "none")
       if (identical(source_mode, "copy_csv")) {
-        manuscript_figure_copy(primary, source_target)
+        # the producer's table of the plotted values when the contract declares one, else the primary input
+        plotted <- manuscript_figure_resolve(panel$source_data)
+        manuscript_figure_copy(if (is.na(plotted)) primary else plotted, source_target)
       } else if (identical(source_mode, "derive_figure2b")) {
         manuscript_figure_derive_2b_source(primary, source_target)
       } else {

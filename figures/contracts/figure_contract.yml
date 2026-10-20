@@ -55,6 +55,7 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01a.svg
+        source_data: results/figures/manuscript/figure_01_panels/figure_01a_source_data.csv
         primary_source: source_data/MMMSociability/fsb_v5_20261019_8212df4/T1_design_ages.csv
         input_dependencies:
           - source_data/MMMSociability/fsb_v5_20261019_8212df4/T1_design_ages.csv
@@ -76,6 +77,7 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01b.svg
+        source_data: results/figures/manuscript/figure_01_panels/figure_01b_source_data.csv
         primary_source: source_data/MMMSociability/fsb_v5_20261019_8212df4/F2_combz_components.csv
         input_dependencies:
           - source_data/MMMSociability/fsb_v5_20261019_8212df4/F2_combz_components.csv
@@ -98,6 +100,7 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01c.svg
+        source_data: results/figures/manuscript/figure_01_panels/figure_01c_source_data.csv
         primary_source: source_data/MMMSociability/fsb_v5_20261019_8212df4/D1_domain_heatmap_cells.csv
         input_dependencies:
           - source_data/MMMSociability/fsb_v5_20261019_8212df4/D1_domain_heatmap_cells.csv
@@ -119,6 +122,7 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01d.svg
+        source_data: results/figures/manuscript/figure_01_panels/figure_01d_source_data.csv
         primary_source: source_data/MMMSociability/ebb_v102_20261019_677ed97/A2_prediction_animals.csv
         input_dependencies:
           - source_data/MMMSociability/ebb_v102_20261019_677ed97/A2_prediction_animals.csv
@@ -143,6 +147,7 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01e.svg
+        source_data: results/figures/manuscript/figure_01_panels/figure_01e_source_data.csv
         primary_source: source_data/MMMSociability/ebb_v102_20261019_677ed97/A3_permutation_draws.csv
         input_dependencies:
           - source_data/MMMSociability/ebb_v102_20261019_677ed97/A2_prediction_animals.csv
@@ -1222,6 +1227,7 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04a.svg
+        source_data: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04a_source_data.csv
         primary_source: source_data/MMMSociability/ebb_v102_20261019_677ed97/C2_estimates.csv
         input_dependencies:
           - source_data/MMMSociability/ebb_v102_20261019_677ed97/C2_estimates.csv
@@ -1247,6 +1253,7 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04b.svg
+        source_data: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04b_source_data.csv
         primary_source: source_data/MMMSociability/ebb_v102_20261019_677ed97/C2_estimates.csv
         input_dependencies:
           - source_data/MMMSociability/ebb_v102_20261019_677ed97/C2_estimates.csv
@@ -1271,6 +1278,7 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04c.svg
+        source_data: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04c_source_data.csv
         primary_source: source_data/MMMSociability/ebb_v102_20261019_677ed97/C2_estimates.csv
         input_dependencies:
           - source_data/MMMSociability/ebb_v102_20261019_677ed97/C2_estimates.csv
@@ -1292,6 +1300,7 @@ figures:
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04d.svg
+        source_data: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04d_source_data.csv
         primary_source: source_data/MMMSociability/fsb_v5_20261019_8212df4/E1_movement_combz_spearman_by_sex.csv
         input_dependencies:
           - source_data/MMMSociability/fsb_v5_20261019_8212df4/E1_movement_combz_spearman_by_sex.csv

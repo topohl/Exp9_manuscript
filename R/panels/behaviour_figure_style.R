@@ -213,11 +213,26 @@ bh_annotation <- function(map_csv, tables, cell = bundle_cell, default_bundle = 
 }
 
 # ---------------------------------------------------------------- panel box and device
-#' A panel plot together with the box (mm) it is authored for.
-bh_panel <- function(plot, w_mm, h_mm) {
+#' A panel plot together with the box (mm) it is authored for and, optionally, the values it plots
+#' (a data frame, or a named list of data frames; written as the panel's source data).
+bh_panel <- function(plot, w_mm, h_mm, data = NULL) {
   if (!is.numeric(w_mm) || !is.numeric(h_mm) || length(w_mm) != 1L || length(h_mm) != 1L || !(w_mm > 0) || !(h_mm > 0))
     stop("bh_panel: box width and height must be single positive numbers (mm).", call. = FALSE)
-  structure(list(plot = plot, w_mm = w_mm, h_mm = h_mm), class = "bh_panel")
+  structure(list(plot = plot, w_mm = w_mm, h_mm = h_mm, data = data), class = "bh_panel")
+}
+
+#' One source-data table from a panel's data: a data frame as it is; a named list of data frames stacked
+#' with a first column `table` naming each part (columns a part lacks are left empty).
+bh_source_table <- function(data) {
+  if (is.data.frame(data)) return(data)
+  if (!is.list(data) || is.null(names(data)) || any(!nzchar(names(data))))
+    stop("bh_source_table: expected a data frame or a named list of data frames.", call. = FALSE)
+  cols <- unique(unlist(lapply(data, names)))
+  do.call(rbind, lapply(names(data), function(k) {
+    x <- data[[k]]
+    for (m in setdiff(cols, names(x))) x[[m]] <- NA
+    cbind(data.frame(table = rep(k, nrow(x)), stringsAsFactors = FALSE), x[cols])
+  }))
 }
 
 #' Write a panel as SVG at its exact box, so the absolute-layout assembler places it at scale 1.

@@ -6,15 +6,16 @@
 # identity are published from figures/main/ (or figures/extended_data/) rather
 # than from a copy produced in another repository:
 #
-#   * a figure whose analysis is owned by MMMSociability and whose source data
-#     is the pinned behaviour bundle; its registry row records the bundle and
-#     the upstream commit. Its contract must name the pinned bundle, and both
-#     render layers are held to the same HEAD, clean-code and hash checks as a
-#     self-rendered identity;
+#   * a figure whose analysis is owned by MMMSociability and which is drawn from
+#     the pinned behaviour bundle; its registry row records the upstream commit.
+#     Its contract must name the pinned bundle, and both render layers are held
+#     to the same HEAD, clean-code and hash checks as a self-rendered identity;
 #   * a figure this repository renders itself from frozen source data
-#     (SELF_RENDERED). Its per-panel source data is copied beside the render
-#     under figures/main/source_data/<id>/ with a hash manifest, and its
-#     registry row records the render commit. Both render layers - the producer
+#     (SELF_RENDERED); its registry row records the render commit.
+#
+# For both, the per-panel source data (the values each panel plots) is copied
+# beside the render under figures/main|extended_data/source_data/<id>/ with a
+# hash manifest. Both render layers - the producer
 #     that drew the panels and the manuscript layer that assembled them - must
 #     have run at HEAD on clean code, the tree must still be clean, and every
 #     file either layer hashed must be unchanged.
@@ -130,29 +131,26 @@ plan_promotion <- function(pid) {
     source(repo_path("R", "behaviour_bundle.R"))
     p$pin <- behaviour_bundle_pin()
     behaviour_bundle_verify(p$pin)
-    # Only an identity whose contract renders from the pinned bundle has this route (Figure 1, and ED5 / ED9
-    # since their renderer reads the pinned bundles, 2026-10-17).
+    # Only an identity whose contract renders from the pinned bundle has this route (Figure 1 and
+    # Extended Data 4).
     if (!identical(as.character(contract$behaviour_bundle_id %||% ""), p$pin$bundle_id))
       stop(pid, " does not render from the pinned behaviour bundle ", p$pin$bundle_id,
            "; it has no promotion route.", call. = FALSE)
-    # Promoted only from a render of the committed tree, as a self-rendered identity is.
-    check_render_records(pid)
-  } else {
-    # A self-rendered identity is only promoted from a render of the committed
-    # tree, and nothing is written until every check below has passed.
-    run <- check_render_records(pid)
-    p$sd_src <- path_results("source_data", "manuscript", pid)
-    p$sd_dst <- file.path(p$dst_dir, "source_data", pid)
-    p$expected <- paste0(pid, sub("^[0-9]+", "", panel_ids), "_source_data.csv")
-    if (!length(p$expected) || !all(file.exists(file.path(p$sd_src, p$expected))))
-      stop("per-panel source data incomplete in ", p$sd_src, call. = FALSE)
-    hashed <- vapply(run$outputs, function(x) basename(x$path), "")
-    if (!all(p$expected %in% hashed))
-      stop("per-panel source data is not covered by the run manifest; re-render before promoting.",
-           call. = FALSE)
-    if (dir.exists(p$sd_dst) && length(list.dirs(p$sd_dst, recursive = FALSE)))
-      stop(relative_to(p$sd_dst), " contains subdirectories; clear it before promoting.", call. = FALSE)
   }
+  # Promoted only from a render of the committed tree, and nothing is written
+  # until every check below has passed.
+  run <- check_render_records(pid)
+  p$sd_src <- path_results("source_data", "manuscript", pid)
+  p$sd_dst <- file.path(p$dst_dir, "source_data", pid)
+  p$expected <- paste0(pid, sub("^[0-9]+", "", panel_ids), "_source_data.csv")
+  if (!length(p$expected) || !all(file.exists(file.path(p$sd_src, p$expected))))
+    stop("per-panel source data incomplete in ", p$sd_src, call. = FALSE)
+  hashed <- vapply(run$outputs, function(x) basename(x$path), "")
+  if (!all(p$expected %in% hashed))
+    stop("per-panel source data is not covered by the run manifest; re-render before promoting.",
+         call. = FALSE)
+  if (dir.exists(p$sd_dst) && length(list.dirs(p$sd_dst, recursive = FALSE)))
+    stop(relative_to(p$sd_dst), " contains subdirectories; clear it before promoting.", call. = FALSE)
   if (!all(file.exists(file.path(p$src_dir, p$files))))
     stop("assembled render incomplete in ", p$src_dir, call. = FALSE)
   p
@@ -176,26 +174,22 @@ for (p in plans) {
 
   reg$rendered_artifact[i] <- relative_to(file.path(p$dst_dir, paste0(p$pid, ".svg")))
   reg$hash[i] <- sha(file.path(p$dst_dir, paste0(p$pid, ".svg")))
-  if (p$mmm) {
-    reg$canonical_source_data[i] <- paste0("source_data/MMMSociability/", p$pin$bundle_id)
-    reg$source_commit[i] <- p$pin$mmm_git_commit
-  } else {
-    dir.create(p$sd_dst, recursive = TRUE, showWarnings = FALSE)
-    unlink(list.files(p$sd_dst, full.names = TRUE))
-    if (!all(file.copy(file.path(p$sd_src, p$expected), file.path(p$sd_dst, p$expected))))
-      stop("source-data copy failed", call. = FALSE)
-    if (!setequal(list.files(p$sd_dst), p$expected) ||
-        any(sha(file.path(p$sd_src, p$expected)) != sha(file.path(p$sd_dst, p$expected))))
-      stop("promoted source data is not a byte-exact copy of the render", call. = FALSE)
-    rows <- vapply(file.path(p$sd_dst, p$expected), function(f)
-      nrow(utils::read.csv(f, check.names = FALSE)), integer(1))
-    utils::write.csv(data.frame(file = p$expected, panel = p$panel_ids, rows = unname(rows),
-                                sha256 = sha(file.path(p$sd_dst, p$expected)),
-                                render_git_commit = head, stringsAsFactors = FALSE),
-                     file.path(p$sd_dst, "00_manifest.csv"), row.names = FALSE)
-    reg$canonical_source_data[i] <- relative_to(p$sd_dst)
-    reg$source_commit[i] <- head
-  }
+  dir.create(p$sd_dst, recursive = TRUE, showWarnings = FALSE)
+  unlink(list.files(p$sd_dst, full.names = TRUE))
+  if (!all(file.copy(file.path(p$sd_src, p$expected), file.path(p$sd_dst, p$expected))))
+    stop("source-data copy failed", call. = FALSE)
+  if (!setequal(list.files(p$sd_dst), p$expected) ||
+      any(sha(file.path(p$sd_src, p$expected)) != sha(file.path(p$sd_dst, p$expected))))
+    stop("promoted source data is not a byte-exact copy of the render", call. = FALSE)
+  rows <- vapply(file.path(p$sd_dst, p$expected), function(f)
+    nrow(utils::read.csv(f, check.names = FALSE)), integer(1))
+  utils::write.csv(data.frame(file = p$expected, panel = p$panel_ids, rows = unname(rows),
+                              sha256 = sha(file.path(p$sd_dst, p$expected)),
+                              render_git_commit = head, stringsAsFactors = FALSE),
+                   file.path(p$sd_dst, "00_manifest.csv"), row.names = FALSE)
+  reg$canonical_source_data[i] <- relative_to(p$sd_dst)
+  # the bundle's upstream commit for an MMMSociability identity, the render commit otherwise
+  reg$source_commit[i] <- if (p$mmm) p$pin$mmm_git_commit else head
   if (length(p$panel_ids)) reg$panels[i] <- paste(p$panel_ids, collapse = ",")
   cat("Promoted", p$pid, "->", relative_to(p$dst_dir), "\n  sha256", reg$hash[i], "\n  source",
       reg$canonical_source_data[i], "\n  commit", reg$source_commit[i], "\n")

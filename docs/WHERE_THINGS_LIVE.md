@@ -4,7 +4,7 @@ Written 2026-10-15. This page says where each class of Exp9 result is produced, 
 
 ## The master text
 
-The Word file `S:\Lab_Member\Tobi\Paper\E9SIS\manuscript_resiliencandsusceptibility.docx` is the master text. Its snapshots, the claims register, notes (including the older markdown draft and the statement tables keyed to it) and the legend drafts are kept in that folder (its `README.md` explains them), not in this repository. Tools read the folder through `paper_path()` in `R/paths.R`; no test does.
+The Word file `S:\Lab_Member\Tobi\Paper\E9SIS\manuscript_resiliencandsusceptibility.docx` is the master text. Its snapshots, the claims register, notes (including the older markdown draft and the statement tables keyed to it) and the legend drafts are kept in that folder (its `README.md` explains them), not in this repository. Tools read the folder through `paper_path()` in `R/paths.R`; no test does. Two deliverables are built into it from the promoted figures and the pinned bundles: `source_data/<figure>.xlsx` (one sheet per panel; `tools/build_source_data.R`) and `stats.xlsx` (the statistics by figure, the text-only numbers, sensitivity analyses, other analyses and group sizes; `tools/build_stats.R` from `figures/contracts/stats_map.csv`).
 
 ## From source to manuscript
 

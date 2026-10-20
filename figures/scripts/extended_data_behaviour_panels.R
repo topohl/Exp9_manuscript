@@ -373,6 +373,27 @@ save_svg <- function(p, id) {
 written <- vapply(names(PLOTS), function(id) save_svg(PLOTS[[id]], id),
                   character(1))
 
+# The values each panel plots, one table per panel beside the SVG: the panel's source data
+# (figures/contracts/figure_contract.yml source_data).
+TABLES <- list(
+  ed04a = data.frame(Feature = unname(SECONDARY[as2$predictor]), Outcome = "CombZ", n = as2$n, `Spearman rho` = as2$rho,
+                     `CI low (95%, bootstrap)` = as2$ci_low, `CI high (95%, bootstrap)` = as2$ci_high, P = as2$p_raw,
+                     `q (BH across the three features)` = as2$q_bh, check.names = FALSE, stringsAsFactors = FALSE),
+  ed04b = data.frame(Model = gsub("  +", " ", unname(MODEL_LABEL[ladder$model_id])), Role = as.character(la$role), n = ladder$n,
+                     `LOAO R2` = ladder$loao_r2, `Repeated-CV mean R2` = ladder$repeated_cv_mean_r2,
+                     `Repeated-CV 2.5th percentile` = ladder$cv_r2_q025, `Repeated-CV 97.5th percentile` = ladder$cv_r2_q975,
+                     `Permutation P (raw)` = ladder$permutation_p, check.names = FALSE, stringsAsFactors = FALSE),
+  ed04c = data.frame(Feature = unname(FEATURE_LABEL[sexc$feature]), `Feature x sex interaction` = sexc$interaction_estimate,
+                     `CI low (95%)` = sexc$interaction_ci_low, `CI high (95%)` = sexc$interaction_ci_high, P = sexc$interaction_p,
+                     `q (BH across the three features)` = sexc$interaction_q_bh, check.names = FALSE, stringsAsFactors = FALSE),
+  ed04d = data.frame(Feature = as.character(rho$label), Sex = rho$sex, `Spearman rho` = rho$rho, check.names = FALSE,
+                     stringsAsFactors = FALSE))
+tables <- vapply(names(TABLES), function(id) {
+  f <- file.path(OUT, paste0("extended_data_behaviour_", id, "_source_data.csv"))
+  utils::write.csv(TABLES[[id]], f, row.names = FALSE, na = "")
+  f
+}, character(1))
+
 cat("Behavioural Extended Data panels ->", OUT, "\n")
 for (id in names(written))
   cat(sprintf("  extended_data_behaviour_%s.svg  %6d bytes  %.1f x %.0f mm\n",
@@ -394,7 +415,7 @@ cat("  every value read from stored bundle cells; nothing computed\n")
     behaviour_bundle_id = PIN$bundle_id, behaviour_bundle_manifest_sha256 = PIN$manifest_sha256,
     figure_support_bundle_id = FSB$bundle_id, figure_support_bundle_manifest_sha256 = FSB$manifest_sha256,
     render_git_commit = code$commit, render_code_clean = code$code_clean, render_code_dirty = code$dirty,
-    files = lapply(unname(written), function(x) list(path = relative_to(x), sha256 = unname(tools::sha256sum(x))))),
+    files = lapply(unname(c(written, tables)), function(x) list(path = relative_to(x), sha256 = unname(tools::sha256sum(x))))),
     file.path(record_dir, "render_record.yml"))
   cat("  render record", relative_to(file.path(record_dir, "render_record.yml")), "at", substr(code$commit, 1, 7),
       if (isTRUE(code$code_clean)) "(clean code)\n" else "(UNCOMMITTED CODE)\n")

@@ -76,6 +76,14 @@ PANELS <- list(
 
 # Authored at the exact box the absolute-layout assembler places (figures/contracts/figure_contract.yml), so scale = 1.
 written <- vapply(names(PANELS), function(id) bh_save_svg(PANELS[[id]], file.path(OUT, paste0("figure_01", id, ".svg"))), character(1))
+# The values each panel plots (its bh_panel data), one table per panel beside the SVG: the panel's source data
+# (figures/contracts/figure_contract.yml source_data).
+tables <- vapply(names(PANELS), function(id) {
+  f <- file.path(OUT, paste0("figure_01", id, "_source_data.csv"))
+  if (is.null(PANELS[[id]]$data)) stop("panel ", id, " carries no source data", call. = FALSE)
+  utils::write.csv(bh_source_table(PANELS[[id]]$data), f, row.names = FALSE, na = "")
+  f
+}, character(1))
 used <- unique(AN$map$key)
 cat("Figure 1 panels ->", OUT, "\n  bundles", PIN$bundle_id, "(config", PIN$config_version, PIN$config_sha256, ")", FSB$bundle_id, "\n")
 for (id in names(written)) cat(sprintf("  figure_01%s.svg  %7d bytes  %.0f x %.0f mm\n", id, file.size(written[[id]]), PANELS[[id]]$w_mm, PANELS[[id]]$h_mm))
@@ -95,7 +103,7 @@ yaml::write_yaml(list(
   behaviour_bundle_id = PIN$bundle_id, behaviour_bundle_manifest_sha256 = PIN$manifest_sha256,
   figure_support_bundle_id = FSB$bundle_id, figure_support_bundle_manifest_sha256 = FSB$manifest_sha256,
   render_git_commit = code$commit, render_code_clean = code$code_clean, render_code_dirty = code$dirty,
-  files = lapply(unname(written), function(x) list(path = relative_to(x), sha256 = unname(tools::sha256sum(x))))),
+  files = lapply(unname(c(written, tables)), function(x) list(path = relative_to(x), sha256 = unname(tools::sha256sum(x))))),
   file.path(record_dir, "render_record.yml"))
 cat("  render record", relative_to(file.path(record_dir, "render_record.yml")), "at", substr(code$commit, 1, 7),
     if (isTRUE(code$code_clean)) "(clean code)\n" else "(UNCOMMITTED CODE)\n")

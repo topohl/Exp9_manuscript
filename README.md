@@ -53,7 +53,7 @@ rendering never addresses upstream internal folder structure.
 | `provenance/` | claim provenance, publication registry, source manifests |
 | `export/` | journal submission bundles |
 | `tests/` | publication integrity suite |
-| `tools/` | bundle verification and rendering utilities; `check_claims.R` (looks up the numbers of the Word text in their sources) and `export_docx_text.R` (snapshots the Word file); these and `audit_manuscript_references.R` read the paper folder outside the repository (`E9_PAPER_DIR`, default `S:/Lab_Member/Tobi/Paper/E9SIS`) |
+| `tools/` | bundle verification and rendering utilities; `check_claims.R` (looks up the numbers of the Word text in their sources) and `export_docx_text.R` (snapshots the Word file); these and `audit_manuscript_references.R` read the paper folder outside the repository (`E9_PAPER_DIR`, default `S:/Lab_Member/Tobi/Paper/E9SIS`); `build_source_data.R` and `build_stats.R` write the per-figure source data workbooks and `stats.xlsx` there |
 
 ## Publication identities
 

@@ -126,7 +126,11 @@ f1v2_panel_timeline <- function(fsb, an, w_mm, h_mm) {
     coord_cartesian(clip = "off") +
     theme_void(base_size = F1H$title_pt, base_family = "sans") +
     theme(plot.margin = margin(0, 0, 0, 0))
-  bh_panel(pa, w_mm, h_mm)
+  steps <- T1[T1$event_id %in% need, , drop = FALSE]
+  steps <- steps[order(f1v2_num(steps$event_order)), , drop = FALSE]
+  bh_panel(pa, w_mm, h_mm, data = data.frame(
+    `Design step` = steps$event_label, `Animals` = steps$n_animals, `Age, first (postnatal day)` = steps$age_min,
+    `Age, last (postnatal day)` = steps$age_max, Definition = steps$definition, check.names = FALSE, stringsAsFactors = FALSE))
 }
 
 # =============================================================== b
@@ -220,7 +224,17 @@ f1v2_panel_combz <- function(tab, fsb, an, w_mm, h_mm) {
   blocks <- lapply(sexes, function(s) f1v2_combz_block(s, ani, hm, gone, bnd, thr, legend = s == "Female", colourbar = s == "Male", fill_z))
   pb <- patchwork::wrap_plots(blocks[[1]], patchwork::plot_spacer(), blocks[[2]], ncol = 1, heights = c(1, 0.035, 1)) +
     patchwork::plot_annotation(theme = theme(plot.margin = margin(0, 0, 0, 0), plot.background = F1H_BACKGROUND))
-  bh_panel(pb, w_mm, h_mm)
+  vals <- ani[order(match(ani$Sex, sexes), ani$x), , drop = FALSE]
+  out <- data.frame(Sex = vals$Sex, `Animal ID` = vals$AnimalNum, Group = as.character(vals$Group),
+                    `Order within sex` = vals$x, `Integrated resilience (CombZ)` = vals$CombZ, check.names = FALSE,
+                    stringsAsFactors = FALSE)
+  for (k in F2b$component) {
+    h <- hm[hm$component == k, , drop = FALSE]
+    out[[paste0(F1V2_COMPONENT_LABEL[[k]], " (signed z)")]] <- h$signed_z[match(vals$AnimalNum, h$AnimalNum)]
+  }
+  out$`Control mean CombZ (sex)` <- thr$control_mean_combz[match(out$Sex, thr$Sex)]
+  out$`Susceptibility threshold (sex)` <- thr$susceptibility_threshold[match(out$Sex, thr$Sex)]
+  bh_panel(pb, w_mm, h_mm, data = out)
 }
 
 # =============================================================== c
@@ -288,7 +302,15 @@ f1v2_panel_domains <- function(fsb, an, w_mm, h_mm) {
   bottom <- patchwork::plot_spacer() + key + bar + patchwork::plot_spacer() + patchwork::plot_layout(widths = c(0.9, 0.55, 0.62, 0.22))
   pc <- heat / bottom + patchwork::plot_layout(heights = c(1, 0.075)) +
     patchwork::plot_annotation(theme = theme(plot.margin = margin(0, 0, 0, 0), plot.background = F1H_BACKGROUND))
-  bh_panel(pc, w_mm, h_mm)
+  cell <- d[order(d$PhaseClass, match(d$Sex, names(F1V2_SEX_LABEL)), -d$y, d$x), , drop = FALSE]
+  bh_panel(pc, w_mm, h_mm, data = data.frame(
+    Phase = unname(F1V2_PHASE_LABEL[cell$PhaseClass]), Sex = cell$Sex, Domain = as.character(cell$domain),
+    Tier = cell$display_tier, Comparison = cell$contrast, `n compared` = cell$n_comp_animals,
+    `n reference` = cell$n_ref_animals, `Mean compared` = cell$mean_comp, `Mean reference` = cell$mean_ref,
+    `Hedges g` = cell$g, Estimate = cell$estimate, `CI low (95%)` = cell$ci_low, `CI high (95%)` = cell$ci_high,
+    Test = cell$test_used, df = cell$df, Statistic = cell$statistic, P = cell$p_raw, `q (BH, family)` = cell$q_bh,
+    `Correction family` = cell$family_id, `Post hoc marker drawn` = toupper(as.character(cell$marker)) == "TRUE",
+    check.names = FALSE, stringsAsFactors = FALSE))
 }
 
 # =============================================================== d
@@ -326,7 +348,17 @@ f1v2_panel_movement <- function(tab, fsb, an, w_mm, h_mm) {
   }
   pd <- patchwork::wrap_plots(one("Female", FALSE), one("Male", TRUE), ncol = 1) +
     patchwork::plot_annotation(theme = theme(plot.margin = margin(0, 0, 0, 0), plot.background = F1H_BACKGROUND))
-  bh_panel(pd, w_mm, h_mm)
+  E1 <- fsb("E1_movement_combz_spearman_by_sex"); E1 <- E1[E1$feature == "Movement_mean", , drop = FALSE]
+  E2 <- E2[order(match(E2$Sex, c("Female", "Male")), f1v2_num(E2$grid_index)), , drop = FALSE]
+  A2d <- A2[order(match(A2$Sex, c("Female", "Male")), A2$Movement_mean), , drop = FALSE]
+  bh_panel(pd, w_mm, h_mm, data = list(
+    animals = data.frame(Sex = A2d$Sex, `Animal ID` = A2d$AnimalNum, Group = as.character(A2d$Group),
+                         `Mean movement (early window)` = A2d$Movement_mean, `Integrated resilience (CombZ)` = A2d$observed_CombZ,
+                         check.names = FALSE, stringsAsFactors = FALSE),
+    display_line = data.frame(Sex = E2$Sex, `Mean movement (early window)` = E2$x, `Least-squares fit` = E2$fit,
+                              `CI low (95%)` = E2$ci_low, `CI high (95%)` = E2$ci_high, check.names = FALSE, stringsAsFactors = FALSE),
+    correlation = data.frame(Sex = E1$Sex, n = E1$n, `Spearman rho` = E1$spearman_rho, P = E1$spearman_p,
+                             `q (BH within sex)` = E1$spearman_p_bh_within_sex, check.names = FALSE, stringsAsFactors = FALSE)))
 }
 
 # =============================================================== e
@@ -379,5 +411,14 @@ f1v2_panel_prediction <- function(tab, an, w_mm, h_mm) {
           plot.background = element_rect(fill = "white", colour = NA), plot.margin = margin(1, 1, 1, 1))
   pe <- scatter + patchwork::inset_element(inset, left = F1V2_INSET[["left"]], bottom = F1V2_INSET[["bottom"]], right = F1V2_INSET[["right"]],
                                            top = F1V2_INSET[["top"]], align_to = "panel")
-  bh_panel(pe, w_mm, h_mm)
+  A2e <- A2[order(as.character(A2$Sex), A2$observed_CombZ), , drop = FALSE]
+  bh_panel(pe, w_mm, h_mm, data = list(
+    animals = data.frame(Sex = as.character(A2e$Sex), `Animal ID` = A2e$AnimalNum, Group = as.character(A2e$Group),
+                         `Observed CombZ` = A2e$observed_CombZ, `Held-out predicted CombZ` = A2e$heldout_prediction,
+                         check.names = FALSE, stringsAsFactors = FALSE),
+    permutation_null = data.frame(Permutation = nulls$permutation_id, `LOAO R2 under permuted outcomes` = nulls$performance_value,
+                                  check.names = FALSE, stringsAsFactors = FALSE),
+    statistics = data.frame(Quantity = c("LOAO R2, mean movement", "LOAO R2, intercept-only baseline",
+                                         "Permutation P (Holm across the two behaviour-only models)"),
+                            Value = c(an$ann("e_loao"), an$ann("e_base"), an$ann("e_perm_p")), stringsAsFactors = FALSE)))
 }
