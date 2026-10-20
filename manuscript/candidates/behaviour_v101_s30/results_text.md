@@ -1,6 +1,6 @@
 # Results draft for the corrected-outcome candidate views
 
-These alternative views use `ebb_v102_20261019_677ed97`, `s30b_v11_20261019_5482c43` and `fsb_v5_20261019_8212df4`. The preceding text is preserved in `history/ov1_results_text.md`. The original analysis definitions were rerun after earlier results had been inspected; the refreshed views are not independent replication.
+These alternative views use `ebb_v102_20261019_677ed97`, `s30b_v11_20261019_5482c43` and `fsb_v5_20261019_8212df4`. The preceding text is in git history (`git show 1e137c1:manuscript/candidates/behaviour_v101_s30/results_text.md`). The original analysis definitions were rerun after earlier results had been inspected; the refreshed views are not independent replication.
 
 Early home-cage movement predicted later Integrated Resilience within this cohort. The movement-only model attained leave-one-animal-out R² = 0.218. Batch means were retained in both the predictor and outcome. The permutation comparison and repeated-split estimates are shown in the candidate prediction panels; the repeated-split percentile range describes variation across splits and is not a confidence interval for the leave-one-animal-out estimate. This internal predictive association does not establish transport to a new cohort or a causal behavioural mechanism.
 

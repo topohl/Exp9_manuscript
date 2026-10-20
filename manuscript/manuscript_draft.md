@@ -1,5 +1,8 @@
 # Manuscript draft
 
+> Superseded (2026-09-30): the Word file is the manuscript text (`docs/WHERE_THINGS_LIVE.md`). The numbers below predate
+> the corrected outcome of 2026-10-19.
+
 Phases 1–3: the Introduction, Results §1–§3, the Methods they depend on and the
 Discussion are drafted. Results §4 is closed rather than pending. The Abstract is
 to be written last, once the rest is settled; the title and the front-matter
