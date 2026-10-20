@@ -122,7 +122,9 @@ plan_promotion <- function(pid) {
   p <- list(pid = pid, i = i, mmm = mmm, panel_ids = panel_ids,
             src_dir = path_results("figures", "manuscript", pid, "assembled"),
             dst_dir = repo_path("figures", if (startsWith(pid, "figure_")) "main" else "extended_data"),
-            files = paste0(pid, c(".svg", ".pdf", ".png")))
+            # the published figure is the SVG only (Tobias, 2026-10-20: he edits it
+            # in Illustrator; no PNG or PDF beside it)
+            files = paste0(pid, ".svg"))
 
   if (mmm) {
     source(repo_path("R", "behaviour_bundle.R"))
@@ -170,6 +172,7 @@ for (p in plans) {
     stop("copy failed", call. = FALSE)
   if (any(sha(file.path(p$src_dir, p$files)) != sha(file.path(p$dst_dir, p$files))))
     stop("promoted copy is not byte-exact", call. = FALSE)
+  unlink(file.path(p$dst_dir, paste0(p$pid, c(".pdf", ".png"))))
 
   reg$rendered_artifact[i] <- relative_to(file.path(p$dst_dir, paste0(p$pid, ".svg")))
   reg$hash[i] <- sha(file.path(p$dst_dir, paste0(p$pid, ".svg")))

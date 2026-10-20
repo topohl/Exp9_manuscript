@@ -54,12 +54,13 @@ reg <- reg[reg$status == "CANONICAL", , drop = FALSE]
 sheets <- character()
 for (i in seq_len(nrow(reg))) {
   pid <- reg$publication_id[i]
-  png <- repo_path(sub("[.]svg$", ".png", reg$rendered_artifact[i]))
-  if (!file.exists(png)) {
-    message("no PNG beside the registered render of ", pid, "; skipped")
+  # the published figure is the SVG only: read it at preview resolution
+  svg <- repo_path(reg$rendered_artifact[i])
+  if (!file.exists(svg)) {
+    message("no registered render of ", pid, "; skipped")
     next
   }
-  img <- magick::image_background(magick::image_read(png), "white", flatten = TRUE)
+  img <- magick::image_background(magick::image_read(svg, density = 150), "white", flatten = TRUE)
   img <- magick::image_scale(img, "800")
   views <- lapply(names(VIEWS), function(v) labelled(view_of(img, VIEWS[[v]]), v))
   sheet <- labelled(magick::image_append(do.call(c, views)), pid, size = 36)

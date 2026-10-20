@@ -154,7 +154,7 @@ testthat::test_that("canonical Figure 3 contract is a-d and the exemplar rows e-
                                unname(tools::sha256sum(producer_pdf)))
 })
 
-testthat::test_that("the registered Figure 3 is the promoted a-m render", {
+testthat::test_that("the registered Figure 3 is the promoted render", {
   # Tracked files only, so this runs without a results/ workspace. It pins the
   # canonical identity and the counts the manuscript text cites.
   reg <- utils::read.csv(repo_path("provenance", "publication_registry",
@@ -163,14 +163,16 @@ testthat::test_that("the registered Figure 3 is the promoted a-m render", {
   r <- reg[reg$publication_id == "figure_03", , drop = FALSE]
   testthat::expect_identical(nrow(r), 1L)
   testthat::expect_identical(r$status, "CANONICAL")
-  testthat::expect_identical(r$panels,
-                             paste(paste0("3", letters[1:13]), collapse = ","))
+  testthat::expect_identical(r$panels, paste(c(paste0("3", letters[1:4]),
+    unlist(lapply(c("3e", "3f", "3g"), function(x) paste0(x, c("", "_card", "_curve", "_proteins"))))),
+    collapse = ","))
   testthat::expect_identical(r$rendered_artifact, "figures/main/figure_03.svg")
   testthat::expect_identical(r$canonical_source_data,
                              "figures/main/source_data/figure_03")
-  for (ext in c(".svg", ".pdf", ".png"))
-    testthat::expect_true(file.exists(repo_path("figures", "main",
-                                                paste0("figure_03", ext))))
+  # the published figure is the SVG only (2026-10-20)
+  testthat::expect_true(file.exists(repo_path("figures", "main", "figure_03.svg")))
+  for (ext in c(".pdf", ".png"))
+    testthat::expect_false(file.exists(repo_path("figures", "main", paste0("figure_03", ext))))
   sha <- function(p) unname(tools::sha256sum(p))
   testthat::expect_identical(sha(repo_path(r$rendered_artifact)), r$hash)
   # the frozen a-i figure is history, not the registered one

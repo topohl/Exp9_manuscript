@@ -2,7 +2,7 @@
 
 | Folder | What is in it |
 | --- | --- |
-| `main/`, `extended_data/` | the published figures (SVG for editing in Illustrator; PDF, PNG) and their per-panel source data |
+| `main/`, `extended_data/` | the published figures (SVG only, for editing in Illustrator) and their per-panel source data |
 | `scripts/` | what draws and assembles them; [scripts/FIGURE_INDEX.md](scripts/FIGURE_INDEX.md) names, per figure, the entry point to run and the script that draws its panels |
 | `candidates/` | candidate and exploratory renderers, not published |
 | `audits/` | audits, previews and READMEs of the rendered layer |

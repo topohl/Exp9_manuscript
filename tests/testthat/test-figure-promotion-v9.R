@@ -200,9 +200,11 @@ testthat::test_that("Figure 2 and the proteomics Extended Data are registered fr
                                paste0("figures/", dir, "/", pid, ".svg"), info = pid)
     testthat::expect_identical(r$canonical_source_data,
                                paste0("figures/", dir, "/source_data/", pid), info = pid)
-    for (ext in c(".svg", ".pdf", ".png"))
-      testthat::expect_true(file.exists(repo_path("figures", dir, paste0(pid, ext))),
-                            info = paste0(pid, ext))
+    # the published figure is the SVG only (2026-10-20)
+    testthat::expect_true(file.exists(repo_path("figures", dir, paste0(pid, ".svg"))), info = pid)
+    for (ext in c(".pdf", ".png"))
+      testthat::expect_false(file.exists(repo_path("figures", dir, paste0(pid, ext))),
+                             info = paste0(pid, ext))
     testthat::expect_identical(sha(repo_path(r$rendered_artifact)), r$hash, info = pid)
     testthat::expect_true(grepl("^[0-9a-f]{40}$", r$source_commit), info = pid)
     sd <- repo_path(r$canonical_source_data)
