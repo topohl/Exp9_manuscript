@@ -21,7 +21,7 @@ source(repo_path("R", "proteomics_page_builder.R"))
 suppressPackageStartupMessages({ library(readr); library(dplyr); library(ggplot2); library(patchwork); library(scales); library(grid) })
 Sys.setenv(PROTEOMICS_SCRIPT_ID = "figures/scripts/extended_data_proteomics_panels.R")
 args <- commandArgs(trailingOnly = TRUE)
-# --pages=ED_BILATERAL_PRECISION,ED_SPATIAL_IDENTITY draws only those pages (s9f_build)
+# --pages=ED_SPATIAL_VALIDATION,ED_CA2_SLM_QC draws only those pages (s9f_build)
 pages <- sub("^--pages=", "", grep("^--pages=", args, value = TRUE))
 res <- s9f_build("extended_data", dry_run = "--dry-run" %in% args || is_dry_run(),
                  pages = if (length(pages)) strsplit(pages, ",", fixed = TRUE)[[1]] else NULL)

@@ -585,14 +585,14 @@ figures:
       Does the spatial proteomics experiment faithfully resolve biologically
       meaningful hippocampal molecular architecture?
     layout:
-      - {panel: v9_schematic,      label: a, x: 4,   "y": 4,   w: 86,  h: 36}
-      - {panel: v9_depth,          label: b, x: 93,  "y": 4,   w: 34,  h: 36}
-      - {panel: v9_pca,            label: c, x: 130, "y": 4,   w: 49,  h: 36}
-      - {panel: v9_fingerprint,    label: d, x: 4,   "y": 43,  w: 175, h: 50}
-      - {panel: v9_compartment,    label: e, x: 4,   "y": 96,  w: 78,  h: 38}
-      - {panel: v9_bilateral_main, label: f, x: 85,  "y": 96,  w: 94,  h: 38}
-      - {panel: v9_external_main,  label: g, x: 4,   "y": 137, w: 86,  h: 31}
-      - {panel: v9_internal_main,  label: h, x: 93,  "y": 137, w: 86,  h: 31}
+      - {panel: v9_schematic,      label: a, x: 4, "y": 4, w: 86, h: 36}
+      - {panel: v9_depth,          label: b, x: 93, "y": 4, w: 34, h: 36}
+      - {panel: v9_pca,            label: c, x: 130, "y": 4, w: 49, h: 36}
+      - {panel: v9_fingerprint,    label: d, x: 4, "y": 44, w: 100, h: 76}
+      - {panel: v9_bilateral_main, label: f, x: 106, "y": 78, w: 73, h: 42}
+      - {panel: v9_compartment,    label: e, x: 106, "y": 44, w: 73, h: 32}
+      - {panel: v9_external_main,  label: g, x: 4, "y": 124, w: 86, h: 42}
+      - {panel: v9_internal_main,  label: h, x: 93, "y": 124, w: 86, h: 42}
 
   - name: FIGURE_03
     figure_key: figure_03
@@ -619,24 +619,19 @@ figures:
       - {panel: v9_curve_ox,         label: "", x: 91, "y": 129, w: 44, h: 21}
       - {panel: v9_prot_ox,          label: "", x: 136, "y": 129, w: 43, h: 25}
 
-  - name: ED_BILATERAL_PRECISION
+  # the bilateral audit and the spatial identity evidence on one page (2026-10-20);
+  # the historical internal inventory (v9_ed_internal_full) stays withheld
+  - name: ED_SPATIAL_VALIDATION
     figure_key: extended_data
     width_mm: 183
     height_mm: 150
-    question: Complete bilateral reproducibility and precision audit.
+    question: >-
+      How reproducible and how anatomically faithful are the spatial proteomes?
     layout:
-      - {panel: v9_ed_bilateral_full, label: a, x: 4, "y": 4,  w: 175, h: 88}
-      - {panel: v9_ed_precision,      label: b, x: 4, "y": 96, w: 175, h: 48}
-
-  - name: ED_SPATIAL_IDENTITY
-    figure_key: extended_data
-    width_mm: 183
-    height_mm: 168
-    question: Complete spatial and compartment identity evidence.
-    layout:
-      - {panel: v9_ed_fingerprint_full, label: a, x: 4, "y": 4,   w: 175, h: 56}
-      - {panel: v9_ed_external_full,    label: b, x: 4, "y": 64,  w: 175, h: 48}
-      - {panel: v9_ed_internal_full,    label: c, x: 4, "y": 116, w: 175, h: 48}
+      - {panel: v9_ed_bilateral_full,   label: a, x: 4,   "y": 4,  w: 118, h: 70}
+      - {panel: v9_ed_precision,        label: b, x: 124, "y": 4,  w: 55,  h: 70}
+      - {panel: v9_ed_fingerprint_full, label: c, x: 4,   "y": 78, w: 110, h: 68}
+      - {panel: v9_ed_external_full,    label: d, x: 116, "y": 78, w: 63,  h: 68}
 
   - name: ED_CA2_SLM_QC
     figure_key: extended_data

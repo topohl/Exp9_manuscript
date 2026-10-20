@@ -59,13 +59,12 @@ testthat::test_that("the contract declares the panels the renderer writes, from 
   source(repo_path("R", "manuscript_figure_utils.R"))
   testthat::skip_if_not_installed("yaml")
   B <- ed_bundles()
-  cov <- manuscript_figure_contract("ED_behaviour_models"); sec <- manuscript_figure_contract("ED_behaviour_secondary")
-  # one panel, so no letter
-  testthat::expect_identical(vapply(cov$panels, function(x) as.character(x$id), character(1)), "04")
-  testthat::expect_identical(vapply(sec$panels, function(x) as.character(x$id), character(1)), c("05a", "05b", "05c"))
-  testthat::expect_identical(as.character(cov$canonical_publication_id), "extended_data_04")
-  testthat::expect_identical(as.character(sec$canonical_publication_id), "extended_data_05")
-  for (fig in list(cov, sec)) {
+  fig <- manuscript_figure_contract("ED_behaviour_models")
+  # one figure since 2026-10-20: secondary features, the model ladder and sex
+  testthat::expect_identical(vapply(fig$panels, function(x) as.character(x$id), character(1)),
+                             paste0("04", letters[1:4]))
+  testthat::expect_identical(as.character(fig$canonical_publication_id), "extended_data_04")
+  {
     testthat::expect_identical(as.character(fig$behaviour_bundle_id), B$pin$bundle_id)
     testthat::expect_identical(as.character(fig$figure_support_bundle_id), B$fsb$bundle_id)
     testthat::expect_false(isTRUE(fig$rendering_repository_computes_statistics))
@@ -100,9 +99,9 @@ testthat::test_that("the Extended Data namespace resolves and still fails closed
   source(testthat::test_path("..", "..", "R", "paths.R"))
   # the manuscript layer derives the Extended Data stubs from the contract's numbers
   source(repo_path("R", "manuscript_figure_utils.R"))
-  paths <- output_namespace_manuscript_figure_paths("/tmp/root", "ED_behaviour_secondary")
-  testthat::expect_true(grepl("extended_data_05$", paths$figures))
-  testthat::expect_true(grepl("extended_data_05$", paths$source_data))
+  paths <- output_namespace_manuscript_figure_paths("/tmp/root", "ED_behaviour_models")
+  testthat::expect_true(grepl("extended_data_04$", paths$figures))
+  testthat::expect_true(grepl("extended_data_04$", paths$source_data))
   testthat::expect_true(grepl("figure_01$", output_namespace_manuscript_figure_paths("/tmp/root", "01")$figures))
   testthat::expect_error(output_namespace_manuscript_figure_paths("/tmp/root", "07"), "must be one of")
   testthat::expect_error(output_namespace_manuscript_figure_paths("/tmp/root", "ED_nonsense"), "must be one of")

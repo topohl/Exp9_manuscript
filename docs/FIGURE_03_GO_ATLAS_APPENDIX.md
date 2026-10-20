@@ -20,7 +20,7 @@ No displayed leading-edge protein meets that threshold in this frozen export.
 The full atlas has a wider NES range than the three main-figure exemplars.
 The appendix uses the manuscript's fixed NES colour scale
 (`config/manuscript_palette.yml` `diverging_limits`, palette v3.2: full colour
-at |NES| 2), the one Figure 3 uses (Extended Data 6 follows once it is
+at |NES| 2), the one Figure 3 uses (Extended Data 7 follows once it is
 re-rendered), so colour intensity compares directly with Figure 3e–g. A term
 beyond the limit takes full colour;
 every strip prints its NES, and the limit and the uncapped values are stored in

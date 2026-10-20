@@ -1,10 +1,10 @@
 # WGCNA module wheel and theme composition: candidate
 
 Candidate only. It does not change any panel contract, publication identity,
-source-data release or assembled figure, and it is not promoted. Extended Data 4
+source-data release or assembled figure, and it is not promoted. the withheld WGCNA Extended Data
 stays withheld in `provenance/publication_registry/canonical_publication_registry.csv`
 (`WITHHELD_SCOPE_AND_UNSUPPORTED_SPATIAL_LABELS`); this candidate is a proposal
-for how a re-scoped Extended Data 4 could look, not a replacement of that record.
+for how a re-scoped WGCNA Extended Data could look, not a replacement of that record.
 
 ## Question
 
@@ -99,10 +99,10 @@ microglia-enriched ROI is not a purified cell population.
 
 ## Open decisions (Tobias)
 
-1. Placement: re-scoped Extended Data 4, or a supplementary page beside
+1. Placement: re-scoped WGCNA Extended Data, or a supplementary page beside
    Figure 3.
 2. The peak-region text in **a** restates a descriptive module attribute. If it
-   reads as the spatial labels that withheld Extended Data 4, drop that text
+   reads as the spatial labels that withheld the WGCNA Extended Data, drop that text
    band (the structure rings stay).
 3. Whether to draw the curated-mapping audit, or leave it in the source tables.
 

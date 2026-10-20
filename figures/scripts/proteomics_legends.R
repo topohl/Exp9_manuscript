@@ -133,7 +133,7 @@ CARDKEY <- paste0(
   "Tile colour uses the manuscript's fixed NES scale and saturates at ",
   format(hv_diverging_limit("nes")), " in either direction; every tile prints ",
   "its NES.")
-# Extended Data 6 is drawn from upstream inputs this repository records as
+# The enrichment-atlas Extended Data is drawn from upstream inputs this repository records as
 # provenance only, so its panels can predate palette v3.2. Its legends state the
 # limit the panel's source data record, not the one the renderer would draw now.
 drawn_nes_limit <- function(id, col) {
@@ -251,7 +251,7 @@ ROLES <- list(
            "number of constituent terms with BH FDR < 0.05. Both are ",
            "descriptive programme summaries. The seven programmes are the ",
            "claim-eligible themes of the GO theme registry, the same rows as ",
-           "the RES-CON and SUS-CON atlases of Extended Data Fig. 6; theme ",
+           "the RES-CON and SUS-CON atlases of Extended Data Fig. 7; theme ",
            "aggregation does not refit enrichment or create a programme-level ",
            "p-value or FDR. Numbered outlines identify the three drill-down ",
            "exemplars. ", SATURATES("nes", "a median NES of"), " ", GSEA_N, " ",

@@ -96,7 +96,10 @@ f9_ed_external_full <- function(panel, svg_path, csv_path, w_mm, h_mm) {
          call. = FALSE)
   }
   k$sig <- is.finite(k$signature_FDR) & k$signature_FDR < 0.05
-  k$ic <- gsub("_", " ", k$internal_contrast)
+  # "vs mean other" reads "vs other": the row labels have to fit a narrow panel
+  k$ic <- sub(" vs mean non DG ", " vs non-DG ",
+              sub(" vs mean other ", " vs other ", gsub("_", " ", k$internal_contrast), fixed = TRUE),
+              fixed = TRUE)
   ord <- unique(k$ic[order(k$level, k$ic)])
   k$ypos <- match(k$ic, rev(ord))
   k$xpos <- match(k$external_signature, sort(unique(k$external_signature)))
@@ -125,11 +128,11 @@ f9_ed_external_full <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::scale_shape_manual(values = c("expected pairing" = 16,
                                            "specificity comparison" = 15),
                                 name = NULL,
-                                guide = ggplot2::guide_legend(order = 1)) +
+                                guide = ggplot2::guide_legend(order = 1, ncol = 1)) +
     ggplot2::scale_size_manual(values = c("expected pairing" = 2.4,
                                           "specificity comparison" = 1.5),
                                name = NULL,
-                               guide = ggplot2::guide_legend(order = 1)) +
+                               guide = ggplot2::guide_legend(order = 1, ncol = 1)) +
     ggplot2::scale_x_continuous(
       breaks = seq_along(sort(unique(k$external_signature))),
       labels = sort(unique(k$external_signature)), expand = c(0, 0.6)) +
@@ -138,8 +141,16 @@ f9_ed_external_full <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::labs(x = "External hippocampal signature", y = NULL) +
     hf_theme() +
     ggplot2::theme(axis.text.y = ggplot2::element_text(size = HF_MIN_PT),
-                   axis.text.x = ggplot2::element_text(size = HF_MIN_PT),
-                   legend.position = "right",
+                   axis.text.x = ggplot2::element_text(size = HF_MIN_PT, angle = 90,
+                                                       hjust = 1, vjust = 0.5),
+                   # the keys below the grid, stacked, so the grid keeps the width
+                   legend.position = "bottom",
+                   legend.box = "vertical",
+                   legend.box.just = "left",
+                   legend.justification = "left",
+                   legend.direction = "horizontal",
+                   legend.margin = ggplot2::margin(0, 0, 0, 0),
+                   legend.spacing.y = ggplot2::unit(0.5, "mm"),
                    legend.key.size = ggplot2::unit(2.6, "mm"))
   # signature_FDR is the statistic the claim rests on and must be in the released
   # source data. single_set_p_adjust is carried beside it, under its true name,
@@ -585,12 +596,11 @@ f9_ed_fingerprint_full <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   z <- z[z$signature %in% keep, , drop = FALSE]
   z$row_label <- sub("^Kaulich ", "", z$signature)
   lev <- sub("^Kaulich ", "", keep)
-  b <- sg_blocks(z$sg_unit, z$dataset)
-  o <- b$order
-  z$xpos <- match(paste(z$dataset, z$sg_unit), paste(o$dataset, o$unit))
+  ny <- length(lev)
+  # laid out as Figure 3b: square tiles, compartments a gap apart, headers on top
+  lay <- sg_atlas_layout(z$sg_unit, z$dataset, ny, vertical_units = TRUE)
+  z$xpos <- lay$x_of(z$sg_unit, z$dataset)
   z$ypos <- match(z$row_label, rev(lev))
-  n <- nrow(o); ny <- length(lev)
-  y_comp <- ny + 2.3; y_reg <- ny + 1.05
 
   # a signature score is a MEAN of member z-scores, so it takes the
   # manuscript's fixed set-mean z limit (palette v3.2, +/-1), not the
@@ -598,30 +608,18 @@ f9_ed_fingerprint_full <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   p <- ggplot2::ggplot(z, ggplot2::aes(xpos, ypos)) +
     ggplot2::geom_tile(ggplot2::aes(fill = score), width = hv_tile(), height = hv_tile()) +
     hv_diverging(measure = "z_set_mean", name = "Signature score\n(CON z-score)") +
-    ggplot2::scale_x_continuous(breaks = seq_len(n), labels = sg_axis_labels(b),
-                                limits = c(0.5, n + 0.5), expand = c(0, 0)) +
-    ggplot2::scale_y_continuous(breaks = seq_len(ny), labels = rev(lev),
-                                limits = c(0.5, y_comp + 0.9), expand = c(0, 0)) +
-    ggplot2::annotate("segment", x = b$compartment$start - 0.5,
-                      xend = b$compartment$end + 0.5, y = y_comp - 0.32,
-                      yend = y_comp - 0.32, linewidth = 0.45, colour = "grey25") +
-    ggplot2::annotate("text", x = b$compartment$mid, y = y_comp,
-                      label = b$compartment$label, family = fam,
-                      size = hf_sz(5.4), fontface = "bold", colour = "grey12") +
-    ggplot2::annotate("text", x = b$region$mid, y = y_reg, label = b$region$label,
-                      family = fam, size = hf_sz(5.0), colour = "grey30") +
+    sg_atlas_headers(lay, fam, hf_sz(5.0), hf_sz(5.4)) +
+    ggplot2::scale_x_continuous(expand = c(0, 0)) +
+    ggplot2::scale_y_continuous(breaks = seq_len(ny), labels = rev(lev), expand = c(0, 0)) +
+    ggplot2::coord_fixed(ratio = 1, xlim = lay$xlim, ylim = lay$ylim, clip = "off") +
     ggplot2::labs(x = NULL, y = NULL) +
     hf_theme_tile() +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(size = HF_MIN_PT, colour = "grey25"),
+      axis.text.x = ggplot2::element_blank(),
       axis.text.y = ggplot2::element_text(size = HF_MIN_PT),
       legend.position = "right",
       legend.key.width = ggplot2::unit(1.6, "mm"),
       legend.key.height = ggplot2::unit(3.4, "mm"))
-  cend <- utils::head(b$compartment$end, -1)
-  if (length(cend)) p <- p + ggplot2::annotate(
-    "segment", x = cend + 0.5, xend = cend + 0.5, y = 0.5, yend = y_comp - 0.32,
-    linewidth = 0.42, colour = "grey25")
   z$colour_limit <- hv_diverging_limit("z_set_mean")   # the limit the tiles draw
   write_csv_safe(z, csv_path)
   hv_save_panel(p, svg_path, w_mm, h_mm)

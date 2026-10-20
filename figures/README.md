@@ -95,22 +95,22 @@ from the frozen imports in `source_data/pRoteomics/`, grouped by the single
 `tools/promote_manuscript_render.R figure_03`. (In the superseded v2 grid,
 Figure 3e was a WGCNA_m12 filter of the three-module display source.)
 
-Figure 2 and the proteomics Extended Data (6 to 10) are rendered here
+Figure 2 and the proteomics Extended Data (5 to 8) are rendered here
 too, by `figures/scripts/figure_02_panels.R` and
 `figures/scripts/extended_data_proteomics_panels.R`, and published from `figures/main/`
 and `figures/extended_data/`. Identities rendered at one commit are promoted
 together, in one call:
 
 ```powershell
-Rscript "tools/promote_manuscript_render.R" figure_02 figure_03 extended_data_06 extended_data_07 extended_data_08 extended_data_09 extended_data_10
+Rscript "tools/promote_manuscript_render.R" figure_02 figure_03 extended_data_05 extended_data_06 extended_data_07 extended_data_08
 ```
 
 The three inputs recorded as PROVENANCE_ONLY (above the import size ceiling)
 are materialised by hash before rendering, with
 `PROTEOMICS_ROOT=<pRoteomics checkout> Rscript tools/import_render_inputs.R --materialize-provenance-only`.
-Extended Data 4 (WGCNA) also reads a WGCNA shortlist table this workspace does
+The withheld WGCNA page also reads a WGCNA shortlist table this workspace does
 not hold, so the Extended Data producer is run with
-`--pages=ED_BILATERAL_PRECISION,ED_SPATIAL_IDENTITY,ED_CA2_SLM_QC,ED_ENRICHMENT_ATLAS,ED_IDENTITY_LOCATIONS,ED_SPATIAL_NETWORKS`;
+`--pages=ED_SPATIAL_VALIDATION,ED_CA2_SLM_QC,ED_ENRICHMENT_ATLAS,ED_IDENTITY_LOCATIONS,ED_SPATIAL_NETWORKS`;
 its render record names the pages it drew, and the promotion refuses a page
 whose panels that record does not cover.
 

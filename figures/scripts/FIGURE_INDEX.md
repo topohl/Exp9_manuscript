@@ -20,12 +20,10 @@ The **entry point** is what you run: it selects and validates the promoted artef
 | extended_data_02 | `figures/scripts/extended_data_conventional_tests.R` | CANONICAL |
 | extended_data_03 | `figures/scripts/extended_data_conventional_tests.R` | CANONICAL |
 | extended_data_04 | `figures/scripts/extended_data_behaviour_panels.R` | CANONICAL |
-| extended_data_05 | `figures/scripts/extended_data_behaviour_panels.R` | CANONICAL |
+| extended_data_05 | `figures/scripts/extended_data_proteomics_panels.R` | CANONICAL |
 | extended_data_06 | `figures/scripts/extended_data_proteomics_panels.R` | CANONICAL |
 | extended_data_07 | `figures/scripts/extended_data_proteomics_panels.R` | CANONICAL |
 | extended_data_08 | `figures/scripts/extended_data_proteomics_panels.R` | CANONICAL |
-| extended_data_09 | `figures/scripts/extended_data_proteomics_panels.R` | CANONICAL |
-| extended_data_10 | `figures/scripts/extended_data_proteomics_panels.R` | CANONICAL |
 
 ## Every script in `figures/`
 

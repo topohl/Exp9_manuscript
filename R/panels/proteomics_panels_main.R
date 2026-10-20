@@ -844,20 +844,17 @@ f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   contrast <- as.character(panel$contrast %||% "SUS - RES")
   cells <- f9_atlas_cells(th, contrast)
   cells$sg_unit <- sg_resolve_unit(cells$spatial_unit, cells$dataset)
-  b <- sg_blocks(cells$sg_unit, cells$dataset)
-  o <- b$order
-  cells$xpos <- match(paste(cells$dataset, cells$sg_unit),
-                      paste(o$dataset, o$unit))
   themes <- f9_atlas_themes()
   SHORT <- stats::setNames(themes$label, themes$theme_id)
   ord <- names(SHORT)[names(SHORT) %in% cells$theme_id]
   cells <- cells[cells$theme_id %in% ord, , drop = FALSE]
   cells$ypos <- match(cells$theme_id, rev(ord))
-  n <- nrow(o); ny <- length(ord)
-  y_comp <- ny + 2.3; y_reg <- ny + 1.05
+  ny <- length(ord)
   shared <- f9_atlas_limit(th)
+  # laid out as Figure 3b: square tiles, compartments a gap apart, headers on top
+  lay <- sg_atlas_layout(cells$sg_unit, cells$dataset, ny)
+  cells$xpos <- lay$x_of(cells$sg_unit, cells$dataset)
 
-  # square tiles with an even gap (house style)
   p <- ggplot2::ggplot(cells, ggplot2::aes(xpos, ypos)) +
     ggplot2::geom_tile(ggplot2::aes(fill = median_NES), width = hv_tile(),
                        height = hv_tile()) +
@@ -868,27 +865,16 @@ f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     hv_diverging(measure = "nes",
                  name = sprintf("Median NES\n(%s)", sub(" - ", " \u2212 ", contrast,
                                                        fixed = TRUE))) +
-    ggplot2::scale_x_continuous(breaks = seq_len(n), labels = sg_axis_labels(b),
-                                expand = c(0, 0)) +
+    sg_atlas_headers(lay, fam, hf_sz(5.0), hf_sz(5.4)) +
+    ggplot2::scale_x_continuous(expand = c(0, 0)) +
     # the row labels are axis text, so their width does not depend on the tiles
     ggplot2::scale_y_continuous(breaks = seq_len(ny), labels = unname(SHORT[rev(ord)]),
                                 expand = c(0, 0)) +
-    ggplot2::coord_fixed(ratio = 1, xlim = c(0.5, n + 0.5),
-                         ylim = c(0.5, y_comp + 0.9), clip = "off") +
-    ggplot2::annotate("segment", x = b$compartment$start - 0.5,
-                      xend = b$compartment$end + 0.5,
-                      y = y_comp - 0.32, yend = y_comp - 0.32,
-                      linewidth = 0.45, colour = "grey25") +
-    ggplot2::annotate("text", x = b$compartment$mid, y = y_comp,
-                      label = b$compartment$label, family = fam,
-                      size = hf_sz(5.4), fontface = "bold", colour = "grey12") +
-    ggplot2::annotate("text", x = b$region$mid, y = y_reg,
-                      label = b$region$label, family = fam, size = hf_sz(5.0),
-                      colour = "grey30") +
+    ggplot2::coord_fixed(ratio = 1, xlim = lay$xlim, ylim = lay$ylim, clip = "off") +
     ggplot2::labs(x = NULL, y = NULL) +
     hf_theme_tile() +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(size = HF_MIN_PT, colour = "grey25"),
+      axis.text.x = ggplot2::element_blank(),
       axis.text.y = ggplot2::element_text(size = HF_MIN_PT, colour = "grey20"),
       legend.position = "right",
       legend.key.width = ggplot2::unit(1.6, "mm"),
@@ -926,14 +912,6 @@ f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
         legend.box.spacing = ggplot2::unit(1, "mm"),
         plot.margin = ggplot2::margin(1, HF_RGT, 0, 1, "mm"))
   }
-  cend <- utils::head(b$compartment$end, -1)
-  rend <- setdiff(utils::head(b$region$end, -1), cend)
-  if (length(cend)) p <- p + ggplot2::annotate(
-    "segment", x = cend + 0.5, xend = cend + 0.5, y = 0.5, yend = y_comp - 0.32,
-    linewidth = 0.42, colour = "grey25")
-  if (length(rend)) p <- p + ggplot2::annotate(
-    "segment", x = rend + 0.5, xend = rend + 0.5, y = 0.5, yend = y_reg + 0.4,
-    linewidth = 0.18, colour = "grey72")
   cells$shared_NES_scale_limit <- shared
   cells$shared_scale_note <- paste0(
     "one symmetric NES colour scale shared by RES-CON, SUS-CON and SUS-RES: the ",

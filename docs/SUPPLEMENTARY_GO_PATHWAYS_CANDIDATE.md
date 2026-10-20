@@ -4,13 +4,13 @@ Historical four-term exploratory candidate. The comprehensive seven-theme
 appendix is documented in `docs/FIGURE_03_GO_ATLAS_APPENDIX.md` and is the
 current output for all FDR-supported SUS - RES atlas terms.
 
-This is a candidate companion to main Figure 3 and Extended Data Figure 6. It
+This is a candidate companion to main Figure 3 and Extended Data Figure 7. It
 does not change their panel contracts, identities, source data or assembled
 figures. It is not a numbered publication figure or a submission export.
 
 ## Proposed placement
 
-- Keep Figure 3's three compartment examples and Extended Data 6's three
+- Keep Figure 3's three compartment examples and Extended Data 7's three
   contrast atlases in place.
 - Put the four remaining exact-term curve/protein pairs on two supplementary
   pages, ordered by the manuscript GO registry: translation, chromatin
@@ -46,7 +46,7 @@ used for panels d-f through `f9_gsea_curve()` (the current curves, 3h-j, are
 drawn by `f3a_curve()`). This shares that design's header, running ES, hit
 ticks, three-contrast strip, palette, typography, and recorded NES colour
 limit, which is now the manuscript's fixed NES limit (`config/manuscript_palette.yml`
-`diverging_limits`, palette v3.2) shared with Figure 3 (Extended Data 6 follows
+`diverging_limits`, palette v3.2) shared with Figure 3 (Extended Data 7 follows
 once it is re-rendered) rather than the frozen a-i Figure 3d value. It also calls `f9_protein_zoom_plot()`, the same drawing function
 used by Figure 3 k-m through `f3a_proteins()`. The seven genes per term follow Figure 3's
 leading-edge, absolute-ranked-statistic selection rule. Their log2 fold

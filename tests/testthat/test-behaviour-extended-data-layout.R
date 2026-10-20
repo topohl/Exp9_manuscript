@@ -4,7 +4,7 @@
 test_that("behavioural Extended Data panels stay inside the assembled page", {
   root <- file.path(testthat::test_path("..", ".."), "results", "figures", "manuscript")
   figs <- yaml::read_yaml(file.path(testthat::test_path("..", ".."), "figures", "contracts", "figure_contract.yml"))$figures
-  for (key in c("ED_behaviour_models", "ED_behaviour_secondary")) {
+  for (key in c("ED_behaviour_models")) {
     f <- figs[[key]]
     for (p in f$panels) {
       expect_gte(p$x, 0, label = p$id); expect_gte(p$y, 0, label = p$id)

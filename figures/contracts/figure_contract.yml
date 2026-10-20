@@ -2,8 +2,9 @@ contract_version: manuscript_figures_v4_figure3_adaptation
 
 figures:
   # Extended Data numbering (2026-10-20): numbered by first citation in the manuscript,
-  # behaviour before proteomics (old -> new: 12->1, 10->2, 11->3, 5->4, 9->5, 1->6, 2->7,
-  # 3->8, 6->9, 8->10; the withheld WGCNA and identity-location figures carry no number).
+  # behaviour before proteomics, eight figures (from the numbers before that day:
+  # 12->1, 10->2, 11->3, 5+9->4, 1+2->5, 3->6, 6->7, 8->8; the withheld WGCNA and
+  # identity-location figures carry no number).
   # The number lives only in extended_data_number; publication ids, file stubs and the
   # output namespace are derived from it. Comments below that name a figure by number
   # use the number it had when they were written.
@@ -274,9 +275,9 @@ figures:
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
         x: 4
-        "y": 43
-        w: 175
-        h: 50
+        "y": 44
+        w: 100
+        h: 76
       - id: 2e
         v9_panel_id: v9_compartment
         description: >-
@@ -294,10 +295,10 @@ figures:
         scientific_contract: compartment_identity
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
-        x: 4
-        "y": 96
-        w: 78
-        h: 38
+        x: 106
+        "y": 44
+        w: 73
+        h: 32
       - id: 2f
         v9_panel_id: v9_bilateral_main
         description: >-
@@ -317,10 +318,10 @@ figures:
         scientific_contract: reproducibility
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
-        x: 85
-        "y": 96
-        w: 94
-        h: 38
+        x: 106
+        "y": 78
+        w: 73
+        h: 42
       - id: 2g
         v9_panel_id: v9_external_main
         description: >-
@@ -339,9 +340,9 @@ figures:
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
         x: 4
-        "y": 137
+        "y": 124
         w: 86
-        h: 31
+        h: 42
       - id: 2h
         v9_panel_id: v9_internal_main
         description: >-
@@ -364,9 +365,9 @@ figures:
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
         x: 93
-        "y": 137
+        "y": 124
         w: 86
-        h: 31
+        h: 42
 
   "03":
     title: Figure 3
@@ -728,25 +729,32 @@ figures:
   # Their defects are recorded in manuscript/extended_data_promotion_audit.csv.
   # Nothing was substituted for them.
 
-  ED_bilateral_precision:
-    title: Extended Data Figure 6
+  ED_spatial_validation:
+    title: Extended Data Figure 5
     width_mm: 183
     height_mm: 150
     layout_mode: absolute
     manuscript_role: proteomics_extended_data
     is_numbered_manuscript_figure: true
-    extended_data_number: 6
-    canonical_publication_id: extended_data_06
+    extended_data_number: 5
+    canonical_publication_id: extended_data_05
     canonical_generation: final_truth_v9
     canonical_generation_promoted_in_phase: "6A"
-    historical_generation: ED1_FINAL_V9
+    historical_generation: ED1_FINAL_V9 + ED2_FINAL_V9 (panels a, b)
     producing_entry_point: figures/scripts/extended_data_proteomics_panels.R
-    assembled_pdf_source: results/figures/manuscript_candidates/final_truth_v9/extended_data/assembled/ED_BILATERAL_PRECISION.pdf
+    assembled_pdf_source: results/figures/manuscript_candidates/final_truth_v9/extended_data/assembled/ED_SPATIAL_VALIDATION.pdf
     rendering_repository_computes_statistics: false
     question: >-
-      Complete bilateral reproducibility and precision audit.
+      How reproducible and how anatomically faithful are the spatial proteomes:
+      the complete bilateral agreement and precision audit, the control-only
+      spatial fingerprint and every tested pairing with an external signature.
+      Extended Data 6 and 7 until 2026-10-20 (merged).
+    withheld_panel: >-
+      The historical panel c, v9_ed_internal_full, is deliberately not promoted.
+      It drew 14 of 2,826 FDR-supported positive GO terms under a complete-
+      inventory caption. No manuscript claim cites it.
     panels:
-      - id: 06a
+      - id: 05a
         v9_panel_id: v9_ed_bilateral_full
         description: >-
           complete stored bilateral metric inventory; main 2f shows only the
@@ -764,9 +772,9 @@ figures:
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
         x: 4
         "y": 4
-        w: 175
-        h: 88
-      - id: 06b
+        w: 118
+        h: 70
+      - id: 05b
         v9_panel_id: v9_ed_precision
         description: >-
           reliability gained by averaging hemispheres.
@@ -781,56 +789,11 @@ figures:
         scientific_contract: measurement_quality
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
-        x: 4
-        "y": 96
-        w: 175
-        h: 48
-
-  # EXTENDED DATA 2, promoted in Phase 6A.5 with panels a and b only.
-  #
-  # Phase 6A withheld this figure because its third panel was presented as the
-  # complete canonical GO inventory while drawing 14 rows across 7 contrasts
-  # against 2,826 FDR-supported positive terms across 11. That panel is dropped
-  # rather than reworded, and the two artefacts that carried the same claim were
-  # corrected with it: the Figure 2h pointer now names the released
-  # control_anatomical_go_bp_gsea supplementary table, and ST3 states its
-  # selection instead of claiming completeness.
-  #
-  # Panel b needed a repair of its own before it could be promoted, and it is the
-  # panel the manuscript actually cites. It marked significance from the column
-  # named p_adjust and its legend called that Benjamini-Hochberg adjusted. In
-  # this analysis p_adjust is the raw single-set value, so that was the same
-  # class of false statistical label that withheld panel c - on the study's only
-  # externally anchored claim. It now uses signature_FDR, the signature-family
-  # correction the Results sentence actually rests on, and its released source
-  # data carries both statistics under their true names. No mark moved: the two
-  # agree on all 30 rows.
-  ED_spatial_identity:
-    title: Extended Data Figure 7
-    width_mm: 183
-    height_mm: 116
-    layout_mode: absolute
-    manuscript_role: proteomics_extended_data
-    is_numbered_manuscript_figure: true
-    extended_data_number: 7
-    canonical_publication_id: extended_data_07
-    canonical_generation: final_truth_v9
-    canonical_generation_promoted_in_phase: "6A.5"
-    historical_generation: ED2_FINAL_V9
-    producing_entry_point: figures/scripts/extended_data_proteomics_panels.R
-    # no assembled_pdf_source: the producer's ED_SPATIAL_IDENTITY page also draws the withheld
-    # panel c, so this page's PDF is rasterised from its own assembled SVG
-    rendering_repository_computes_statistics: false
-    withheld_panel: >-
-      The historical panel c, v9_ed_internal_full, is deliberately not promoted.
-      It drew 14 of 2,826 FDR-supported positive GO terms under a complete-
-      inventory caption. No manuscript claim cites it.
-    question: >-
-      The complete control-only spatial fingerprint, and every tested pairing
-      between an internal anatomical contrast and an external hippocampal
-      signature.
-    panels:
-      - id: 07a
+        x: 124
+        "y": 4
+        w: 55
+        h: 70
+      - id: 05c
         v9_panel_id: v9_ed_fingerprint_full
         description: >-
           The complete CON-only spatial fingerprint across every spatial unit.
@@ -848,10 +811,10 @@ figures:
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
         x: 4
-        "y": 4
-        w: 175
-        h: 56
-      - id: 07b
+        "y": 78
+        w: 110
+        h: 68
+      - id: 05d
         v9_panel_id: v9_ed_external_full
         description: >-
           All 30 tested contrast-signature pairings: 10 expected and 20
@@ -879,20 +842,40 @@ figures:
           Complete with respect to what was tested: all 30 pairings. The 9
           contrasts and 7 signatures form a 63-cell grid and only the
           structurally applicable pairs were tested, which the panel states.
-        x: 4
-        "y": 64
-        w: 175
-        h: 48
+        x: 116
+        "y": 78
+        w: 63
+        h: 68
+
+  # EXTENDED DATA 2, promoted in Phase 6A.5 with panels a and b only.
+  #
+  # Phase 6A withheld this figure because its third panel was presented as the
+  # complete canonical GO inventory while drawing 14 rows across 7 contrasts
+  # against 2,826 FDR-supported positive terms across 11. That panel is dropped
+  # rather than reworded, and the two artefacts that carried the same claim were
+  # corrected with it: the Figure 2h pointer now names the released
+  # control_anatomical_go_bp_gsea supplementary table, and ST3 states its
+  # selection instead of claiming completeness.
+  #
+  # Panel b needed a repair of its own before it could be promoted, and it is the
+  # panel the manuscript actually cites. It marked significance from the column
+  # named p_adjust and its legend called that Benjamini-Hochberg adjusted. In
+  # this analysis p_adjust is the raw single-set value, so that was the same
+  # class of false statistical label that withheld panel c - on the study's only
+  # externally anchored claim. It now uses signature_FDR, the signature-family
+  # correction the Results sentence actually rests on, and its released source
+  # data carries both statistics under their true names. No mark moved: the two
+  # agree on all 30 rows.
 
   ED_ca2_slm_qc:
-    title: Extended Data Figure 8
+    title: Extended Data Figure 6
     width_mm: 183
     height_mm: 112
     layout_mode: absolute
     manuscript_role: proteomics_extended_data
     is_numbered_manuscript_figure: true
-    extended_data_number: 8
-    canonical_publication_id: extended_data_08
+    extended_data_number: 6
+    canonical_publication_id: extended_data_06
     canonical_generation: final_truth_v9
     canonical_generation_promoted_in_phase: "6A"
     historical_generation: ED3_FINAL_V9
@@ -903,7 +886,7 @@ figures:
       Why the canonical DA table is unchanged while CA2-SLM interpretation is
       restricted.
     panels:
-      - id: 08a
+      - id: 06a
         v9_panel_id: v9_ed_ca2_locator
         description: >-
           a small readable locator; the QC problem sits in neuropil, region CA2,
@@ -922,7 +905,7 @@ figures:
         "y": 4
         w: 34
         h: 44
-      - id: 08b
+      - id: 06b
         v9_panel_id: v9_ed_ca2_missing
         description: >-
           pre-imputation missingness per CA2-SLM sample, by stress group.
@@ -941,7 +924,7 @@ figures:
         "y": 4
         w: 137
         h: 44
-      - id: 08c
+      - id: 06c
         v9_panel_id: v9_ed_ca2_displacement
         description: >-
           missingness inflates the observed median and centring displaces every
@@ -961,7 +944,7 @@ figures:
         "y": 52
         w: 62
         h: 56
-      - id: 08d
+      - id: 06d
         v9_panel_id: v9_ed_ca2_sensitivity
         description: >-
           canonical effect versus the effect with QC-failed hemispheres dropped;
@@ -984,14 +967,14 @@ figures:
         h: 56
 
   ED_enrichment_atlas:
-    title: Extended Data Figure 9
+    title: Extended Data Figure 7
     width_mm: 183
     height_mm: 168
     layout_mode: absolute
     manuscript_role: proteomics_extended_data
     is_numbered_manuscript_figure: true
-    extended_data_number: 9
-    canonical_publication_id: extended_data_09
+    extended_data_number: 7
+    canonical_publication_id: extended_data_07
     canonical_generation: final_truth_v9
     canonical_generation_promoted_in_phase: "6A"
     historical_generation: ED6_FINAL_V9
@@ -1002,7 +985,7 @@ figures:
       Complete three-contrast enrichment support behind the three highlighted
       programs.
     panels:
-      - id: 09a
+      - id: 07a
         v9_panel_id: v9_ed_atlas_rescon
         description: >-
           the RES vs CON atlas; main Figure 3b shows SUS vs RES.
@@ -1021,7 +1004,7 @@ figures:
         "y": 4
         w: 175
         h: 50
-      - id: 09b
+      - id: 07b
         v9_panel_id: v9_ed_atlas_suscon
         description: >-
           the SUS vs CON atlas, completing the set of three pairwise contrasts.
@@ -1040,7 +1023,7 @@ figures:
         "y": 58
         w: 175
         h: 50
-      - id: 09c
+      - id: 07c
         v9_panel_id: v9_ed_gsea_curve_syn
         description: >-
           detailed curve with set size, leading-edge counts and reconstruction
@@ -1062,7 +1045,7 @@ figures:
         "y": 112
         w: 57
         h: 52
-      - id: 09d
+      - id: 07d
         v9_panel_id: v9_ed_gsea_curve_rna
         description: >-
           detailed curve, soma CA2-SP.
@@ -1083,7 +1066,7 @@ figures:
         "y": 112
         w: 57
         h: 52
-      - id: 09e
+      - id: 07e
         v9_panel_id: v9_ed_gsea_curve_ox
         description: >-
           detailed curve, microglia-enriched CA1.
@@ -1106,14 +1089,14 @@ figures:
         h: 52
 
   ED_spatial_networks:
-    title: Extended Data Figure 10
+    title: Extended Data Figure 8
     width_mm: 183
     height_mm: 168
     layout_mode: absolute
     manuscript_role: proteomics_extended_data
     is_numbered_manuscript_figure: true
-    extended_data_number: 10
-    canonical_publication_id: extended_data_10
+    extended_data_number: 8
+    canonical_publication_id: extended_data_08
     canonical_generation: final_truth_v9
     canonical_generation_promoted_in_phase: "6A"
     historical_generation: ED8_FINAL_V9
@@ -1124,7 +1107,7 @@ figures:
       What a spatial molecular network is, and what does not differ between
       groups.
     panels:
-      - id: 10a
+      - id: 08a
         v9_panel_id: v9_ed_similarity
         description: >-
           CON molecular-similarity matrices with facet width proportional to unit
@@ -1144,7 +1127,7 @@ figures:
         "y": 4
         w: 175
         h: 66
-      - id: 10b
+      - id: 08b
         v9_panel_id: v9_ed_network_distance
         description: >-
           animal-level network distance from the CON consensus, with each
@@ -1166,7 +1149,7 @@ figures:
         "y": 74
         w: 175
         h: 44
-      - id: 10c
+      - id: 08c
         v9_panel_id: v9_ed_coupling
         description: >-
           every distinct edge-behaviour correlation; an underpowered null.
@@ -1200,7 +1183,7 @@ figures:
   ED_behaviour_models:
     title: Extended Data Figure 4
     width_mm: 183
-    height_mm: 52
+    height_mm: 130
     layout_mode: absolute
     manuscript_role: behavioural_extended_data
     is_numbered_manuscript_figure: true
@@ -1218,69 +1201,19 @@ figures:
     historical_generation: bundle_render
     rendering_repository_computes_statistics: false
     scientific_contract_summary: >-
-      The complete a-priori model registry. Early-window coverage (fsb E3: every
-      animal has every expected slot) is stated in the legend; its one-bar panel
-      was dropped on 2026-10-20. The ladder
-      (ebb C2, permutation P from E_multiplicity PR2) is shown in registry order,
-      never performance order, and names no winner. Until 2026-10-17 drawn from the
-      bridge contracts of MMMSociability 53bc7e9.
-    panels:
-      - id: "04"
-        description: >-
-          The five a-priori prediction models with leave-one-animal-out R2, the
-          repeated grouped five-fold interval, and the permutation P where one
-          was run.
-        producer_script: figures/scripts/extended_data_behaviour_panels.R
-        render_mode: copy_svg
-        source_data_mode: copy_csv
-        figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed05b.svg
-        primary_source: source_data/MMMSociability/ebb_v102_20261019_677ed97/C2_estimates.csv
-        input_dependencies:
-          - source_data/MMMSociability/ebb_v102_20261019_677ed97/C2_estimates.csv
-          - source_data/MMMSociability/ebb_v102_20261019_677ed97/E_multiplicity.csv
-        required_columns: [source, model_id, construct, estimand, estimate, ci_low, ci_high, "n"]
-        scientific_contract: fixed_a_priori_model_registry_no_model_selected_on_performance
-        biological_unit: AnimalID
-        hemisphere_handling: not_applicable_behavioural
-        interval_semantics: >-
-          The bar is the 2.5-97.5% range across repeated grouped five-fold splits
-          and belongs to the repeated-CV mean, not to the leave-one-animal-out
-          point. No per-repeat distribution exists upstream and none is invented.
-        x: 4
-        "y": 4
-        w: 175
-        h: 44
-
-  ED_behaviour_secondary:
-    title: Extended Data Figure 5
-    width_mm: 183
-    height_mm: 82
-    layout_mode: absolute
-    manuscript_role: behavioural_extended_data
-    is_numbered_manuscript_figure: true
-    extended_data_number: 5
-    canonical_publication_id: extended_data_05
-    analysis_repository: topohl/MMMSociability
-    analysis_frozen_at: a46be6a288032d97392a5f16f8eb81d7d1bd2890
-    behaviour_bundle_id: ebb_v102_20261019_677ed97
-    behaviour_config_version: "1.0.2"
-    behaviour_config_sha256: 90018f9ca242685e9e59a7bb95a91ae643b5481985698086139590d62e310a5c
-    figure_support_bundle_id: fsb_v5_20261019_8212df4
-    figure_support_frozen_at: 8212df40042dac62546de885b720819cabb36483
-    source_data_frozen_in: source_data/MMMSociability/ebb_v102_20261019_677ed97
-    figure_support_source_data_frozen_in: source_data/MMMSociability/fsb_v5_20261019_8212df4
-    historical_generation: bundle_render
-    rendering_repository_computes_statistics: false
-    scientific_contract_summary: >-
-      The two secondary early features and everything the study can say about
-      sex. Panel a is drawn as effect sizes because the bundle exports
-      per-animal values for Movement_mean only (ebb A2); a scatter for the other
-      two features would require inventing the points. Panels b and c exist to
-      license a negative statement about sex and to block a positive one. Until
-      2026-10-17 drawn from the bridge contracts of MMMSociability 53bc7e9.
+      Early behaviour and later integrated resilience, beyond Figure 1: the two
+      secondary early features (a), the complete a-priori model registry (b) and
+      everything the study can say about sex (c, d). The ladder (ebb C2,
+      permutation P from E_multiplicity PR2) is shown in registry order, never
+      performance order, and names no winner; the secondary features are effect
+      sizes because the bundle exports per-animal values for Movement_mean only;
+      the sex panels license a negative statement and block a positive one.
+      Early-window coverage (fsb E3: every animal has every slot) is stated in
+      the legend. Extended Data 4 and 5 until 2026-10-20 (merged: one had a
+      single panel).
     prohibited_wording: female-specific; sex-specific; stronger in females; the effect was driven by females
     panels:
-      - id: 05a
+      - id: 04a
         description: >-
           Movement RMSSD and entropy ACF1 against later CombZ: Spearman rho with
           its bootstrap interval and the BH q across the three prespecified
@@ -1288,7 +1221,7 @@ figures:
         producer_script: figures/scripts/extended_data_behaviour_panels.R
         render_mode: copy_svg
         source_data_mode: copy_csv
-        figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed09a.svg
+        figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04a.svg
         primary_source: source_data/MMMSociability/ebb_v102_20261019_677ed97/C2_estimates.csv
         input_dependencies:
           - source_data/MMMSociability/ebb_v102_20261019_677ed97/C2_estimates.csv
@@ -1305,14 +1238,39 @@ figures:
         "y": 4
         w: 175
         h: 30
-      - id: 05b
+      - id: 04b
+        description: >-
+          The five a-priori prediction models with leave-one-animal-out R2, the
+          repeated grouped five-fold interval, and the permutation P where one
+          was run.
+        producer_script: figures/scripts/extended_data_behaviour_panels.R
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04b.svg
+        primary_source: source_data/MMMSociability/ebb_v102_20261019_677ed97/C2_estimates.csv
+        input_dependencies:
+          - source_data/MMMSociability/ebb_v102_20261019_677ed97/C2_estimates.csv
+          - source_data/MMMSociability/ebb_v102_20261019_677ed97/E_multiplicity.csv
+        required_columns: [source, model_id, construct, estimand, estimate, ci_low, ci_high, "n"]
+        scientific_contract: fixed_a_priori_model_registry_no_model_selected_on_performance
+        biological_unit: AnimalID
+        hemisphere_handling: not_applicable_behavioural
+        interval_semantics: >-
+          The bar is the 2.5-97.5% range across repeated grouped five-fold splits
+          and belongs to the repeated-CV mean, not to the leave-one-animal-out
+          point. No per-repeat distribution exists upstream and none is invented.
+        x: 4
+        "y": 38
+        w: 175
+        h: 44
+      - id: 04c
         description: >-
           Formal feature-by-sex interaction tests with 95% CI and BH q across the
           three early features.
         producer_script: figures/scripts/extended_data_behaviour_panels.R
         render_mode: copy_svg
         source_data_mode: copy_csv
-        figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed09b.svg
+        figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04c.svg
         primary_source: source_data/MMMSociability/ebb_v102_20261019_677ed97/C2_estimates.csv
         input_dependencies:
           - source_data/MMMSociability/ebb_v102_20261019_677ed97/C2_estimates.csv
@@ -1323,17 +1281,17 @@ figures:
         hemisphere_handling: not_applicable_behavioural
         q_values_printed_not_starred: true
         x: 4
-        "y": 38
+        "y": 86
         w: 85.5
         h: 40
-      - id: 05c
+      - id: 04d
         description: >-
           Sex-stratified Spearman correlations of each early feature with later
           CombZ, drawn as descriptive context.
         producer_script: figures/scripts/extended_data_behaviour_panels.R
         render_mode: copy_svg
         source_data_mode: copy_csv
-        figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed09c.svg
+        figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04d.svg
         primary_source: source_data/MMMSociability/fsb_v5_20261019_8212df4/E1_movement_combz_spearman_by_sex.csv
         input_dependencies:
           - source_data/MMMSociability/fsb_v5_20261019_8212df4/E1_movement_combz_spearman_by_sex.csv
@@ -1348,9 +1306,10 @@ figures:
           is rejected in its stored family (ebb E_multiplicity PR3), because these
           estimates are only honest as context while none is.
         x: 93.5
-        "y": 38
+        "y": 86
         w: 85.5
         h: 40
+
 
 
   # Conventional behaviour tests, physiology and the manual-versus-automated scoring validation, drawn

@@ -67,8 +67,8 @@ historical generation names (`final_truth_v9`, `spatial_v6`, `ED1_FINAL_V9`,
 | `figure_02` | CANONICAL |
 | `figure_03` | CANONICAL |
 | `extended_data_01` to `_03` | CANONICAL (scoring validation, conventional tests, physiology; drawn from the SISanalyzer bundle) |
-| `extended_data_04`, `_05` | CANONICAL (behavioural prediction models; secondary features and sex) |
-| `extended_data_06` to `_10` | CANONICAL (proteomics: bilateral precision, spatial identity, CA2-SLM QC, enrichment atlases, networks) |
+| `extended_data_04` | CANONICAL (behavioural prediction models, secondary features and sex) |
+| `extended_data_05` to `_08` | CANONICAL (proteomics: bilateral agreement and spatial identity, CA2-SLM QC, enrichment atlases, networks) |
 | `withheld_wgcna`, `withheld_identity_locations` | WITHHELD (formerly `extended_data_04` and `_07`) |
 
 Extended Data are numbered by first citation in the manuscript (renumbered 2026-10-20; the

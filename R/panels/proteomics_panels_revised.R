@@ -156,15 +156,17 @@ f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   tr$sig <- is.finite(tr$GSEA_FDR) & tr$GSEA_FDR < 0.05
   lim <- f9_nes_strip_limit(th)
 
+  # square tiles (house style)
   bot <- ggplot2::ggplot(tr, ggplot2::aes(short, 1, fill = NES)) +
-    ggplot2::geom_tile(colour = hv_tile_border(), linewidth = hv_lw("tile_border_pt")) +
+    ggplot2::geom_tile(width = hv_tile(), height = hv_tile()) +
     ggplot2::geom_text(ggplot2::aes(label = hv_minus(sprintf("%.1f", NES))), family = fam,
                        size = hf_sz(5.0)) +
     ggplot2::geom_point(data = tr[tr$sig, , drop = FALSE],
                         ggplot2::aes(short, 1.44), size = 0.4, colour = "black",
                         inherit.aes = FALSE) +
     hv_diverging(measure = "nes", name = NULL, guide = "none") +
-    ggplot2::scale_y_continuous(limits = c(0.5, 1.62), expand = c(0, 0)) +
+    ggplot2::scale_y_continuous(expand = c(0, 0)) +
+    ggplot2::coord_fixed(ratio = 1, ylim = c(0.5, 1.62)) +
     ggplot2::labs(x = NULL, y = NULL) +
     hf_theme_tile() +
     ggplot2::theme(axis.text.y = ggplot2::element_blank(),
@@ -470,8 +472,9 @@ f9_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   d$true_val <- if (!is.na(tcol)) as.numeric(d[[tcol]]) else d$val
   d$comp <- factor(sg_compartment_label(d$ds), levels = sg_compartments()$short)
   mk <- unique(d$marker)
-  d$ypos <- match(d$marker, rev(mk))
-  d$xpos <- as.integer(d$comp)
+  # markers across, compartments down (2026-10-20): square tiles fit the box
+  d$xpos <- match(d$marker, mk)
+  d$ypos <- nlevels(d$comp) + 1L - as.integer(d$comp)
   capcol <- intersect("centered_log2_display_cap", names(d))[1]
   cap <- if (!is.na(capcol)) max(abs(as.numeric(d[[capcol]])), na.rm = TRUE)
          else max(abs(d$val), na.rm = TRUE)
@@ -496,18 +499,21 @@ f9_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       }
       s
     }) +
-    ggplot2::scale_x_continuous(breaks = 1:3, labels = sg_compartments()$short,
-                                limits = c(0.5, 3.5), expand = c(0, 0),
+    ggplot2::scale_x_continuous(breaks = seq_along(mk), labels = mk,
+                                limits = c(0.5, length(mk) + 0.5), expand = c(0, 0),
                                 position = "top") +
-    ggplot2::scale_y_continuous(breaks = seq_along(mk), labels = rev(mk),
-                                limits = c(0.5, length(mk) + 0.5),
+    ggplot2::scale_y_continuous(breaks = seq_len(nlevels(d$comp)),
+                                labels = rev(levels(d$comp)),
+                                limits = c(0.5, nlevels(d$comp) + 0.5),
                                 expand = c(0, 0)) +
+    ggplot2::coord_fixed(ratio = 1) +
     ggplot2::labs(x = NULL, y = NULL) +
     hf_theme_tile() +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(size = HF_MIN_PT, colour = "grey15",
+      axis.text.x.top = ggplot2::element_text(size = HF_MIN_PT, face = "italic",
+                                              angle = 45, hjust = 0, vjust = 0),
+      axis.text.y = ggplot2::element_text(size = HF_MIN_PT, colour = "grey15",
                                           face = "bold"),
-      axis.text.y = ggplot2::element_text(size = HF_MIN_PT, face = "italic"),
       legend.position = "bottom",
       legend.key.height = ggplot2::unit(1.6, "mm"),
       legend.key.width = ggplot2::unit(5, "mm"),
@@ -719,9 +725,10 @@ f9_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   fam <- hf_fam()
   z <- hv_read_csv(repo_path(panel$primary_source))
   z$sg_unit <- sg_resolve_unit(z$spatial_unit, z$dataset)
-  b <- sg_blocks(z$sg_unit, z$dataset)
-  o <- b$order
-  z$xpos <- match(paste(z$dataset, z$sg_unit), paste(o$dataset, o$unit))
+  # laid out as Figure 3b: square tiles, compartments a gap apart, headers on top
+  # (the column positions are fixed before the rows, so n_rows is set below)
+  lay0 <- sg_atlas_layout(z$sg_unit, z$dataset, 0)
+  z$xpos <- lay0$x_of(z$sg_unit, z$dataset)
 
   # each gene's own compartment, and its baseline peak unit within it
   gk <- unique(z[, c("gene", "contrast")])
@@ -739,47 +746,27 @@ f9_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   ord <- ord[order(ord$peak_xpos, ord$gene), , drop = FALSE]
   lev <- ord$gene
   z$ypos <- match(z$gene, rev(lev))
-  n <- nrow(o); ny <- length(lev)
-  y_comp <- ny + 2.3; y_reg <- ny + 1.05
+  ny <- length(lev)
+  lay <- sg_atlas_layout(z$sg_unit, z$dataset, ny, vertical_units = TRUE)
 
   # the manuscript's fixed z limit (palette v3.2, two SD): a single-protein z
   # beyond it takes full colour, and the sidecar keeps the uncapped con_z
   p <- ggplot2::ggplot(z, ggplot2::aes(xpos, ypos)) +
     ggplot2::geom_tile(ggplot2::aes(fill = con_z), width = hv_tile(), height = hv_tile()) +
     hv_diverging(measure = "z", name = "Baseline abundance\n(CON z-score)") +
-    ggplot2::scale_x_continuous(breaks = seq_len(n),
-                                labels = sg_axis_labels(b),
-                                limits = c(0.5, n + 0.5), expand = c(0, 0)) +
-    ggplot2::scale_y_continuous(breaks = seq_len(ny), labels = rev(lev),
-                                limits = c(0.5, y_comp + 0.9),
-                                expand = c(0, 0)) +
-    ggplot2::annotate("segment", x = b$compartment$start - 0.5,
-                      xend = b$compartment$end + 0.5,
-                      y = y_comp - 0.32, yend = y_comp - 0.32,
-                      linewidth = 0.45, colour = "grey25") +
-    ggplot2::annotate("text", x = b$compartment$mid, y = y_comp,
-                      label = b$compartment$label, family = fam,
-                      size = hf_sz(5.4), fontface = "bold", colour = "grey12") +
-    ggplot2::annotate("text", x = b$region$mid, y = y_reg,
-                      label = b$region$label, family = fam, size = hf_sz(5.0),
-                      colour = "grey30") +
+    sg_atlas_headers(lay, fam, hf_sz(5.0), hf_sz(5.4)) +
+    ggplot2::scale_x_continuous(expand = c(0, 0)) +
+    ggplot2::scale_y_continuous(breaks = seq_len(ny), labels = rev(lev), expand = c(0, 0)) +
+    ggplot2::coord_fixed(ratio = 1, xlim = lay$xlim, ylim = lay$ylim, clip = "off") +
     ggplot2::labs(x = NULL, y = NULL) +
     hf_theme_tile() +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(size = HF_MIN_PT, colour = "grey25"),
+      axis.text.x = ggplot2::element_blank(),
       axis.text.y = ggplot2::element_text(size = HF_MIN_PT, face = "italic"),
       legend.title = ggplot2::element_text(size = hf_pt(5.4)),
       legend.position = "right",
       legend.key.width = ggplot2::unit(1.6, "mm"),
       legend.key.height = ggplot2::unit(3.6, "mm"))
-  cend <- utils::head(b$compartment$end, -1)
-  rend <- setdiff(utils::head(b$region$end, -1), cend)
-  if (length(cend)) p <- p + ggplot2::annotate(
-    "segment", x = cend + 0.5, xend = cend + 0.5, y = 0.5, yend = y_comp - 0.32,
-    linewidth = 0.42, colour = "grey25")
-  if (length(rend)) p <- p + ggplot2::annotate(
-    "segment", x = rend + 0.5, xend = rend + 0.5, y = 0.5, yend = y_reg + 0.4,
-    linewidth = 0.18, colour = "grey72")
   out <- merge(z, pk[, c("gene", "peak_unit", "peak_dataset")], by = "gene",
                all.x = TRUE, sort = FALSE)
   out <- out[order(-out$ypos, out$xpos), , drop = FALSE]
@@ -871,7 +858,7 @@ f9_ed_precision <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     bilateral = stats::median(z$ICC_bilateral_mean), stringsAsFactors = FALSE)))
   SINGLE <- unname(hv_evidence_colours()["descriptive"])
   BOTH <- unname(hv_evidence_colours()["supported"])
-  ytop <- nrow(sm) + 0.72
+  ytop <- nrow(sm) + 0.92
 
   p <- ggplot2::ggplot() +
     ggplot2::geom_segment(data = d,
@@ -886,15 +873,16 @@ f9_ed_precision <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                         colour = SINGLE, size = 1.5) +
     ggplot2::geom_point(data = sm, ggplot2::aes(bilateral, ymid), shape = 16,
                         colour = BOTH, size = 1.5) +
-    # the key, drawn in data space so it cannot drift from the marks
-    ggplot2::annotate("point", x = 0.60, y = ytop, shape = 16,
+    # the key, drawn in data space so it cannot drift from the marks; its two
+    # entries are stacked so that a narrow panel holds them
+    ggplot2::annotate("point", x = 0.04, y = ytop, shape = 16,
                       colour = SINGLE, size = 1.5) +
-    ggplot2::annotate("text", x = 0.625, y = ytop, hjust = 0, family = fam,
+    ggplot2::annotate("text", x = 0.075, y = ytop, hjust = 0, family = fam,
                       size = hf_sz(5.0), colour = "grey30",
                       label = "one hemisphere") +
-    ggplot2::annotate("point", x = 0.82, y = ytop, shape = 16,
+    ggplot2::annotate("point", x = 0.04, y = ytop - 0.22, shape = 16,
                       colour = BOTH, size = 1.5) +
-    ggplot2::annotate("text", x = 0.845, y = ytop, hjust = 0, family = fam,
+    ggplot2::annotate("text", x = 0.075, y = ytop - 0.22, hjust = 0, family = fam,
                       size = hf_sz(5.0), colour = "grey30",
                       label = "bilateral mean") +
     ggplot2::scale_y_continuous(breaks = sm$ymid, labels = as.character(sm$cls),

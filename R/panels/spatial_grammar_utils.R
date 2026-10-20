@@ -234,6 +234,45 @@ sg_blocks <- function(unit_keys, datasets) {
     region = mk(paste(pair$dataset, u$region[idx]), u$region[idx]))
 }
 
+# The columns and headers of a spatial heatmap in the style of Figure 3b
+# (2026-10-20): one column per spatial unit in the contract order, the
+# compartments a gap apart, square tiles; above the top row of n_rows, the unit
+# row (layer, or region where a compartment has no layers), the region row over
+# the layers, and the compartment row. Where tiles are too narrow for the unit
+# labels, `vertical_units` stands them upright and reserves their height.
+sg_atlas_layout <- function(units, datasets, n_rows, gap = 0.6, vertical_units = FALSE) {
+  key <- sg_resolve_unit(units, datasets)
+  o <- sg_blocks(key, datasets)$order
+  o$x <- o$pos + (match(o$dataset, unique(o$dataset)) - 1L) * gap
+  layered <- as.logical(o$layer_is_resolution)
+  y_unit <- if (vertical_units) n_rows + 0.6 else n_rows + 0.95
+  y_region <- if (vertical_units) n_rows + 2.35 else n_rows + 1.75
+  y_comp <- y_region + 0.85
+  frame <- function(x, y, label) data.frame(x = x, y = y, label = label, stringsAsFactors = FALSE)
+  reg <- o[layered, , drop = FALSE]
+  list(
+    order = o,
+    x_of = function(u, d) o$x[match(paste(d, sg_resolve_unit(u, d)), paste(o$dataset, o$unit))],
+    unit = frame(o$x, y_unit, ifelse(layered, o$layer_display, o$region)),
+    region = if (nrow(reg)) do.call(rbind, lapply(split(reg, paste(reg$dataset, reg$region)), function(r)
+      frame(mean(r$x), y_region, r$region[1]))) else frame(numeric(), numeric(), character()),
+    compartment = do.call(rbind, lapply(split(o, o$dataset), function(r)
+      frame(mean(r$x), y_comp, sg_compartment_label(r$dataset[1])))),
+    xlim = c(0.5, max(o$x) + 0.5), ylim = c(0.5, y_comp + 0.45),
+    vertical_units = vertical_units)
+}
+
+#' The header rows of sg_atlas_layout() as ggplot layers (text sizes in mm).
+sg_atlas_headers <- function(lay, family, size_unit, size_compartment) {
+  txt <- function(d, size, ...) ggplot2::geom_text(data = d, ggplot2::aes(x, y, label = label),
+                                                   inherit.aes = FALSE, family = family, size = size, ...)
+  unit <- if (isTRUE(lay$vertical_units)) txt(lay$unit, size_unit, colour = "grey25", angle = 90, hjust = 0)
+          else txt(lay$unit, size_unit, colour = "grey25")
+  list(unit,
+       txt(lay$region, size_unit, colour = "grey25"),
+       txt(lay$compartment, size_compartment, fontface = "bold", colour = "grey12"))
+}
+
 # A compartment header strip plus region subheaders, as ggplot layers to add on
 # top of an existing x-axis of ordered spatial units.
 sg_header_layers <- function(blocks, y_comp = 1.06, y_region = 1.015,

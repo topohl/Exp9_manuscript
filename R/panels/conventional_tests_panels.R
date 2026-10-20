@@ -1,5 +1,5 @@
 # Panels of the conventional-tests Extended Data candidates (figures/scripts/extended_data_conventional_tests.R):
-# Extended Data 10 (conventional behaviour tests, locomotion by sex), 11 (physiology, spread of CombZ) and 12 (automated
+# Extended Data 2 (conventional behaviour tests, locomotion by sex), 3 (physiology, spread of CombZ) and 1 (automated
 # against manual scoring).
 #
 # Everything drawn is read from the pinned SISanalyzer bundle (R/conventional_bundle.R): per-animal values, batch-adjusted

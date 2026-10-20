@@ -238,24 +238,12 @@ f3a_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   # Square tiles with an even gap (house style), the three compartments a gap
   # apart, and the headers on top: compartment, then region over its layers
   # (neuropil) or one region per column (soma, microglia-enriched ROI).
-  tile <- hv_tile(); GAP <- 0.6
-  b <- sg_blocks(cells$spatial_unit, cells$dataset)
-  o <- b$order
-  o$x <- o$pos + (match(o$dataset, unique(o$dataset)) - 1L) * GAP
-  cells$xpos <- o$x[match(paste(cells$dataset, sg_resolve_unit(cells$spatial_unit, cells$dataset)),
-                          paste(o$dataset, o$unit))]
+  tile <- hv_tile()
+  ny <- nlevels(cells$programme_label)
+  lay <- sg_atlas_layout(cells$spatial_unit, cells$dataset, ny)
+  cells$xpos <- lay$x_of(cells$spatial_unit, cells$dataset)
   cells$ypos <- as.integer(cells$programme_label)
   if (anyNA(cells$xpos)) stop("f3a_atlas: a cell has no place in the spatial order.", call. = FALSE)
-  ny <- nlevels(cells$programme_label)
-  layered <- as.logical(o$layer_is_resolution)
-  y_unit <- ny + 0.95; y_region <- ny + 1.75; y_comp <- ny + 2.6
-  hdr_unit <- data.frame(x = o$x, y = y_unit,
-                         label = ifelse(layered, o$layer_display, o$region))
-  reg <- o[layered, , drop = FALSE]
-  hdr_region <- do.call(rbind, lapply(split(reg, paste(reg$dataset, reg$region)), function(r)
-    data.frame(x = mean(r$x), y = y_region, label = r$region[1])))
-  hdr_comp <- do.call(rbind, lapply(split(o, o$dataset), function(r)
-    data.frame(x = mean(r$x), y = y_comp, label = sg_compartment_label(r$dataset[1]))))
   supported <- cells[cells$n_fdr_supported > 0, , drop = FALSE]
   selected <- cells[!is.na(cells$exemplar), , drop = FALSE]
   fam <- hf_fam()
@@ -273,12 +261,7 @@ f3a_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       size = hf_sz(4.6), colour = "black", fill = scales::alpha("white", 0.9),
       linewidth = 0, label.padding = ggplot2::unit(0.08, "mm"),
       nudge_x = -0.30, nudge_y = 0.22) +
-    ggplot2::geom_text(data = hdr_unit, ggplot2::aes(x, y, label = label), inherit.aes = FALSE,
-                       family = fam, size = hf_sz(5.0), colour = "grey25") +
-    ggplot2::geom_text(data = hdr_region, ggplot2::aes(x, y, label = label), inherit.aes = FALSE,
-                       family = fam, size = hf_sz(5.0), colour = "grey25") +
-    ggplot2::geom_text(data = hdr_comp, ggplot2::aes(x, y, label = label), inherit.aes = FALSE,
-                       family = fam, size = hf_sz(5.4), fontface = "bold", colour = "grey12") +
+    sg_atlas_headers(lay, fam, hf_sz(5.0), hf_sz(5.4)) +
     # the manuscript's fixed NES limit (palette v3.2), shared with ED9 and the
     # cards: a median NES beyond it takes full colour, the sidecar keeps it
     hv_diverging(measure = "nes", name = "Median NES\n(SUS \u2212 RES)") +
@@ -295,8 +278,7 @@ f3a_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::scale_x_continuous(expand = c(0, 0)) +
     ggplot2::scale_y_continuous(breaks = seq_len(ny), labels = levels(cells$programme_label),
                                 expand = c(0, 0)) +
-    ggplot2::coord_fixed(ratio = 1, xlim = c(0.5, max(o$x) + 0.5),
-                         ylim = c(0.5, y_comp + 0.45), clip = "off") +
+    ggplot2::coord_fixed(ratio = 1, xlim = lay$xlim, ylim = lay$ylim, clip = "off") +
     ggplot2::labs(x = NULL, y = NULL) + hf_theme_tile() +
     ggplot2::theme(
       axis.text.x = ggplot2::element_blank(),

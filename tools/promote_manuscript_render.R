@@ -31,8 +31,8 @@
 #
 # Usage: Rscript tools/promote_manuscript_render.R figure_01
 #        Rscript tools/promote_manuscript_render.R figure_03
-#        Rscript tools/promote_manuscript_render.R figure_02 extended_data_06 extended_data_07 \
-#          extended_data_08 extended_data_09 extended_data_10
+#        Rscript tools/promote_manuscript_render.R figure_02 extended_data_05 extended_data_06 \
+#          extended_data_07 extended_data_08
 #        Rscript tools/promote_manuscript_render.R extended_data_01 extended_data_02 extended_data_03
 #          (after Rscript figures/scripts/extended_data_conventional_tests.R --publication at a clean HEAD)
 

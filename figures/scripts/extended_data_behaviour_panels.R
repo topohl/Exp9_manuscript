@@ -28,15 +28,16 @@
 # showed one full bar. It was dropped on 2026-10-20.)
 #
 # Panels (house style as Figure 1: no titles or explanatory text in the panels, borderless symbols):
-#   ED5 b  the five a-priori models: leave-one-animal-out R2, the repeated grouped five-fold interval, and the
+#   ED4 a  the two secondary early features against later integrated resilience
+#   ED4 b  the five a-priori models: leave-one-animal-out R2, the repeated grouped five-fold interval, and the
 #          permutation P where one was run
-#   ED9 a  the two secondary early features against later CombZ
-#   ED9 b  the three feature-by-sex interaction tests with 95% CI and BH q
-#   ED9 c  the sex-stratified correlations, drawn as descriptive context only
+#   ED4 c  the three feature-by-sex interaction tests with 95% CI and BH q
+#   ED4 d  the sex-stratified correlations, drawn as descriptive context only
+# (Extended Data 4 and 5 until 2026-10-20, merged into one figure.)
 #
 # WORDING DISCIPLINE. The sex panels exist to license a negative statement and
 # to block a positive one. This script refuses to render if any interaction is
-# rejected in its stored family (PR3) - because the moment one is, panel c stops
+# rejected in its stored family (PR3) - because the moment one is, panel d stops
 # being descriptive context and the figure has to be rethought.
 #
 # The ladder panel likewise states no winner. The models differ by amounts far
@@ -174,7 +175,7 @@ theme_ed <- function(base = BASE_PT) {
 
 fmt <- function(x, d = 3) formatC(x, format = "f", digits = d)
 
-# ===================================== the a-priori model ladder (ED5 b)
+# ===================================== the a-priori model ladder (ED4 b)
 #
 # The ladder is drawn in registry order, bottom to top, so the reader sees the
 # reference baseline first and the fixed order is visible as order. The point is
@@ -247,7 +248,7 @@ p_ladder <- ggplot(la, aes(y = .data$label)) +
   theme_ed() +
   theme(axis.line.y = element_blank(), axis.ticks.y = element_blank())
 
-# ================================ feature-by-sex interactions (ED9 b)
+# ================================ feature-by-sex interactions (ED4 c)
 #
 # The formal test. Zero sits inside every interval, and the BH q values are
 # printed rather than starred, because the result the manuscript relies on is
@@ -285,7 +286,7 @@ p_sex <- ggplot(sx, aes(y = .data$label)) +
   theme_ed() +
   theme(axis.line.y = element_blank(), axis.ticks.y = element_blank())
 
-# ============================ sex-stratified correlations (ED9 c)
+# ============================ sex-stratified correlations (ED4 d)
 #
 # Descriptive only, and labelled as such on the panel itself rather than only in
 # the legend. These two numbers are the ones most likely to be misread as a
@@ -320,7 +321,7 @@ p_rho <- ggplot(rho, aes(y = .data$label)) +
   theme(axis.line.y = element_blank(), axis.ticks.y = element_blank())
 
 
-# ==================== secondary early-feature associations (ED9 a)
+# ==================== secondary early-feature associations (ED4 a)
 #
 # The two secondary early features against later CombZ. These are drawn as
 # effect sizes rather than scatters for a reason worth stating: the frozen
@@ -358,9 +359,8 @@ p_assoc <- ggplot(as2, aes(y = .data$label)) +
 # ---------------------------------------------------------------- write out
 # Authored at the exact placed size (the absolute boxes of figures/contracts/figure_contract.yml), so scale = 1.0 and
 # native pt == printed pt.
-DIMS <- list(ed09a = c(175, 30), ed09b = c(85.5, 40), ed09c = c(85.5, 40),
-             ed05b = c(175, 44))
-PLOTS <- list(ed09a = p_assoc, ed09b = p_sex, ed09c = p_rho, ed05b = p_ladder)
+DIMS <- list(ed04a = c(175, 30), ed04b = c(175, 44), ed04c = c(85.5, 40), ed04d = c(85.5, 40))
+PLOTS <- list(ed04a = p_assoc, ed04b = p_ladder, ed04c = p_sex, ed04d = p_rho)
 
 save_svg <- function(p, id) {
   d <- DIMS[[id]]

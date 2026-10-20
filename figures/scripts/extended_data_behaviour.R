@@ -5,13 +5,13 @@
 # behavioural analysis is frozen upstream and imported with hashes. This
 # validates the declared panel assets and materialises them.
 #
-# Two figures, canonicalised in Phase 6A. Extended Data 5 is how the early window
-# was measured and the complete a-priori model registry; Extended Data 9 is the
-# two secondary features and everything the study can say about sex. They were
-# one figure until Phase 6A, which put two different arguments on one page.
+# One figure, Extended Data 4: the two secondary early features, the complete
+# a-priori model registry, and everything the study can say about sex. Phase 6A
+# had split them into two figures; on 2026-10-20 they were merged again, because
+# the registry page had a single panel.
 source(file.path("R", "paths.R"))
 source(repo_path("R", "manuscript_figure_utils.R"))
 
-for (fig in c("ED_behaviour_models", "ED_behaviour_secondary")) {
+for (fig in c("ED_behaviour_models")) {
   manuscript_figure_main(fig)
 }

@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 # Extended Data candidates for the conventional behaviour tests and the physiology (manuscript candidates, not promoted).
-#   Extended Data 10  conventional behaviour tests, females and males separately:
+#   Extended Data 2  conventional behaviour tests, females and males separately:
 #     a  the main readout of each test (dots, batch-adjusted mean and 95% interval, brackets where adjusted p < 0.05)
 #     b  Cohen's d of the main readouts and of every measure with an adjusted p < 0.05 (all 87 measures: Supplementary)
 #     c  locomotion index by group (exploratory)          d  Cohen's d of distance travelled per session (exploratory)
