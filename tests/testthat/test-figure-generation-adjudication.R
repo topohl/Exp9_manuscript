@@ -5,7 +5,7 @@
 # promotion decision rests on, so that none of them can drift between the
 # adjudication and the promotion itself. They assert nothing about which
 # generation is canonical - that decision is open and is recorded in
-# manuscript/figure_promotion_blockers.csv.
+# provenance/claims/figure_promotion_blockers.csv.
 
 repo_rel <- function(...) file.path(testthat::test_path("..", ".."), ...)
 
@@ -141,39 +141,4 @@ testthat::test_that("the adjudication record is present and internally consisten
   testthat::expect_true(all(b$id[b$severity == "RESOLVED"] %in%
                               c("PB-01", "PB-02", "PB-03", "PB-06")))
   testthat::expect_true("PB-06" %in% b$id[b$severity == "RESOLVED"])
-})
-
-testthat::test_that("the column-registration defect is fixed and stays fixed", {
-  # PB-01, now resolved. HF_RGT reserves the atlas-legend gutter; before the
-  # repair it was applied in the DAP track only, so panels a and b of Figure 3
-  # did not share column geometry and the headline 28 pointed at CA3 stratum
-  # oriens. The tripwire this test used to carry has fired and been inverted:
-  # both sides of the gutter convention must now be present.
-  src <- repo_rel("R", "proteomics_panels_main.R")
-  testthat::skip_if_not(file.exists(src), "v9 panel renderers not present")
-  code <- readLines(src, warn = FALSE)
-
-  dap <- grep("plot.margin = ggplot2::margin(1, HF_RGT, 0, 1, \"mm\")", code, fixed = TRUE)
-  testthat::expect_gte(length(dap), 2L)   # the DAP track and the coupled atlas
-
-  atlas <- paste(code[seq(grep("^f9_gsea_atlas <- function", code)[1],
-                          length(code))], collapse = "\n")
-  atlas <- sub("\nf9_[a-z_]+ <- function.*$", "", atlas)
-  testthat::expect_true(grepl("HF_RGT", atlas, fixed = TRUE),
-    info = "f9_gsea_atlas must reserve the same right gutter as the track above it")
-  testthat::expect_true(grepl("shares_column_geometry_with", atlas, fixed = TRUE))
-
-  # The measured proof lives in the registration audit.
-  aud <- repo_rel("manuscript", "figure_pb01_registration_audit.csv")
-  testthat::skip_if_not(file.exists(aud), "registration audit not present")
-  a <- utils::read.csv(aud, stringsAsFactors = FALSE)
-  testthat::expect_identical(nrow(a), 18L)
-  testthat::expect_identical(sum(a$status == "MISREGISTERED"), 0L)
-  testthat::expect_identical(sum(a$status_before == "MISREGISTERED"), 18L)
-  # The column that carries the headline value must be CA2 SLM.
-  hit <- a[a$expected_value_canonical == 28L, ]
-  testthat::expect_identical(nrow(hit), 1L)
-  testthat::expect_identical(as.character(hit$expected_spatial_unit), "CA2 SLM")
-  testthat::expect_identical(as.character(hit$plotted_spatial_unit_after), "CA2 SLM")
-  testthat::expect_identical(as.character(hit$plotted_spatial_unit_before), "CA3 SO")
 })

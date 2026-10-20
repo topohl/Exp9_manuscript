@@ -4,7 +4,7 @@ Written 2026-10-15. This page says where each class of Exp9 result is produced, 
 
 ## The master text
 
-The Word file `S:\Lab_Member\Tobi\Paper\E9SIS\manuscript_resiliencandsusceptibility.docx` is the master text. `manuscript/manuscript_draft.md` is an older markdown draft. It is not the master, but the provenance tables in `provenance/claims/` are keyed to it and several tests read it, so it is kept unchanged as a frozen reference.
+The Word file `S:\Lab_Member\Tobi\Paper\E9SIS\manuscript_resiliencandsusceptibility.docx` is the master text. Its snapshots, the claims register, notes (including the older markdown draft and the statement tables keyed to it) and the legend drafts are kept in that folder (its `README.md` explains them), not in this repository. Tools read the folder through `paper_path()` in `R/paths.R`; no test does.
 
 ## From source to manuscript
 
@@ -21,7 +21,7 @@ Registry of what is canonical, with the commit and hash of every promoted artefa
 
 ## Results that do not enter this repository yet
 
-These were built on 2026-10-15 under `S:\Lab_Member\Tobi\Experiments\Exp9_Social-Stress\Analysis\`. Since 2026-10-16 the conventional tests, physiology, heterogeneity and locomotion results enter as Extended Data candidates through the SISanalyzer bundle (table above); the others have no bundle yet, and none has rows in `provenance/claims/`:
+These were built on 2026-10-15 under `S:\Lab_Member\Tobi\Experiments\Exp9_Social-Stress\Analysis\`. Since 2026-10-16 the conventional tests, physiology, heterogeneity and locomotion results enter as Extended Data candidates through the SISanalyzer bundle (table above); the others have no bundle yet:
 
 - `Behavior/{EPM,OFT,NOR,SocP,All_tests}`: conventional behaviour tests, 87 measures, females and males separately.
 - `Physiology/`: body weight, organs, corticosterone, sucrose, 19 measures.

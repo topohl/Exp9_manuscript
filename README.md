@@ -1,11 +1,12 @@
 # Exp9_manuscript
 
-Manuscript text and publication rendering for Exp9 (social stress, spatial
-hippocampal proteomics).
+Figure rendering, source data and checks for the Exp9 manuscript (social stress,
+spatial hippocampal proteomics).
 
 **This repository does not own the underlying biological analyses.** It fits no
 models, computes no statistics, selects no candidates and adjusts no
-significance thresholds. It renders figures and holds prose. Every number it
+significance thresholds. It renders figures; the manuscript text is kept with the
+Word file, outside this repository (`docs/WHERE_THINGS_LIVE.md`). Every number it
 displays arrives as a frozen, hash-verified import from an upstream scientific
 repository.
 
@@ -44,16 +45,15 @@ rendering never addresses upstream internal folder structure.
 
 | Path | Contents |
 | --- | --- |
-| `manuscript/` | prose: older markdown draft, legends, citations, front matter, dated snapshots of the Word master text (`manuscript/README.md`) |
 | `figures/main/`, `figures/extended_data/` | canonical rendered panels and assembled figures, by publication identity |
 | `R/panels/` | panel implementation libraries reached only from figure renderers |
 | `source_data/pRoteomics/` | frozen scientific source-data bundle + manifest |
 | `source_data/MMMSociability/` | frozen behaviour bundle + manifest (byte-exact, `-text` in `.gitattributes`) |
 | `source_data/MMMSociability_candidates/` | CC4 candidate bundles (MMMSociability Stage 31), byte-exact; pinned in `config/cc4_candidate_bundles.yml` |
-| `provenance/` | claim provenance (including `claims/docx_claims.csv`, the claims of the Word text), publication registry, source manifests |
+| `provenance/` | claim provenance, publication registry, source manifests |
 | `export/` | journal submission bundles |
 | `tests/` | publication integrity suite |
-| `tools/` | bundle verification and rendering utilities; `check_claims.R` (looks up the numbers of the Word text in their sources) and `export_docx_text.R` (snapshots the Word file) |
+| `tools/` | bundle verification and rendering utilities; `check_claims.R` (looks up the numbers of the Word text in their sources) and `export_docx_text.R` (snapshots the Word file); these and `audit_manuscript_references.R` read the paper folder outside the repository (`E9_PAPER_DIR`, default `S:/Lab_Member/Tobi/Paper/E9SIS`) |
 
 ## Publication identities
 

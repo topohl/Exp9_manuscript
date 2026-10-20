@@ -8,7 +8,7 @@ Three pages, promoted as the identities `extended_data_01` to `_03` (Extended Da
 
 Panels carry short labels only; the sample sizes and which readouts are CombZ components are in the legends, the full measure names in the legends and the per-panel source data.
 
-Legends: `manuscript/legends/extended_data_01_legend.md` to `_03`. Cited in the suggested Results 1 wording (`manuscript/text/SUGGESTED_UPDATES_2026-10-15.md`, written under the old numbers): ED2a,b and ED3 from the paragraph on the heterogeneous response, ED2c,d from the exploratory locomotion paragraph. ED1 is the text's "Supp. Fig. x" (the BORIS comparison).
+Legend drafts: `legends/extended_data_01_legend.md` to `_03` in the paper folder (see `WHERE_THINGS_LIVE.md`). Cited in the suggested Results 1 wording (`notes/suggested_updates_2026-10-15.md` there, written under the old numbers): ED2a,b and ED3 from the paragraph on the heterogeneous response, ED2c,d from the exploratory locomotion paragraph. ED1 is the text's "Supp. Fig. x" (the BORIS comparison).
 
 ## Where the numbers come from
 

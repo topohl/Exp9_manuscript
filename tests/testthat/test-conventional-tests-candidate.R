@@ -110,13 +110,6 @@ testthat::test_that("the automated validation values are the values the tests an
   testthat::expect_true(all(X$agree$manual_source[X$agree$assay == "NOR"] == "raw BORIS exports"))
 })
 
-testthat::test_that("the numbers the legends quote from the locomotion interaction are the stored ones", {
-  leg <- function(n) paste(readLines(repo_path("manuscript", "legends", sprintf("extended_data_%02d_legend.md", n)), encoding = "UTF-8", warn = FALSE), collapse = " ")
-  i <- X$loco_int[X$loco_int$Test == "Group x sex", ]
-  testthat::expect_true(grepl(sprintf("F(%d, %d) = %.2f, P = %.3f", i$df1, i$df2, i$F, i$p), leg(2), fixed = TRUE))
-  for (n in 1:3) testthat::expect_true(grepl(X$pin$bundle_id, leg(n), fixed = TRUE), info = n)
-})
-
 testthat::test_that("the contract and the registry name the pinned bundle and this renderer for Extended Data 1 to 3", {
   y <- yaml::read_yaml(repo_path("figures", "contracts", "figure_contract.yml"))$figures
   reg <- utils::read.csv(repo_path("provenance", "publication_registry", "canonical_publication_registry.csv"), colClasses = "character")

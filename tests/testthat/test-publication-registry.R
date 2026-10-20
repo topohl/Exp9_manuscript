@@ -185,18 +185,3 @@ testthat::test_that("no artefact still points Figure 2h at a withdrawn panel", {
                                  s, fixed = TRUE), info = basename(f))
   }
 })
-
-testthat::test_that("every manuscript reference resolves and every canonical figure is cited", {
-  aud <- repo_rel("provenance", "claims", "figure_panel_reference_audit.csv")
-  testthat::skip_if_not(file.exists(aud), "reference audit not generated")
-  a <- utils::read.csv(aud, stringsAsFactors = FALSE)
-
-  # The predecessor of this audit matched only "Fig. Nx" and so examined zero
-  # Extended Data citations while reporting zero unresolved. Require that the
-  # class it used to be blind to is actually present.
-  testthat::expect_gt(sum(a$kind == "extended_data"), 0L)
-  testthat::expect_gt(sum(a$kind == "main_figure"), 0L)
-  testthat::expect_true(all(a$resolved), info = paste(
-    "unresolved:", paste(unique(a$citation[!a$resolved]), collapse = ", ")))
-  testthat::expect_true(all(a$publication_status == "CANONICAL"))
-})

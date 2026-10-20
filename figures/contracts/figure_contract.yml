@@ -726,7 +726,7 @@ figures:
   #          "0 of 35", and 45 is neuropil-only; and it labels 8 of 15 modules
   #          with a peak unit the canonical atlas declines to assign.
   #   ED7  - cited nowhere in the manuscript and supporting no recorded claim.
-  # Their defects are recorded in manuscript/extended_data_promotion_audit.csv.
+  # Their defects are recorded in provenance/claims/extended_data_promotion_audit.csv.
   # Nothing was substituted for them.
 
   ED_spatial_validation:

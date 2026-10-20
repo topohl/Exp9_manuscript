@@ -10,7 +10,7 @@
 #
 # The WGCNA and identity-location figures are withheld, as is the former
 # spatial-identity panel c. Their defects are recorded in
-# manuscript/extended_data_promotion_audit.csv and nothing was substituted for
+# provenance/claims/extended_data_promotion_audit.csv and nothing was substituted for
 # them.
 source(file.path("R", "paths.R"))
 source(repo_path("R", "manuscript_figure_utils.R"))

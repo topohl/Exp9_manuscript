@@ -2,7 +2,8 @@
 
 # Check the numbers quoted in the Word manuscript against the pinned source tables.
 #
-# provenance/claims/docx_claims.csv holds one row per claim of the Word text. A row with
+# The claims register, snapshots/docx_claims.csv in the paper folder (paper_path() in R/paths.R),
+# holds one row per claim of the Word text. A row with
 # check = "lookup" names a source table, a row filter and a column; this tool reads that cell
 # (or counts the filtered rows) and compares it with the number printed in the text, within
 # the stated tolerance. It reads files and compares numbers. It fits nothing, tests nothing,
@@ -16,7 +17,7 @@
 # not looked up; they record a reading of the text against a source that is not a single cell.
 #
 # The register itself only changes by hand, after a new reading of the text. If the Word file
-# was saved after the newest snapshot in manuscript/text/SNAPSHOTS.csv, the tool says so.
+# was saved after the newest snapshot in snapshots/SNAPSHOTS.csv, the tool says so.
 
 .boot <- NULL
 .dir <- normalizePath(getwd(), winslash = "/", mustWork = FALSE)
@@ -32,8 +33,8 @@ source(.boot)
 rm(.boot, .dir)
 
 SHOW_ALL <- "--all" %in% commandArgs(trailingOnly = TRUE)
-REGISTER <- repo_path("provenance", "claims", "docx_claims.csv")
-SNAPSHOTS <- repo_path("manuscript", "text", "SNAPSHOTS.csv")
+REGISTER <- paper_path("snapshots", "docx_claims.csv")
+SNAPSHOTS <- paper_path("snapshots", "SNAPSHOTS.csv")
 
 read_chr <- function(p) utils::read.csv(p, colClasses = "character", check.names = FALSE,
                                         na.strings = character(0), encoding = "UTF-8")

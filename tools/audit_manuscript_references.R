@@ -12,13 +12,13 @@
 # therefore audited ZERO Extended Data citations while reporting zero unresolved.
 # A detector that cannot see the class of reference you are worried about is
 # worse than none, because it produces a green result.
+#
+# It reads the newest Word snapshot and the legend drafts in the paper folder (paper_path() in
+# R/paths.R), writes nothing, and exits with status 1 if a citation does not resolve. The Word text
+# cites Extended Data as "Supp. Fig. N"; both forms are read as Extended Data N.
 
 source(file.path("R", "paths.R"))
 
-# Regenerates the canonical audit in place. The output is byte-identical to
-# the pre-restructure freeze, which is the point: this is a reproducibility
-# check on the citation graph, not a new artefact.
-OUT <- repo_path("provenance", "claims", "figure_panel_reference_audit.csv")
 contract <- yaml::read_yaml(repo_path("figures", "contracts", "figure_contract.yml"))
 registry <- utils::read.csv(repo_path("provenance", "publication_registry", "canonical_publication_registry.csv"),
                             stringsAsFactors = FALSE)
@@ -51,26 +51,9 @@ artifact_of <- function(pid) {
   repo_path("source_data", "pRoteomics", pid, "assembled", paste0(pid, ".svg"))
 }
 
-files <- c(repo_path("manuscript", "manuscript_draft.md"),
-           list.files(repo_path("manuscript", "legends"), pattern = "_legend[.]md$",
-                      full.names = TRUE),
-           list.files(repo_path("manuscript"), pattern = "[.]csv$",
-                      recursive = TRUE, full.names = TRUE),
-           list.files(repo_path("provenance"), pattern = "[.]csv$",
-                      recursive = TRUE, full.names = TRUE))
-# The audit must not read its own output, and the records that EXIST in order to
-# describe defective or withheld references - the promotion audit, the readiness
-# register, the blocker list - are not citation surfaces. Including them makes
-# the audit report a defect for correctly recording a defect.
-NOT_CITATION_SURFACES <- c("figure_panel_reference_audit.csv",
-                           "extended_data_promotion_audit.csv",
-                           "submission_readiness.csv",
-                           "figure_promotion_blockers.csv",
-                           "canonical_publication_registry.csv",
-                           "figure_generation_inventory.csv",
-                           "figure_claim_support_matrix.csv",
-                           "prerestructure_freeze_manifest.csv")
-files <- files[file.exists(files) & !(basename(files) %in% NOT_CITATION_SURFACES)]
+snap <- utils::read.csv(paper_path("snapshots", "SNAPSHOTS.csv"), colClasses = "character")
+files <- c(paper_path("snapshots", snap$text_file[nrow(snap)]),
+           list.files(paper_path("legends"), pattern = "_legend[.]md$", full.names = TRUE))
 
 expand <- function(tail_) {
   ls_ <- regmatches(tail_, gregexpr("[a-m]", tail_))[[1]]
@@ -86,14 +69,14 @@ for (f in files) {
   ln <- readLines(f, warn = FALSE)
   for (i in seq_along(ln)) {
     # Extended Data first, so its "Fig. N" is not mistaken for a main figure
-    for (pat in c(ed = "Extended Data Fig[.][ ]?[0-9]+[a-m]?(([,–-])[a-m])*",
-                  main = "(?<!Extended Data )Fig[.][ ]?[123][a-m](([,–-])[a-m])*")) {
+    for (pat in c(ed = "(Extended Data|Supp[.]) Fig[.][ ]?[0-9]+[a-m]?(([,–-])[a-m])*",
+                  main = "(?<!Extended Data )(?<!Supp[.] )Fig[.][ ]?[123][a-m](([,–-])[a-m])*")) {
       hits <- regmatches(ln[i], gregexpr(pat, ln[i], perl = TRUE))[[1]]
       is_ed <- identical(pat, unname(pat["ed"])) || grepl("^Extended", pat)
       for (hh in hits) {
-        is_ed_hit <- grepl("^Extended Data", hh)
-        num <- as.integer(sub("^(Extended Data )?Fig[.][ ]?([0-9]+).*$", "\\2", hh))
-        tail_ <- sub("^(Extended Data )?Fig[.][ ]?[0-9]+", "", hh)
+        is_ed_hit <- grepl("^(Extended Data|Supp[.])", hh)
+        num <- as.integer(sub("^(Extended Data |Supp[.] )?Fig[.][ ]?([0-9]+).*$", "\\2", hh))
+        tail_ <- sub("^(Extended Data |Supp[.] )?Fig[.][ ]?[0-9]+", "", hh)
         ls_ <- expand(tail_)
         if (!length(ls_)) ls_ <- NA_character_          # whole-figure citation
         for (L in ls_) {
@@ -125,11 +108,7 @@ cited <- unique(aud$publication_id[aud$resolved])
 canon <- registry$publication_id[registry$status == "CANONICAL"]
 uncited <- setdiff(canon, cited)
 
-con <- file(OUT, open = "wb")
-utils::write.csv(aud, con, row.names = FALSE, na = "", eol = "\n")
-close(con)
-
-cat("manuscript reference audit ->", OUT, "\n")
+cat("manuscript reference audit:", basename(files[1]), "and", length(files) - 1L, "legend drafts\n")
 cat("  citation instances :", nrow(aud), "\n")
 cat("    main figure      :", sum(aud$kind == "main_figure"), "\n")
 cat("    extended data    :", sum(aud$kind == "extended_data"), "\n")
@@ -137,3 +116,4 @@ cat("  UNRESOLVED         :", sum(!aud$resolved), "\n")
 if (any(!aud$resolved)) print(unique(aud[!aud$resolved,
   c("source_file", "citation", "publication_status", "declared_in_contract")]), row.names = FALSE)
 cat("  canonical but never cited:", if (length(uncited)) paste(uncited, collapse = ", ") else "none", "\n")
+if (any(!aud$resolved)) quit(status = 1L)

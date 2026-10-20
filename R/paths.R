@@ -133,6 +133,20 @@ path_external <- function(...) repo_path("data", "external", ...)
 path_processed <- function(...) repo_path("data", "processed", ...)
 path_results <- function(...) repo_path("results", ...)
 
+# The paper folder (the Word text, snapshots, notes, legend drafts and the claims register) is kept outside
+# this repository. Only hand-run tools read it; no test does. E9_PAPER_DIR overrides the default.
+paper_path <- function(...) {
+  root <- Sys.getenv("E9_PAPER_DIR", unset = "S:/Lab_Member/Tobi/Paper/E9SIS")
+  p <- file.path(root, ...)
+  if (!file.exists(p))
+    stop("not found: ", p, " (the paper folder is outside this repository; set E9_PAPER_DIR to the folder ",
+         "that holds the Word manuscript)", call. = FALSE)
+  p <- normalizePath(p, winslash = "/", mustWork = TRUE)
+  if (startsWith(tolower(p), tolower(paste0(normalizePath(repo_root(), winslash = "/"), "/"))))
+    stop("the paper folder must be outside this repository: ", p, call. = FALSE)
+  p
+}
+
 dir_create <- function(...) {
   path <- file.path(...)
   if (!dir.exists(path)) dir.create(path, recursive = TRUE, showWarnings = FALSE)

@@ -134,13 +134,3 @@ testthat::test_that("prohibited sex wording appears on no rendered panel", {
       testthat::expect_false(grepl(phrase, text, ignore.case = TRUE), info = paste0(basename(f), " renders prohibited wording: ", phrase))
   }
 })
-
-testthat::test_that("Results cites the Extended Data panels and no retired Figure 1 panel", {
-  source(testthat::test_path("..", "..", "R", "paths.R"))
-  text <- paste(readLines(repo_path("manuscript", "manuscript_draft.md"), warn = FALSE), collapse = "\n")
-  testthat::expect_true(grepl("Extended Data Fig. 9a", text, fixed = TRUE))
-  testthat::expect_true(grepl("Extended Data Fig. 9b", text, fixed = TRUE))
-  testthat::expect_true(grepl("Extended Data Fig. 9c", text, fixed = TRUE))
-  testthat::expect_false(grepl("Fig. 1e", text, fixed = TRUE))
-  testthat::expect_false(grepl("Fig. 1f", text, fixed = TRUE))
-})

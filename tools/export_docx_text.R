@@ -3,9 +3,9 @@
 # Snapshot the Word manuscript and export its text.
 #
 # The Word file stays the master text and is never edited here. This tool copies it byte for byte
-# to manuscript/text/, writes the text of the copy (one non-empty paragraph per line, in order) and
-# appends a row to manuscript/text/SNAPSHOTS.csv. The claim register
-# (provenance/claims/docx_claims.csv) refers to lines of that text file.
+# to snapshots/ in the paper folder (paper_path() in R/paths.R), writes the text of the copy (one
+# non-empty paragraph per line, in order) and appends a row to snapshots/SNAPSHOTS.csv there. The
+# claims register (snapshots/docx_claims.csv) refers to lines of that text file.
 #
 #   Rscript tools/export_docx_text.R "<path to the .docx>"
 #
@@ -33,8 +33,7 @@ if (!grepl("[.]docx$", src, ignore.case = TRUE)) stop("not a .docx file: ", src,
 
 stem <- tools::file_path_sans_ext(basename(src))
 day <- format(Sys.Date(), "%Y-%m-%d")
-out_dir <- repo_path("manuscript", "text")
-dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
+out_dir <- paper_path("snapshots")
 docx_out <- file.path(out_dir, sprintf("%s_%s.docx", stem, day))
 text_out <- file.path(out_dir, sprintf("%s_%s.txt", stem, day))
 index_out <- file.path(out_dir, "SNAPSHOTS.csv")
@@ -95,8 +94,8 @@ row <- data.frame(
   docx_sha256 = sha(src),
   docx_bytes = file.size(src),
   docx_saved = format(file.mtime(src), "%Y-%m-%d %H:%M:%S"),
-  snapshot_docx = file.path("manuscript", "text", basename(docx_out)),
-  text_file = file.path("manuscript", "text", basename(text_out)),
+  snapshot_docx = basename(docx_out),
+  text_file = basename(text_out),
   paragraphs = length(lines),
   words = words,
   stringsAsFactors = FALSE

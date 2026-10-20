@@ -8,7 +8,7 @@ A candidate is an analysis result that has been imported and rendered here but i
 - An import is frozen and hashed. The importer refuses an existing destination and records the copy in a config file under `config/` and a manifest under `provenance/source_manifests/`.
 - A renderer reads only from `source_data/`, never from a live results folder, and writes to a new directory under the gitignored `results/` workspace.
 - Nothing becomes canonical by being rendered. Promotion is a separate, guarded step (`tools/promote_manuscript_render.R`) that needs a clean tree and a registry row.
-- Results, legends and text that go with a candidate sit in `manuscript/candidates/<generation>/`, and a receipt of every file written sits in `provenance/candidates/<generation>_receipt.csv`.
+- Text and legend drafts that go with a candidate are kept with the manuscript text outside the repository (`notes/` in the paper folder, see `WHERE_THINGS_LIVE.md`), and a receipt of every file written sits in `provenance/candidates/<generation>_receipt.csv`.
 
 ## Steps
 
@@ -23,4 +23,4 @@ Run the candidate's own test file (the command is in the CC4 document) rather th
 
 ## Before a candidate goes into the text
 
-Add its numbers to the claims table (`provenance/claims/`), state the figure panel each number belongs to, and check the sentence against the source value, not against an earlier draft. The older provenance tables are keyed to `manuscript/manuscript_draft.md`, which is no longer the master text (see `WHERE_THINGS_LIVE.md`).
+Add its numbers to the claims register (`snapshots/docx_claims.csv` in the paper folder, checked by `tools/check_claims.R`), state the figure panel each number belongs to, and check the sentence against the source value, not against an earlier draft.

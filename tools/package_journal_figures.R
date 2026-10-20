@@ -14,13 +14,11 @@
 #   registry's rendered_artifact under figures/main|extended_data/ and its
 #   canonical_source_data
 #   provenance/publication_registry/canonical_publication_registry.csv
-#   manuscript/legends/
 #
 # Output:
 #   export/<bundle>/figures/Figure_1.svg, Figure_2.svg, ...
 #   export/<bundle>/extended_data/Extended_Data_Figure_1.svg, ...
 #   export/<bundle>/source_data/
-#   export/<bundle>/legends/
 #   export/<bundle>/manifest.csv
 #
 # Nothing here recomputes a scientific value. The assembled artefact is copied,
@@ -140,21 +138,12 @@ if (length(mismatched)) {
 
 man <- do.call(rbind, rows)
 
-## legends travel with the package
-legends <- list.files(repo_path("manuscript", "legends"), pattern = "[.]md$",
-                      full.names = TRUE)
-if (!dry_run) {
-  if (length(legends)) {
-    dir_create(file.path(BUNDLE, "legends"))
-    file.copy(legends, file.path(BUNDLE, "legends"), overwrite = TRUE)
-  }
-  utils::write.csv(man, file.path(BUNDLE, "manifest.csv"), row.names = FALSE)
-}
+# Legends are part of the manuscript text (kept with the Word file), not of this package.
+if (!dry_run) utils::write.csv(man, file.path(BUNDLE, "manifest.csv"), row.names = FALSE)
 
 cat("figures packaged   :", sum(man$journal_dir == "figures"), "\n")
 cat("extended data      :", sum(man$journal_dir == "extended_data"), "\n")
 cat("hash-verified      :", sum(man$hash_verified), "/", nrow(man), "\n")
-cat("legends            :", length(legends), "\n")
 cat("source-data files  :", sum(man$source_data_files), "\n")
 if (dry_run) {
   cat("\n[DRY-RUN] would write:", sub(paste0(repo_root(), "/"), "", BUNDLE), "\n")

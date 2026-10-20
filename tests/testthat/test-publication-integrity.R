@@ -67,34 +67,10 @@ testthat::test_that("canonical figures reproduce the frozen artefact hashes", {
   testthat::expect_identical(checked, nrow(canon))
 })
 
-testthat::test_that("the manuscript draft and legends are present and unedited by this suite", {
-  draft <- repo_path("manuscript", "manuscript_draft.md")
-  testthat::expect_true(file.exists(draft))
-  txt <- readLines(draft, warn = FALSE)
-  testthat::expect_gt(length(txt), 100L)
-
-  legends <- list.files(repo_path("manuscript", "legends"), pattern = "[.]md$")
-  testthat::expect_gt(length(legends), 0L)
-})
-
-testthat::test_that("manuscript figure references resolve to registry identities", {
-  draft <- repo_path("manuscript", "manuscript_draft.md")
-  txt <- paste(readLines(draft, warn = FALSE), collapse = "\n")
-  r <- utils::read.csv(registry_path(), stringsAsFactors = FALSE)
-
-  # Every Figure/Extended Data number named in the prose must exist as a
-  # registry identity, canonical or explicitly withheld.
-  nums <- unique(unlist(regmatches(txt, gregexpr("Figure[[:space:]]+[0-9]+", txt))))
-  fig_ids <- sprintf("figure_%02d", as.integer(gsub("[^0-9]", "", nums)))
-  testthat::expect_true(all(fig_ids %in% r$publication_id),
-                        info = paste("unresolved figure reference:",
-                                     paste(setdiff(fig_ids, r$publication_id), collapse = ", ")))
-
-  ed <- unique(unlist(regmatches(txt, gregexpr("Extended Data Figure[[:space:]]+[0-9]+", txt))))
-  ed_ids <- sprintf("extended_data_%02d", as.integer(gsub("[^0-9]", "", ed)))
-  testthat::expect_true(all(ed_ids %in% r$publication_id),
-                        info = paste("unresolved Extended Data reference:",
-                                     paste(setdiff(ed_ids, r$publication_id), collapse = ", ")))
+testthat::test_that("the repository holds no manuscript text", {
+  # The text, snapshots, notes, legend drafts and claims register are kept with the Word file (docs/WHERE_THINGS_LIVE.md).
+  testthat::expect_false(dir.exists(repo_path("manuscript")))
+  testthat::expect_false(file.exists(repo_path("provenance", "claims", "docx_claims.csv")))
 })
 
 testthat::test_that("no biological model is fitted anywhere in this repository", {

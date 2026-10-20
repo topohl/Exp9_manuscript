@@ -20,7 +20,6 @@ RENDERER <- repo("figures", "scripts", "figure_01_panels.R")
 BEHAVIOUR_LIBS <- sort(list.files(repo("R", "panels"), pattern = "^behaviour_.*[.][Rr]$", full.names = TRUE))
 ENTRY <- repo("figures", "scripts", "figure_01.R")
 AMAP_PATH <- repo("figures", "contracts", "figure_01_annotation_map.csv")
-LEGEND <- repo("manuscript", "legends", "figure1_legend.md")
 rd <- function(p) utils::read.csv(p, stringsAsFactors = FALSE)
 have_pin <- file.exists(repo("config", "behaviour_bundle.yml")) && file.exists(repo("config", "figure_support_bundle.yml"))
 # The consolidated layout (2026-10-12): a design and ages, b CombZ and components, c Stage 14 domains, d movement
@@ -211,18 +210,4 @@ test_that("the movement panel draws the bundled display line and its statistics 
   expect_true(all(d$bundle == "fsb" & d$table == "E1_movement_combz_spearman_by_sex"))
   e1 <- fsb_bundle_table("E1_movement_combz_spearman_by_sex")
   expect_true(all(grepl("not an interaction test", e1$CorrelationUse, fixed = TRUE)))
-})
-
-test_that("the legend avoids prohibited wording", {
-  skip_if_not(file.exists(LEGEND), "legend absent")
-  ln <- readLines(LEGEND, warn = FALSE)
-  DENIAL <- "never|cannot|prohibited|instead of|rather than|avoid|\\b[Nn][Oo][Tt]\\b|\\b[Nn]o "
-  BANNED <- c("predicts susceptibility", "predicts resilience", "female-specific", "sex-specific", "external validation",
-              "independent validation", "independent replication", "biomarker", "sociability", "social coordination", "huddling",
-              "confirmatory", "preregistered", "induced the", "acute", "immediate response")
-  for (b in BANNED) {
-    hits <- grep(paste0("\\b", b, "\\b"), ln, ignore.case = TRUE, perl = TRUE, value = TRUE)   # whole words: "MMMSociability" is not "sociability"
-    hits <- hits[!grepl(DENIAL, hits, perl = TRUE)]
-    expect_equal(hits, character(0), info = paste("legend uses:", b))
-  }
 })

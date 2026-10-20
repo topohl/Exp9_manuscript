@@ -12,5 +12,3 @@ export/*/
 Rplots.pdf
 **/Rplots.pdf
 
-# Word lock files, written beside any .docx while it is open
-~$*

@@ -145,36 +145,6 @@ testthat::test_that("SR-21: the shipped Figure 3a is the QC-aware panel", {
   testthat::expect_identical(sum(d$claimable), 15L)
 })
 
-testthat::test_that("every manuscript figure-panel reference resolves", {
-  source(testthat::test_path("..", "..", "R", "paths.R"))
-  testthat::skip_if_not_installed("yaml")
-  y <- contract()
-  declared <- unlist(lapply(c("01", "02", "03"), function(k)
-    vapply(y$figures[[k]]$panels, function(p) as.character(p$id), character(1))))
-
-  draft <- readLines(repo_rel("manuscript", "manuscript_draft.md"), warn = FALSE)
-  hits <- unlist(regmatches(draft, gregexpr(
-    "Fig[.][ ]?[123][a-m](([,–-])[a-m])*", draft, perl = TRUE)))
-  testthat::expect_gt(length(hits), 0L)
-
-  for (hh in unique(hits)) {
-    fign <- sub("^Fig[.][ ]?([123]).*$", "\\1", hh)
-    # this draft predates the Figure 3 layout of 2026-10-20 (the manuscript is the
-    # Word file); its Figure 3 letters name the retired a-m panels
-    if (fign == "3") next
-    tail_ <- sub("^Fig[.][ ]?[123]", "", hh)
-    ls_ <- regmatches(tail_, gregexpr("[a-m]", tail_))[[1]]
-    idx <- match(ls_, letters)
-    if (grepl("[–-]", tail_) && length(idx) >= 2L && !anyNA(idx)) {
-      ls_ <- letters[seq(min(idx), max(idx))]
-    }
-    for (L in ls_) {
-      testthat::expect_true(paste0(fign, L) %in% declared,
-        info = paste("manuscript cites", hh, "-> undeclared panel", paste0(fign, L)))
-    }
-  }
-})
-
 testthat::test_that("Figure 2 and the proteomics Extended Data are registered from their promoted renders", {
   # Tracked files only. Like Figure 3, each identity is published from figures/
   # with its per-panel source data, rendered at one commit on clean code.
