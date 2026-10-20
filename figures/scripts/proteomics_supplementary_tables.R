@@ -15,10 +15,10 @@
 
 source(file.path("R", "paths.R"))
 source(repo_path("R", "integration_utils.R"))
-source(repo_path("R", "house_v2_figure_utils.R"))
+source(repo_path("R", "proteomics_style.R"))
 source(repo_path("R", "spatial_grammar_utils.R"))
-source(repo_path("R", "final_truth_v9_figure_utils.R"))
-source(repo_path("R", "final_truth_v9_fidelity_panels.R"))
+source(repo_path("R", "proteomics_page_builder.R"))
+source(repo_path("R", "proteomics_panels_revised.R"))
 Sys.setenv(PROTEOMICS_SCRIPT_ID = "figures/scripts/proteomics_supplementary_tables.R")
 
 args <- commandArgs(trailingOnly = TRUE)

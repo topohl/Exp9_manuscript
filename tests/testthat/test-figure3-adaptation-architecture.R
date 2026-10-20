@@ -1,5 +1,5 @@
 source(testthat::test_path("..", "..", "R", "paths.R"))
-source(repo_path("R", "final_truth_v9_panels.R"))
+source(repo_path("R", "proteomics_panels_main.R"))
 source(repo_path("R", "figure3_adaptation_panels.R"))
 
 f3a_inventory_for_test <- function() {
@@ -126,14 +126,14 @@ testthat::test_that("exemplar cards and frozen exact-context drill-downs agree",
   }
 })
 
-testthat::test_that("canonical Figure 3 contract is a through m", {
+testthat::test_that("canonical Figure 3 contract is a-d and the exemplar rows e-g", {
   testthat::skip_if_not_installed("yaml")
   producing <- yaml::read_yaml(repo_path(
     "figures", "contracts", "proteomics_panels_contract.yml"))
   f <- Filter(function(x) x$figure_key == "figure_03", producing$figures)[[1]]
   testthat::expect_identical(
     vapply(f$layout, function(x) as.character(x$label), character(1)),
-    letters[1:13])
+    c("a", "b", "c", "d", unlist(lapply(c("e", "f", "g"), function(r) c(r, "", "", "")))))
   manuscript <- yaml::read_yaml(repo_path("figures", "contracts", "figure_contract.yml"))
   testthat::expect_identical(
     as.character(manuscript$figures[["03"]]$assembled_pdf_source),
@@ -142,7 +142,7 @@ testthat::test_that("canonical Figure 3 contract is a through m", {
   testthat::expect_identical(
     vapply(manuscript$figures[["03"]]$panels,
            function(x) as.character(x$id), character(1)),
-    paste0("3", letters[1:13]))
+    c(paste0("3", letters[1:4]), unlist(lapply(c("3e", "3f", "3g"), function(r) paste0(r, c("", "_card", "_curve", "_proteins"))))))
 
   final_pdf <- repo_path("results", "figures", "manuscript", "figure_03",
                          "assembled", "figure_03.pdf")

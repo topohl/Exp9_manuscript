@@ -372,7 +372,7 @@ figures:
     title: Figure 3
     canonical_publication_id: figure_03
     width_mm: 183
-    height_mm: 170
+    height_mm: 156
     layout_mode: absolute
     manuscript_role: primary_spatial_proteomic_figure
     is_numbered_manuscript_figure: true
@@ -424,10 +424,28 @@ figures:
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
         x: 4
-        "y": 15
+        "y": 16
         w: 175
-        h: 34
+        h: 50
       - id: 3c
+        v9_panel_id: v9_schematic_space
+        description: >-
+          space for the hippocampal schematic of the exemplar contexts, drawn by hand.
+        producer_script: figures/scripts/figure_03_panels.R
+        renderer: f3a_blank
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_schematic_space.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_schematic_space_source_data.csv
+        input_dependencies: []
+        scientific_contract: hand_drawn_schematic_placeholder
+        biological_unit: animal
+        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
+        x: 4
+        "y": 68
+        w: 40
+        h: 26
+      - id: 3d
         v9_panel_id: v9_adaptation_state
         description: >-
           programme-context adaptation-state map: RES-CON median NES on x and
@@ -444,30 +462,29 @@ figures:
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
         x: 4
-        "y": 51
-        w: 110
-        h: 34
-      - id: 3d
-        v9_panel_id: v9_adaptation_burden
+        "y": 96
+        w: 40
+        h: 58
+      - id: 3e
+        v9_panel_id: v9_row_syn
         description: >-
-          count and fraction of the five adaptation patterns within each
-          compartment.
+          header of the Neuropil CA3 SR synaptic signalling / vesicle exemplar row.
         producer_script: figures/scripts/figure_03_panels.R
-        renderer: f3a_pattern_burden
+        renderer: f3a_row_header
         render_mode: copy_svg
         source_data_mode: copy_csv
-        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_adaptation_burden.svg
-        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_adaptation_burden_source_data.csv
-        input_dependencies:
-          - source_data/pRoteomics/supplementary_selection_inventories/pathway_enrichment_inventory.csv
-        scientific_contract: descriptive_adaptation_pattern_burden
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_row_syn.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_row_syn_source_data.csv
+        input_dependencies: 
+          - config/manuscript_go_theme_registry.tsv
+        scientific_contract: exemplar_row_header
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
-        x: 117
-        "y": 51
-        w: 62
-        h: 34
-      - id: 3e
+        x: 46
+        "y": 68
+        w: 133
+        h: 5
+      - id: 3e_card
         v9_panel_id: v9_card_syn
         description: >-
           Neuropil CA3-SR synaptic signalling and vesicle programme with three
@@ -483,51 +500,12 @@ figures:
         scientific_contract: exemplar_constituent_term_summary
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
-        x: 4
-        "y": 87
-        w: 56
-        h: 24
-      - id: 3f
-        v9_panel_id: v9_card_rna
-        description: >-
-          Soma CA2 RNA processing programme with three constituent terms and all
-          three contrasts.
-        producer_script: figures/scripts/figure_03_panels.R
-        renderer: f3a_exemplar_card
-        render_mode: copy_svg
-        source_data_mode: copy_csv
-        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_card_rna.svg
-        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_card_rna_source_data.csv
-        input_dependencies:
-          - source_data/pRoteomics/supplementary_selection_inventories/pathway_enrichment_inventory.csv
-        scientific_contract: exemplar_constituent_term_summary
-        biological_unit: animal
-        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
-        x: 64
-        "y": 87
-        w: 56
-        h: 24
-      - id: 3g
-        v9_panel_id: v9_card_ox
-        description: >-
-          Microglia-enriched ROI CA1 mitochondrial respiration programme with
-          three constituent terms and all three contrasts.
-        producer_script: figures/scripts/figure_03_panels.R
-        renderer: f3a_exemplar_card
-        render_mode: copy_svg
-        source_data_mode: copy_csv
-        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_card_ox.svg
-        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_card_ox_source_data.csv
-        input_dependencies:
-          - source_data/pRoteomics/supplementary_selection_inventories/pathway_enrichment_inventory.csv
-        scientific_contract: exemplar_constituent_term_summary
-        biological_unit: animal
-        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
-        x: 124
-        "y": 87
-        w: 55
-        h: 24
-      - id: 3h
+        letter: ""
+        x: 46
+        "y": 73
+        w: 44
+        h: 21
+      - id: 3e_curve
         v9_panel_id: v9_curve_syn
         description: >-
           exact reconstructed running enrichment for GO:0099536 at Neuropil
@@ -544,11 +522,71 @@ figures:
         scientific_contract: direct_enrichment_evidence
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
-        x: 4
-        "y": 113
-        w: 56
-        h: 27
-      - id: 3i
+        letter: ""
+        x: 91
+        "y": 73
+        w: 44
+        h: 21
+      - id: 3e_proteins
+        v9_panel_id: v9_prot_syn
+        description: top stored leading-edge proteins for GO:0099536 at Neuropil CA3-SR.
+        producer_script: figures/scripts/figure_03_panels.R
+        renderer: f3a_proteins
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_prot_syn.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_prot_syn_source_data.csv
+        input_dependencies:
+          - source_data/pRoteomics/figure_03_adaptation/protein_zoom_values.csv
+        scientific_contract: selected_leading_edge_proteins
+        biological_unit: animal
+        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
+        letter: ""
+        x: 136
+        "y": 73
+        w: 43
+        h: 21
+      - id: 3f
+        v9_panel_id: v9_row_rna
+        description: >-
+          header of the Soma CA2 RNA processing exemplar row.
+        producer_script: figures/scripts/figure_03_panels.R
+        renderer: f3a_row_header
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_row_rna.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_row_rna_source_data.csv
+        input_dependencies: 
+          - config/manuscript_go_theme_registry.tsv
+        scientific_contract: exemplar_row_header
+        biological_unit: animal
+        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
+        x: 46
+        "y": 96
+        w: 133
+        h: 5
+      - id: 3f_card
+        v9_panel_id: v9_card_rna
+        description: >-
+          Soma CA2 RNA processing programme with three constituent terms and all
+          three contrasts.
+        producer_script: figures/scripts/figure_03_panels.R
+        renderer: f3a_exemplar_card
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_card_rna.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_card_rna_source_data.csv
+        input_dependencies:
+          - source_data/pRoteomics/supplementary_selection_inventories/pathway_enrichment_inventory.csv
+        scientific_contract: exemplar_constituent_term_summary
+        biological_unit: animal
+        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
+        letter: ""
+        x: 46
+        "y": 101
+        w: 44
+        h: 21
+      - id: 3f_curve
         v9_panel_id: v9_curve_rna
         description: >-
           exact reconstructed running enrichment for GO:0006397 at Soma CA2.
@@ -564,11 +602,71 @@ figures:
         scientific_contract: direct_enrichment_evidence
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
-        x: 64
-        "y": 113
-        w: 56
-        h: 27
-      - id: 3j
+        letter: ""
+        x: 91
+        "y": 101
+        w: 44
+        h: 21
+      - id: 3f_proteins
+        v9_panel_id: v9_prot_rna
+        description: top stored leading-edge proteins for GO:0006397 at Soma CA2.
+        producer_script: figures/scripts/figure_03_panels.R
+        renderer: f3a_proteins
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_prot_rna.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_prot_rna_source_data.csv
+        input_dependencies:
+          - source_data/pRoteomics/figure_03_adaptation/protein_zoom_values.csv
+        scientific_contract: selected_leading_edge_proteins
+        biological_unit: animal
+        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
+        letter: ""
+        x: 136
+        "y": 101
+        w: 43
+        h: 21
+      - id: 3g
+        v9_panel_id: v9_row_ox
+        description: >-
+          header of the Microglia-enriched ROI CA1 mitochondrial respiration exemplar row.
+        producer_script: figures/scripts/figure_03_panels.R
+        renderer: f3a_row_header
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_row_ox.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_row_ox_source_data.csv
+        input_dependencies: 
+          - config/manuscript_go_theme_registry.tsv
+        scientific_contract: exemplar_row_header
+        biological_unit: animal
+        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
+        x: 46
+        "y": 124
+        w: 133
+        h: 5
+      - id: 3g_card
+        v9_panel_id: v9_card_ox
+        description: >-
+          Microglia-enriched ROI CA1 mitochondrial respiration programme with
+          three constituent terms and all three contrasts.
+        producer_script: figures/scripts/figure_03_panels.R
+        renderer: f3a_exemplar_card
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_card_ox.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_card_ox_source_data.csv
+        input_dependencies:
+          - source_data/pRoteomics/supplementary_selection_inventories/pathway_enrichment_inventory.csv
+        scientific_contract: exemplar_constituent_term_summary
+        biological_unit: animal
+        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
+        letter: ""
+        x: 46
+        "y": 129
+        w: 44
+        h: 21
+      - id: 3g_curve
         v9_panel_id: v9_curve_ox
         description: >-
           exact reconstructed running enrichment for GO:0006119 at the
@@ -585,47 +683,12 @@ figures:
         scientific_contract: direct_enrichment_evidence
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
-        x: 124
-        "y": 113
-        w: 55
-        h: 27
-      - id: 3k
-        v9_panel_id: v9_prot_syn
-        description: top stored leading-edge proteins for GO:0099536 at Neuropil CA3-SR.
-        producer_script: figures/scripts/figure_03_panels.R
-        renderer: f3a_proteins
-        render_mode: copy_svg
-        source_data_mode: copy_csv
-        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_prot_syn.svg
-        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_prot_syn_source_data.csv
-        input_dependencies:
-          - source_data/pRoteomics/figure_03_adaptation/protein_zoom_values.csv
-        scientific_contract: selected_leading_edge_proteins
-        biological_unit: animal
-        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
-        x: 4
-        "y": 142
-        w: 56
-        h: 26
-      - id: 3l
-        v9_panel_id: v9_prot_rna
-        description: top stored leading-edge proteins for GO:0006397 at Soma CA2.
-        producer_script: figures/scripts/figure_03_panels.R
-        renderer: f3a_proteins
-        render_mode: copy_svg
-        source_data_mode: copy_csv
-        figure_source: results/figures/manuscript_candidates/final_truth_v9/figure_03/panels/v9_prot_rna.svg
-        primary_source: results/source_data/manuscript_candidates/final_truth_v9/figure_03/v9_prot_rna_source_data.csv
-        input_dependencies:
-          - source_data/pRoteomics/figure_03_adaptation/protein_zoom_values.csv
-        scientific_contract: selected_leading_edge_proteins
-        biological_unit: animal
-        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
-        x: 64
-        "y": 142
-        w: 56
-        h: 26
-      - id: 3m
+        letter: ""
+        x: 91
+        "y": 129
+        w: 44
+        h: 21
+      - id: 3g_proteins
         v9_panel_id: v9_prot_ox
         description: >-
           top stored leading-edge proteins for GO:0006119 at the
@@ -641,10 +704,11 @@ figures:
         scientific_contract: selected_leading_edge_proteins
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
-        x: 124
-        "y": 142
-        w: 55
-        h: 26
+        letter: ""
+        x: 136
+        "y": 129
+        w: 43
+        h: 25
 
   # PROTEOMICS EXTENDED DATA, promoted in Phase 6A.
   #

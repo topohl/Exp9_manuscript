@@ -17,7 +17,7 @@
 # figures/contracts/figure_01_annotation_map.csv and resolved to exactly one bundle cell (ebb or fsb) by bundle_cell(); a
 # number that is not in a bundle cannot reach the figure.
 #
-# Panels (builders in R/panels/behaviour_figure1_v2_panels.R; house style, annotation resolver and SVG device in
+# Panels (builders in R/panels/behaviour_figure1_layout_panels.R; house style, annotation resolver and SVG device in
 # R/panels/behaviour_figure_style.R):
 #   a  design and timeline: the SIS design and the five tests with the postnatal ages (fsb T1)  f1v2_panel_timeline
 #   b  later CombZ ("Integrated resilience") and its six components, per sex (fsb F2, ebb A2b)   f1v2_panel_combz
@@ -55,7 +55,7 @@ tab <- getter("ebb", function(n) behaviour_bundle_table(n, PIN))
 fsb <- getter("fsb", function(n) fsb_bundle_table(n, FSB))
 
 for (lib in c("behaviour_figure_style.R", "behaviour_figure1_panels.R", "behaviour_s30_light_panels.R", "behaviour_figure1_house_panels.R",
-              "behaviour_figure1_option3_panels.R", "behaviour_stage14_panels.R", "behaviour_figure1_v2_panels.R"))
+              "behaviour_figure1_option3_panels.R", "behaviour_stage14_panels.R", "behaviour_figure1_layout_panels.R"))
   source(repo_path("R", "panels", lib))
 
 # ---------------------------------------------------------------- annotation map

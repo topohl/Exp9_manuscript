@@ -9,8 +9,8 @@
 
 source(file.path("R", "paths.R"))
 source(repo_path("R", "integration_utils.R"))
-source(repo_path("R", "house_v2_figure_utils.R"))
-source(repo_path("R", "final_truth_v9_figure_utils.R"))
+source(repo_path("R", "proteomics_style.R"))
+source(repo_path("R", "proteomics_page_builder.R"))
 Sys.setenv(PROTEOMICS_SCRIPT_ID = "figures/audits/readmes.R")
 
 args <- commandArgs(trailingOnly = TRUE)

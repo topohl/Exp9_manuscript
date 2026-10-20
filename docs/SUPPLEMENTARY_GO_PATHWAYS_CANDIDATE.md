@@ -41,7 +41,7 @@ performed here. The three stress-group contrasts are related comparisons.
 Term-level FDR dots do not mean the broader seven-family atlas has a theme-level
 FDR. The microglia-enriched ROI is not a purified cell population.
 The candidate calls `f9_gsea_curve_plot()` in
-`R/panels/final_truth_v9_panels.R`, the drawing function the earlier a-i Figure 3
+`R/panels/proteomics_panels_main.R`, the drawing function the earlier a-i Figure 3
 used for panels d-f through `f9_gsea_curve()` (the current curves, 3h-j, are
 drawn by `f3a_curve()`). This shares that design's header, running ES, hit
 ticks, three-contrast strip, palette, typography, and recorded NES colour

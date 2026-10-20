@@ -16,8 +16,8 @@
 source(file.path("R", "paths.R"))
 source(repo_path("R", "null_coalescing.R"))
 source(repo_path("R", "integration_utils.R"))
-source(repo_path("R", "house_v2_figure_utils.R"))
-source(repo_path("R", "final_truth_v9_figure_utils.R"))
+source(repo_path("R", "proteomics_style.R"))
+source(repo_path("R", "proteomics_page_builder.R"))
 Sys.setenv(PROTEOMICS_SCRIPT_ID = "figures/scripts/proteomics_legends.R")
 
 args <- commandArgs(trailingOnly = TRUE)
@@ -169,7 +169,8 @@ R <- function(id, quantity, replicate_unit, mode, selection, test, fdr,
 ROLES <- list(
   R("v9_schematic", "anatomy and sampling scheme", "not applicable",
     "descriptive", "none", "none", "none", "no",
-    paste0("Sampling scheme. Ten neuropil units carry region x layer ",
+    paste0("Sampling scheme; both hemispheres were sampled. Ten neuropil ",
+           "units carry region x layer ",
            "resolution; the neuronal soma and the microglia-enriched ROI are ",
            "region-level only and are never given laminar resolution.")),
   R("v9_depth", "proteins identified per spatial acquisition",
@@ -186,7 +187,8 @@ ROLES <- list(
            "evidence of biological subpopulations. ", DESCRIPTIVE)),
   R("v9_pca", "principal components of the global proteome",
     "spatial acquisition", "descriptive", "none", "none", "none", "no",
-    paste0("Global proteome structure. ", DESCRIPTIVE)),
+    paste0("Global proteome structure. Colour shows compartment; region is ",
+           "not encoded at this size. ", DESCRIPTIVE)),
   R("v9_fingerprint", "baseline abundance (CON z-score)", "animal (CON only)",
     "descriptive", "rows are the top-ranked proteins of prespecified CON-only anatomical contrasts",
     "none", "none", "no",

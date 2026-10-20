@@ -45,6 +45,8 @@ F1V2_ARENA <- "grey84"
 # d: the display line and its band (the diverging scale's low end, light)
 F1V2_LINE <- "grey20"; F1V2_BAND_ALPHA <- 0.22
 F1V2_SEX_SHAPE <- c(Female = 16L, Male = 17L)
+# heatmap tiles: the side in cell units, the rest an even gap (config/manuscript_palette.yml heatmap$tile)
+F1V2_TILE <- as.numeric(F1O3H_PALETTE$heatmap$tile)
 # e: the permutation-null inset, in fractions of the scatter's plot panel; the builder stops if an animal lies under it
 # Corrected-outcome points reach 0.7403 of the panel height; retain clearance.
 F1V2_INSET <- c(left = 0.50, bottom = 0.78, right = 1, top = 1)
@@ -163,7 +165,7 @@ f1v2_combz_block <- function(s, ani, hm, gone, bnd, thr, legend, colourbar, fill
     scale_y_continuous(breaks = 1, labels = "Group", expand = c(0, 0)) + labs(y = NULL) +
     theme_f1(style = "house") + no_x + row_theme
   p_heat <- ggplot(h, aes(x, row)) +
-    geom_tile(aes(fill = signed_z), colour = NEUTRAL_BOX, linewidth = 0.12) +
+    geom_tile(aes(fill = signed_z), width = F1V2_TILE, height = F1V2_TILE) +
     geom_segment(data = g, aes(x = x - 0.38, xend = x + 0.38, y = yn - 0.38, yend = yn + 0.38), inherit.aes = FALSE,
                  linewidth = F1H$rule_lw, colour = MUTED) +
     vline + xs + fill_z + scale_y_discrete(expand = c(0, 0)) + labs(y = NULL) +
@@ -242,22 +244,32 @@ f1v2_panel_domains <- function(fsb, an, w_mm, h_mm) {
   d$key <- sprintf("c_g_%s_%s_%s_%s", d$PhaseClass, d$Sex, sub("-", "", d$contrast, fixed = TRUE), d$row_key)
   d$label <- vapply(d$key, an$fa, "", USE.NAMES = FALSE)
   d$g <- f1v2_num(d$hedges_g)
+  # square tiles with an even gap; the tiers are half a row apart, so the panels
+  # can keep a fixed aspect (free facet scales cannot)
+  tier_i <- match(rows$display_tier, unique(rows$display_tier))
+  y_tb <- seq_len(nrow(rows)) + (tier_i - 1L) * 0.5
+  rows$y <- max(y_tb) + 1 - y_tb
+  d$y <- rows$y[match(as.character(d$domain), rows$display)]
+  d$x <- as.integer(d$comparison)
   dots <- d[marked, , drop = FALSE]
-  heat <- ggplot(d, aes(comparison, domain)) +
-    geom_tile(aes(fill = g), colour = S14_TILE_BORDER, linewidth = S14_TILE_LW) +
+  heat <- ggplot(d, aes(x, y)) +
+    geom_tile(aes(fill = g), width = F1V2_TILE, height = F1V2_TILE) +
     geom_text(aes(label = label), size = f1h_text(), colour = INK) +
-    geom_point(data = dots, size = 0.55, colour = INK, position = position_nudge(x = 0.36, y = 0.3)) +
-    facet_grid(tier ~ column, scales = "free_y", space = "free_y") +
+    geom_point(data = dots, size = 0.55, colour = INK, position = position_nudge(x = 0.33, y = 0.28)) +
+    facet_wrap(~column, nrow = 1) +
     s14_fill(S14_G_LIMIT, fixed = TRUE) +
-    scale_x_discrete(expand = c(0, 0), position = "bottom") + scale_y_discrete(expand = c(0, 0)) +
+    scale_x_continuous(breaks = seq_len(nlevels(d$comparison)), labels = levels(d$comparison),
+                       limits = c(0.5, nlevels(d$comparison) + 0.5), expand = c(0, 0)) +
+    scale_y_continuous(breaks = rows$y, labels = rows$display, limits = c(0.5, max(rows$y) + 0.5),
+                       expand = c(0, 0)) +
     labs(x = NULL, y = NULL) +
     theme_f1(style = "house") +
     theme(axis.line = element_blank(), axis.ticks = element_blank(),
           axis.text.x = element_text(size = F1H$text_pt, colour = INK, lineheight = 0.9),
           axis.text.y = element_text(size = F1H$title_pt, colour = INK),
           strip.text.x = element_text(size = F1H$title_pt, colour = INK, face = "bold", lineheight = 0.92, margin = margin(b = 1.5)),
-          strip.text.y = element_blank(), panel.spacing.x = grid::unit(1.6, "mm"), panel.spacing.y = grid::unit(1.4, "mm"),
-          plot.margin = margin(0, 1, 0, 1))
+          panel.spacing.x = grid::unit(1.6, "mm"),
+          aspect.ratio = max(rows$y) / nlevels(d$comparison), plot.margin = margin(0, 1, 0, 1))
   bl <- s14_bar_labels(S14_G_LIMIT, fixed = TRUE)
   barv <- data.frame(value = seq(-S14_G_LIMIT, S14_G_LIMIT, length.out = 61))
   bar <- ggplot(barv, aes(value, 1, fill = value)) +

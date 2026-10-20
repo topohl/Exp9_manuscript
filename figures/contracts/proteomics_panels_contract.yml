@@ -196,6 +196,51 @@ panels:
       split across neuropil, soma and the microglia-enriched ROI.
     primary_source: source_data/pRoteomics/supplementary_selection_inventories/pathway_enrichment_inventory.csv
 
+  - id: v9_schematic_space
+    renderer: f3a_blank
+    role: hand_drawn_schematic_placeholder
+    spatial_axes: compartment+region+layer
+    phenotype_axes: none_intentional
+    main_or_ed: main_unique
+    narrative: the space for the hippocampal schematic of the exemplar contexts, drawn by hand.
+    primary_source: null
+
+  - id: v9_row_syn
+    renderer: f3a_row_header
+    role: exemplar_row_header
+    exemplar: 1
+    spatial_axes: compartment+region+layer
+    phenotype_axes: none_intentional
+    main_or_ed: main_unique
+    narrative: the header of exemplar row 1 (Neuropil CA3-SR synaptic signalling / vesicle), its number in the programme colour.
+    primary_source: null
+    input_dependencies:
+      - config/manuscript_go_theme_registry.tsv
+
+  - id: v9_row_rna
+    renderer: f3a_row_header
+    role: exemplar_row_header
+    exemplar: 2
+    spatial_axes: compartment+region+layer
+    phenotype_axes: none_intentional
+    main_or_ed: main_unique
+    narrative: the header of exemplar row 2 (Soma CA2 RNA processing), its number in the programme colour.
+    primary_source: null
+    input_dependencies:
+      - config/manuscript_go_theme_registry.tsv
+
+  - id: v9_row_ox
+    renderer: f3a_row_header
+    role: exemplar_row_header
+    exemplar: 3
+    spatial_axes: compartment+region+layer
+    phenotype_axes: none_intentional
+    main_or_ed: main_unique
+    narrative: the header of exemplar row 3 (Microglia-enriched ROI CA1 mitochondrial respiration), its number in the programme colour.
+    primary_source: null
+    input_dependencies:
+      - config/manuscript_go_theme_registry.tsv
+
   - id: v9_card_syn
     renderer: f3a_exemplar_card
     role: exemplar_constituent_terms
@@ -552,24 +597,27 @@ figures:
   - name: FIGURE_03
     figure_key: figure_03
     width_mm: 183
-    height_mm: 170
+    height_mm: 156
     question: >-
       Do resilience and susceptibility represent distinct spatial modes of
       molecular adaptation to social instability stress?
     layout:
-      - {panel: v9_dap_track,         label: a, x: 4,   "y": 4,   w: 175, h: 10}
-      - {panel: v9_atlas,             label: b, x: 4,   "y": 15,  w: 175, h: 34}
-      - {panel: v9_adaptation_state,  label: c, x: 4,   "y": 51,  w: 110, h: 34}
-      - {panel: v9_adaptation_burden, label: d, x: 117, "y": 51,  w: 62,  h: 34}
-      - {panel: v9_card_syn,          label: e, x: 4,   "y": 87,  w: 56,  h: 24}
-      - {panel: v9_card_rna,          label: f, x: 64,  "y": 87,  w: 56,  h: 24}
-      - {panel: v9_card_ox,           label: g, x: 124, "y": 87,  w: 55,  h: 24}
-      - {panel: v9_curve_syn,         label: h, x: 4,   "y": 113, w: 56,  h: 27}
-      - {panel: v9_curve_rna,         label: i, x: 64,  "y": 113, w: 56,  h: 27}
-      - {panel: v9_curve_ox,          label: j, x: 124, "y": 113, w: 55,  h: 27}
-      - {panel: v9_prot_syn,          label: k, x: 4,   "y": 142, w: 56,  h: 26}
-      - {panel: v9_prot_rna,          label: l, x: 64,  "y": 142, w: 56,  h: 26}
-      - {panel: v9_prot_ox,           label: m, x: 124, "y": 142, w: 55,  h: 26}
+      - {panel: v9_dap_track,        label: a, x: 4, "y": 4, w: 175, h: 10}
+      - {panel: v9_atlas,            label: b, x: 4, "y": 16, w: 175, h: 50}
+      - {panel: v9_schematic_space,  label: c, x: 4, "y": 68, w: 40, h: 26}
+      - {panel: v9_adaptation_state, label: d, x: 4, "y": 96, w: 40, h: 58}
+      - {panel: v9_row_syn,          label: e, x: 46, "y": 68, w: 133, h: 5}
+      - {panel: v9_card_syn,         label: "", x: 46, "y": 73, w: 44, h: 21}
+      - {panel: v9_curve_syn,        label: "", x: 91, "y": 73, w: 44, h: 21}
+      - {panel: v9_prot_syn,         label: "", x: 136, "y": 73, w: 43, h: 21}
+      - {panel: v9_row_rna,          label: f, x: 46, "y": 96, w: 133, h: 5}
+      - {panel: v9_card_rna,         label: "", x: 46, "y": 101, w: 44, h: 21}
+      - {panel: v9_curve_rna,        label: "", x: 91, "y": 101, w: 44, h: 21}
+      - {panel: v9_prot_rna,         label: "", x: 136, "y": 101, w: 43, h: 21}
+      - {panel: v9_row_ox,           label: g, x: 46, "y": 124, w: 133, h: 5}
+      - {panel: v9_card_ox,          label: "", x: 46, "y": 129, w: 44, h: 21}
+      - {panel: v9_curve_ox,         label: "", x: 91, "y": 129, w: 44, h: 21}
+      - {panel: v9_prot_ox,          label: "", x: 136, "y": 129, w: 43, h: 25}
 
   - name: ED_BILATERAL_PRECISION
     figure_key: extended_data

@@ -13,7 +13,7 @@
 ## How renderers use it
 
 - Signed fills go through `hv_diverging(measure = ...)`
-  (`R/panels/house_v2_figure_utils.R`): the measure's limit, values beyond it at
+  (`R/panels/proteomics_style.R`): the measure's limit, values beyond it at
   full colour, colour-bar ends reading ≤ / ≥. The sidecar of each panel records
   the limit drawn (`colour_limit`, `shared_NES_scale_limit`,
   `shared_NES_strip_limit`), and the source data keep every value uncapped.

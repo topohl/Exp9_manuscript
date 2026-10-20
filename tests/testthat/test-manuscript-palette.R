@@ -10,7 +10,7 @@
 # Portable: repository files only, nothing rendered.
 
 source(testthat::test_path("..", "..", "R", "paths.R"))
-source(repo_path("R", "panels", "house_v2_figure_utils.R"))
+source(repo_path("R", "panels", "proteomics_style.R"))
 repo <- function(...) file.path(testthat::test_path("..", ".."), ...)
 
 PAL <- yaml::read_yaml(repo("config", "manuscript_palette.yml"))
@@ -66,8 +66,8 @@ testthat::test_that("a panel's own limits keep ggplot's censor, so an out-of-ran
 })
 
 # canonical and active renderers (figures/scripts/FIGURE_INDEX.md); superseded generations keep their own code
-PANELS <- c("house_v2_figure_utils.R", "final_truth_v9_panels.R", "final_truth_v9_fidelity_panels.R",
-            "final_truth_v9_ed_panels.R", "final_truth_v9_figure_utils.R", "figure3_adaptation_panels.R",
+PANELS <- c("proteomics_style.R", "proteomics_panels_main.R", "proteomics_panels_revised.R",
+            "proteomics_panels_extended_data.R", "proteomics_page_builder.R", "figure3_adaptation_panels.R",
             "manuscript_figure_utils.R", "behaviour_figure_style.R", "behaviour_figure1_panels.R",
             "behaviour_figure1_house_panels.R", "behaviour_figure1_option3_panels.R",
             "behaviour_figure1_option3b_panels.R", "behaviour_s30_cookie_panels.R", "behaviour_s30_edx_panels.R",
@@ -96,7 +96,7 @@ testthat::test_that("every signed fill goes through hv_diverging()", {
   # behaviour option 3 b and the Stage 14 candidates read the palette and the fixed limit themselves (the behaviour
   # layer does not source the proteomics helpers); manuscript_figure_utils.R keeps the legacy m12 render mode that
   # no contract panel reaches
-  allowed <- file.path("R", "panels", c("house_v2_figure_utils.R", "behaviour_figure1_option3_panels.R",
+  allowed <- file.path("R", "panels", c("proteomics_style.R", "behaviour_figure1_option3_panels.R",
                                         "behaviour_stage14_panels.R", "manuscript_figure_utils.R"))
   for (f in setdiff(FILES, allowed))
     testthat::expect_false(any(grepl(HAND_BUILT, code_of(f))), info = f)

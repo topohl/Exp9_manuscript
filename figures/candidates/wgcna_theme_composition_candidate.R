@@ -4,10 +4,10 @@
 # composition, enrichment or module statistic is recomputed. Not promoted: candidate only.
 
 source(file.path("R", "paths.R"))
-source(repo_path("R", "panels", "house_v2_figure_utils.R"))
-source(repo_path("R", "panels", "house_final_v7_panels.R"))
+source(repo_path("R", "panels", "proteomics_style.R"))
+source(repo_path("R", "panels", "proteomics_panels_figure2.R"))
 source(repo_path("R", "panels", "spatial_grammar_utils.R"))
-source(repo_path("R", "panels", "final_truth_v9_panels.R"))
+source(repo_path("R", "panels", "proteomics_panels_main.R"))
 source(repo_path("R", "panels", "figure3_adaptation_panels.R"))
 source(repo_path("R", "panels", "wgcna_theme_composition_panels.R"))
 
@@ -60,8 +60,8 @@ wtc_render <- function(out) {
   inputs <- c(file.path(frozen, WTC_FILES),
               repo_path("source_data", "pRoteomics", "manifest.csv"),
               repo_path("config", "manuscript_palette.yml"),
-              repo_path("R", "panels", c("house_v2_figure_utils.R", "house_final_v7_panels.R",
-                                         "spatial_grammar_utils.R", "final_truth_v9_panels.R",
+              repo_path("R", "panels", c("proteomics_style.R", "proteomics_panels_figure2.R",
+                                         "spatial_grammar_utils.R", "proteomics_panels_main.R",
                                          "figure3_adaptation_panels.R", "wgcna_theme_composition_panels.R")),
               repo_path("figures", "candidates", "wgcna_theme_composition_candidate.R"))
   rel <- substring(normalizePath(inputs, winslash = "/"), nchar(normalizePath(repo_path(), winslash = "/")) + 2L)

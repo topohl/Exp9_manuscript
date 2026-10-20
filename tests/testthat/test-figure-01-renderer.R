@@ -201,7 +201,7 @@ test_that("Figure 1 uses the same group palette as Figures 2 and 3", {
 # The author's layout (2026-10-12) colours the movement-outcome scatter by later group (until then panel e drew it in
 # one colour). Its line and band are the stored rows of the post hoc run 29c (fsb E2), never a fit drawn here.
 test_that("the movement panel draws the bundled display line and its statistics from Stage 09", {
-  lib <- code_of(repo("R", "panels", "behaviour_figure1_v2_panels.R"))
+  lib <- code_of(repo("R", "panels", "behaviour_figure1_layout_panels.R"))
   expect_true(any(grepl('fsb("E2_movement_combz_fit_lines")', lib, fixed = TRUE)))
   expect_true(any(grepl("geom_ribbon(data = l, aes(x = x, ymin = ci_low, ymax = ci_high)", lib, fixed = TRUE)))
   skip_if_not(have_pin, "no figure-support bundle pinned")

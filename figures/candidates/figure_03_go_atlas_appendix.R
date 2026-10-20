@@ -2,10 +2,10 @@
 # Figure 3 d-i renderer applied to every supported SUS-RES GO term in the
 # seven atlas themes. This only reads frozen publication source data.
 source(file.path("R", "paths.R"))
-source(repo_path("R", "panels", "house_v2_figure_utils.R"))
-source(repo_path("R", "panels", "house_final_v7_panels.R"))
+source(repo_path("R", "panels", "proteomics_style.R"))
+source(repo_path("R", "panels", "proteomics_panels_figure2.R"))
 source(repo_path("R", "panels", "spatial_grammar_utils.R"))
-source(repo_path("R", "panels", "final_truth_v9_panels.R"))
+source(repo_path("R", "panels", "proteomics_panels_main.R"))
 for (pkg in c("ggplot2", "patchwork", "svglite"))
   if (!requireNamespace(pkg, quietly = TRUE))
     stop("Required plotting package unavailable: ", pkg, call. = FALSE)

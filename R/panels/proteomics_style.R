@@ -43,6 +43,8 @@ hv_darken <- function(col, amount = 0.35)
 # The outline of a tile in a white-midpoint heatmap (palette v3): light grey, so
 # a tile at zero (white) still reads as a tile and not as a gap in the page.
 hv_tile_border <- function() "grey85"
+# side of a heatmap tile in cell units (config/manuscript_palette.yml heatmap$tile)
+hv_tile <- function() as.numeric(hv_palette()$heatmap$tile %||% 1)
 hv_dataset_colours <- function() unlist(hv_palette()$dataset)
 hv_dataset_label <- function(x) {
   l <- unlist(hv_palette()$dataset_label)

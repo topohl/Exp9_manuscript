@@ -87,7 +87,9 @@ is therefore runtime context rather than artifact identity.
 The entry points do not refit differential-abundance, enrichment, or WGCNA
 models and do not modify p-values, FDRs, module identities, or source results.
 Most panels are promoted from their validated stage-level SVG and source table.
-Figure 3 (panels a-m) is rendered here by `figures/scripts/figure_03_panels.R`
+Figure 3 (panels a-d and the exemplar rows e-g, each header, card, curve and
+proteins; c is left for a hand-drawn schematic) is rendered here by
+`figures/scripts/figure_03_panels.R`
 from the frozen imports in `source_data/pRoteomics/`, grouped by the single
 `manuscript_go_themes_v3` registry in `f9_atlas_themes()`, and promoted with
 `tools/promote_manuscript_render.R figure_03`. (In the superseded v2 grid,

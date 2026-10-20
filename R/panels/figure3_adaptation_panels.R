@@ -235,53 +235,75 @@ f3a_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       cells$spatial_unit == ex$spatial_unit[[i]]
     cells$exemplar[hit] <- ex$exemplar[[i]]
   }
+  # Square tiles with an even gap (house style), the three compartments a gap
+  # apart, and the headers on top: compartment, then region over its layers
+  # (neuropil) or one region per column (soma, microglia-enriched ROI).
+  tile <- hv_tile(); GAP <- 0.6
+  b <- sg_blocks(cells$spatial_unit, cells$dataset)
+  o <- b$order
+  o$x <- o$pos + (match(o$dataset, unique(o$dataset)) - 1L) * GAP
+  cells$xpos <- o$x[match(paste(cells$dataset, sg_resolve_unit(cells$spatial_unit, cells$dataset)),
+                          paste(o$dataset, o$unit))]
+  cells$ypos <- as.integer(cells$programme_label)
+  if (anyNA(cells$xpos)) stop("f3a_atlas: a cell has no place in the spatial order.", call. = FALSE)
+  ny <- nlevels(cells$programme_label)
+  layered <- as.logical(o$layer_is_resolution)
+  y_unit <- ny + 0.95; y_region <- ny + 1.75; y_comp <- ny + 2.6
+  hdr_unit <- data.frame(x = o$x, y = y_unit,
+                         label = ifelse(layered, o$layer_display, o$region))
+  reg <- o[layered, , drop = FALSE]
+  hdr_region <- do.call(rbind, lapply(split(reg, paste(reg$dataset, reg$region)), function(r)
+    data.frame(x = mean(r$x), y = y_region, label = r$region[1])))
+  hdr_comp <- do.call(rbind, lapply(split(o, o$dataset), function(r)
+    data.frame(x = mean(r$x), y = y_comp, label = sg_compartment_label(r$dataset[1]))))
   supported <- cells[cells$n_fdr_supported > 0, , drop = FALSE]
   selected <- cells[!is.na(cells$exemplar), , drop = FALSE]
   fam <- hf_fam()
-  p <- ggplot2::ggplot(cells,
-      ggplot2::aes(spatial_unit_label, programme_label)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = median_NES), colour = hv_tile_border(),
-                       linewidth = 0.15) +
+  p <- ggplot2::ggplot(cells, ggplot2::aes(xpos, ypos)) +
+    ggplot2::geom_tile(ggplot2::aes(fill = median_NES), width = tile, height = tile) +
     ggplot2::geom_point(data = supported,
       ggplot2::aes(size = n_fdr_supported), shape = 16, colour = "grey15",
       alpha = 0.9) +
-    ggplot2::geom_tile(data = selected, fill = NA, colour = "black",
-                       linewidth = 0.65) +
+    ggplot2::geom_tile(data = selected, width = tile, height = tile, fill = NA,
+                       colour = "black", linewidth = 0.65) +
     # The exemplar number sits in the outlined cell's top-left corner, so the
     # cell's own count dot stays visible and keeps its area meaning.
     ggplot2::geom_label(data = selected,
       ggplot2::aes(label = exemplar), family = fam, fontface = "bold",
       size = hf_sz(4.6), colour = "black", fill = scales::alpha("white", 0.9),
       linewidth = 0, label.padding = ggplot2::unit(0.08, "mm"),
-      nudge_x = -0.34, nudge_y = 0.24) +
-    # the manuscript's fixed NES limit (palette v3.2), shared with ED6 and the
+      nudge_x = -0.30, nudge_y = 0.22) +
+    ggplot2::geom_text(data = hdr_unit, ggplot2::aes(x, y, label = label), inherit.aes = FALSE,
+                       family = fam, size = hf_sz(5.0), colour = "grey25") +
+    ggplot2::geom_text(data = hdr_region, ggplot2::aes(x, y, label = label), inherit.aes = FALSE,
+                       family = fam, size = hf_sz(5.0), colour = "grey25") +
+    ggplot2::geom_text(data = hdr_comp, ggplot2::aes(x, y, label = label), inherit.aes = FALSE,
+                       family = fam, size = hf_sz(5.4), fontface = "bold", colour = "grey12") +
+    # the manuscript's fixed NES limit (palette v3.2), shared with ED9 and the
     # cards: a median NES beyond it takes full colour, the sidecar keeps it
-    hv_diverging(measure = "nes", name = "Median NES\n(SUS - RES)") +
+    hv_diverging(measure = "nes", name = "Median NES\n(SUS \u2212 RES)") +
     ggplot2::scale_size_area(
-      name = "FDR-supported\nconstituent GO terms",
+      name = "FDR-supported\nGO terms",
       breaks = c(1, 5, 10, 20), limits = c(1, max(supported$n_fdr_supported)),
       max_size = 2.5) +
     # colourbar above the dot-size key, pinned: unpinned, ggplot orders the two
     # guides by a hash of their content, so a label change can swap them
-    # (a shorter bar leaves room between the two keys)
     ggplot2::guides(fill = ggplot2::guide_colourbar(
                       order = 1,
                       theme = ggplot2::theme(legend.key.height = grid::unit(26, "pt"))),
                     size = ggplot2::guide_legend(order = 2)) +
-    ggplot2::facet_grid(. ~ compartment, scales = "free_x", space = "free_x") +
+    ggplot2::scale_x_continuous(expand = c(0, 0)) +
+    ggplot2::scale_y_continuous(breaks = seq_len(ny), labels = levels(cells$programme_label),
+                                expand = c(0, 0)) +
+    ggplot2::coord_fixed(ratio = 1, xlim = c(0.5, max(o$x) + 0.5),
+                         ylim = c(0.5, y_comp + 0.45), clip = "off") +
     ggplot2::labs(x = NULL, y = NULL) + hf_theme_tile() +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(size = HF_MIN_PT, angle = 55,
-                                          hjust = 1, vjust = 1),
+      axis.text.x = ggplot2::element_blank(),
       axis.text.y = ggplot2::element_text(size = HF_MIN_PT, colour = "grey15"),
-      strip.text.x = ggplot2::element_text(size = hf_pt(5.3), face = "bold"),
-      panel.spacing.x = ggplot2::unit(1.4, "mm"),
       legend.position = "right",
       legend.title = ggplot2::element_text(size = HF_MIN_PT),
       legend.text = ggplot2::element_text(size = HF_MIN_PT),
-      # the two stacked keys are taller than the tile area they were centred
-      # on, which pushed the top title line out of the box: hang them from the
-      # top, with tight spacing
       legend.justification = "top",
       legend.margin = ggplot2::margin(0, 0, 0, 0),
       legend.spacing.y = ggplot2::unit(4, "pt"),
@@ -370,18 +392,22 @@ f3a_state_map <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::scale_y_continuous(labels = hv_minus_labels) +
     ggplot2::coord_equal(xlim = c(-lim, lim), ylim = c(-lim, lim),
                          expand = FALSE) +
-    ggplot2::labs(x = "Median NES (RES - CON)",
-                  y = "Median NES (SUS - CON)") + hf_theme(grid = "both") +
+    ggplot2::labs(x = "Median NES (RES − CON)",
+                  y = "Median NES (SUS − CON)") + hf_theme(grid = "both") +
     ggplot2::theme(
       axis.text = ggplot2::element_text(size = HF_MIN_PT),
       axis.title = ggplot2::element_text(size = hf_pt(5.2)),
-      legend.position = "right",
+      # the keys stacked below the square, as the narrow left column of the
+      # page needs (2026-10-20)
+      legend.position = "bottom",
+      legend.box = "vertical",
+      legend.direction = "vertical",
+      legend.box.just = "left",
       legend.title = ggplot2::element_text(size = HF_MIN_PT),
       legend.text = ggplot2::element_text(size = HF_MIN_PT),
-      legend.key.height = ggplot2::unit(2.4, "mm"),
-      # hung from the top: centred, the two keys pushed the 'GO programme'
-      # title above the panel box (as in 3b)
-      legend.justification = "top",
+      legend.key.height = ggplot2::unit(2.2, "mm"),
+      legend.spacing.y = ggplot2::unit(1, "mm"),
+      legend.justification = "left",
       legend.margin = ggplot2::margin(0, 0, 0, 0),
       plot.margin = ggplot2::margin(0.5, 1, 0.5, 1, "mm"))
   write_csv_safe(z, csv_path)
@@ -492,42 +518,78 @@ f3a_exemplar_card <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   prog <- programmes[programmes$programme_id == ex$programme_id, , drop = FALSE]
   contrast_order <- c("RES - CON", "SUS - CON", "SUS - RES")
   z$contrast <- factor(z$contrast, levels = contrast_order,
-                       labels = c("R-C", "S-C", "S-R"))
+                       labels = c("R−C", "S−C", "S−R"))
   desc <- unique(z[c("GO_ID", "GO_description", "term_order", "curve_term")])
   desc <- desc[order(desc$term_order), , drop = FALSE]
   desc$term_label <- vapply(desc$GO_description, function(x)
     paste(utils::head(strwrap(x, width = 24L), 2L), collapse = "\n"),
     character(1))
-  desc$term_label[desc$curve_term] <- paste0("Curve: ", desc$term_label[desc$curve_term])
+  # the term the curve beside the card shows is set in bold
+  desc$term_label <- gsub("\n", "<br>", desc$term_label, fixed = TRUE)
+  desc$term_label[desc$curve_term] <- paste0("**", desc$term_label[desc$curve_term], "**")
   z$term_label <- desc$term_label[match(z$GO_ID, desc$GO_ID)]
   z$term_label <- factor(z$term_label, levels = rev(desc$term_label))
   z$supported <- is.finite(z$BH_FDR) & z$BH_FDR < 0.05
-  title <- paste0(idx, "  ", ex$location_label, "\n", prog$programme_label)
+  tile <- hv_tile()
   p <- ggplot2::ggplot(z, ggplot2::aes(contrast, term_label)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = NES), colour = hv_tile_border(),
-                       linewidth = 0.2) +
+    ggplot2::geom_tile(ggplot2::aes(fill = NES), width = tile, height = tile) +
     ggplot2::geom_tile(data = z[z$supported, , drop = FALSE], fill = NA,
-                       colour = "black", linewidth = 0.55) +
+                       colour = "black", linewidth = 0.55, width = tile, height = tile) +
     # black: at least 5:1 also on the saturated blue end
-    ggplot2::geom_text(ggplot2::aes(label = sprintf("%.1f", NES)),
+    ggplot2::geom_text(ggplot2::aes(label = hv_minus(sprintf("%.1f", NES))),
                        family = hf_fam(), size = hf_sz(4.8), colour = "black") +
     # the same fixed NES limit as the atlas (palette v3.2): a term beyond it
     # takes full colour, and every tile prints its NES
     hv_diverging(measure = "nes", name = "NES") +
-    ggplot2::labs(title = title, x = NULL, y = NULL,
-                  caption = "outlined = constituent GO FDR < 0.05") +
+    ggplot2::coord_fixed(ratio = 1) +
+    ggplot2::labs(x = NULL, y = NULL) +
     hf_theme_tile() +
     ggplot2::theme(
-      plot.title = ggplot2::element_text(size = hf_pt(5.4), face = "bold",
-                                         lineheight = 0.95),
-      plot.caption = ggplot2::element_text(size = HF_MIN_PT, colour = "grey45"),
       axis.text.x = ggplot2::element_text(size = HF_MIN_PT, face = "bold"),
-      axis.text.y = ggplot2::element_text(size = HF_MIN_PT, lineheight = 0.85),
+      axis.text.y = ggtext::element_markdown(size = HF_MIN_PT, lineheight = 0.95,
+                                             family = hf_fam()),
       legend.position = "none",
       plot.margin = ggplot2::margin(0.5, 1, 0.5, 1, "mm"))
   # the colour limit the tiles draw (no colourbar: the printed NES disclose it)
   z$shared_NES_strip_limit <- hv_diverging_limit("nes")
   write_csv_safe(z, csv_path)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
+  invisible(list(status = "ok"))
+}
+
+#' The header of an exemplar row: its number in the programme colour and the
+#' context and programme it shows (the cards, curves and proteins beside it
+#' carry no title of their own).
+f3a_row_header <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+  idx <- as.integer(panel$exemplar)
+  ex <- f3a_exemplars()[f3a_exemplars()$exemplar == idx, , drop = FALSE]
+  prog <- f3a_programmes()
+  prog <- prog[prog$programme_id == ex$programme_id, , drop = FALSE]
+  fam <- hf_fam()
+  # x in millimetres from the box's left edge, clear of the panel letter
+  p <- ggplot2::ggplot() +
+    ggplot2::annotate("point", x = 6, y = 0.5, shape = 21, size = 3.4, stroke = 0.5,
+                      colour = prog$colour, fill = "white") +
+    ggplot2::annotate("text", x = 6, y = 0.5, label = idx, family = fam,
+                      fontface = "bold", size = hf_sz(5.2), colour = prog$colour) +
+    ggplot2::annotate("text", x = 8.6, y = 0.5, hjust = 0, family = fam,
+                      fontface = "bold", size = hf_sz(5.6), colour = "grey10",
+                      label = paste(ex$location_label, prog$programme_label)) +
+    ggplot2::coord_cartesian(xlim = c(0, w_mm), ylim = c(0, 1), expand = FALSE) +
+    ggplot2::theme_void(base_family = fam)
+  write_csv_safe(data.frame(exemplar = idx, context = ex$location_label,
+                            programme = prog$programme_label, term_id = ex$term_id,
+                            stringsAsFactors = FALSE), csv_path)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
+  invisible(list(status = "ok"))
+}
+
+#' An empty box: the space for a schematic drawn by hand.
+f3a_blank <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+  p <- ggplot2::ggplot() + ggplot2::theme_void()
+  write_csv_safe(data.frame(panel = as.character(panel$id),
+                            note = "space for a schematic drawn by hand; no data",
+                            stringsAsFactors = FALSE), csv_path)
   hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
@@ -559,10 +621,11 @@ f3a_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       expand = c(0, 0)) +
     ggplot2::scale_y_continuous(labels = hv_minus_labels) +
     ggplot2::labs(title = paste0(s$GO_description, "  (", s$GO_ID, ")"),
-      subtitle = sprintf("NES %.2f; FDR %.2g", s$NES, s$BH_FDR),
+      subtitle = f9_curve_stat_label(s$NES, s$BH_FDR),
       x = NULL, y = "Running ES") + hf_theme(grid = "none") +
     ggplot2::theme(
-      plot.title = ggplot2::element_text(size = hf_pt(5.2), face = "bold"),
+      plot.title = ggplot2::element_text(size = hf_pt(5.2), face = "bold",
+                                         margin = ggplot2::margin(b = 1.2)),
       plot.subtitle = ggplot2::element_text(size = HF_MIN_PT, colour = "grey40"),
       axis.text = ggplot2::element_text(size = HF_MIN_PT),
       axis.title.y = ggplot2::element_text(size = hf_pt(5.0)),
@@ -612,14 +675,10 @@ f3a_proteins <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   result <- f9_protein_zoom_plot(
     z, f3a_protein_limit(), show_legend = idx == 3L,
     contrast_raw = c("RES - CON", "SUS - CON", "SUS - RES"),
-    contrast_display = c("RES-CON", "SUS-CON", "SUS-RES"),
+    contrast_display = c("RES−CON", "SUS−CON", "SUS−RES"),
     axis_breaks = c(-0.8, 0, 0.8), panel_scope = "three exemplar",
     fdr_min = min(z$BH_FDR, na.rm = TRUE), mark_significant = TRUE,
     legend_position = if (idx == 3L) "bottom" else "inside")
-  result$plot <- result$plot +
-    ggplot2::labs(title = "Top contributing proteins") +
-    ggplot2::theme(plot.title = ggplot2::element_text(
-      size = hf_pt(5.2), face = "bold"))
   result$source_data$GO_ID <- ex$term_id
   result$source_data$dataset <- ex$dataset
   result$source_data$spatial_unit <- ex$spatial_unit

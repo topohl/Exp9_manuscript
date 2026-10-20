@@ -280,8 +280,7 @@ hf_pca_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     # typographic minus on both PC axes (2026-10-07), as on every v9 axis
     ggplot2::scale_x_continuous(labels = hv_minus_labels) +
     ggplot2::scale_y_continuous(labels = hv_minus_labels) +
-    ggplot2::labs(x = pc(1), y = pc(2),
-                  caption = "compartment only; region is not encoded at this size") +
+    ggplot2::labs(x = pc(1), y = pc(2)) +
     hf_theme() +
     ggplot2::theme(
       # a scatter is drawn square (house style); the key goes to the side so

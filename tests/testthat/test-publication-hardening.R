@@ -83,7 +83,7 @@ test_that("every primary atlas theme has exactly one display label", {
   reg <- utils::read.csv(repo("config", "manuscript_go_theme_registry.tsv"),
                          sep = "\t", stringsAsFactors = FALSE)
   prim <- unique(reg$theme_id[reg$theme_role == "primary"])
-  pan <- readLines(repo("R", "panels", "final_truth_v9_panels.R"), warn = FALSE)
+  pan <- readLines(repo("R", "panels", "proteomics_panels_main.R"), warn = FALSE)
   b <- grep("^  SHORT <- c\\(", pan)
   e <- b + which(grepl("\\)\\s*$", pan[b:(b + 20)]))[1] - 1L
   src <- paste(pan[b:e], collapse = " ")

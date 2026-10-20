@@ -22,7 +22,7 @@
 source(file.path("R", "paths.R"))
 source(repo_path("R", "null_coalescing.R"))
 source(repo_path("R", "integration_utils.R"))
-source(repo_path("R", "house_v2_figure_utils.R"))
+source(repo_path("R", "proteomics_style.R"))
 Sys.setenv(PROTEOMICS_SCRIPT_ID = "figures/audits/wgcna_annotation_audit.R")
 
 args <- commandArgs(trailingOnly = TRUE)

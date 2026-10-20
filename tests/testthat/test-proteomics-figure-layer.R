@@ -6,11 +6,11 @@
 source(testthat::test_path("..", "..", "R", "paths.R"))
 source(repo_path("R", "null_coalescing.R"))
 source(repo_path("R", "integration_utils.R"))
-source(repo_path("R", "house_v2_figure_utils.R"))
+source(repo_path("R", "proteomics_style.R"))
 source(repo_path("R", "spatial_grammar_utils.R"))
-source(repo_path("R", "final_truth_v9_figure_utils.R"))
-source(repo_path("R", "editorial_v8_export.R"))
-source(repo_path("R", "final_truth_v9_fidelity_panels.R"))
+source(repo_path("R", "proteomics_page_builder.R"))
+source(repo_path("R", "proteomics_page_export.R"))
+source(repo_path("R", "proteomics_panels_revised.R"))
 
 rd <- function(p) utils::read.csv(p, stringsAsFactors = FALSE, check.names = FALSE)
 V9 <- s9f_contract()
@@ -86,7 +86,7 @@ testthat::test_that("display saturation never reaches the released source data",
 
 # ---- S32: phenotype-blind selection must not be called a hit -------------
 testthat::test_that("the baseline fingerprint never says hits", {
-  src <- code_of(repo_path("R", "final_truth_v9_fidelity_panels.R"))
+  src <- code_of(repo_path("R", "proteomics_panels_revised.R"))
   testthat::expect_false(grepl("top hits", src, fixed = TRUE))
   z <- sidecar("figure_02", "v9_fingerprint")
   testthat::skip_if_not(!is.null(z), "figure_02 not built")
@@ -201,7 +201,7 @@ testthat::test_that("pipeline language never reaches a reader", {
 
 # ---- S32: WGCNA panel a is member abundance, not the eigengene -----------
 testthat::test_that("module member abundance is not called an eigengene", {
-  src <- code_of(repo_path("R", "final_truth_v9_ed_panels.R"))
+  src <- code_of(repo_path("R", "proteomics_panels_extended_data.R"))
   testthat::expect_true(grepl("Mean module-member", src, fixed = TRUE))
   testthat::expect_false(grepl('name = "Mean module abundance', src,
                                fixed = TRUE))
@@ -331,7 +331,8 @@ testthat::test_that("every emitted SVG is structurally complete", {
     n <- file.info(f)$size
     con <- file(f, "rb"); on.exit(close(con))
     seek(con, max(0, n - 64))
-    isTRUE(n > 2000) &&
+    # (a row header or the space left for a hand drawing is legitimately small)
+    isTRUE(n > 1000) &&
       grepl("</svg>", rawToChar(readBin(con, "raw", 64L)), fixed = TRUE)
   }, logical(1))
   testthat::expect_identical(sum(!ok), 0L)
@@ -431,7 +432,7 @@ testthat::test_that("atlas row labels match the semantic decision table", {
   testthat::expect_identical(nrow(d), 7L)
   testthat::expect_true(all(nzchar(d$recommended_label)))
   # the recommendation is what the renderer actually prints
-  src <- readLines(repo_path("R", "final_truth_v9_panels.R"), warn = FALSE)
+  src <- readLines(repo_path("R", "proteomics_panels_main.R"), warn = FALSE)
   i <- grep("^  SHORT <- c\\(", src)
   testthat::expect_identical(length(i), 1L)
   blk <- paste(src[i:(i + 7)], collapse = " ")
@@ -452,7 +453,7 @@ testthat::test_that("the mitochondrial row is named for what it contains", {
   #
   # What belongs here is the presentation half: the panel library must name
   # the row for what the atlas puts in it.
-  src <- readLines(repo_path("R", "final_truth_v9_panels.R"), warn = FALSE)
+  src <- readLines(repo_path("R", "proteomics_panels_main.R"), warn = FALSE)
   testthat::expect_gt(
     sum(grepl('mitochondrial_respiration_oxphos = "Mitochondrial respiration"',
               src, fixed = TRUE)), 0L)

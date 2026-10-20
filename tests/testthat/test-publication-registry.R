@@ -137,7 +137,7 @@ testthat::test_that("Extended Data 2 is promoted without the completeness misrep
     vapply(f$panels, function(p) as.character(p$id), character(1)), c("07a", "07b"))
   testthat::expect_true(nzchar(as.character(f$withheld_panel %||% "")))
 
-  src <- paste(readLines(repo_path("R", "final_truth_v9_ed_panels.R"), warn = FALSE),
+  src <- paste(readLines(repo_path("R", "proteomics_panels_extended_data.R"), warn = FALSE),
                collapse = "\n")
   testthat::expect_false(grepl("v9_ed_internal_full", 
     paste(vapply(f$panels, function(p) as.character(p$v9_panel_id), character(1)),
@@ -146,7 +146,7 @@ testthat::test_that("Extended Data 2 is promoted without the completeness misrep
 
 testthat::test_that("MT-04: the external panel uses the signature-family correction", {
   source(testthat::test_path("..", "..", "R", "paths.R"))
-  src <- paste(readLines(repo_path("R", "final_truth_v9_ed_panels.R"), warn = FALSE),
+  src <- paste(readLines(repo_path("R", "proteomics_panels_extended_data.R"), warn = FALSE),
                collapse = "\n")
   # The panel must not mark significance from p_adjust, which is the raw
   # single-set value: Benjamini-Hochberg over a family of one is a no-op.
@@ -171,7 +171,7 @@ testthat::test_that("no artefact still points Figure 2h at a withdrawn panel", {
   source(testthat::test_path("..", "..", "R", "paths.R"))
   for (f in c(repo_path("figures", "contracts", "figure_contract.yml"),
               repo_path("figures", "contracts", "proteomics_panels_contract.yml"),
-              repo_path("R", "final_truth_v9_panels.R"),
+              repo_path("R", "proteomics_panels_main.R"),
               repo_path("figures", "scripts", "proteomics_legends.R"))) {
     s <- paste(readLines(f, warn = FALSE), collapse = " ")
     testthat::expect_false(grepl("complete evidence lives in ED2", s, fixed = TRUE),

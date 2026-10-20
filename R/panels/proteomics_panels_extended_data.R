@@ -528,9 +528,9 @@ f9_ed_similarity <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 
   p <- ggplot2::ggplot() +
     ggplot2::geom_tile(data = tile, ggplot2::aes(x, y, fill = v),
-                       colour = hv_tile_border(), linewidth = 0.12) +
+                       width = hv_tile(), height = hv_tile()) +
     ggplot2::geom_tile(data = diag, ggplot2::aes(x, y), fill = "grey85",
-                       colour = hv_tile_border(), linewidth = 0.12) +
+                       width = hv_tile(), height = hv_tile()) +
     hv_diverging(measure = "correlation",
                  name = "Median profile\ncorrelation (CON)") +
     ggplot2::geom_text(data = rlab, ggplot2::aes(x, y, label = l), hjust = 1,
@@ -596,8 +596,7 @@ f9_ed_fingerprint_full <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   # manuscript's fixed set-mean z limit (palette v3.2, +/-1), not the
   # single-protein limit of Figure 2d; a score beyond it takes full colour
   p <- ggplot2::ggplot(z, ggplot2::aes(xpos, ypos)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = score), colour = hv_tile_border(),
-                       linewidth = 0.1) +
+    ggplot2::geom_tile(ggplot2::aes(fill = score), width = hv_tile(), height = hv_tile()) +
     hv_diverging(measure = "z_set_mean", name = "Signature score\n(CON z-score)") +
     ggplot2::scale_x_continuous(breaks = seq_len(n), labels = sg_axis_labels(b),
                                 limits = c(0.5, n + 0.5), expand = c(0, 0)) +

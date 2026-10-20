@@ -109,7 +109,7 @@ testthat::test_that("the three manuscript exemplars are exact and resolve in can
   # proteomics repository's docs/FIGURE_SELECTION_RULES.md. A drift-lock is not
   # a prespecification, and "prespecified" is the one word a reviewer will
   # test.
-  src <- repo_rel("R", "spatial_v6_figure3_panels.R")
+  src <- repo_rel("R", "proteomics_panels_anatomy_bridge.R")
   testthat::skip_if_not(file.exists(src), "exemplar definition not present")
   code <- paste(readLines(src, warn = FALSE), collapse = "\n")
   testthat::expect_true(grepl('go_id = c("GO:0099536", "GO:0006397", "GO:0006119")',
@@ -149,7 +149,7 @@ testthat::test_that("the column-registration defect is fixed and stays fixed", {
   # did not share column geometry and the headline 28 pointed at CA3 stratum
   # oriens. The tripwire this test used to carry has fired and been inverted:
   # both sides of the gutter convention must now be present.
-  src <- repo_rel("R", "final_truth_v9_panels.R")
+  src <- repo_rel("R", "proteomics_panels_main.R")
   testthat::skip_if_not(file.exists(src), "v9 panel renderers not present")
   code <- readLines(src, warn = FALSE)
 

@@ -101,10 +101,10 @@ f9_frozen_curve <- function(prog, deps) {
 #' The curve header's statistics: NES and the FDR exponent with a true minus,
 #' and the leading-edge count. E-notation, because a plotmath exponent falls
 #' below the 5-pt floor and Arial has no superscript minus.
-f9_curve_stat_label <- function(nes, fdr, n_leading, n_set) {
+f9_curve_stat_label <- function(nes, fdr, n_leading = NULL, n_set = NULL) {
   e <- floor(log10(fdr)); m <- fdr / 10^e
-  gsub("-", "−", sprintf("NES %.2f, FDR %.1fe%d, leading edge %d/%d",
-                              nes, m, e, n_leading, n_set), fixed = TRUE)
+  le <- if (is.null(n_leading)) "" else sprintf(", leading edge %d/%d", n_leading, n_set)
+  gsub("-", "−", sprintf("NES %.2f, FDR %.1fe%d%s", nes, m, e, le), fixed = TRUE)
 }
 
 f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
@@ -420,17 +420,11 @@ f9_depth_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
         sg_compartments()$short), guide = "none") +
     ggplot2::scale_x_continuous(breaks = 1:3, labels = sg_compartments()$short,
                                 limits = c(0.5, 3.5)) +
-    ggplot2::labs(x = NULL, y = "proteins identified",
-                  caption = sprintf(paste0(
-                    "%s spatial acquisitions\n%d animals; 3/group"),
-                    paste(as.integer(acq[sg_compartments()$short]),
-                          collapse = " / "), n_animals)) +
+    ggplot2::labs(x = NULL, y = "Proteins identified") +
     hf_theme(grid = "y") +
     ggplot2::theme(
       axis.text.x = ggplot2::element_text(size = HF_MIN_PT, angle = 30,
-                                          hjust = 1),
-      plot.caption = ggplot2::element_text(size = HF_MIN_PT, colour = "grey35",
-                                           hjust = 0, lineheight = 1.15))
+                                          hjust = 1))
   out <- d[, c("dataset", "val")]
   out$n_acquisitions_in_compartment <- as.integer(acq[as.character(d$lab)])
   out$n_biological_replicates <- n_animals
@@ -486,8 +480,7 @@ f9_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   cen <- d[d$censored, , drop = FALSE]
 
   p <- ggplot2::ggplot(d, ggplot2::aes(xpos, ypos)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = val), colour = hv_tile_border(),
-                       linewidth = 0.15) +
+    ggplot2::geom_tile(ggplot2::aes(fill = val), width = hv_tile(), height = hv_tile()) +
     # only the tail that actually saturates is marked, so the colourbar
     # never implies an overflow bin that does not exist
     hv_diverging(limits = lim, name = NULL, labels = function(b) {
@@ -531,12 +524,7 @@ f9_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                          ggplot2::aes(xpos, ypos,
                                       label = sprintf("%.1f", true_val)),
                          family = fam, size = hf_sz(5.0), colour = "grey10",
-                         fontface = "bold") +
-      ggplot2::labs(caption = sprintf(paste0(
-        "Colour mapping saturates at %.1f for display; %d cells exceed this ",
-        "limit and are labelled\nwith their uncapped values. Uncapped values ",
-        "are retained in the source data."),
-        abs(lim[2]), nrow(cen)))
+                         fontface = "bold")
   }
   out <- d[, c("marker", "ds", "comp", "val", "true_val", "censored")]
   names(out) <- c("marker", "dataset", "compartment", "displayed_value",
@@ -757,8 +745,7 @@ f9_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   # the manuscript's fixed z limit (palette v3.2, two SD): a single-protein z
   # beyond it takes full colour, and the sidecar keeps the uncapped con_z
   p <- ggplot2::ggplot(z, ggplot2::aes(xpos, ypos)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = con_z), colour = hv_tile_border(),
-                       linewidth = 0.1) +
+    ggplot2::geom_tile(ggplot2::aes(fill = con_z), width = hv_tile(), height = hv_tile()) +
     hv_diverging(measure = "z", name = "Baseline abundance\n(CON z-score)") +
     ggplot2::scale_x_continuous(breaks = seq_len(n),
                                 labels = sg_axis_labels(b),
@@ -776,14 +763,7 @@ f9_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::annotate("text", x = b$region$mid, y = y_reg,
                       label = b$region$label, family = fam, size = hf_sz(5.0),
                       colour = "grey30") +
-    ggplot2::labs(x = NULL, y = NULL,
-                  caption = paste0(
-                    "CON animals only (n = 3). Rows are the top-ranked proteins ",
-                    "of each prespecified CON-only anatomical contrast; no stress ",
-                    "information enters selection or row order.
-Each gene ",
-                    "is standardised across its own compartment; rows are ",
-                    "ordered by baseline peak unit.")) +
+    ggplot2::labs(x = NULL, y = NULL) +
     hf_theme_tile() +
     ggplot2::theme(
       axis.text.x = ggplot2::element_text(size = HF_MIN_PT, colour = "grey25"),

@@ -453,7 +453,9 @@ manuscript_figure_assemble_svg <- function(panel_paths, panels, figure, target) 
     w <- cell_width * colspan + gap * (colspan - 1L)
     h <- cell_height
     }
-    label <- sub("^[0-9]+", "", as.character(panel$id))
+    # the letter is the id without its figure number, unless the contract gives
+    # one (letter: "" for the sub-panels of a lettered row)
+    label <- as.character(panel$letter %||% sub("^[0-9]+", "", as.character(panel$id)))
     path <- panel_paths[[as.character(panel$id)]]
     items <- if (absolute) {
       # Match the producing layer's own composition exactly: the panel occupies

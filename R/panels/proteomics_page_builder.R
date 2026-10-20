@@ -2,13 +2,13 @@
 # Story-v3 engine.
 #
 # A fourth candidate family, isolated from canonical, Part-16 and Part-17.
-# It SOURCES R/house_v2_figure_utils.R read-only to reuse the palette, theme,
+# It SOURCES R/proteomics_style.R read-only to reuse the palette, theme,
 # exact-box rendering, long-path reader, assembler and model-fitting guard.
 # Those Part-17 files are not modified; only new s9f_* functions are added here.
 # =====================================================================
 
 if (!exists("hv_contract", mode = "function")) {
-  source(repo_path("R", "house_v2_figure_utils.R"))
+  source(repo_path("R", "proteomics_style.R"))
 }
 
 s9f_contract_path <- function() repo_path("figures", "contracts", "proteomics_panels_contract.yml")
@@ -36,12 +36,12 @@ s9f_shared_paths <- function(output_root = path_results()) {
 }
 
 s9f_renderer_sources <- function() {
-  c(repo_path("R", "final_truth_v9_panels.R"),
+  c(repo_path("R", "proteomics_panels_main.R"),
     repo_path("R", "figure3_adaptation_panels.R"),
-    repo_path("R", "final_truth_v9_ed_panels.R"),
-    repo_path("R", "final_truth_v9_fidelity_panels.R"),
-    repo_path("R", "final_truth_v9_figure_utils.R"),
-    repo_path("R", "editorial_v8_export.R"),
+    repo_path("R", "proteomics_panels_extended_data.R"),
+    repo_path("R", "proteomics_panels_revised.R"),
+    repo_path("R", "proteomics_page_builder.R"),
+    repo_path("R", "proteomics_page_export.R"),
     repo_path("R", "spatial_grammar_utils.R"),
     repo_path("figures", "scripts", "figure_02_panels.R"),
     repo_path("figures", "scripts", "figure_03_panels.R"),

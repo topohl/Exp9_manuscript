@@ -4,8 +4,8 @@
 # nothing is rendered; each check compares what the panels would draw with the frozen export.
 
 source(testthat::test_path("..", "..", "R", "paths.R"))
-for (f in c("house_v2_figure_utils.R", "house_final_v7_panels.R", "spatial_grammar_utils.R",
-            "final_truth_v9_panels.R", "figure3_adaptation_panels.R", "wgcna_theme_composition_panels.R"))
+for (f in c("proteomics_style.R", "proteomics_panels_figure2.R", "spatial_grammar_utils.R",
+            "proteomics_panels_main.R", "figure3_adaptation_panels.R", "wgcna_theme_composition_panels.R"))
   source(repo_path("R", "panels", f))
 
 X <- wtc_read()

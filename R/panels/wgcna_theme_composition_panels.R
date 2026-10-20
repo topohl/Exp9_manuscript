@@ -9,7 +9,7 @@
 # proteins of the curated GSEA themes, not whether any group differs, so no group effect is
 # drawn. A module "carries" a theme when the export marks the cell composition_supported.
 #
-# Needs R/panels/house_v2_figure_utils.R, house_final_v7_panels.R, final_truth_v9_panels.R
+# Needs R/panels/proteomics_style.R, proteomics_panels_figure2.R, proteomics_panels_main.R
 # and figure3_adaptation_panels.R (theme labels and the Figure 3 theme colours).
 
 WTC_ID <- "wgcna_theme_composition_candidate"

@@ -8,9 +8,9 @@ testthat::test_that("manuscript figure contract has exact unique panel identitie
   ids2 <- vapply(fig2$panels, function(x) as.character(x$id), character(1))
   ids3 <- vapply(fig3$panels, function(x) as.character(x$id), character(1))
 
-  # Figure 2 remains a-h; the adaptation redesign expands Figure 3 to a-m.
+  # Figure 2 remains a-h; Figure 3 (2026-10-20) is a-d and the rows e-g
   testthat::expect_identical(ids2, paste0("2", letters[1:8]))
-  testthat::expect_identical(ids3, paste0("3", letters[1:13]))
+  testthat::expect_identical(ids3, c(paste0("3", letters[1:4]), unlist(lapply(c("3e", "3f", "3g"), function(r) paste0(r, c("", "_card", "_curve", "_proteins"))))))
   testthat::expect_false(anyDuplicated(c(ids2, ids3)) > 0L)
   testthat::expect_identical(fig2$contract_version,
                              "manuscript_figures_v4_figure3_adaptation")
@@ -45,7 +45,8 @@ testthat::test_that("contract pins canonical panels and does not use newest-file
                   "v9_fingerprint.svg", "v9_compartment.svg", "v9_bilateral_main.svg",
                   "v9_external_main.svg", "v9_internal_main.svg",
                   "v9_dap_track.svg", "v9_atlas.svg",
-                  "v9_adaptation_state.svg", "v9_adaptation_burden.svg",
+                  "v9_schematic_space.svg", "v9_adaptation_state.svg",
+                  "v9_row_syn.svg", "v9_row_rna.svg", "v9_row_ox.svg",
                   "v9_card_syn.svg", "v9_card_rna.svg", "v9_card_ox.svg",
                   "v9_curve_syn.svg", "v9_curve_rna.svg", "v9_curve_ox.svg",
                   "v9_prot_syn.svg", "v9_prot_rna.svg", "v9_prot_ox.svg")) {

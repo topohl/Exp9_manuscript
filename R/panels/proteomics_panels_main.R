@@ -95,8 +95,6 @@ f9_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                        size = hf_sz(5.8), fontface = "bold", colour = "grey12") +
     ggplot2::annotate("text", x = 0.44, y = -0.98, label = "DG", family = fam,
                       size = hf_sz(5.8), fontface = "bold", colour = "grey12") +
-    ggplot2::annotate("text", x = 0, y = 1.92, label = "both hemispheres",
-                      family = fam, size = hf_sz(5.0), colour = "grey35") +
     ggplot2::coord_equal(xlim = c(-2.25, 1.95), ylim = c(-1.30, 2.05),
                          expand = FALSE) +
     ggplot2::theme_void(base_family = fam)
@@ -429,9 +427,12 @@ f9_protein_zoom_plot <- function(z, lim, show_legend = FALSE,
                             shape = 21, fill = NA, colour = "black",
                             stroke = 0.45, size = 2.05)
       else NULL } +
-    ggplot2::scale_colour_manual(values = COL, name = "Contrast",
+    # below a narrow panel: one row of keys without a title, as wide as the panel
+    ggplot2::scale_colour_manual(values = COL,
+                                 name = if (identical(legend_position, "bottom")) NULL else "Contrast",
                                  guide = ggplot2::guide_legend(order = 1)) +
-    ggplot2::scale_shape_manual(values = SHP, name = "Contrast",
+    ggplot2::scale_shape_manual(values = SHP,
+                                name = if (identical(legend_position, "bottom")) NULL else "Contrast",
                                 guide = ggplot2::guide_legend(order = 1)) +
     ggplot2::scale_x_continuous(limits = c(-lim, lim), breaks = axis_breaks,
                                 labels = hv_minus_labels) +
@@ -442,6 +443,8 @@ f9_protein_zoom_plot <- function(z, lim, show_legend = FALSE,
       axis.title.x = ggplot2::element_text(size = hf_pt(5.4)),
       axis.text.y = ggplot2::element_text(size = HF_MIN_PT, face = "italic"),
       legend.position = if (show_legend) legend_position else "none",
+      legend.location = if (identical(legend_position, "bottom")) "plot" else "panel",
+      legend.key.spacing.x = ggplot2::unit(0.6, "mm"),
       legend.position.inside = if (identical(legend_position, "inside"))
         c(0.80, 0.74) else NULL,
       legend.background = ggplot2::element_rect(fill = "white", colour = NA),
@@ -852,12 +855,12 @@ f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   cells$ypos <- match(cells$theme_id, rev(ord))
   n <- nrow(o); ny <- length(ord)
   y_comp <- ny + 2.3; y_reg <- ny + 1.05
-  lab_w <- as.numeric(panel$label_units %||% HF_LAB)
   shared <- f9_atlas_limit(th)
 
+  # square tiles with an even gap (house style)
   p <- ggplot2::ggplot(cells, ggplot2::aes(xpos, ypos)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = median_NES), colour = hv_tile_border(),
-                       linewidth = 0.1) +
+    ggplot2::geom_tile(ggplot2::aes(fill = median_NES), width = hv_tile(),
+                       height = hv_tile()) +
     ggplot2::geom_point(data = cells[cells$n_fdr > 0, , drop = FALSE],
                         ggplot2::aes(xpos, ypos), size = 0.45,
                         colour = "grey10") +
@@ -865,17 +868,13 @@ f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     hv_diverging(measure = "nes",
                  name = sprintf("Median NES\n(%s)", sub(" - ", " \u2212 ", contrast,
                                                        fixed = TRUE))) +
-    ggplot2::geom_text(
-      data = data.frame(y = seq_len(ny), l = unname(SHORT[rev(ord)])),
-      ggplot2::aes(x = 0.5 - lab_w + 0.2, y = y, label = l),
-      inherit.aes = FALSE, hjust = 0, family = fam, size = hf_sz(5.0),
-      colour = "grey20") +
     ggplot2::scale_x_continuous(breaks = seq_len(n), labels = sg_axis_labels(b),
-                                limits = c(0.5 - lab_w, n + 0.5),
                                 expand = c(0, 0)) +
-    ggplot2::scale_y_continuous(breaks = seq_len(ny), labels = NULL,
-                                limits = c(0.5, y_comp + 0.9),
+    # the row labels are axis text, so their width does not depend on the tiles
+    ggplot2::scale_y_continuous(breaks = seq_len(ny), labels = unname(SHORT[rev(ord)]),
                                 expand = c(0, 0)) +
+    ggplot2::coord_fixed(ratio = 1, xlim = c(0.5, n + 0.5),
+                         ylim = c(0.5, y_comp + 0.9), clip = "off") +
     ggplot2::annotate("segment", x = b$compartment$start - 0.5,
                       xend = b$compartment$end + 0.5,
                       y = y_comp - 0.32, yend = y_comp - 0.32,
@@ -890,7 +889,7 @@ f9_gsea_atlas <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     hf_theme_tile() +
     ggplot2::theme(
       axis.text.x = ggplot2::element_text(size = HF_MIN_PT, colour = "grey25"),
-      axis.text.y = ggplot2::element_blank(),
+      axis.text.y = ggplot2::element_text(size = HF_MIN_PT, colour = "grey20"),
       legend.position = "right",
       legend.key.width = ggplot2::unit(1.6, "mm"),
       legend.key.height = ggplot2::unit(3.4, "mm"))

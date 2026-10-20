@@ -97,6 +97,12 @@ line:
   reference_pt: 0.25
   data_pt: 0.5
 
+# ------------------------------------------------------------- heatmaps
+# Heatmap tiles are square with an even gap between neighbours (2026-10-20):
+# the tile side in cell units; the rest of each cell is the gap.
+heatmap:
+  tile: 0.88
+
 # -------------------------------------------------------------- canvas
 canvas:
   width_mm: 183

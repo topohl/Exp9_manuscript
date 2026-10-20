@@ -29,7 +29,7 @@ per theme and are recorded in the protein source data.
 
 The renderer is `figures/candidates/figure_03_go_atlas_appendix.R`, adjacent to the
 four-term exploratory renderer. It calls `f9_gsea_curve_plot()` and
-`f9_protein_zoom_plot()` from `R/panels/final_truth_v9_panels.R`. The
+`f9_protein_zoom_plot()` from `R/panels/proteomics_panels_main.R`. The
 protein function is also used by the current Figure 3k–m panels; the current
 curves (3h–j) are drawn by `f3a_curve()` in
 `R/panels/figure3_adaptation_panels.R`, so the appendix curves keep the

@@ -164,7 +164,7 @@ ct_heatmap <- function(X, ids, legend = TRUE) {
   sexlab <- data.frame(x = c(2.5, 7.5), y = top, label = CT_SEXLAB, stringsAsFactors = FALSE)
   sg <- H$cells[H$cells$significant, ]; sg$col <- ifelse(abs(sg$fill) > .6, "white", CT_MEAN)
   p <- ggplot2::ggplot(H$cells, ggplot2::aes(x, y, fill = fill)) +
-    ggplot2::geom_tile(width = 1, height = 1, colour = "grey85", linewidth = P$line$tile_border_pt) +
+    ggplot2::geom_tile(width = P$heatmap$tile, height = P$heatmap$tile) +
     ggplot2::geom_point(data = sg, ggplot2::aes(x, y, colour = col), inherit.aes = FALSE, shape = 16, size = 1.1) + ggplot2::scale_colour_identity() +
     ggplot2::geom_text(data = H$heads, ggplot2::aes(x = .5, y = y, label = test), inherit.aes = FALSE, hjust = 0, fontface = "bold", size = ct_tx(T$axis_text_pt), family = T$family, colour = CT_GREY) +
     ggplot2::geom_text(data = sexlab, ggplot2::aes(x = x, y = y, label = label), inherit.aes = FALSE, fontface = "bold", size = ct_tx(T$axis_title_pt), family = T$family) +
@@ -208,7 +208,7 @@ ct_loco_sessions <- function(X) {
   rows <- unique(d[c("Session", "y")]); top <- max(d$y) + 1.2
   rows$Session <- c(`Elevated plus maze` = "Plus maze", `Open field` = "Open field", `Novel object` = "Novel object", `Social preference` = "Social preference",
                     `Social novelty` = "Social novelty", `Locomotion index` = "Locomotion")[rows$Session]
-  ggplot2::ggplot(d, ggplot2::aes(x, y, fill = fill)) + ggplot2::geom_tile(width = 1, height = 1, colour = "grey85", linewidth = P$line$tile_border_pt) +
+  ggplot2::ggplot(d, ggplot2::aes(x, y, fill = fill)) + ggplot2::geom_tile(width = P$heatmap$tile, height = P$heatmap$tile) +
     ggplot2::annotate("text", x = c(2.5, 7.5), y = top, label = CT_SEXLAB, fontface = "bold", size = ct_tx(T$axis_title_pt), family = T$family) +
     ct_heat_scale(P, legend = FALSE) +
     ggplot2::scale_x_continuous(breaks = c(1:4, 6:9), labels = rep(ct_cmp_label(CT_CMP), 2), expand = c(0, 0)) +
