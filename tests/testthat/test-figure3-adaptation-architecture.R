@@ -182,8 +182,9 @@ testthat::test_that("the registered Figure 3 is the promoted render", {
   sd <- repo_path(r$canonical_source_data)
   man <- utils::read.csv(file.path(sd, "00_manifest.csv"),
                          stringsAsFactors = FALSE, colClasses = "character")
-  testthat::expect_identical(man$file,
-                             paste0("figure_03", letters[1:13], "_source_data.csv"))
+  ids <- c(letters[1:4], unlist(lapply(c("e", "f", "g"), function(x)
+    paste0(x, c("", "_card", "_curve", "_proteins")))))
+  testthat::expect_identical(man$file, paste0("figure_03", ids, "_source_data.csv"))
   testthat::expect_setequal(list.files(sd), c(man$file, "00_manifest.csv"))
   testthat::expect_identical(sha(file.path(sd, man$file)), man$sha256)
   testthat::expect_identical(unique(man$render_git_commit), r$source_commit)
@@ -195,7 +196,8 @@ testthat::test_that("the registered Figure 3 is the promoted render", {
   b <- rd("b")
   testthat::expect_identical(nrow(b), 126L)
   testthat::expect_identical(sum(b$n_fdr_supported > 0), 51L)
-  c3 <- rd("c")
+  # the adaptation-state map is panel d since the layout of 2026-10-20
+  c3 <- rd("d")
   classes <- c("resilience-specific remodeling",
                "susceptibility-specific remodeling", "shared / parallel",
                "divergent / opposing", "little detectable adaptation")
@@ -205,15 +207,15 @@ testthat::test_that("the registered Figure 3 is the promoted render", {
   ex <- c3[!is.na(c3$exemplar), , drop = FALSE]
   testthat::expect_identical(ex$adaptation_pattern[order(ex$exemplar)],
                              classes[c(4L, 2L, 3L)])
-  d <- rd("d")
-  n_of <- function(comp) d$n[d$compartment == comp][
-    match(classes, d$adaptation_pattern[d$compartment == comp])]
+  # the pattern counts per compartment (the dropped bubble panel drew them)
+  n_of <- function(comp) table(factor(c3$adaptation_pattern[c3$compartment == comp],
+                                      levels = classes))
   testthat::expect_identical(as.integer(n_of("Neuropil")), c(19L, 15L, 6L, 1L, 29L))
   testthat::expect_identical(as.integer(n_of("Soma")), c(3L, 6L, 2L, 0L, 17L))
   testthat::expect_identical(as.integer(n_of("Microglia ROI")), c(3L, 5L, 4L, 2L, 14L))
 })
 
-testthat::test_that("the manuscript text describes the promoted a-m Figure 3", {
+testthat::test_that("the manuscript draft's pattern counts are the promoted Figure 3's", {
   draft <- readLines(repo_path("manuscript", "manuscript_draft.md"), warn = FALSE)
   # the a-i panel ranges are gone, and no reference is split across a line,
   # which the line-based reference guards could not see
@@ -222,7 +224,7 @@ testthat::test_that("the manuscript text describes the promoted a-m Figure 3", {
   # the pattern counts in the text are the promoted source data's
   txt <- gsub("\\s+", " ", paste(draft, collapse = " "))
   c3 <- utils::read.csv(repo_path("figures", "main", "source_data", "figure_03",
-                                  "figure_03c_source_data.csv"),
+                                  "figure_03d_source_data.csv"),
                         stringsAsFactors = FALSE)
   n <- table(c3$adaptation_pattern)
   quoted <- sprintf(paste0(
