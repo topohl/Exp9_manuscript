@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="183mm" height="52mm" viewBox="0 0 183 52">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="183mm" height="130mm" viewBox="0 0 183 130">
 <rect width="100%" height="100%" fill="white"/>
-<g id="panel_" transform="translate(4.0000 4.0006) scale(0.352780)">
+<g id="panel_a" transform="translate(4.0012 4.0000) scale(0.352775)">
 <g class='svglite'>
 <defs>
   <style type='text/css'><![CDATA[
@@ -24,18 +24,87 @@
 <rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
 <defs>
   <clipPath id='p1_1'>
-    <rect x='0.00' y='0.00' width='496.06' height='124.72' />
+    <rect x='0.00' y='0.00' width='496.06' height='85.04' />
   </clipPath>
 </defs>
 <g clip-path='url(#p1_1)'>
-<rect x='0.00' y='0.00' width='496.06' height='124.72' style='stroke-width: 0.53; stroke: #FFFFFF; fill: #FFFFFF;' />
+<rect x='0.000000000000064' y='0.000000000000014' width='496.06' height='85.04' style='stroke-width: 0.53; stroke: #FFFFFF; fill: #FFFFFF;' />
 </g>
 <defs>
   <clipPath id='p1_2'>
-    <rect x='141.65' y='8.97' width='351.42' height='98.47' />
+    <rect x='45.89' y='8.97' width='447.19' height='59.17' />
   </clipPath>
 </defs>
 <g clip-path='url(#p1_2)'>
+<rect x='45.89' y='8.97' width='447.19' height='59.17' style='stroke-width: 0.53; stroke: none; fill: #FFFFFF;' />
+<line x1='394.60' y1='68.14' x2='394.60' y2='8.97' style='stroke-width: 0.64; stroke: #B5B5B5; stroke-dasharray: 2.00,2.00; stroke-linecap: butt;' />
+<line x1='66.37' y1='25.10' x2='342.42' y2='25.10' style='stroke-width: 1.49; stroke: #6E6E6E;' />
+<line x1='123.46' y1='52.00' x2='388.41' y2='52.00' style='stroke-width: 1.49; stroke: #6E6E6E;' />
+<circle cx='197.33' cy='25.10' r='2.20' style='stroke-width: 0.35; stroke: none; fill: #1F3D52;' />
+<circle cx='251.80' cy='52.00' r='2.20' style='stroke-width: 0.35; stroke: none; fill: #1F3D52;' />
+<text x='407.73' y='26.89' style='font-size: 5.00px;fill: #6E6E6E; font-family: "Arial";'>q = 0.007</text>
+<text x='407.73' y='53.79' style='font-size: 5.00px;fill: #6E6E6E; font-family: "Arial";'>q = 0.044</text>
+</g>
+<g clip-path='url(#p1_1)'>
+<text x='44.79' y='53.79' text-anchor='end' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>Entropy ACF1</text>
+<text x='44.79' y='26.89' text-anchor='end' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>Movement RMSSD</text>
+<polyline points='45.89,68.14 493.07,68.14 ' style='stroke-width: 0.47; stroke-linecap: square;' />
+<polyline points='96.89,69.63 96.89,68.14 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
+<polyline points='171.32,69.63 171.32,68.14 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
+<polyline points='245.74,69.63 245.74,68.14 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
+<polyline points='320.17,69.63 320.17,68.14 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
+<polyline points='394.60,69.63 394.60,68.14 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
+<polyline points='469.02,69.63 469.02,68.14 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
+<text x='96.89' y='74.30' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>-0.4</text>
+<text x='171.32' y='74.30' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>-0.3</text>
+<text x='245.74' y='74.30' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>-0.2</text>
+<text x='320.17' y='74.30' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>-0.1</text>
+<text x='394.60' y='74.30' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>0.0</text>
+<text x='469.02' y='74.30' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>0.1</text>
+<text x='217.29' y='80.73' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Spearman</text>
+<text x='242.68' y='80.73' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'> </text>
+<text x='244.21' y='80.73' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>ρ</text>
+<text x='247.34' y='80.73' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'> </text>
+<text x='248.87' y='80.73' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>with later integrated resilience</text>
+</g>
+</g>
+</g>
+<text x="4.000" y="6.596" fill="black" font-family="Arial" font-size="2.822" font-weight="bold">a</text>
+<g id="panel_b" transform="translate(4.0000 38.0006) scale(0.352780)">
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+    .svglite g.glyphgroup path {
+      fill: inherit;
+      stroke: none;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='p2_1'>
+    <rect x='0.00' y='0.00' width='496.06' height='124.72' />
+  </clipPath>
+</defs>
+<g clip-path='url(#p2_1)'>
+<rect x='0.00' y='0.00' width='496.06' height='124.72' style='stroke-width: 0.53; stroke: #FFFFFF; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='p2_2'>
+    <rect x='141.65' y='8.97' width='351.42' height='98.47' />
+  </clipPath>
+</defs>
+<g clip-path='url(#p2_2)'>
 <rect x='141.65' y='8.97' width='351.42' height='98.47' style='stroke-width: 0.53; stroke: none; fill: #FFFFFF;' />
 <line x1='201.14' y1='107.44' x2='201.14' y2='8.97' style='stroke-width: 0.64; stroke: #B5B5B5; stroke-dasharray: 2.00,2.00; stroke-linecap: butt;' />
 <line x1='150.09' y1='20.33' x2='199.07' y2='20.33' style='stroke-width: 3.41; stroke: #D1D1D1;' />
@@ -59,7 +128,7 @@
 <text x='431.22' y='78.93' style='font-size: 5.00px;fill: #6E6E6E; font-family: "Arial";'>not run</text>
 <text x='431.22' y='97.86' style='font-size: 5.00px;fill: #6E6E6E; font-family: "Arial";'>not run</text>
 </g>
-<g clip-path='url(#p1_1)'>
+<g clip-path='url(#p2_1)'>
 <text x='140.56' y='97.86' text-anchor='end' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>Mean movement + RMSSD + entropy ACF1 + sex  (sensitivity)</text>
 <text x='140.56' y='78.93' text-anchor='end' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>Mean movement + sex  (sensitivity)</text>
 <text x='140.56' y='59.99' text-anchor='end' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>Mean movement + RMSSD + entropy ACF1</text>
@@ -80,4 +149,148 @@
 </g>
 </g>
 </g>
+<text x="4.000" y="40.596" fill="black" font-family="Arial" font-size="2.822" font-weight="bold">b</text>
+<g id="panel_c" transform="translate(4.0020 86.0000) scale(0.352765)">
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+    .svglite g.glyphgroup path {
+      fill: inherit;
+      stroke: none;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='p3_1'>
+    <rect x='0.00' y='0.00' width='242.36' height='113.39' />
+  </clipPath>
+</defs>
+<g clip-path='url(#p3_1)'>
+<rect x='0.00' y='0.000000000000014' width='242.36' height='113.39' style='stroke-width: 0.53; stroke: #FFFFFF; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='p3_2'>
+    <rect x='45.89' y='8.97' width='193.49' height='88.74' />
+  </clipPath>
+</defs>
+<g clip-path='url(#p3_2)'>
+<rect x='45.89' y='8.97' width='193.49' height='88.74' style='stroke-width: 0.53; stroke: none; fill: #FFFFFF;' />
+<line x1='84.40' y1='97.71' x2='84.40' y2='8.97' style='stroke-width: 0.64; stroke: #B5B5B5; stroke-dasharray: 2.00,2.00; stroke-linecap: butt;' />
+<line x1='78.99' y1='25.61' x2='91.61' y2='25.61' style='stroke-width: 1.49; stroke: #6E6E6E;' />
+<line x1='80.78' y1='53.34' x2='93.46' y2='53.34' style='stroke-width: 1.49; stroke: #6E6E6E;' />
+<line x1='54.18' y1='81.07' x2='185.80' y2='81.07' style='stroke-width: 1.49; stroke: #6E6E6E;' />
+<circle cx='85.30' cy='25.61' r='2.20' style='stroke-width: 0.35; stroke: none; fill: #1F3D52;' />
+<circle cx='87.12' cy='53.34' r='2.20' style='stroke-width: 0.35; stroke: none; fill: #1F3D52;' />
+<circle cx='119.99' cy='81.07' r='2.20' style='stroke-width: 0.35; stroke: none; fill: #1F3D52;' />
+<text x='192.38' y='27.39' style='font-size: 5.00px;fill: #6E6E6E; font-family: "Arial";'>q = 0.78</text>
+<text x='192.38' y='55.13' style='font-size: 5.00px;fill: #6E6E6E; font-family: "Arial";'>q = 0.60</text>
+<text x='192.38' y='82.86' style='font-size: 5.00px;fill: #6E6E6E; font-family: "Arial";'>q = 0.60</text>
+</g>
+<g clip-path='url(#p3_1)'>
+<text x='44.79' y='82.86' text-anchor='end' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>Entropy ACF1</text>
+<text x='44.79' y='55.13' text-anchor='end' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>Movement RMSSD</text>
+<text x='44.79' y='27.39' text-anchor='end' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>Mean movement</text>
+<polyline points='45.89,97.71 239.37,97.71 ' style='stroke-width: 0.47; stroke-linecap: square;' />
+<polyline points='84.40,99.20 84.40,97.71 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
+<polyline points='141.39,99.20 141.39,97.71 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
+<polyline points='198.39,99.20 198.39,97.71 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
+<text x='84.40' y='103.87' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>0</text>
+<text x='141.39' y='103.87' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>2</text>
+<text x='198.39' y='103.87' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>4</text>
+<text x='142.63' y='110.23' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Feature × sex interaction (95% CI)</text>
+</g>
+</g>
+</g>
+<text x="4.000" y="88.596" fill="black" font-family="Arial" font-size="2.822" font-weight="bold">c</text>
+<g id="panel_d" transform="translate(93.5020 86.0000) scale(0.352765)">
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+    .svglite g.glyphgroup path {
+      fill: inherit;
+      stroke: none;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='p4_1'>
+    <rect x='0.00' y='0.00' width='242.36' height='113.39' />
+  </clipPath>
+</defs>
+<g clip-path='url(#p4_1)'>
+<rect x='0.00' y='0.000000000000014' width='242.36' height='113.39' style='stroke-width: 0.53; stroke: #FFFFFF; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='p4_2'>
+    <rect x='45.89' y='16.84' width='193.49' height='79.64' />
+  </clipPath>
+</defs>
+<g clip-path='url(#p4_2)'>
+<rect x='45.89' y='16.84' width='193.49' height='79.64' style='stroke-width: 0.53; stroke: none; fill: #FFFFFF;' />
+<line x1='223.25' y1='96.48' x2='223.25' y2='16.84' style='stroke-width: 0.64; stroke: #B5B5B5; stroke-dasharray: 2.00,2.00; stroke-linecap: butt;' />
+<line x1='62.01' y1='31.78' x2='73.95' y2='31.78' style='stroke-width: 1.07; stroke: #B5B5B5; stroke-linecap: butt;' />
+<line x1='115.15' y1='56.66' x2='142.69' y2='56.66' style='stroke-width: 1.07; stroke: #B5B5B5; stroke-linecap: butt;' />
+<line x1='134.03' y1='81.55' x2='197.20' y2='81.55' style='stroke-width: 1.07; stroke: #B5B5B5; stroke-linecap: butt;' />
+<circle cx='62.01' cy='31.78' r='2.20' style='stroke-width: 0.35; stroke: none; fill: #1F3D52;' />
+<circle cx='115.15' cy='56.66' r='2.20' style='stroke-width: 0.35; stroke: none; fill: #1F3D52;' />
+<circle cx='134.03' cy='81.55' r='2.20' style='stroke-width: 0.35; stroke: none; fill: #1F3D52;' />
+<polygon points='73.95,28.35 76.91,33.49 70.98,33.49 ' style='stroke-width: 0.35; stroke: none; fill: #1F3D52;' />
+<polygon points='142.69,53.23 145.66,58.38 139.72,58.38 ' style='stroke-width: 0.35; stroke: none; fill: #1F3D52;' />
+<polygon points='197.20,78.12 200.17,83.26 194.23,83.26 ' style='stroke-width: 0.35; stroke: none; fill: #1F3D52;' />
+</g>
+<g clip-path='url(#p4_1)'>
+<text x='44.79' y='83.34' text-anchor='end' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>Entropy ACF1</text>
+<text x='44.79' y='58.45' text-anchor='end' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>Movement RMSSD</text>
+<text x='44.79' y='33.56' text-anchor='end' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>Mean movement</text>
+<polyline points='45.89,96.48 239.37,96.48 ' style='stroke-width: 0.47; stroke-linecap: square;' />
+<polyline points='60.11,97.98 60.11,96.48 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
+<polyline points='92.74,97.98 92.74,96.48 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
+<polyline points='125.37,97.98 125.37,96.48 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
+<polyline points='157.99,97.98 157.99,96.48 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
+<polyline points='190.62,97.98 190.62,96.48 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
+<polyline points='223.25,97.98 223.25,96.48 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
+<text x='60.11' y='102.65' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>-0.5</text>
+<text x='92.74' y='102.65' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>-0.4</text>
+<text x='125.37' y='102.65' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>-0.3</text>
+<text x='157.99' y='102.65' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>-0.2</text>
+<text x='190.62' y='102.65' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>-0.1</text>
+<text x='223.25' y='102.65' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>0.0</text>
+<text x='90.44' y='109.07' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Spearman</text>
+<text x='115.83' y='109.07' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'> </text>
+<text x='117.36' y='109.07' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>ρ</text>
+<text x='120.49' y='109.07' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'> </text>
+<text x='122.02' y='109.07' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>with later integrated resilience</text>
+<rect x='191.68' y='8.97' width='47.69' height='5.39' style='stroke-width: 0.53; stroke: none; fill: #FFFFFF;' />
+<rect x='191.68' y='8.97' width='5.98' height='5.39' style='stroke-width: 0.53; stroke: none; fill: #FFFFFF;' />
+<circle cx='194.67' cy='11.66' r='2.20' style='stroke-width: 0.35; stroke: none; fill: #1F3D52;' />
+<rect x='219.81' y='8.97' width='5.98' height='5.39' style='stroke-width: 0.53; stroke: none; fill: #FFFFFF;' />
+<polygon points='222.80,8.23 225.77,13.37 219.83,13.37 ' style='stroke-width: 0.35; stroke: none; fill: #1F3D52;' />
+<text x='200.40' y='13.45' style='font-size: 5.00px; font-family: "Arial";'>Female</text>
+<text x='228.53' y='13.45' style='font-size: 5.00px; font-family: "Arial";'>Male</text>
+</g>
+</g>
+</g>
+<text x="93.500" y="88.596" fill="black" font-family="Arial" font-size="2.822" font-weight="bold">d</text>
 </svg>
