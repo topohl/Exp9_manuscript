@@ -1,19 +1,89 @@
-sample_id,AnimalID,hemisphere,StressGroup,plate,qc_flag,n_proteins_analysed,n_missing_preimputation,fraction_missing_preimputation,missingness_note,flag,slot,x,pairing_note
-D:\Proteomics\Fabian\Tobi\Bluto_20250703_FCo_Evo2_80SPDzoom_Tobias_A127_L_CA2_slm_Neuron_S066_S1-B9_1_12875.d,127,L,CON,B,PASS,5054,497,0.09833795013850416,"computed over the 5054 rows that survive the 70% filter, i.e. the rows actually analysed, not the full raw matrix",,1,0.81,animals are the biological replicates (n = 3 per group); hemispheres are paired within animal so the unilateral nature of both QC failures is visible without reading the caption
-D:\Proteomics\Fabian\Tobi\Bluto_20250703_FCo_Evo2_80SPDzoom_Tobias_A127_R_CA2_slm_Neuron_S068_S1-D9_1_12897.d,127,R,CON,B,PASS,5054,381,0.07538583300356154,"computed over the 5054 rows that survive the 70% filter, i.e. the rows actually analysed, not the full raw matrix",,1,1.19,animals are the biological replicates (n = 3 per group); hemispheres are paired within animal so the unilateral nature of both QC failures is visible without reading the caption
-D:\Proteomics\Fabian\Tobi\Bluto_20250707_FCo_Evo2_80SPDzoom_Tobias_A129_L_CA2_slm_Neuron_S248_S1-B9_1_13069.d,129,L,CON,C,PASS,5054,347,0.06865848832607835,"computed over the 5054 rows that survive the 70% filter, i.e. the rows actually analysed, not the full raw matrix",,2,1.81,animals are the biological replicates (n = 3 per group); hemispheres are paired within animal so the unilateral nature of both QC failures is visible without reading the caption
-D:\Proteomics\Fabian\Tobi\Bluto_20250707_FCo_Evo2_80SPDzoom_Tobias_A129_R_CA2_slm_Neuron_S250_S1-D9_1_13108.d,129,R,CON,C,PASS,5054,315,0.06232686980609418,"computed over the 5054 rows that survive the 70% filter, i.e. the rows actually analysed, not the full raw matrix",,2,2.19,animals are the biological replicates (n = 3 per group); hemispheres are paired within animal so the unilateral nature of both QC failures is visible without reading the caption
-D:\Proteomics\Fabian\Tobi\Bluto_20250703_FCo_Evo2_80SPDzoom_Tobias_A765_L_CA2_slm_Neuron_S045_S1-E6_1_12932.d,765,L,CON,B,PASS,5054,617,0.1220815195884448,"computed over the 5054 rows that survive the 70% filter, i.e. the rows actually analysed, not the full raw matrix",,3,2.81,animals are the biological replicates (n = 3 per group); hemispheres are paired within animal so the unilateral nature of both QC failures is visible without reading the caption
-D:\Proteomics\Fabian\Tobi\Bluto_20250703_FCo_Evo2_80SPDzoom_Tobias_A765_R_CA2_slm_Neuron_S047_S1-G6_1_12937.d,765,R,CON,B,WARN,5054,708,0.14008705975464977,"computed over the 5054 rows that survive the 70% filter, i.e. the rows actually analysed, not the full raw matrix",WARN,3,3.19,animals are the biological replicates (n = 3 per group); hemispheres are paired within animal so the unilateral nature of both QC failures is visible without reading the caption
-D:\Proteomics\Fabian\Tobi\Bluto_20250707_FCo_Evo2_80SPDzoom_Tobias_A135_L_CA2_slm_Neuron_S228_S1-F6_1_13052.d,135,L,RES,C,PASS,5054,408,0.08072813612979818,"computed over the 5054 rows that survive the 70% filter, i.e. the rows actually analysed, not the full raw matrix",,5,4.81,animals are the biological replicates (n = 3 per group); hemispheres are paired within animal so the unilateral nature of both QC failures is visible without reading the caption
-D:\Proteomics\Fabian\Tobi\Bluto_20250707_FCo_Evo2_80SPDzoom_Tobias_A135_R_CA2_slm_Neuron_S230_S1-H6_1_13116.d,135,R,RES,C,PASS,5054,383,0.07578155916106055,"computed over the 5054 rows that survive the 70% filter, i.e. the rows actually analysed, not the full raw matrix",,5,5.19,animals are the biological replicates (n = 3 per group); hemispheres are paired within animal so the unilateral nature of both QC failures is visible without reading the caption
-D:\Proteomics\Fabian\Tobi\Bluto_20250707_FCo_Evo2_80SPDzoom_Tobias_A139_L_CA2_slm_Neuron_S247_S1-A9_1_13118.d,139,L,RES,C,PASS,5054,535,0.10585674713098536,"computed over the 5054 rows that survive the 70% filter, i.e. the rows actually analysed, not the full raw matrix",,6,5.81,animals are the biological replicates (n = 3 per group); hemispheres are paired within animal so the unilateral nature of both QC failures is visible without reading the caption
-D:\Proteomics\Fabian\Tobi\Bluto_20250707_FCo_Evo2_80SPDzoom_Tobias_A139_R_CA2_slm_Neuron_S249_S1-C9_1_13072.d,139,R,RES,C,PASS,5054,391,0.07736446379105659,"computed over the 5054 rows that survive the 70% filter, i.e. the rows actually analysed, not the full raw matrix",,6,6.19,animals are the biological replicates (n = 3 per group); hemispheres are paired within animal so the unilateral nature of both QC failures is visible without reading the caption
-D:\Proteomics\Fabian\Tobi\Bluto_20250703_FCo_Evo2_80SPDzoom_Tobias_A0003_L_CA2_slm_Neuron_S125_S2-E4_1_12945.d,3,L,RES,B,PASS,5054,312,0.06173328056984566,"computed over the 5054 rows that survive the 70% filter, i.e. the rows actually analysed, not the full raw matrix",,7,6.81,animals are the biological replicates (n = 3 per group); hemispheres are paired within animal so the unilateral nature of both QC failures is visible without reading the caption
-D:\Proteomics\Fabian\Tobi\Bluto_20250703_FCo_Evo2_80SPDzoom_Tobias_A0003_R_CA2_slm_Neuron_S126_S2-F4_1_13015.d,3,R,RES,B,PASS,5054,392,0.07756232686980609,"computed over the 5054 rows that survive the 70% filter, i.e. the rows actually analysed, not the full raw matrix",,7,7.19,animals are the biological replicates (n = 3 per group); hemispheres are paired within animal so the unilateral nature of both QC failures is visible without reading the caption
-D:\Proteomics\Fabian\Tobi\Bluto_20250703_FCo_Evo2_80SPDzoom_Tobias_A111_L_CA2_slm_Neuron_S065_S1-A9_1_12849.d,111,L,SUS,B,PASS,5054,536,0.10605461020973486,"computed over the 5054 rows that survive the 70% filter, i.e. the rows actually analysed, not the full raw matrix",,9,8.81,animals are the biological replicates (n = 3 per group); hemispheres are paired within animal so the unilateral nature of both QC failures is visible without reading the caption
-D:\Proteomics\Fabian\Tobi\Bluto_20250703_FCo_Evo2_80SPDzoom_Tobias_A111_R_CA2_slm_Neuron_S067_S1-C9_1_12930.d,111,R,SUS,B,PASS,5054,360,0.07123070834982193,"computed over the 5054 rows that survive the 70% filter, i.e. the rows actually analysed, not the full raw matrix",,9,9.19,animals are the biological replicates (n = 3 per group); hemispheres are paired within animal so the unilateral nature of both QC failures is visible without reading the caption
-D:\Proteomics\Fabian\Tobi\Bluto_20250707_FCo_Evo2_80SPDzoom_Tobias_A755_L_CA2_slm_Neuron_S227_S1-E6_1_13037.d,755,L,SUS,C,FAIL,5054,1255,0.2483181638306292,"computed over the 5054 rows that survive the 70% filter, i.e. the rows actually analysed, not the full raw matrix",FAIL,10,9.81,animals are the biological replicates (n = 3 per group); hemispheres are paired within animal so the unilateral nature of both QC failures is visible without reading the caption
-D:\Proteomics\Fabian\Tobi\Bluto_20250707_FCo_Evo2_80SPDzoom_Tobias_A755_R_CA2_slm_Neuron_S229_S1-G6_1_13089.d,755,R,SUS,C,PASS,5054,560,0.110803324099723,"computed over the 5054 rows that survive the 70% filter, i.e. the rows actually analysed, not the full raw matrix",,10,10.19,animals are the biological replicates (n = 3 per group); hemispheres are paired within animal so the unilateral nature of both QC failures is visible without reading the caption
-D:\Proteomics\Fabian\Tobi\Bluto_20250703_FCo_Evo2_80SPDzoom_Tobias_A764_L_CA2_slm_Neuron_S046_S1-F6_1_12879.d,764,L,SUS,B,PASS,5054,510,0.10091017016224772,"computed over the 5054 rows that survive the 70% filter, i.e. the rows actually analysed, not the full raw matrix",,11,10.81,animals are the biological replicates (n = 3 per group); hemispheres are paired within animal so the unilateral nature of both QC failures is visible without reading the caption
-D:\Proteomics\Fabian\Tobi\Bluto_20250703_FCo_Evo2_80SPDzoom_Tobias_A764_R_CA2_slm_Neuron_S048_S1-H6_1_12864.d,764,R,SUS,B,FAIL,5054,808,0.1598733676296003,"computed over the 5054 rows that survive the 70% filter, i.e. the rows actually analysed, not the full raw matrix",FAIL,11,11.19,animals are the biological replicates (n = 3 per group); hemispheres are paired within animal so the unilateral nature of both QC failures is visible without reading the caption
+"table","Sex","id","label","name","comparison","d","adj_p","significant"
+"heatmap","Female","suc_pref3","Preference, test 3 (%)","Sucrose preference, test 3 (%)","RES - CON",-0.431,0.754,FALSE
+"heatmap","Female","suc_pref3","Preference, test 3 (%)","Sucrose preference, test 3 (%)","SUS - CON",-0.125,0.759,FALSE
+"heatmap","Female","suc_pref3","Preference, test 3 (%)","Sucrose preference, test 3 (%)","RES - SUS",-0.305,0.467,FALSE
+"heatmap","Female","suc_pref3","Preference, test 3 (%)","Sucrose preference, test 3 (%)","SIS - CON",-0.29,0.704,FALSE
+"heatmap","Male","suc_pref3","Preference, test 3 (%)","Sucrose preference, test 3 (%)","RES - CON",0.345,0.703,FALSE
+"heatmap","Male","suc_pref3","Preference, test 3 (%)","Sucrose preference, test 3 (%)","SUS - CON",-0.737,0.212,FALSE
+"heatmap","Male","suc_pref3","Preference, test 3 (%)","Sucrose preference, test 3 (%)","RES - SUS",1.083,0.0188,TRUE
+"heatmap","Male","suc_pref3","Preference, test 3 (%)","Sucrose preference, test 3 (%)","SIS - CON",-0.081,0.813,FALSE
+"heatmap","Female","suc_pref1","Preference, test 1 (%)","Sucrose preference, test 1 (%)","RES - CON",0.497,0.754,FALSE
+"heatmap","Female","suc_pref1","Preference, test 1 (%)","Sucrose preference, test 1 (%)","SUS - CON",-0.281,0.759,FALSE
+"heatmap","Female","suc_pref1","Preference, test 1 (%)","Sucrose preference, test 1 (%)","RES - SUS",0.779,0.134,FALSE
+"heatmap","Female","suc_pref1","Preference, test 1 (%)","Sucrose preference, test 1 (%)","SIS - CON",0.184,0.704,FALSE
+"heatmap","Male","suc_pref1","Preference, test 1 (%)","Sucrose preference, test 1 (%)","RES - CON",-0.22,0.798,FALSE
+"heatmap","Male","suc_pref1","Preference, test 1 (%)","Sucrose preference, test 1 (%)","SUS - CON",-1.053,0.0417,TRUE
+"heatmap","Male","suc_pref1","Preference, test 1 (%)","Sucrose preference, test 1 (%)","RES - SUS",0.833,0.0357,TRUE
+"heatmap","Male","suc_pref1","Preference, test 1 (%)","Sucrose preference, test 1 (%)","SIS - CON",-0.534,0.316,FALSE
+"heatmap","Female","suc_pref","Preference (%)","Sucrose preference, all tests (%)","RES - CON",-0.038,0.914,FALSE
+"heatmap","Female","suc_pref","Preference (%)","Sucrose preference, all tests (%)","SUS - CON",-0.946,0.0693,FALSE
+"heatmap","Female","suc_pref","Preference (%)","Sucrose preference, all tests (%)","RES - SUS",0.908,0.0129,TRUE
+"heatmap","Female","suc_pref","Preference (%)","Sucrose preference, all tests (%)","SIS - CON",-0.403,0.499,FALSE
+"heatmap","Male","suc_pref","Preference (%)","Sucrose preference, all tests (%)","RES - CON",0.285,0.806,FALSE
+"heatmap","Male","suc_pref","Preference (%)","Sucrose preference, all tests (%)","SUS - CON",-0.798,0.19,FALSE
+"heatmap","Male","suc_pref","Preference (%)","Sucrose preference, all tests (%)","RES - SUS",1.083,0.00656,TRUE
+"heatmap","Male","suc_pref","Preference (%)","Sucrose preference, all tests (%)","SIS - CON",-0.142,0.775,FALSE
+"heatmap","Female","cort_delta","Rise (ng/mL)","Corticosterone rise, response minus baseline (ng/mL)","RES - CON",-1.035,0.0242,TRUE
+"heatmap","Female","cort_delta","Rise (ng/mL)","Corticosterone rise, response minus baseline (ng/mL)","SUS - CON",-0.027,0.943,FALSE
+"heatmap","Female","cort_delta","Rise (ng/mL)","Corticosterone rise, response minus baseline (ng/mL)","RES - SUS",-1.009,0.0129,TRUE
+"heatmap","Female","cort_delta","Rise (ng/mL)","Corticosterone rise, response minus baseline (ng/mL)","SIS - CON",-0.557,0.458,FALSE
+"heatmap","Male","cort_delta","Rise (ng/mL)","Corticosterone rise, response minus baseline (ng/mL)","RES - CON",-0.238,0.806,FALSE
+"heatmap","Male","cort_delta","Rise (ng/mL)","Corticosterone rise, response minus baseline (ng/mL)","SUS - CON",0.601,0.192,FALSE
+"heatmap","Male","cort_delta","Rise (ng/mL)","Corticosterone rise, response minus baseline (ng/mL)","RES - SUS",-0.839,0.0233,TRUE
+"heatmap","Male","cort_delta","Rise (ng/mL)","Corticosterone rise, response minus baseline (ng/mL)","SIS - CON",0.107,0.775,FALSE
+"heatmap","Female","cort_response","Response (ng/mL)","Corticosterone, response (ng/mL)","RES - CON",-0.651,0.0893,FALSE
+"heatmap","Female","cort_response","Response (ng/mL)","Corticosterone, response (ng/mL)","SUS - CON",0.232,0.536,FALSE
+"heatmap","Female","cort_response","Response (ng/mL)","Corticosterone, response (ng/mL)","RES - SUS",-0.883,0.0156,TRUE
+"heatmap","Female","cort_response","Response (ng/mL)","Corticosterone, response (ng/mL)","SIS - CON",-0.256,0.434,FALSE
+"heatmap","Male","cort_response","Response (ng/mL)","Corticosterone, response (ng/mL)","RES - CON",-0.359,0.312,FALSE
+"heatmap","Male","cort_response","Response (ng/mL)","Corticosterone, response (ng/mL)","SUS - CON",0.497,0.382,FALSE
+"heatmap","Male","cort_response","Response (ng/mL)","Corticosterone, response (ng/mL)","RES - SUS",-0.856,0.0218,TRUE
+"heatmap","Male","cort_response","Response (ng/mL)","Corticosterone, response (ng/mL)","SIS - CON",-0.001,0.998,FALSE
+"heatmap","Female","spleen_ratio","Spleen (mg/100 g)","Spleen weight per 100 g body weight (mg)","RES - CON",0.191,0.749,FALSE
+"heatmap","Female","spleen_ratio","Spleen (mg/100 g)","Spleen weight per 100 g body weight (mg)","SUS - CON",0.597,0.324,FALSE
+"heatmap","Female","spleen_ratio","Spleen (mg/100 g)","Spleen weight per 100 g body weight (mg)","RES - SUS",-0.406,0.213,FALSE
+"heatmap","Female","spleen_ratio","Spleen (mg/100 g)","Spleen weight per 100 g body weight (mg)","SIS - CON",0.353,0.499,FALSE
+"heatmap","Male","spleen_ratio","Spleen (mg/100 g)","Spleen weight per 100 g body weight (mg)","RES - CON",0.014,0.968,FALSE
+"heatmap","Male","spleen_ratio","Spleen (mg/100 g)","Spleen weight per 100 g body weight (mg)","SUS - CON",0.36,0.426,FALSE
+"heatmap","Male","spleen_ratio","Spleen (mg/100 g)","Spleen weight per 100 g body weight (mg)","RES - SUS",-0.346,0.283,FALSE
+"heatmap","Male","spleen_ratio","Spleen (mg/100 g)","Spleen weight per 100 g body weight (mg)","SIS - CON",0.154,0.775,FALSE
+"heatmap","Female","adrenal_ratio","Adrenal (mg/100 g)","Adrenal weight per 100 g body weight (mg)","RES - CON",-0.501,0.375,FALSE
+"heatmap","Female","adrenal_ratio","Adrenal (mg/100 g)","Adrenal weight per 100 g body weight (mg)","SUS - CON",0.455,0.456,FALSE
+"heatmap","Female","adrenal_ratio","Adrenal (mg/100 g)","Adrenal weight per 100 g body weight (mg)","RES - SUS",-0.956,0.0129,TRUE
+"heatmap","Female","adrenal_ratio","Adrenal (mg/100 g)","Adrenal weight per 100 g body weight (mg)","SIS - CON",-0.119,0.737,FALSE
+"heatmap","Male","adrenal_ratio","Adrenal (mg/100 g)","Adrenal weight per 100 g body weight (mg)","RES - CON",-0.266,0.806,FALSE
+"heatmap","Male","adrenal_ratio","Adrenal (mg/100 g)","Adrenal weight per 100 g body weight (mg)","SUS - CON",0.138,0.726,FALSE
+"heatmap","Male","adrenal_ratio","Adrenal (mg/100 g)","Adrenal weight per 100 g body weight (mg)","RES - SUS",-0.403,0.283,FALSE
+"heatmap","Male","adrenal_ratio","Adrenal (mg/100 g)","Adrenal weight per 100 g body weight (mg)","SIS - CON",-0.097,0.775,FALSE
+"heatmap","Female","adrenal_mg","Adrenal (mg)","Adrenal weight (mg)","RES - CON",-0.302,0.429,FALSE
+"heatmap","Female","adrenal_mg","Adrenal (mg)","Adrenal weight (mg)","SUS - CON",0.532,0.202,FALSE
+"heatmap","Female","adrenal_mg","Adrenal (mg)","Adrenal weight (mg)","RES - SUS",-0.834,0.0382,TRUE
+"heatmap","Female","adrenal_mg","Adrenal (mg)","Adrenal weight (mg)","SIS - CON",0.023,0.949,FALSE
+"heatmap","Male","adrenal_mg","Adrenal (mg)","Adrenal weight (mg)","RES - CON",-0.323,0.763,FALSE
+"heatmap","Male","adrenal_mg","Adrenal (mg)","Adrenal weight (mg)","SUS - CON",-0.152,0.973,FALSE
+"heatmap","Male","adrenal_mg","Adrenal (mg)","Adrenal weight (mg)","RES - SUS",-0.171,0.929,FALSE
+"heatmap","Male","adrenal_mg","Adrenal (mg)","Adrenal weight (mg)","SIS - CON",-0.253,0.915,FALSE
+"heatmap","Female","bw_rate","Growth (g/week)","Growth rate (g per week)","RES - CON",0.292,0.547,FALSE
+"heatmap","Female","bw_rate","Growth (g/week)","Growth rate (g per week)","SUS - CON",-0.676,0.298,FALSE
+"heatmap","Female","bw_rate","Growth (g/week)","Growth rate (g per week)","RES - SUS",0.968,0.015,TRUE
+"heatmap","Female","bw_rate","Growth (g/week)","Growth rate (g per week)","SIS - CON",-0.116,0.755,FALSE
+"heatmap","Male","bw_rate","Growth (g/week)","Growth rate (g per week)","RES - CON",0.711,0.185,FALSE
+"heatmap","Male","bw_rate","Growth (g/week)","Growth rate (g per week)","SUS - CON",-0.023,0.951,FALSE
+"heatmap","Male","bw_rate","Growth (g/week)","Growth rate (g per week)","RES - SUS",0.734,0.0508,FALSE
+"heatmap","Male","bw_rate","Growth (g/week)","Growth rate (g per week)","SIS - CON",0.397,0.653,FALSE
+"heatmap","Female","bw_change","Weight gain (g)","Weight gain, first to last weighing (g)","RES - CON",0.432,0.375,FALSE
+"heatmap","Female","bw_change","Weight gain (g)","Weight gain, first to last weighing (g)","SUS - CON",-0.23,0.674,FALSE
+"heatmap","Female","bw_change","Weight gain (g)","Weight gain, first to last weighing (g)","RES - SUS",0.662,0.0537,FALSE
+"heatmap","Female","bw_change","Weight gain (g)","Weight gain, first to last weighing (g)","SIS - CON",0.143,0.737,FALSE
+"heatmap","Male","bw_change","Weight gain (g)","Weight gain, first to last weighing (g)","RES - CON",0.162,0.806,FALSE
+"heatmap","Male","bw_change","Weight gain (g)","Weight gain, first to last weighing (g)","SUS - CON",-0.65,0.192,FALSE
+"heatmap","Male","bw_change","Weight gain (g)","Weight gain, first to last weighing (g)","RES - SUS",0.811,0.0233,TRUE
+"heatmap","Male","bw_change","Weight gain (g)","Weight gain, first to last weighing (g)","SIS - CON",-0.16,0.775,FALSE
+"heatmap","Female","bw_last","Last weighing (g)","Body weight, last weighing (g)","RES - CON",0.348,0.547,FALSE
+"heatmap","Female","bw_last","Last weighing (g)","Body weight, last weighing (g)","SUS - CON",0.135,0.718,FALSE
+"heatmap","Female","bw_last","Last weighing (g)","Body weight, last weighing (g)","RES - SUS",0.213,0.507,FALSE
+"heatmap","Female","bw_last","Last weighing (g)","Body weight, last weighing (g)","SIS - CON",0.258,0.755,FALSE
+"heatmap","Male","bw_last","Last weighing (g)","Body weight, last weighing (g)","RES - CON",0.054,0.878,FALSE
+"heatmap","Male","bw_last","Last weighing (g)","Body weight, last weighing (g)","SUS - CON",-0.901,0.0791,FALSE
+"heatmap","Male","bw_last","Last weighing (g)","Body weight, last weighing (g)","RES - SUS",0.954,0.0169,TRUE
+"heatmap","Male","bw_last","Last weighing (g)","Body weight, last weighing (g)","SIS - CON",-0.312,0.653,FALSE

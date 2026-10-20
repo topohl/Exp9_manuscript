@@ -1,3 +1,5 @@
 "file","panel","rows","sha256","render_git_commit"
-"extended_data_02a_source_data.csv","02a",252,"f925b1ff26626960af63a4859f19a41b8844162696641381cf4b09ee38911a7e","3fda74435635af6f8a13e750cea68f5783d2bae5"
-"extended_data_02b_source_data.csv","02b",30,"a96f164e1f8956aed746c8980e86995ff02099163d005f0dd9714386da411c2c","3fda74435635af6f8a13e750cea68f5783d2bae5"
+"extended_data_02a_source_data.csv","02a",609,"534b9c8561e626a27dd02dd52cc2e2c9a372bea4c9c38b0a2daf547854c42998","1843db81c7bf769ac906c8a17e9d26e20d04d241"
+"extended_data_02b_source_data.csv","02b",104,"e99bd44b9e4fd8c9c7b382e67e29cf5472a1c42e2533ab19d139acdd8df1f27d","1843db81c7bf769ac906c8a17e9d26e20d04d241"
+"extended_data_02c_source_data.csv","02c",133,"7a32a4e5f6935bec0dba4981516ae99c4f5015791392787ce56bfde45fd98c9b","1843db81c7bf769ac906c8a17e9d26e20d04d241"
+"extended_data_02d_source_data.csv","02d",48,"239a468e6cba35ef5148496882d386debd8def0bbb23c24b267852d62649ca3e","1843db81c7bf769ac906c8a17e9d26e20d04d241"
