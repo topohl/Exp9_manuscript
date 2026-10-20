@@ -55,13 +55,15 @@ f9_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   mg <- rbind(mg, data.frame(x = 0.44, y = -0.58))
   dgb <- arcdf(0.44, -0.24, 0.58, pi * 1.18, pi * 0.30, 40)
 
-  # laminar ticks with short leaders, so the bands are named on the drawing
+  # laminar ticks with short leaders, so the bands are named on the drawing; the
+  # names stand in a column above the band ends (SO on top, as in the tissue),
+  # one text line apart, so the leaders cross neither each other nor the bands
   lt <- t0 + 0.015 * span
   lyr <- data.frame(r = c(1.26, 1.13, 1.00, 0.87),
                     l = c("SLM", "SR", "SP", "SO"),
                     col = c(np, np, so_col, np), stringsAsFactors = FALSE)
   lyr$x <- lyr$r * cos(lt); lyr$y <- lyr$r * sin(lt)
-  lyr$xe <- lyr$x - 0.30; lyr$ye <- lyr$y - seq(0.00, 0.33, length.out = 4)
+  lyr$xe <- -1.41; lyr$ye <- -0.12 + 0.21 * (0:3)
 
   drawing <- ggplot2::ggplot() +
     ggplot2::geom_path(data = slm, ggplot2::aes(x, y), colour = np,
@@ -93,9 +95,12 @@ f9_schematic <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                        hjust = 1) +
     ggplot2::geom_text(data = rlab, ggplot2::aes(x, y, label = l), family = fam,
                        size = hf_sz(5.8), fontface = "bold", colour = "grey12") +
-    ggplot2::annotate("text", x = 0.44, y = -0.98, label = "DG", family = fam,
+    # DG named outside its bracket, as CA1-CA3 are outside theirs
+    ggplot2::annotate("text", x = 0.44 + 0.78 * cos(pi * 0.78),
+                      y = -0.24 + 0.78 * sin(pi * 0.78), label = "DG", family = fam,
                       size = hf_sz(5.8), fontface = "bold", colour = "grey12") +
-    ggplot2::coord_equal(xlim = c(-2.25, 1.95), ylim = c(-1.30, 2.05),
+    # limits hold the CA2 label and the lower brackets
+    ggplot2::coord_equal(xlim = c(-2.00, 1.95), ylim = c(-1.64, 1.32),
                          expand = FALSE) +
     ggplot2::theme_void(base_family = fam)
 
