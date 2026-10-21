@@ -1334,7 +1334,7 @@ figures:
     extended_data_number: 2
     canonical_publication_id: extended_data_02
     analysis_repository: SISanalyzer
-    sisanalyzer_bundle_id: ctp_v5_20261019_991bed1
+    sisanalyzer_bundle_id: ctp_v6_20261021_bb0795b
     producing_entry_point: figures/scripts/extended_data_conventional_tests.R --publication
     rendering_repository_computes_statistics: false
     question: >-
@@ -1362,7 +1362,7 @@ figures:
     extended_data_number: 3
     canonical_publication_id: extended_data_03
     analysis_repository: SISanalyzer
-    sisanalyzer_bundle_id: ctp_v5_20261019_991bed1
+    sisanalyzer_bundle_id: ctp_v6_20261021_bb0795b
     producing_entry_point: figures/scripts/extended_data_conventional_tests.R --publication
     rendering_repository_computes_statistics: false
     question: >-
@@ -1390,7 +1390,7 @@ figures:
     extended_data_number: 1
     canonical_publication_id: extended_data_01
     analysis_repository: SISanalyzer
-    sisanalyzer_bundle_id: ctp_v5_20261019_991bed1
+    sisanalyzer_bundle_id: ctp_v6_20261021_bb0795b
     producing_entry_point: figures/scripts/extended_data_conventional_tests.R --publication
     rendering_repository_computes_statistics: false
     question: >-
