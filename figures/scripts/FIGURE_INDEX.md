@@ -70,4 +70,5 @@ The **entry point** is what you run: it selects and validates the promoted artef
 - `figures/contracts/figure_01_annotation_map_ebb_v101_six_panel.csv`
 - `figures/contracts/figure_contract.yml`
 - `figures/contracts/proteomics_panels_contract.yml`
+- `figures/contracts/stats_map.csv`
 
