@@ -10,7 +10,7 @@
 #
 # Rendering only. Every panel plots stored values of the pinned bundles, read
 # through R/behaviour_bundle.R, R/stage30_bundle.R and R/figure_support_bundle.R:
-# the Stage 29 v1.0.2 behaviour bundle (ebb), the Stage 30 figure bundle (s30b) and
+# the Stage 29 v1.0.3 behaviour bundle (ebb), the Stage 30 figure bundle (s30b) and
 # the figure-support bundle (fsb: descriptive CON cage means and the CombZ
 # components as they enter CombZ, figure_01_option3_*; from fsb_v2 also the
 # verbatim rows of the MMM post hoc CON/RES/SUS run 29b, figure_01_option3b_house
@@ -86,18 +86,18 @@ bundles:
   ebb:
     pin: config/behaviour_bundle.yml
     reader: R/behaviour_bundle.R
-    bundle_id: ebb_v102_20261019_677ed97
-    manifest_sha256: 41b8ce8170de64b739b4c3517e7280d4c1282332d873b75794e674220c6b7ff9
+    bundle_id: ebb_v103_20261022_26de745
+    manifest_sha256: c82a3957aac328c170f38f86994b8f65a77eda3aa6c5316ce6bf9b2ec915a71a
   s30b:
     pin: config/stage30_bundle.yml
     reader: R/stage30_bundle.R
-    bundle_id: s30b_v11_20261019_5482c43
-    manifest_sha256: 905e4c38d13f0bb258abd662c1dfa8b2001dbc7bfc362c949802505651d09d42
+    bundle_id: s30b_v12_20261022_660e2f6
+    manifest_sha256: 9b1039c85a7478c39f0b9a9584f7c968d7d50a6813ae1e648f135e91b6536343
   fsb:
     pin: config/figure_support_bundle.yml
     reader: R/figure_support_bundle.R
-    bundle_id: fsb_v5_20261019_8212df4
-    manifest_sha256: bc3aaf0d94a31b18bea3a114a6a0c0b8ac6ef401f6c8c4565bf2032f4da37ebb
+    bundle_id: fsb_v6_20261022_26e7f43
+    manifest_sha256: 56ded3f073332bf1806f15f8076b6ade859bbad1aeb1fc315c777bce97697d73
 libraries:
   - R/panels/behaviour_figure_style.R
   - R/panels/behaviour_figure1_panels.R
