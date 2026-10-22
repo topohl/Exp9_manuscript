@@ -458,7 +458,7 @@ test_that("the outputs exist, are authored at their boxes and equal the receipt"
     # (a vector page embeds nothing: its own test below checks the page)
     asm <- paste(readLines(repo(r$path[r$kind == "assembled_svg"]), warn = FALSE), collapse = "\n")
     embedded <- regmatches(asm, gregexpr("data:image/svg\\+xml;base64,[A-Za-z0-9+/=]+", asm))[[1]]
-    inline <- regmatches(asm, gregexpr('<g id="panel_[a-z]+"', asm))[[1]]
+    inline <- regmatches(asm, gregexpr('<g id="panel_[a-z]*"', asm))[[1]]   # a single-panel page has no letter
     expect_equal(length(embedded) + length(inline), if (vector_page(k)) 0L else n, info = k)
     if (!vector_page(k)) {
       if (length(embedded)) {
@@ -467,7 +467,7 @@ test_that("the outputs exist, are authored at their boxes and equal the receipt"
       }
       drawn <- regmatches(asm, gregexpr('font-weight="bold">[a-z]*</text>', asm))[[1]]
       expect_setequal(sub('font-weight="bold">([a-z]*)</text>', "\\1", drawn),
-                      vapply(CT$candidates[[k]]$panels, function(s) s$letter, ""))
+                      Filter(nzchar, vapply(CT$candidates[[k]]$panels, function(s) s$letter, "")))
     }
     for (s in CT$candidates[[k]]$panels) {
       head <- paste(readLines(panel_svg(c(s, list(candidate = k))), n = 3, warn = FALSE), collapse = " ")
