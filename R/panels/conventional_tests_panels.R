@@ -1,6 +1,6 @@
 # Panels of the conventional-tests Extended Data candidates (figures/scripts/extended_data_conventional_tests.R):
-# Extended Data 2 (conventional behaviour tests, locomotion by sex), 3 (physiology, spread of CombZ) and 1 (automated
-# against manual scoring).
+# Extended Data 2 (conventional behaviour tests, locomotion by sex), 3 (physiology, spread of CombZ, also batch by batch) and 1
+# (automated against manual scoring).
 #
 # Everything drawn is read from the pinned SISanalyzer bundle (R/conventional_bundle.R): per-animal values, batch-adjusted
 # group means with 95% intervals, d and adjusted p of the group comparisons, the heterogeneity, locomotion and validation
@@ -34,7 +34,8 @@ ct_read <- function(pin = ctp_pin()) {
   P <- yaml::read_yaml(repo_path("config", "manuscript_palette.yml"))
   tb <- function(n) ctp_table(n, pin)
   X <- list(measures = tb("A_measures"), values = tb("B_values"), means = tb("C_group_means"), contrasts = tb("D_contrasts"),
-            het = tb("E_heterogeneity_summary"), tails = tb("E_heterogeneity_tails"), loco_sessions = tb("F_locomotion_sessions"),
+            het = tb("E_heterogeneity_summary"), tails = tb("E_heterogeneity_tails"), het_both = tb("E_heterogeneity_both_sexes"),
+            het_batches = tb("E_heterogeneity_batches"), loco_sessions = tb("F_locomotion_sessions"),
             loco_int = tb("F_locomotion_interaction"), val = tb("G_validation_pairs"), agree = tb("G_validation_agreement"), provenance = tb("H_provenance"), P = P, pin = pin)
   X$measures$main <- as.logical(X$measures$main)
   for (k in c("val", "agree")) for (f in c("same_quantity", "calibrated_on_these_animals")) X[[k]][[f]] <- as.logical(X[[k]][[f]])
@@ -233,6 +234,29 @@ ct_combz_spread <- function(X) {
     ggplot2::scale_x_continuous(breaks = 1:2, labels = c("CON", "SIS"), limits = c(.5, 2.5), expand = c(0, 0)) +
     ggplot2::scale_y_continuous(labels = ct_num, expand = ggplot2::expansion(mult = c(.05, .05))) +
     ggplot2::facet_wrap(~panel, nrow = 1) + ggplot2::labs(x = NULL, y = "Integrated resilience") + ct_theme(P) +
+    ggplot2::theme(strip.text = ggplot2::element_text(face = "bold", size = T$axis_title_pt, colour = "black", hjust = 0))
+}
+
+#' CombZ batch by batch: the stored SD ratio SIS / CON inside each batch (dark) and with the SIS spread measured inside its
+#' cages (grey; the 4 CON animals of a batch are one cage), females left. Log scale, 1 = equal spread.
+CT_BATCH_ORDER <- c("B3", "B4", "B6", "B1", "B2", "B5")
+CT_COMBZ <- "Integrated Resilience (CombZ)"
+ct_spread_batches_data <- function(X) {
+  b <- X$het_batches[X$het_batches$Measure == CT_COMBZ, , drop = FALSE]
+  d <- rbind(data.frame(Sex = b$Sex, Batch = b$Batch, kind = "All animals", ratio = b$`SD ratio SIS / CON`, stringsAsFactors = FALSE),
+             data.frame(Sex = b$Sex, Batch = b$Batch, kind = "Inside cages", ratio = b$`SD ratio, SIS inside cages`, stringsAsFactors = FALSE))
+  d$panel <- factor(CT_SEXLAB[d$Sex], CT_SEXLAB); d$Batch <- factor(d$Batch, CT_BATCH_ORDER); d
+}
+
+ct_spread_batches <- function(X) {
+  P <- X$P; T <- P$typography; lw <- P$line$axis_pt * .75; d <- ct_spread_batches_data(X)
+  lim <- c(.5, 4)   # every stored ratio must fit: none is cut at the axis
+  if (any(d$ratio < lim[1] | d$ratio > lim[2])) stop("A batch SD ratio lies outside the axis; widen it.", call. = FALSE)
+  ggplot2::ggplot(d, ggplot2::aes(Batch, ratio, colour = kind)) + ggplot2::geom_hline(yintercept = 1, linewidth = lw, colour = "grey55") +
+    ggplot2::geom_point(shape = 16, size = CT_PT, position = ggplot2::position_dodge(width = .5)) +
+    ggplot2::scale_colour_manual(values = c(`All animals` = CT_MEAN, `Inside cages` = "grey62")) +
+    ggplot2::scale_y_log10(breaks = c(.5, 1, 2, 4), labels = c("0.5", "1", "2", "4"), limits = lim) +
+    ggplot2::facet_wrap(~panel, nrow = 1, scales = "free_x") + ggplot2::labs(x = NULL, y = "SD ratio, SIS / CON") + ct_theme(P) +
     ggplot2::theme(strip.text = ggplot2::element_text(face = "bold", size = T$axis_title_pt, colour = "black", hjust = 0))
 }
 

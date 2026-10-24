@@ -86,6 +86,18 @@ testthat::test_that("the locomotion and spread panels restate the stored tables"
   testthat::expect_identical(sort(unique(X$tails$Condition)), c("CON", "SIS"))
 })
 
+testthat::test_that("the batch-by-batch spread panel draws the stored CombZ ratios of every batch, both kinds", {
+  testthat::expect_identical(nrow(X$het_both), 11L)
+  testthat::expect_setequal(X$het_both$Measure, unique(X$het$Measure))
+  testthat::expect_identical(nrow(X$het_batches), 6L * nrow(X$het_both))
+  b <- ct_spread_batches_data(X); k <- X$het_batches[X$het_batches$Measure == CT_COMBZ, ]
+  testthat::expect_identical(nrow(b), 12L)
+  testthat::expect_setequal(as.character(b$Batch), CT_BATCH_ORDER)
+  testthat::expect_identical(b$ratio[b$kind == "All animals"], k$`SD ratio SIS / CON`)
+  testthat::expect_identical(b$ratio[b$kind == "Inside cages"], k$`SD ratio, SIS inside cages`)
+  testthat::expect_identical(as.character(b$Sex[b$kind == "All animals"]), k$Sex)
+})
+
 testthat::test_that("the validation page draws the stored manual and automated pairs of the same quantity, with the stored r", {
   V <- ct_validation_data(X)
   testthat::expect_setequal(unique(V$points$metric), CT_VAL$metric)

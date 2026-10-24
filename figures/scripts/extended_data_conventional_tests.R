@@ -6,7 +6,8 @@
 #     c  locomotion index by group (exploratory)          d  Cohen's d of distance travelled per session (exploratory)
 #   Extended Data 11  physiology and heterogeneity, females and males separately:
 #     a  the main physiology readouts (four are CombZ components: legend)    b  d of the main readouts and the significant measures
-#     c  CombZ of CON and SIS animals with the CON mean and 1 CON SD           d  spread SIS / CON (SD ratio)
+#     c  CombZ of CON and SIS animals with the CON mean and 1 CON SD           d  spread of CombZ batch by batch (SD ratio)
+#     e  spread SIS / CON (SD ratio) of CombZ, its components and the test readouts
 #   Extended Data 12  the analysed automated (SLEAP) values against manual (BORIS) scoring of the batch 1 animals (males):
 #     a  plus maze   b  novel object   c  social tests (identity line, stored Pearson r)
 # Reads the pinned SISanalyzer bundle (config/conventional_bundle.yml) and draws it; no statistic is computed here.
@@ -45,7 +46,8 @@ ct_render <- function(out) {
     patchwork::plot_layout(heights = c(62, 108)), P)
   ed11 <- ct_tag(ct_dots(X, p_main) /
     (patchwork::wrap_elements(full = ct_heatmap(X, p_sel)) |
-       (patchwork::wrap_elements(full = ct_combz_spread(X)) / patchwork::wrap_elements(full = ct_ratio_forest(X)) + patchwork::plot_layout(heights = c(1, 1.05))) +
+       ((patchwork::wrap_elements(full = ct_combz_spread(X)) | patchwork::wrap_elements(full = ct_spread_batches(X))) / patchwork::wrap_elements(full = ct_ratio_forest(X)) +
+          patchwork::plot_layout(heights = c(1, 1.05))) +
        patchwork::plot_layout(widths = c(.8, 1.2))) +
     patchwork::plot_layout(heights = c(62, 108)), P)
   ed12 <- ct_tag(ct_validation(X), P)   # males only, which the legend states
@@ -69,7 +71,9 @@ ct_render <- function(out) {
   w(ct_loco_sessions_data(X)[c("Session", "Sex", "comparison", "d")], "ed10d_sessions.csv")
   a11 <- dots(p_main); w(a11$values, "ed11a_values.csv"); w(a11$means, "ed11a_group_means.csv"); w(a11$brackets, "ed11a_brackets.csv")
   w(heat(p_sel), "ed11b_heatmap.csv")
-  w(X$values[X$values$id == "CombZ", ], "ed11c_combz_values.csv"); w(X$tails, "ed11c_combz_tails.csv"); w(X$het, "ed11d_spread.csv")
+  w(X$values[X$values$id == "CombZ", ], "ed11c_combz_values.csv"); w(X$tails, "ed11c_combz_tails.csv")
+  w(X$het_batches[X$het_batches$Measure == CT_COMBZ, ], "ed11d_batches.csv"); w(X$het_both[X$het_both$Measure == CT_COMBZ, ], "ed11d_both_sexes.csv")
+  w(X$het, "ed11e_spread.csv"); w(X$het_both, "ed11e_both_sexes.csv")
   V <- ct_validation_data(X); w(V$points[c("block", "metric", "title", "unit", "calibrated_on_these_animals", "manual_source", "Code", "Animal", "boris", "sleap")], "ed12_validation_pairs.csv"); w(X$agree, "ed12_agreement.csv")
 
   bundle <- ctp_dir(pin)
@@ -91,7 +95,8 @@ CT_PUB <- c(extended_data_01 = "scoring_validation_page", extended_data_02 = "co
 CT_PANEL_TABLES <- list(
   extended_data_02 = list(a = c("ed10a_values", "ed10a_group_means", "ed10a_brackets"), b = "ed10b_heatmap",
                           c = c("ed10c_values", "ed10c_group_means", "ed10c_contrasts", "ed10c_interaction"), d = "ed10d_sessions"),
-  extended_data_03 = list(a = c("ed11a_values", "ed11a_group_means", "ed11a_brackets"), b = "ed11b_heatmap", c = c("ed11c_combz_values", "ed11c_combz_tails"), d = "ed11d_spread"),
+  extended_data_03 = list(a = c("ed11a_values", "ed11a_group_means", "ed11a_brackets"), b = "ed11b_heatmap", c = c("ed11c_combz_values", "ed11c_combz_tails"),
+                          d = c("ed11d_batches", "ed11d_both_sexes"), e = c("ed11e_spread", "ed11e_both_sexes")),
   extended_data_01 = list(a = "Plus maze", b = "Novel object", c = "Social tests"))
 CT_RECORD <- c("logs", "manuscript_figures", "conventional_tests", "render_record.yml")
 
@@ -103,7 +108,7 @@ ct_panel_source_data <- function(dir, pid, out) {
     tab <- if (pid == "extended_data_01") {
       pr <- rd("ed12_validation_pairs"); ag <- rd("ed12_agreement"); assay <- c(`Plus maze` = "EPM", `Novel object` = "NOR", `Social tests` = "SocP")[[spec]]
       ct_stack(list(cbind(table = "pairs", pr[pr$block == spec, ]), cbind(table = "agreement", ag[ag$assay == assay, ])))
-    } else ct_stack(lapply(spec, function(f) { x <- rd(f); if (nrow(x)) cbind(table = sub("^ed[0-9]+[a-d]_", "", f), x) else x }))
+    } else ct_stack(lapply(spec, function(f) { x <- rd(f); if (nrow(x)) cbind(table = sub("^ed[0-9]+[a-e]_", "", f), x) else x }))
     f <- file.path(out, paste0(pid, p, "_source_data.csv")); utils::write.csv(tab, f, row.names = FALSE, na = ""); f }, "")
 }
 
