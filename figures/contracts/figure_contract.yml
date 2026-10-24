@@ -107,7 +107,7 @@ figures:
         required_columns: [heatmap_id, variant, row_key, row_label, display_tier, PhaseClass, Sex, contrast, cell_status, hedges_g, marker, marker_class]
         expected_rows: 504
         scientific_contract: descriptive_effect_sizes_with_stored_post_hoc_markers
-        statistic: Hedges g and the post hoc markers as stored by Stage 14 (corrected-outcome run promoted 2026-10-19), all phase blocks, resolution variant picked
+        statistic: Hedges g and the post hoc markers as stored by Stage 14 (run of 2026-10-22 on outcome version ov3, bundled in fsb_v6), all phase blocks, resolution variant picked
         biological_unit: AnimalID
         hemisphere_handling: not_applicable_behavioural
         analysis_repository: topohl/MMMSociability
@@ -131,7 +131,7 @@ figures:
         required_columns: [AnimalNum, Group, Sex, observed_CombZ, heldout_prediction, Movement_mean, crossing_rate_equiv_per_h]
         expected_rows: 111
         scientific_contract: descriptive_sex_stratified_association_no_model_fitted_here
-        statistic: Stage 09 sex-stratified Spearman rho of Movement_mean with CombZ, BH q within sex over three features (descriptive, not an interaction test); least-squares display line and 95% band from the post hoc run 29c (registry POSTHOC_MOVEMENT_COMBZ_FIT v1.1; display only, adds no test)
+        statistic: Stage 09 sex-stratified Spearman rho of Movement_mean with CombZ, BH q within sex over three features (descriptive, not an interaction test); least-squares display line and 95% band from the post hoc run 29c (registry POSTHOC_MOVEMENT_COMBZ_FIT v1.2; display only, adds no test)
         colour_encoding: group by colour; the y axis is the score the groups were cut from
         biological_unit: AnimalID
         hemisphere_handling: not_applicable_behavioural

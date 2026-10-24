@@ -98,7 +98,7 @@ f1v2_panel_timeline <- function(fsb, an, w_mm, h_mm) {
     box(X_SIS[1], X_SIS[2], Y_BOX[1], Y_BOX[2], F1V2_FILL_SIS) +
     shuffle(X_SIS[1] + 1.4, X_SIS[1] + 6.2, Y_MID - 2.2, Y_MID + 2.2) +
     txt(X_SIS[1] + 7.8, Y_MID + 1.6, "Social Instability Stress", pt = F1H$title_pt, colour = "white", hjust = 0, fontface = "bold") +
-    txt(X_SIS[1] + 7.8, Y_MID - 1.5, "Shuffling of social groups\ntwice per week for two weeks", colour = "white", hjust = 0) +
+    txt(X_SIS[1] + 7.8, Y_MID - 1.5, "Shuffling of social groups\nevery four days, four times", colour = "white", hjust = 0) +
     box(X_BEH[1], X_BEH[2], Y_BOX[1], Y_BOX[2], F1V2_FILL_BEHAVIOUR) +
     txt(sum(X_BEH) / 2, Y_MID, "Behavior", pt = F1H$title_pt, colour = "white", fontface = "bold") +
     annotate("segment", x = X_RFID[1], xend = X_STEP[["samples"]] + 1.5, y = Y_LINE, yend = Y_LINE, linewidth = F1H$axis_lw, colour = INK) +

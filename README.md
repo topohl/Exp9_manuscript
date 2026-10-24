@@ -21,7 +21,7 @@ repository.
 Notes on these pins (checked 2026-10-15):
 
 - The pRoteomics commit recorded here earlier (`6801edbce8a5d222f4af46e06b6db4e99f6a9761`) does not resolve in the local pRoteomics clone. Imports are verified by file hash against `provenance/source_manifests/prerestructure_freeze_manifest.csv`, so rendering does not depend on it.
-- The earlier Figure 1 freeze `30a2666198ca6f23795773da1b7d0ef34e78ac37` and the Extended Data 5 and 9 freeze `53bc7e9` are superseded by the behaviour bundles; since 2026-10-19 Figure 1, Extended Data 5 and Extended Data 9 render from the same pinned bundles (corrected outcome). The bridge survives in `provenance/claims/figure1_bridge_provenance.csv`.
+- The earlier Figure 1 freeze `30a2666198ca6f23795773da1b7d0ef34e78ac37` and the Extended Data 5 and 9 freeze `53bc7e9` are superseded by the behaviour bundles; Figure 1 and Extended Data 4 (formerly Extended Data 5 and 9) render from the same pinned bundles (outcome version ov3). The bridge survives in `provenance/claims/figure1_bridge_provenance.csv`.
 - The local MMMSociability clone's `origin` is `https://github.com/topohl/BehavioralDynamics.git`, not `topohl/MMMSociability`.
 
 There is deliberately **no live cross-repository dependency**. Nothing here

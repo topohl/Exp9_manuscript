@@ -42,18 +42,18 @@ Term-level FDR dots do not mean the broader seven-family atlas has a theme-level
 FDR. The microglia-enriched ROI is not a purified cell population.
 The candidate calls `f9_gsea_curve_plot()` in
 `R/panels/proteomics_panels_main.R`, the drawing function the earlier a-i Figure 3
-used for panels d-f through `f9_gsea_curve()` (the current curves, 3h-j, are
-drawn by `f3a_curve()`). This shares that design's header, running ES, hit
+used for panels d-f through `f9_gsea_curve()` (the curve sub-panels of the current
+rows 3e-g are drawn by `f3a_curve()`). This shares that design's header, running ES, hit
 ticks, three-contrast strip, palette, typography, and recorded NES colour
 limit, which is now the manuscript's fixed NES limit (`config/manuscript_palette.yml`
 `diverging_limits`, palette v3.2) shared with Figure 3 (Extended Data 7 follows
 once it is re-rendered) rather than the frozen a-i Figure 3d value. It also calls `f9_protein_zoom_plot()`, the same drawing function
-used by Figure 3 k-m through `f3a_proteins()`. The seven genes per term follow Figure 3's
+used by the protein sub-panels of Figure 3e-g through `f3a_proteins()`. The seven genes per term follow Figure 3's
 leading-edge, absolute-ranked-statistic selection rule. Their log2 fold
 changes and BH FDRs come from stored mapped protein-level DA files. None of
 the 84 displayed protein/contrast rows has BH FDR below 0.05; the protein
 panels are descriptive. Their four-panel x-axis limit is set from all four
-appendix selections, because their values exceed Figure 3 k-m's three-panel
+appendix selections, because their values exceed the three-panel
 limit. The figure legend and numeric axes should be kept with both pages.
 
 ## Files and commands

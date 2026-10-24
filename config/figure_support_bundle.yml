@@ -14,7 +14,7 @@ scientific_recomputation: none; descriptive cage means and the frozen CombZ stan
   post hoc run 29b (registry POSTHOC_CON_CONTRASTS v1.2), whose model was fitted there
   once; nothing is fitted, tested or adjusted in this bundle. D1 is a verbatim copy
   of the Stage 14 domain-heatmap source table and M1-M4 are the stored Stage 14 HMM
-  figure tables of the corrected-outcome run promoted 2026-10-19 (display labels joined,
+  figure tables of the Stage 14 run of 2026-10-22 (outcome version ov3) (display labels joined,
   a rank, the Wald interval from the stored estimate and SE, and dwell-time counts
   in fixed bins); no model is fitted, no test run, nothing smoothed and no p or q
   value produced here. E1 is a verbatim copy of Stage 09's sex-stratified correlation

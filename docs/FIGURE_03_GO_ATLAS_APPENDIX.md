@@ -1,7 +1,7 @@
 # Figure 3 GO atlas appendix
 
 This appendix extends the paired curve/protein presentation of Figure 3 (the
-earlier a–i panels d–i; now 3h–m) to every GO term
+earlier a–i panels d–i; now the curve and protein sub-panels of rows 3e–g) to every GO term
 with BH FDR < 0.05 in the **SUS - RES** contrast and at least one of the seven
 claim-eligible Figure 3b atlas themes. It is a display of existing GSEA and
 mapped protein results, with no new enrichment or differential analysis.
@@ -12,8 +12,8 @@ and autophagy. A term assigned to two themes appears in both theme folders;
 the global index identifies each distinct GO ID and theme membership. Each
 term uses the spatial unit with the smallest stored SUS - RES BH FDR; ties are
 resolved by dataset and spatial-unit name. The three-contrast NES strip of
-the earlier a–i Figure 3 curves and the leading-edge protein rule of Figure
-3k–m are then shown for that unit. Up to seven leading-edge genes are selected by absolute ranked statistic.
+the earlier a–i Figure 3 curves and the leading-edge protein rule of the
+protein sub-panels of Figure 3e–g are then shown for that unit. Up to seven leading-edge genes are selected by absolute ranked statistic.
 Protein BH FDR < 0.05 is marked by a black ring.
 No displayed leading-edge protein meets that threshold in this frozen export.
 
@@ -30,8 +30,8 @@ per theme and are recorded in the protein source data.
 The renderer is `figures/candidates/figure_03_go_atlas_appendix.R`, adjacent to the
 four-term exploratory renderer. It calls `f9_gsea_curve_plot()` and
 `f9_protein_zoom_plot()` from `R/panels/proteomics_panels_main.R`. The
-protein function is also used by the current Figure 3k–m panels; the current
-curves (3h–j) are drawn by `f3a_curve()` in
+protein function is also used by the protein sub-panels of Figure 3e–g; their
+curve sub-panels are drawn by `f3a_curve()` in
 `R/panels/figure3_adaptation_panels.R`, so the appendix curves keep the
 earlier a–i curve design.
 
