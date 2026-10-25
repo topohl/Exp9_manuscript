@@ -332,7 +332,7 @@ figures:
         description: >-
           do internally observed spatial identities agree with an external
           hippocampal reference? Story-driving expected pairings only, blocked by
-          anatomical level. The complete specificity inventory lives in ED2.
+          anatomical level. The complete specificity inventory lives in Extended Data 5d.
         producer_script: figures/scripts/figure_02_panels.R
         renderer: f9_external_main
         render_mode: copy_svg

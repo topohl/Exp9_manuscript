@@ -170,6 +170,19 @@ testthat::test_that("MT-04: the external panel uses the signature-family correct
   testthat::expect_identical(sum(d$kind == "expected pairing"), 10L)
 })
 
+testthat::test_that("MT-04: Figure 2g marks significance from the signature-family FDR", {
+  source(testthat::test_path("..", "..", "R", "paths.R"))
+  src <- paste(readLines(repo_path("R", "proteomics_panels_main.R"), warn = FALSE),
+               collapse = "\n")
+  testthat::expect_false(grepl("k$sig <- is.finite(k$p_adjust)", src, fixed = TRUE))
+  testthat::expect_true(grepl("k$sig <- is.finite(k$signature_FDR)", src, fixed = TRUE))
+  sd <- repo_path("figures", "main", "source_data", "figure_02", "figure_02g_source_data.csv")
+  testthat::skip_if_not(file.exists(sd), "Figure 2g source data not promoted here")
+  d <- utils::read.csv(sd, stringsAsFactors = FALSE)
+  testthat::expect_false("p_adjust" %in% names(d))
+  testthat::expect_true(all(c("signature_FDR", "single_set_p_unadjusted") %in% names(d)))
+})
+
 testthat::test_that("no artefact still points Figure 2h at a withdrawn panel", {
   source(testthat::test_path("..", "..", "R", "paths.R"))
   for (f in c(repo_path("figures", "contracts", "figure_contract.yml"),

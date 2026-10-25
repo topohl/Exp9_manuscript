@@ -167,7 +167,12 @@ f9_external_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   k$level <- ifelse(grepl("strata", k$validation_domain),
                     "CA1 laminar identity", "Regional identity")
   k$level <- factor(k$level, levels = c("Regional identity", "CA1 laminar identity"))
-  k$sig <- is.finite(k$p_adjust) & k$p_adjust < 0.05
+  # MT-04, as in f9_ed_external_full: p_adjust is the uncorrected single-set value
+  # (BH over a family of one); significance is the signature-family FDR.
+  if (!"signature_FDR" %in% names(k))
+    stop("f9_external_main: signature_FDR is absent from ", panel$primary_source, call. = FALSE)
+  k$sig <- is.finite(k$signature_FDR) & k$signature_FDR < 0.05
+  k$single_set_p_unadjusted <- k$p_adjust
   k$lab <- paste0(f9_short_contrast(k$internal_contrast), "  →  ",
                   k$external_signature)
   k <- k[order(k$level, k$NES), , drop = FALSE]
@@ -200,11 +205,12 @@ f9_external_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                linewidth = 0.3, colour = "grey55")
   }
   k$legend_text_moved <- paste0(
-    "expected pairings only; filled point = FDR < 0.05; the complete ",
-    "specificity inventory is in ED2 - stated in the figure legend, not on the ",
-    "artwork")
-  write_csv_safe(k[, c("internal_contrast", "external_signature", "level",
-                       "NES", "p_adjust", "legend_text_moved")], csv_path)
+    "expected pairings only; filled point = signature-family FDR < 0.05; the ",
+    "complete specificity inventory is in Extended Data Fig. 5d - stated in the ",
+    "figure legend, not on the artwork")
+  write_csv_safe(k[, c("internal_contrast", "external_signature", "level", "NES",
+                       "signature_FDR", "signature_fdr_family",
+                       "single_set_p_unadjusted", "legend_text_moved")], csv_path)
   hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
