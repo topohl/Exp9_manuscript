@@ -95,6 +95,7 @@ figures:
         w: 118
         h: 96
       - id: 1c
+        reader: "Behavioural domain heatmap: Hedges g by phase, sex and contrast, with the post hoc markers"
         description: Stage 14 behavioural domain heatmap - Hedges g by phase, sex and contrast, with the post hoc markers
         producer_script: figures/scripts/figure_01_panels.R
         render_mode: copy_svg
@@ -117,6 +118,7 @@ figures:
         w: 118
         h: 64
       - id: 1d
+        reader: "Early movement versus later composite outcome by sex: Spearman correlation per sex and a least-squares display line"
         description: Early movement versus later composite outcome by sex - Stage 09 sex-stratified Spearman correlation and a post hoc least-squares display line
         producer_script: figures/scripts/figure_01_panels.R
         render_mode: copy_svg
@@ -200,6 +202,7 @@ figures:
       meaningful hippocampal molecular architecture?
     panels:
       - id: 2a
+        reader: "Sampling scheme: the 18 spatial units of the three compartments (neuropil by region and layer; neuronal soma and microglia-enriched ROI by region)"
         v9_panel_id: v9_schematic
         description: >-
           teaches the spatial grammar: compartment by glyph style, region by the
@@ -221,6 +224,7 @@ figures:
         w: 86
         h: 36
       - id: 2b
+        reader: "Protein groups identified per acquisition, by compartment"
         v9_panel_id: v9_depth
         description: >-
           all three compartments have sufficient coverage for spatial comparison.
@@ -240,6 +244,7 @@ figures:
         w: 34
         h: 36
       - id: 2c
+        reader: "Principal-component analysis of the 4,242 protein groups shared by all compartments, all 323 acquisitions"
         v9_panel_id: v9_pca
         description: >-
           the global proteome is broadly organised before any specific spatial
@@ -263,6 +268,7 @@ figures:
         w: 49
         h: 36
       - id: 2d
+        reader: "Control-only spatial fingerprint: standardised abundance in control animals of proteins selected by the control-only anatomical contrasts"
         v9_panel_id: v9_fingerprint
         description: >-
           the largest panel in Figure 2. Phenotype-blind genes selected only by
@@ -284,6 +290,7 @@ figures:
         w: 100
         h: 76
       - id: 2e
+        reader: "Abundance of compartment marker proteins in the three compartments, control animals"
         v9_panel_id: v9_compartment
         description: >-
           neuropil, neuronal soma and the microglia-enriched ROI carry distinct
@@ -305,12 +312,13 @@ figures:
         w: 73
         h: 32
       - id: 2f
+        reader: "Agreement between hemispheres: one example contrast (left versus right estimates) and Pearson r of every anatomical contrast"
         v9_panel_id: v9_bilateral_main
         description: >-
           one representative left-versus-right scatter plus a compact summary over
           all prespecified contrasts, blocked into REGIONAL then FINE/LAMINAR
           identity. The weaker fine CA1 laminar result is deliberately kept visible.
-          The complete metric inventory lives in ED1, not here.
+          The complete metric inventory lives in Extended Data 5a, not here.
         producer_script: figures/scripts/figure_02_panels.R
         renderer: hf_bilateral_main
         render_mode: copy_svg
@@ -328,6 +336,7 @@ figures:
         w: 73
         h: 42
       - id: 2g
+        reader: "Expected external hippocampal signatures tested against the control-only anatomical contrasts: NES and signature-family FDR"
         v9_panel_id: v9_external_main
         description: >-
           do internally observed spatial identities agree with an external
@@ -349,6 +358,7 @@ figures:
         w: 86
         h: 42
       - id: 2h
+        reader: "Strongest GO biological-process term of each control-only anatomical contrast: NES and FDR"
         v9_panel_id: v9_internal_main
         description: >-
           functional characterisation of the anatomical contrasts: do measured
@@ -394,6 +404,7 @@ figures:
       molecular adaptation to social instability stress?
     panels:
       - id: 3a
+        reader: "Proteins with FDR < 0.05 for susceptible versus resilient per spatial unit, and the number that passed the CA2 stratum lacunosum-moleculare robustness screen"
         v9_panel_id: v9_dap_track
         description: >-
           spatial differential-abundance burden, retaining the existing canonical
@@ -414,6 +425,7 @@ figures:
         w: 175
         h: 10
       - id: 3b
+        reader: "Program atlas, susceptible versus resilient: median NES of each GO program family per spatial unit and the number of FDR-supported constituent terms"
         v9_panel_id: v9_atlas
         description: >-
           seven-programme spatial atlas using SUS-RES median NES as the primary
@@ -434,6 +446,7 @@ figures:
         w: 175
         h: 50
       - id: 3c
+        reader: "Locations of the three exemplar contexts (schematic)"
         v9_panel_id: v9_schematic_space
         description: >-
           space for the hippocampal schematic of the exemplar contexts, drawn by hand.
@@ -452,6 +465,7 @@ figures:
         w: 40
         h: 26
       - id: 3d
+        reader: "Adaptation-state map: median NES of each program and unit for resilient versus control (x) and susceptible versus control (y), with FDR support"
         v9_panel_id: v9_adaptation_state
         description: >-
           programme-context adaptation-state map: RES-CON median NES on x and
@@ -472,6 +486,7 @@ figures:
         w: 40
         h: 58
       - id: 3e
+        reader: "Exemplar 1, CA3 stratum radiatum neuropil, synaptic signalling: row header"
         v9_panel_id: v9_row_syn
         description: >-
           header of the Neuropil CA3 SR synaptic signalling / vesicle exemplar row.
@@ -491,6 +506,7 @@ figures:
         w: 133
         h: 5
       - id: 3e_card
+        reader: "Exemplar 1: NES and FDR of three constituent GO terms in the three contrasts"
         v9_panel_id: v9_card_syn
         description: >-
           Neuropil CA3-SR synaptic signalling and vesicle programme with three
@@ -512,6 +528,7 @@ figures:
         w: 44
         h: 21
       - id: 3e_curve
+        reader: "Exemplar 1: running enrichment of GO:0099536 for susceptible versus resilient"
         v9_panel_id: v9_curve_syn
         description: >-
           exact reconstructed running enrichment for GO:0099536 at Neuropil
@@ -534,6 +551,7 @@ figures:
         w: 44
         h: 21
       - id: 3e_proteins
+        reader: "Exemplar 1: log2 fold changes of the top leading-edge proteins in the three contrasts"
         v9_panel_id: v9_prot_syn
         description: top stored leading-edge proteins for GO:0099536 at Neuropil CA3-SR.
         producer_script: figures/scripts/figure_03_panels.R
@@ -553,6 +571,7 @@ figures:
         w: 43
         h: 21
       - id: 3f
+        reader: "Exemplar 2, CA2 neuronal soma, RNA processing: row header"
         v9_panel_id: v9_row_rna
         description: >-
           header of the Soma CA2 RNA processing exemplar row.
@@ -572,6 +591,7 @@ figures:
         w: 133
         h: 5
       - id: 3f_card
+        reader: "Exemplar 2: NES and FDR of three constituent GO terms in the three contrasts"
         v9_panel_id: v9_card_rna
         description: >-
           Soma CA2 RNA processing programme with three constituent terms and all
@@ -593,6 +613,7 @@ figures:
         w: 44
         h: 21
       - id: 3f_curve
+        reader: "Exemplar 2: running enrichment of GO:0006397 for susceptible versus resilient"
         v9_panel_id: v9_curve_rna
         description: >-
           exact reconstructed running enrichment for GO:0006397 at Soma CA2.
@@ -614,6 +635,7 @@ figures:
         w: 44
         h: 21
       - id: 3f_proteins
+        reader: "Exemplar 2: log2 fold changes of the top leading-edge proteins in the three contrasts"
         v9_panel_id: v9_prot_rna
         description: top stored leading-edge proteins for GO:0006397 at Soma CA2.
         producer_script: figures/scripts/figure_03_panels.R
@@ -633,6 +655,7 @@ figures:
         w: 43
         h: 21
       - id: 3g
+        reader: "Exemplar 3, CA1 microglia-enriched ROI, mitochondrial respiration: row header"
         v9_panel_id: v9_row_ox
         description: >-
           header of the Microglia-enriched ROI CA1 mitochondrial respiration exemplar row.
@@ -652,6 +675,7 @@ figures:
         w: 133
         h: 5
       - id: 3g_card
+        reader: "Exemplar 3: NES and FDR of three constituent GO terms in the three contrasts"
         v9_panel_id: v9_card_ox
         description: >-
           Microglia-enriched ROI CA1 mitochondrial respiration programme with
@@ -673,6 +697,7 @@ figures:
         w: 44
         h: 21
       - id: 3g_curve
+        reader: "Exemplar 3: running enrichment of GO:0006119 for susceptible versus resilient"
         v9_panel_id: v9_curve_ox
         description: >-
           exact reconstructed running enrichment for GO:0006119 at the
@@ -695,6 +720,7 @@ figures:
         w: 44
         h: 21
       - id: 3g_proteins
+        reader: "Exemplar 3: log2 fold changes of the top leading-edge proteins in the three contrasts"
         v9_panel_id: v9_prot_ox
         description: >-
           top stored leading-edge proteins for GO:0006119 at the
@@ -760,6 +786,7 @@ figures:
       inventory caption. No manuscript claim cites it.
     panels:
       - id: 05a
+        reader: "Agreement between hemispheres: every stored bilateral metric of every control-only anatomical contrast"
         v9_panel_id: v9_ed_bilateral_full
         description: >-
           complete stored bilateral metric inventory; main 2f shows only the
@@ -780,6 +807,7 @@ figures:
         w: 118
         h: 70
       - id: 05b
+        reader: "Reliability (intraclass correlation) of single hemispheres and of the bilateral mean"
         v9_panel_id: v9_ed_precision
         description: >-
           reliability gained by averaging hemispheres.
@@ -799,6 +827,7 @@ figures:
         w: 55
         h: 70
       - id: 05c
+        reader: "Control-only scores of published compartment and region signatures across all spatial units"
         v9_panel_id: v9_ed_fingerprint_full
         description: >-
           The complete CON-only spatial fingerprint across every spatial unit.
@@ -820,6 +849,7 @@ figures:
         w: 110
         h: 68
       - id: 05d
+        reader: "All 30 tested pairings of control-only anatomical contrasts with external signatures (10 expected, 20 specificity): NES and signature-family FDR"
         v9_panel_id: v9_ed_external_full
         description: >-
           All 30 tested contrast-signature pairings: 10 expected and 20
@@ -892,6 +922,7 @@ figures:
       restricted.
     panels:
       - id: 06a
+        reader: "Location of CA2 stratum lacunosum-moleculare in the sampling scheme"
         v9_panel_id: v9_ed_ca2_locator
         description: >-
           a small readable locator; the QC problem sits in neuropil, region CA2,
@@ -911,6 +942,7 @@ figures:
         w: 34
         h: 44
       - id: 06b
+        reader: "Pre-imputation missingness per CA2 stratum lacunosum-moleculare acquisition, by group and hemisphere"
         v9_panel_id: v9_ed_ca2_missing
         description: >-
           pre-imputation missingness per CA2-SLM sample, by stress group.
@@ -930,6 +962,7 @@ figures:
         w: 137
         h: 44
       - id: 06c
+        reader: "Missingness against the shift introduced by median centring, per acquisition"
         v9_panel_id: v9_ed_ca2_displacement
         description: >-
           missingness inflates the observed median and centring displaces every
@@ -950,6 +983,7 @@ figures:
         w: 62
         h: 56
       - id: 06d
+        reader: "Effect sizes of the 28 CA2 stratum lacunosum-moleculare proteins with and without the two QC-failed hemispheres, by robustness class"
         v9_panel_id: v9_ed_ca2_sensitivity
         description: >-
           canonical effect versus the effect with QC-failed hemispheres dropped;
@@ -991,6 +1025,7 @@ figures:
       programs.
     panels:
       - id: 07a
+        reader: "Program atlas, resilient versus control"
         v9_panel_id: v9_ed_atlas_rescon
         description: >-
           the RES vs CON atlas; main Figure 3b shows SUS vs RES.
@@ -1010,6 +1045,7 @@ figures:
         w: 175
         h: 50
       - id: 07b
+        reader: "Program atlas, susceptible versus control"
         v9_panel_id: v9_ed_atlas_suscon
         description: >-
           the SUS vs CON atlas, completing the set of three pairwise contrasts.
@@ -1029,6 +1065,7 @@ figures:
         w: 175
         h: 50
       - id: 07c
+        reader: "Running enrichment, set size and leading edge of GO:0099536 in CA3 stratum radiatum neuropil"
         v9_panel_id: v9_ed_gsea_curve_syn
         description: >-
           detailed curve with set size, leading-edge counts and reconstruction
@@ -1051,6 +1088,7 @@ figures:
         w: 57
         h: 52
       - id: 07d
+        reader: "Running enrichment, set size and leading edge of GO:0006397 in CA2 neuronal soma"
         v9_panel_id: v9_ed_gsea_curve_rna
         description: >-
           detailed curve, soma CA2-SP.
@@ -1072,6 +1110,7 @@ figures:
         w: 57
         h: 52
       - id: 07e
+        reader: "Running enrichment, set size and leading edge of GO:0006119 in the CA1 microglia-enriched ROI"
         v9_panel_id: v9_ed_gsea_curve_ox
         description: >-
           detailed curve, microglia-enriched CA1.
@@ -1113,6 +1152,7 @@ figures:
       groups.
     panels:
       - id: 08a
+        reader: "Molecular similarity between spatial units in control animals, per compartment (not anatomical connectivity)"
         v9_panel_id: v9_ed_similarity
         description: >-
           CON molecular-similarity matrices with facet width proportional to unit
@@ -1133,6 +1173,7 @@ figures:
         w: 175
         h: 66
       - id: 08b
+        reader: "Distance of each animal's network from the control consensus, with the whole-network permutation P per compartment"
         v9_panel_id: v9_ed_network_distance
         description: >-
           animal-level network distance from the CON consensus, with each
@@ -1155,6 +1196,7 @@ figures:
         w: 175
         h: 44
       - id: 08c
+        reader: "Correlations of every network edge with the later outcome measures"
         v9_panel_id: v9_ed_coupling
         description: >-
           every distinct edge-behaviour correlation; an underpowered null.

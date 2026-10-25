@@ -33,4 +33,4 @@ The palette caps a page at 183 x 170 mm. A heatmap of all 87 behaviour measures 
 
 ## Promotion
 
-A new bundle means: import and pin it, set `sisanalyzer_bundle_id` of `ED_10` to `ED_12` in `figures/contracts/figure_contract.yml`, update the legend numbers, commit, render with `--publication` at that commit and promote. The promotion copies the pages and the per-panel source data to `figures/extended_data/` and records the commit and hashes in the registry. The tests check that the contract, the legends and the pin name the same bundle.
+A new bundle means: import and pin it, set `sisanalyzer_bundle_id` of `ED_scoring_validation`, `ED_conventional_tests` and `ED_physiology` in `figures/contracts/figure_contract.yml`, update the legend numbers, commit, render with `--publication` at that commit and promote. The promotion copies the pages and the per-panel source data to `figures/extended_data/` and records the commit and hashes in the registry. The tests check that the contract, the legends and the pin name the same bundle.

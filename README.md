@@ -48,8 +48,10 @@ rendering never addresses upstream internal folder structure.
 | `figures/main/`, `figures/extended_data/` | canonical rendered panels and assembled figures, by publication identity |
 | `R/panels/` | panel implementation libraries reached only from figure renderers |
 | `source_data/pRoteomics/` | frozen scientific source-data bundle + manifest |
-| `source_data/MMMSociability/` | frozen behaviour bundle + manifest (byte-exact, `-text` in `.gitattributes`) |
+| `source_data/MMMSociability/` | frozen behaviour bundles + manifest (byte-exact, `-text` in `.gitattributes`) |
+| `source_data/SISanalyzer/` | frozen conventional-tests bundles |
 | `source_data/MMMSociability_candidates/` | CC4 candidate bundles (MMMSociability Stage 31), byte-exact; pinned in `config/cc4_candidate_bundles.yml` |
+| | Only the bundles pinned in `config/*.yml` are read; the other bundle directories are earlier imports, kept unchanged for provenance. |
 | `provenance/` | claim provenance, publication registry, source manifests |
 | `export/` | journal submission bundles |
 | `tests/` | publication integrity suite |

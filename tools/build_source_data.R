@@ -25,6 +25,26 @@ reg <- reg[reg$status == "CANONICAL", , drop = FALSE]
 contract <- yaml::read_yaml(repo_path("figures", "contracts", "figure_contract.yml"))$figures
 code <- git_code_state()
 
+# Where a figure's numbers were computed, for the 'about' sheet. The registry's source_commit is the render commit
+# for figures drawn here, so it is not used for them: a SISanalyzer figure names its pinned bundle and producer
+# commit; a figure drawn here from pRoteomics exports names the pRoteomics commits recorded for the files its
+# contract entry reads (render inputs and source_data/pRoteomics imports).
+sd_analysis_origin <- function(row, entry) {
+  if (identical(row$originating_analysis, "SISanalyzer")) {
+    pin <- yaml::read_yaml(repo_path("config", "conventional_bundle.yml"))
+    return(list(analysis = paste0("SISanalyzer, bundle ", pin$bundle_id), commit = pin$producer_commit))
+  }
+  if (!identical(row$originating_analysis, "this repository"))
+    return(list(analysis = row$originating_analysis, commit = row$source_commit))
+  paths <- unique(unlist(lapply(entry$panels, function(p) unlist(p[c("figure_source", "primary_source", "input_dependencies")]))))
+  ri <- utils::read.csv(repo_path("provenance", "source_manifests", "render_inputs_manifest.csv"), colClasses = "character")
+  pr <- utils::read.csv(repo_path("source_data", "pRoteomics", "manifest.csv"), colClasses = "character")
+  dirs <- unique(sub("^source_data/pRoteomics/([^/]+)/.*$", "\\1", grep("^source_data/pRoteomics/", paths, value = TRUE)))
+  commits <- unique(c(ri$source_commit[ri$declared_path %in% paths], pr$source_commit[pr$publication_id %in% dirs]))
+  if (!length(commits)) stop(row$publication_id, ": no pRoteomics commit recorded for its inputs", call. = FALSE)
+  list(analysis = "topohl/pRoteomics (frozen exports; figure drawn by Exp9_manuscript)", commit = paste(commits, collapse = ", "))
+}
+
 missing <- character()
 for (i in seq_len(nrow(reg))) {
   sd <- repo_path(reg$canonical_source_data[i])
@@ -41,8 +61,9 @@ if (!dry_run) out_dir <- out_dir %||% paper_path("source_data")
 for (i in seq_len(nrow(reg))) {
   pid <- reg$publication_id[i]
   entry <- contract[[reg$contract_key[i]]]
-  info <- list(title = reg$title[i], analysis = reg$originating_analysis[i], source_commit = reg$source_commit[i],
-               panels = stats::setNames(lapply(entry$panels, function(p) gsub("\\s+", " ", as.character(p$description %||% ""))),
+  origin <- sd_analysis_origin(reg[i, ], entry)
+  info <- list(title = reg$title[i], analysis = origin$analysis, source_commit = origin$commit,
+               panels = stats::setNames(lapply(entry$panels, function(p) gsub("\\s+", " ", as.character(p$reader %||% p$description %||% ""))),
                                         vapply(entry$panels, function(p) as.character(p$id), "")))
   sd <- repo_path(reg$canonical_source_data[i])
   got <- wb_panel_tables(sd)
