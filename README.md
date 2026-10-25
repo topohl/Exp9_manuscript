@@ -16,7 +16,7 @@ repository.
 | --- | --- | --- |
 | [`topohl/pRoteomics`](https://github.com/topohl/pRoteomics) | preprocessing, QC, differential abundance, WGCNA, GSEA, spatial validation, spatial networks, all statistical models and canonical result tables | tag `pre-restructure-scientific-freeze-2026-09` (peels to `0f84a103dd895161711c643d0ba1c6e14082ba9a`); later exports are listed in `source_data/pRoteomics/manifest.csv` |
 | [`topohl/MMMSociability`](https://github.com/topohl/MMMSociability) | behavioural acquisition and analysis, CombZ outcome scoring, behaviour prediction models | bundles `ebb_v103_20261022_26de745` (MMMSociability `26de745`; Figure 1 and Extended Data 4, Stage 29 on outcome version ov3), `fsb_v6_20261022_26e7f43` (`26e7f43`; Figure 1 support) and `s30b_v12_20261022_660e2f6` (`660e2f6`; Stage 30) |
-| SISanalyzer (local) | conventional behaviour tests, physiology, heterogeneity and locomotion analyses of all 117 animals; the manual-versus-automated scoring validation | bundle `ctp_v8_20261025_bc63086` (SISanalyzer `bc63086`); Extended Data 1 to 3 (`docs/CONVENTIONAL_TESTS_CANDIDATE.md`) |
+| SISanalyzer (local) | conventional behaviour tests, physiology, heterogeneity and locomotion analyses of all 117 animals; the manual-versus-automated scoring validation | bundle `ctp_v9_20261025_b1111a0` (SISanalyzer `b1111a0`); Extended Data 1 to 3 (`docs/CONVENTIONAL_TESTS_CANDIDATE.md`) |
 
 Notes on these pins (checked 2026-10-15):
 

@@ -1334,7 +1334,7 @@ figures:
     extended_data_number: 2
     canonical_publication_id: extended_data_02
     analysis_repository: SISanalyzer
-    sisanalyzer_bundle_id: ctp_v8_20261025_bc63086
+    sisanalyzer_bundle_id: ctp_v9_20261025_b1111a0
     producing_entry_point: figures/scripts/extended_data_conventional_tests.R --publication
     rendering_repository_computes_statistics: false
     question: >-
@@ -1362,7 +1362,7 @@ figures:
     extended_data_number: 3
     canonical_publication_id: extended_data_03
     analysis_repository: SISanalyzer
-    sisanalyzer_bundle_id: ctp_v8_20261025_bc63086
+    sisanalyzer_bundle_id: ctp_v9_20261025_b1111a0
     producing_entry_point: figures/scripts/extended_data_conventional_tests.R --publication
     rendering_repository_computes_statistics: false
     question: >-
@@ -1379,7 +1379,7 @@ figures:
           CombZ of CON and SIS animals with the CON mean and one CON SD (the susceptibility cut-off).
       - id: 03d
         description: >-
-          CombZ batch by batch: SD ratio SIS / CON inside each batch and with the SIS spread measured inside cages.
+          CombZ batch by batch: SD ratio SIS / CON inside each batch and with the SIS spread measured inside cages (small-sample corrected).
       - id: 03e
         description: >-
           SD ratio SIS / CON with residual-bootstrap intervals for CombZ, its components and the other main readouts.
@@ -1393,7 +1393,7 @@ figures:
     extended_data_number: 1
     canonical_publication_id: extended_data_01
     analysis_repository: SISanalyzer
-    sisanalyzer_bundle_id: ctp_v8_20261025_bc63086
+    sisanalyzer_bundle_id: ctp_v9_20261025_b1111a0
     producing_entry_point: figures/scripts/extended_data_conventional_tests.R --publication
     rendering_repository_computes_statistics: false
     question: >-

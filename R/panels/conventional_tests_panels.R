@@ -35,7 +35,7 @@ ct_read <- function(pin = ctp_pin()) {
   tb <- function(n) ctp_table(n, pin)
   X <- list(measures = tb("A_measures"), values = tb("B_values"), means = tb("C_group_means"), contrasts = tb("D_contrasts"),
             het = tb("E_heterogeneity_summary"), tails = tb("E_heterogeneity_tails"), het_both = tb("E_heterogeneity_both_sexes"),
-            het_batches = tb("E_heterogeneity_batches"), loco_sessions = tb("F_locomotion_sessions"),
+            het_batches = tb("E_heterogeneity_batches"), het_home = tb("E_heterogeneity_home_cages"), loco_sessions = tb("F_locomotion_sessions"),
             loco_int = tb("F_locomotion_interaction"), val = tb("G_validation_pairs"), agree = tb("G_validation_agreement"), provenance = tb("H_provenance"), P = P, pin = pin)
   X$measures$main <- as.logical(X$measures$main)
   for (k in c("val", "agree")) for (f in c("same_quantity", "calibrated_on_these_animals")) X[[k]][[f]] <- as.logical(X[[k]][[f]])
@@ -238,13 +238,13 @@ ct_combz_spread <- function(X) {
 }
 
 #' CombZ batch by batch: the stored SD ratio SIS / CON inside each batch (dark) and with the SIS spread measured inside its
-#' cages (grey; the 4 CON animals of a batch are one cage), females left. Log scale, 1 = equal spread.
+#' cages (grey; the 4 CON animals of a batch are one cage), small-sample corrected (as stored), females left. Log scale, 1 = equal spread.
 CT_BATCH_ORDER <- c("B3", "B4", "B6", "B1", "B2", "B5")
 CT_COMBZ <- "Integrated Resilience (CombZ)"
 ct_spread_batches_data <- function(X) {
   b <- X$het_batches[X$het_batches$Measure == CT_COMBZ, , drop = FALSE]
-  d <- rbind(data.frame(Sex = b$Sex, Batch = b$Batch, kind = "All animals", ratio = b$`SD ratio SIS / CON`, stringsAsFactors = FALSE),
-             data.frame(Sex = b$Sex, Batch = b$Batch, kind = "Inside cages", ratio = b$`SD ratio, SIS inside cages`, stringsAsFactors = FALSE))
+  d <- rbind(data.frame(Sex = b$Sex, Batch = b$Batch, kind = "All animals", ratio = b$`SD ratio SIS / CON, small-sample corrected`, stringsAsFactors = FALSE),
+             data.frame(Sex = b$Sex, Batch = b$Batch, kind = "Inside cages", ratio = b$`SD ratio, SIS inside cages, small-sample corrected`, stringsAsFactors = FALSE))
   d$panel <- factor(CT_SEXLAB[d$Sex], CT_SEXLAB); d$Batch <- factor(d$Batch, CT_BATCH_ORDER); d
 }
 

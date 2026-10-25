@@ -6,7 +6,7 @@
 #     c  locomotion index by group (exploratory)          d  Cohen's d of distance travelled per session (exploratory)
 #   Extended Data 11  physiology and heterogeneity, females and males separately:
 #     a  the main physiology readouts (four are CombZ components: legend)    b  d of the main readouts and the significant measures
-#     c  CombZ of CON and SIS animals with the CON mean and 1 CON SD           d  spread of CombZ batch by batch (SD ratio)
+#     c  CombZ of CON and SIS animals with the CON mean and 1 CON SD           d  spread of CombZ batch by batch (SD ratio; home cages in the legend)
 #     e  spread SIS / CON (SD ratio) of CombZ, its components and the test readouts
 #   Extended Data 12  the analysed automated (SLEAP) values against manual (BORIS) scoring of the batch 1 animals (males):
 #     a  plus maze   b  novel object   c  social tests (identity line, stored Pearson r)
@@ -72,8 +72,8 @@ ct_render <- function(out) {
   a11 <- dots(p_main); w(a11$values, "ed11a_values.csv"); w(a11$means, "ed11a_group_means.csv"); w(a11$brackets, "ed11a_brackets.csv")
   w(heat(p_sel), "ed11b_heatmap.csv")
   w(X$values[X$values$id == "CombZ", ], "ed11c_combz_values.csv"); w(X$tails, "ed11c_combz_tails.csv")
-  w(X$het_batches[X$het_batches$Measure == CT_COMBZ, ], "ed11d_batches.csv"); w(X$het_both[X$het_both$Measure == CT_COMBZ, ], "ed11d_both_sexes.csv")
-  w(X$het, "ed11e_spread.csv"); w(X$het_both, "ed11e_both_sexes.csv")
+  w(X$het_batches[X$het_batches$Measure == CT_COMBZ, ], "ed11d_batches.csv"); w(X$het_both[X$het_both$Measure == CT_COMBZ, ], "ed11d_both_sexes.csv"); w(X$het_home[X$het_home$Measure == CT_COMBZ, ], "ed11d_home_cages.csv")
+  w(X$het, "ed11e_spread.csv"); w(X$het_both, "ed11e_both_sexes.csv"); w(X$het_home, "ed11e_home_cages.csv")
   V <- ct_validation_data(X); w(V$points[c("block", "metric", "title", "unit", "calibrated_on_these_animals", "manual_source", "Code", "Animal", "boris", "sleap")], "ed12_validation_pairs.csv"); w(X$agree, "ed12_agreement.csv")
 
   bundle <- ctp_dir(pin)
@@ -96,7 +96,7 @@ CT_PANEL_TABLES <- list(
   extended_data_02 = list(a = c("ed10a_values", "ed10a_group_means", "ed10a_brackets"), b = "ed10b_heatmap",
                           c = c("ed10c_values", "ed10c_group_means", "ed10c_contrasts", "ed10c_interaction"), d = "ed10d_sessions"),
   extended_data_03 = list(a = c("ed11a_values", "ed11a_group_means", "ed11a_brackets"), b = "ed11b_heatmap", c = c("ed11c_combz_values", "ed11c_combz_tails"),
-                          d = c("ed11d_batches", "ed11d_both_sexes"), e = c("ed11e_spread", "ed11e_both_sexes")),
+                          d = c("ed11d_batches", "ed11d_both_sexes", "ed11d_home_cages"), e = c("ed11e_spread", "ed11e_both_sexes", "ed11e_home_cages")),
   extended_data_01 = list(a = "Plus maze", b = "Novel object", c = "Social tests"))
 CT_RECORD <- c("logs", "manuscript_figures", "conventional_tests", "render_record.yml")
 

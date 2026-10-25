@@ -1,10 +1,10 @@
-bundle_id: ctp_v8_20261025_bc63086
-manifest_sha256: 31ac549faa38a65b62185bbf1447e5c648d1f8b6fb8a32251f6af807183cd9ac
+bundle_id: ctp_v9_20261025_b1111a0
+manifest_sha256: c29ef0288771494fe0723e085d4b4b9a2c9b4e9e437c7949d63e262350563176
 registry_status: FROZEN
-producer_commit: bc630860bd7e62a15fa8be3fe3c64a260e404285
+producer_commit: b1111a0070a86b25f7feccd32e47d8bfb7c7ccbf
 producer: SISanalyzer manuscript_bundle/export_bundle.R
-created_at: 2026-10-25T02:02:47+0200
+created_at: 2026-10-25T10:57:02+0100
 scientific_recomputation: none in this repository; every statistic is read from the
   bundle
-imported_at: 2026-10-25T02:05:32+0200
+imported_at: 2026-10-25T10:57:04+0100
 importer: tools/import_conventional_bundle.R

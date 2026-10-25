@@ -93,9 +93,12 @@ testthat::test_that("the batch-by-batch spread panel draws the stored CombZ rati
   b <- ct_spread_batches_data(X); k <- X$het_batches[X$het_batches$Measure == CT_COMBZ, ]
   testthat::expect_identical(nrow(b), 12L)
   testthat::expect_setequal(as.character(b$Batch), CT_BATCH_ORDER)
-  testthat::expect_identical(b$ratio[b$kind == "All animals"], k$`SD ratio SIS / CON`)
-  testthat::expect_identical(b$ratio[b$kind == "Inside cages"], k$`SD ratio, SIS inside cages`)
+  testthat::expect_identical(b$ratio[b$kind == "All animals"], k$`SD ratio SIS / CON, small-sample corrected`)
+  testthat::expect_identical(b$ratio[b$kind == "Inside cages"], k$`SD ratio, SIS inside cages, small-sample corrected`)
   testthat::expect_identical(as.character(b$Sex[b$kind == "All animals"]), k$Sex)
+  h <- X$het_home; testthat::expect_identical(nrow(h), 3L * nrow(X$het_both))
+  testthat::expect_setequal(h$Sex, c("Female", "Male", "Both sexes"))
+  testthat::expect_true(all(is.finite(h$`SD ratio, home-cage differences removed (lower bound)`[h$Measure == CT_COMBZ])))
 })
 
 testthat::test_that("the validation page draws the stored manual and automated pairs of the same quantity, with the stored r", {
