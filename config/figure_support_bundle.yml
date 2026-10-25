@@ -1,7 +1,7 @@
-bundle_id: fsb_v6_20261022_26e7f43
-manifest_sha256: 56ded3f073332bf1806f15f8076b6ade859bbad1aeb1fc315c777bce97697d73
+bundle_id: fsb_v7_20261025_daafa7a
+manifest_sha256: e7e6b8c592a66fc97784b9602ce727df59cc0e99cb614bd8064f71dba2a55a4f
 registry_status: FROZEN
-mmm_git_commit: 26e7f43bf0a2fdda357f5ca7bbee16e68ea3576d
+mmm_git_commit: daafa7a78badb68de21e4d94128b3c31629add5c
 stage29_bundle_id: ebb_v103_20261022_26de745
 stage29_bundle_manifest_sha256: c82a3957aac328c170f38f86994b8f65a77eda3aa6c5316ce6bf9b2ec915a71a
 combz_table_sha256: ac6d66932dc5d4a21874c441dad00d1625a343873859c47a33ac2e10a94f0a0a
@@ -14,16 +14,18 @@ scientific_recomputation: none; descriptive cage means and the frozen CombZ stan
   post hoc run 29b (registry POSTHOC_CON_CONTRASTS v1.2), whose model was fitted there
   once; nothing is fitted, tested or adjusted in this bundle. D1 is a verbatim copy
   of the Stage 14 domain-heatmap source table and M1-M4 are the stored Stage 14 HMM
-  figure tables of the Stage 14 run of 2026-10-22 (outcome version ov3) (display labels joined,
+  figure tables of the corrected-outcome run promoted 2026-10-19 (display labels joined,
   a rank, the Wald interval from the stored estimate and SE, and dwell-time counts
   in fixed bins); no model is fitted, no test run, nothing smoothed and no p or q
   value produced here. E1 is a verbatim copy of Stage 09's sex-stratified correlation
   table (rho, p and BH q computed there); E2 / E2b / E2c are verbatim copies of the
   hash-gated post hoc run 29c (registry POSTHOC_MOVEMENT_COMBZ_FIT v1.2), whose display
   line and band were fitted there once; E3 is a verbatim copy of Stage 09's early-window
-  coverage summary (slot counts, group-blind); T1 / T1b are ages by date arithmetic
-  from the pinned planning workbook. Nothing is fitted here.
-created_at: 2026-10-22T14:15:54+0200
+  coverage summary (slot counts, group-blind); E4 / E4b are verbatim copies of the
+  hash-gated post hoc run 29d (registry POSTHOC_REPORTING_STATISTICS v1.0), where
+  the t, df and per-sex Spearman intervals were computed once; T1 / T1b are ages by
+  date arithmetic from the pinned planning workbook. Nothing is fitted here.
+created_at: 2026-10-25T12:31:33+0100
 producer: topohl/MMMSociability Analysis/16c_figure_support_bundle.R
-imported_at: 2026-10-22T14:30:39+0200
+imported_at: 2026-10-25T12:34:20+0100
 importer: tools/import_figure_support_bundle.R

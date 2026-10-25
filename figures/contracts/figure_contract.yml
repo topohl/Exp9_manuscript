@@ -21,10 +21,10 @@ figures:
     behaviour_bundle_id: ebb_v103_20261022_26de745
     behaviour_config_version: "1.0.3"
     behaviour_config_sha256: 7f99d9e8a73758b80a66cc7c5ee12d26ff29a97f67da6da2cf7ae730eac7dee2
-    figure_support_bundle_id: fsb_v6_20261022_26e7f43
+    figure_support_bundle_id: fsb_v7_20261025_daafa7a
     figure_support_frozen_at: 26e7f43bf0a2fdda357f5ca7bbee16e68ea3576d
     source_data_frozen_in: source_data/MMMSociability/ebb_v103_20261022_26de745
-    figure_support_source_data_frozen_in: source_data/MMMSociability/fsb_v6_20261022_26e7f43
+    figure_support_source_data_frozen_in: source_data/MMMSociability/fsb_v7_20261025_daafa7a
     rendering_repository_computes_statistics: false
     visual_lineage: >-
       The layout Tobias assembled by hand on 2026-10-12 from the pipelines' panels and
@@ -56,10 +56,10 @@ figures:
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01a.svg
         source_data: results/figures/manuscript/figure_01_panels/figure_01a_source_data.csv
-        primary_source: source_data/MMMSociability/fsb_v6_20261022_26e7f43/T1_design_ages.csv
+        primary_source: source_data/MMMSociability/fsb_v7_20261025_daafa7a/T1_design_ages.csv
         input_dependencies:
-          - source_data/MMMSociability/fsb_v6_20261022_26e7f43/T1_design_ages.csv
-          - source_data/MMMSociability/fsb_v6_20261022_26e7f43/T1b_design_ages_by_animal.csv
+          - source_data/MMMSociability/fsb_v7_20261025_daafa7a/T1_design_ages.csv
+          - source_data/MMMSociability/fsb_v7_20261025_daafa7a/T1b_design_ages_by_animal.csv
         required_columns: [event_order, event_id, event_label, source, definition, n_animals, age_min, age_max, unit]
         expected_rows: 8
         scientific_contract: design_schematic_temporal_precedence
@@ -78,10 +78,10 @@ figures:
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01b.svg
         source_data: results/figures/manuscript/figure_01_panels/figure_01b_source_data.csv
-        primary_source: source_data/MMMSociability/fsb_v6_20261022_26e7f43/F2_combz_components.csv
+        primary_source: source_data/MMMSociability/fsb_v7_20261025_daafa7a/F2_combz_components.csv
         input_dependencies:
-          - source_data/MMMSociability/fsb_v6_20261022_26e7f43/F2_combz_components.csv
-          - source_data/MMMSociability/fsb_v6_20261022_26e7f43/F2b_combz_definition.csv
+          - source_data/MMMSociability/fsb_v7_20261025_daafa7a/F2_combz_components.csv
+          - source_data/MMMSociability/fsb_v7_20261025_daafa7a/F2b_combz_definition.csv
           - source_data/MMMSociability/ebb_v103_20261022_26de745/A2b_combz_thresholds.csv
         required_columns: [AnimalNum, Sex, Batch, Group, component, signed_z, present, CombZ, susceptibility_threshold, below_threshold, heatmap_order_within_sex]
         expected_rows: 702
@@ -102,9 +102,9 @@ figures:
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01c.svg
         source_data: results/figures/manuscript/figure_01_panels/figure_01c_source_data.csv
-        primary_source: source_data/MMMSociability/fsb_v6_20261022_26e7f43/D1_domain_heatmap_cells.csv
+        primary_source: source_data/MMMSociability/fsb_v7_20261025_daafa7a/D1_domain_heatmap_cells.csv
         input_dependencies:
-          - source_data/MMMSociability/fsb_v6_20261022_26e7f43/D1_domain_heatmap_cells.csv
+          - source_data/MMMSociability/fsb_v7_20261025_daafa7a/D1_domain_heatmap_cells.csv
         required_columns: [heatmap_id, variant, row_key, row_label, display_tier, PhaseClass, Sex, contrast, cell_status, hedges_g, marker, marker_class]
         expected_rows: 504
         scientific_contract: descriptive_effect_sizes_with_stored_post_hoc_markers
@@ -128,8 +128,8 @@ figures:
         primary_source: source_data/MMMSociability/ebb_v103_20261022_26de745/A2_prediction_animals.csv
         input_dependencies:
           - source_data/MMMSociability/ebb_v103_20261022_26de745/A2_prediction_animals.csv
-          - source_data/MMMSociability/fsb_v6_20261022_26e7f43/E1_movement_combz_spearman_by_sex.csv
-          - source_data/MMMSociability/fsb_v6_20261022_26e7f43/E2_movement_combz_fit_lines.csv
+          - source_data/MMMSociability/fsb_v7_20261025_daafa7a/E1_movement_combz_spearman_by_sex.csv
+          - source_data/MMMSociability/fsb_v7_20261025_daafa7a/E2_movement_combz_fit_lines.csv
         required_columns: [AnimalNum, Group, Sex, observed_CombZ, heldout_prediction, Movement_mean, crossing_rate_equiv_per_h]
         expected_rows: 111
         scientific_contract: descriptive_sex_stratified_association_no_model_fitted_here
@@ -1241,10 +1241,10 @@ figures:
     behaviour_bundle_id: ebb_v103_20261022_26de745
     behaviour_config_version: "1.0.3"
     behaviour_config_sha256: 7f99d9e8a73758b80a66cc7c5ee12d26ff29a97f67da6da2cf7ae730eac7dee2
-    figure_support_bundle_id: fsb_v6_20261022_26e7f43
+    figure_support_bundle_id: fsb_v7_20261025_daafa7a
     figure_support_frozen_at: 26e7f43bf0a2fdda357f5ca7bbee16e68ea3576d
     source_data_frozen_in: source_data/MMMSociability/ebb_v103_20261022_26de745
-    figure_support_source_data_frozen_in: source_data/MMMSociability/fsb_v6_20261022_26e7f43
+    figure_support_source_data_frozen_in: source_data/MMMSociability/fsb_v7_20261025_daafa7a
     historical_generation: bundle_render
     rendering_repository_computes_statistics: false
     scientific_contract_summary: >-
@@ -1343,9 +1343,9 @@ figures:
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04d.svg
         source_data: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04d_source_data.csv
-        primary_source: source_data/MMMSociability/fsb_v6_20261022_26e7f43/E1_movement_combz_spearman_by_sex.csv
+        primary_source: source_data/MMMSociability/fsb_v7_20261025_daafa7a/E1_movement_combz_spearman_by_sex.csv
         input_dependencies:
-          - source_data/MMMSociability/fsb_v6_20261022_26e7f43/E1_movement_combz_spearman_by_sex.csv
+          - source_data/MMMSociability/fsb_v7_20261025_daafa7a/E1_movement_combz_spearman_by_sex.csv
           - source_data/MMMSociability/ebb_v103_20261022_26de745/E_multiplicity.csv
         required_columns: [Sex, feature, "n", spearman_rho]
         expected_rows: 6

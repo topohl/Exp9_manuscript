@@ -10,7 +10,7 @@ The Word file `S:\Lab_Member\Tobi\Paper\E9SIS\manuscript_resiliencandsusceptibil
 
 | What | Produced in | Enters this repository as | Rendered by |
 |---|---|---|---|
-| Figure 1 (home-cage RFID behaviour, CombZ, prediction) | MMMSociability (`Analysis/Behavior/RFID` holds its outputs) | frozen bundles `ebb_v103_20261022_26de745` and `fsb_v6_20261022_26e7f43` (outcome version ov3) under `source_data/MMMSociability/` | `figures/scripts/figure_01_panels.R`, entry point `figures/scripts/figure_01.R` |
+| Figure 1 (home-cage RFID behaviour, CombZ, prediction) | MMMSociability (`Analysis/Behavior/RFID` holds its outputs) | frozen bundles `ebb_v103_20261022_26de745` and `fsb_v7_20261025_daafa7a` (outcome version ov3) under `source_data/MMMSociability/` | `figures/scripts/figure_01_panels.R`, entry point `figures/scripts/figure_01.R` |
 | Figures 2 and 3; Extended Data 5 to 8 | pRoteomics (`Analysis/proteomics`) | `source_data/pRoteomics/` with `manifest.csv` | the `final_truth_v9` renderers in `figures/`, per-panel source data under `figures/main/source_data/` and `figures/extended_data/source_data/` |
 | Extended Data 4 (behaviour) | MMMSociability | the same frozen bundles as Figure 1 | `figures/scripts/extended_data_behaviour_panels.R` |
 | Withheld (formerly Extended Data 4 and 7) | | | withheld; registry ids `withheld_wgcna`, `withheld_identity_locations` |

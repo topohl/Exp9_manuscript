@@ -96,8 +96,8 @@ bundles:
   fsb:
     pin: config/figure_support_bundle.yml
     reader: R/figure_support_bundle.R
-    bundle_id: fsb_v6_20261022_26e7f43
-    manifest_sha256: 56ded3f073332bf1806f15f8076b6ade859bbad1aeb1fc315c777bce97697d73
+    bundle_id: fsb_v7_20261025_daafa7a
+    manifest_sha256: e7e6b8c592a66fc97784b9602ce727df59cc0e99cb614bd8064f71dba2a55a4f
 libraries:
   - R/panels/behaviour_figure_style.R
   - R/panels/behaviour_figure1_panels.R
