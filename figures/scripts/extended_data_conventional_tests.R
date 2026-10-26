@@ -10,6 +10,8 @@
 #     e  spread SIS / CON (SD ratio) of CombZ, its components and the test readouts
 #   Extended Data 12  the analysed automated (SLEAP) values against manual (BORIS) scoring of the batch 1 animals (males):
 #     a  plus maze   b  novel object   c  social tests (identity line, stored Pearson r)
+#     and the habituation trials (bundle v13 on), females and males separately:
+#     d  side preference and contact before the stimulus (dots, means, brackets as on Extended Data 2)   e  d of all 24 habituation measures
 # Reads the pinned SISanalyzer bundle (config/conventional_bundle.yml) and draws it; no statistic is computed here.
 
 source(file.path("R", "paths.R"))
@@ -18,6 +20,7 @@ source(repo_path("R", "panels", "conventional_tests_panels.R"))
 
 CT_W_MM <- 183
 CT_H_MM <- 170
+CT_H1_MM <- 168   # Extended Data 1: the validation band (64 mm) and the habituation band
 CT_GEN <- "conventional_tests_v1"
 
 ct_save <- function(sheet, stem, h = CT_H_MM) {
@@ -37,7 +40,8 @@ ct_render <- function(out) {
   b_main <- X$measures$id[X$measures$domain == "Behaviour" & X$measures$main]
   p_main <- X$measures$id[X$measures$domain == "Physiology" & X$measures$main]
   b_sel <- ct_selected_behaviour(X); p_sel <- ct_selected_physiology(X)
-  stopifnot(length(b_main) == 5L, length(p_main) == 5L)
+  h_ids <- ct_habituation_ids(X)
+  stopifnot(length(b_main) == 5L, length(p_main) == 5L, length(h_ids) == 24L, all(CT_HAB_KEY %in% h_ids), !any(h_ids %in% c(b_sel, p_sel)))
 
   # heatmaps are freed from axis alignment: their fixed-aspect tiles would otherwise pull the neighbouring axis titles across
   ed10 <- ct_tag(ct_dots(X, b_main) /
@@ -50,11 +54,13 @@ ct_render <- function(out) {
           patchwork::plot_layout(heights = c(1, 1.05))) +
        patchwork::plot_layout(widths = c(.8, 1.2))) +
     patchwork::plot_layout(heights = c(62, 108)), P)
-  ed12 <- ct_tag(ct_validation(X), P)   # males only, which the legend states
+  ed12 <- ct_tag(ct_validation(X) /   # a-c males only, which the legend states
+    ((ct_dots(X, CT_HAB_KEY, ncol = 2) | patchwork::wrap_elements(full = ct_heatmap(X, h_ids))) + patchwork::plot_layout(widths = c(.9, 1.1))) +
+    patchwork::plot_layout(heights = c(64, 104)), P)
 
   dir.create(out, recursive = TRUE)
   ct_save(ed10, file.path(out, "conventional_tests_page")); ct_save(ed11, file.path(out, "physiology_page"))
-  ct_save(ed12, file.path(out, "scoring_validation_page"), h = 64)   # square panels: the height follows the width
+  ct_save(ed12, file.path(out, "scoring_validation_page"), h = CT_H1_MM)   # a-c: square panels, their band follows the width
 
   # per-panel source data: the bundle rows each panel draws, plus the stored rows its legend quotes
   w <- function(x, f) utils::write.csv(x, file.path(out, f), row.names = FALSE, na = "")
@@ -74,6 +80,8 @@ ct_render <- function(out) {
   w(X$values[X$values$id == "CombZ", ], "ed11c_combz_values.csv"); w(X$tails, "ed11c_combz_tails.csv")
   w(X$het_batches[X$het_batches$Measure == CT_COMBZ, ], "ed11d_batches.csv"); w(X$het_both[X$het_both$Measure == CT_COMBZ, ], "ed11d_both_sexes.csv"); w(X$het_home[X$het_home$Measure == CT_COMBZ, ], "ed11d_home_cages.csv")
   w(X$het, "ed11e_spread.csv"); w(X$het_both, "ed11e_both_sexes.csv"); w(X$het_home, "ed11e_home_cages.csv")
+  d12 <- dots(CT_HAB_KEY); w(d12$values, "ed12d_values.csv"); w(d12$means, "ed12d_group_means.csv"); w(d12$brackets, "ed12d_brackets.csv")
+  w(heat(h_ids), "ed12e_heatmap.csv")
   V <- ct_validation_data(X); w(V$points[c("block", "metric", "title", "unit", "calibrated_on_these_animals", "manual_source", "Code", "Animal", "boris", "sleap")], "ed12_validation_pairs.csv"); w(X$agree, "ed12_agreement.csv")
 
   bundle <- ctp_dir(pin)
@@ -97,7 +105,7 @@ CT_PANEL_TABLES <- list(
                           c = c("ed10c_values", "ed10c_group_means", "ed10c_contrasts", "ed10c_interaction"), d = "ed10d_sessions"),
   extended_data_03 = list(a = c("ed11a_values", "ed11a_group_means", "ed11a_brackets"), b = "ed11b_heatmap", c = c("ed11c_combz_values", "ed11c_combz_tails"),
                           d = c("ed11d_batches", "ed11d_both_sexes", "ed11d_home_cages"), e = c("ed11e_spread", "ed11e_both_sexes", "ed11e_home_cages")),
-  extended_data_01 = list(a = "Plus maze", b = "Novel object", c = "Social tests"))
+  extended_data_01 = list(a = "Plus maze", b = "Novel object", c = "Social tests", d = c("ed12d_values", "ed12d_group_means", "ed12d_brackets"), e = "ed12e_heatmap"))
 CT_RECORD <- c("logs", "manuscript_figures", "conventional_tests", "render_record.yml")
 
 ct_stack <- function(tabs) { tabs <- Filter(function(x) nrow(x) > 0, tabs); cols <- unique(unlist(lapply(tabs, names)))
@@ -105,7 +113,7 @@ ct_stack <- function(tabs) { tabs <- Filter(function(x) nrow(x) > 0, tabs); cols
 ct_panel_source_data <- function(dir, pid, out) {
   rd <- function(f) utils::read.csv(file.path(dir, paste0(f, ".csv")), check.names = FALSE, stringsAsFactors = FALSE)
   vapply(names(CT_PANEL_TABLES[[pid]]), function(p) { spec <- CT_PANEL_TABLES[[pid]][[p]]
-    tab <- if (pid == "extended_data_01") {
+    tab <- if (pid == "extended_data_01" && p %in% c("a", "b", "c")) {
       pr <- rd("ed12_validation_pairs"); ag <- rd("ed12_agreement"); assay <- c(`Plus maze` = "EPM", `Novel object` = "NOR", `Social tests` = "SocP")[[spec]]
       ct_stack(list(cbind(table = "pairs", pr[pr$block == spec, ]), cbind(table = "agreement", ag[ag$assay == assay, ])))
     } else ct_stack(lapply(spec, function(f) { x <- rd(f); if (nrow(x)) cbind(table = sub("^ed[0-9]+[a-e]_", "", f), x) else x }))

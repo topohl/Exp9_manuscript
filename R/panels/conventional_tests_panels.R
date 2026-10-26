@@ -1,6 +1,6 @@
 # Panels of the conventional-tests Extended Data candidates (figures/scripts/extended_data_conventional_tests.R):
 # Extended Data 2 (conventional behaviour tests, locomotion by sex), 3 (physiology, spread of CombZ, also batch by batch) and 1
-# (automated against manual scoring).
+# (automated against manual scoring; the habituation trials of the novel object and social preference tests).
 #
 # Everything drawn is read from the pinned SISanalyzer bundle (R/conventional_bundle.R): per-animal values, batch-adjusted
 # group means with 95% intervals, d and adjusted p of the group comparisons, the heterogeneity, locomotion and validation
@@ -67,14 +67,26 @@ CT_SHORT <- c(
   adrenal_mg = "Adrenal (mg)", spleen_mg = "Spleen (mg)", adrenal_ratio = "Adrenal (mg/100 g)", spleen_ratio = "Spleen (mg/100 g)",
   cort_baseline = "Baseline (ng/mL)", cort_response = "Response (ng/mL)", cort_delta = "Rise (ng/mL)",
   suc_pref = "Preference (%)", suc_pref1 = "Preference, test 1 (%)", suc_pref2 = "Preference, test 2 (%)", suc_pref3 = "Preference, test 3 (%)",
-  suc_total1 = "Intake, test 1 (g)", suc_total2 = "Intake, test 2 (g)", suc_total3 = "Intake, test 3 (g)")
+  suc_total1 = "Intake, test 1 (g)", suc_total2 = "Intake, test 2 (g)", suc_total3 = "Intake, test 3 (g)",
+  nor_hab_total = "Contact (s)", nor_hab_side_pref = "Side D2", nor_hab_latency = "Latency (s)", nor_hab_entries = "Approaches (n)", nor_hab_bout = "Contact episode (s)",
+  nor_hab_prox = "Near objects (s)", nor_hab_distance = "Distance (cm)", nor_hab_speed = "Speed (cm/s)", nor_hab_stationary = "Stationary (s)", nor_hab_rearing = "Rearing (n)",
+  nor_d2_vs_hab = "Test D2 − side D2", nor_contact_change = "Contact, test − hab. (s)", nor_distance_change = "Distance, test − hab. (cm)",
+  soc_hab_total = "Contact (s)", soc_hab_side_pref = "Side D2", soc_hab_latency = "Latency (s)", soc_hab_entries = "Approaches (n)", soc_hab_bout = "Contact episode (s)",
+  soc_hab_prox = "Near cups (s)", soc_hab_distance = "Distance (cm)", soc_hab_speed = "Speed (cm/s)", soc_hab_stationary = "Stationary (s)",
+  soc1_pref_vs_hab = "Preference D2 − side D2", soc1_contact_change = "Contact, phase 1 − hab. (s)")
 # one-line titles of the dot panels
 CT_TITLE <- c(epm_open_pct = "Plus maze, open arms (%)", oft_centre_pct = "Open field, centre (%)", nor_d2 = "Novel object D2", soc1_pref = "Social preference D2",
               soc2_pref = "Social novelty D2", bw_change = "Weight gain (g)", adrenal_ratio = "Adrenal (mg/100 g)", spleen_ratio = "Spleen (mg/100 g)",
-              cort_delta = "Corticosterone rise (ng/mL)", suc_pref = "Sucrose preference (%)")
+              cort_delta = "Corticosterone rise (ng/mL)", suc_pref = "Sucrose preference (%)",
+              nor_hab_side_pref = "Objects, side D2", nor_hab_total = "Objects, contact (s)", soc_hab_side_pref = "Empty cups, side D2", soc_hab_total = "Empty cups, contact (s)")
 # one short name per test, the same on every page
 CT_TESTSHORT <- c(`Elevated plus maze` = "Plus maze", `Open field` = "Open field", `Novel object recognition` = "Novel object", `Social preference` = "Social tests",
-                  `Body weight` = "Body weight", `Organ weights` = "Organs", Corticosterone = "Corticosterone", `Sucrose preference` = "Sucrose")
+                  `Body weight` = "Body weight", `Organ weights` = "Organs", Corticosterone = "Corticosterone", `Sucrose preference` = "Sucrose",
+                  `Novel object recognition, habituation` = "Novel object, habituation", `Social preference, habituation` = "Social tests, habituation")
+# the habituation trials (bundle v13 on): drawn on Extended Data 1, never in the selections of Extended Data 2
+CT_HAB_TESTS <- c("Novel object recognition, habituation", "Social preference, habituation")
+CT_HAB_KEY <- c("nor_hab_side_pref", "nor_hab_total", "soc_hab_side_pref", "soc_hab_total")   # side bias and exploration before the stimulus
+ct_habituation_ids <- function(X) { ms <- X$measures[X$measures$test %in% CT_HAB_TESTS, , drop = FALSE]; ms$id[order(ms$order)] }
 CT_FOREST <- c(`Integrated Resilience (CombZ)` = "Integrated resilience", `Elevated plus maze: Open-arm share of time (%)` = "Plus maze, open arms",
                `Open field: Time in centre (%)` = "Open field, centre", `Social preference: Social preference (D2)` = "Social preference D2",
                `Social preference: Social novelty preference (D2)` = "Social novelty D2",
@@ -120,18 +132,18 @@ ct_dot_block <- function(X, ids, sex, titles, ncol = length(ids), show_titles = 
 }
 
 #' Dot panels of the given measures: females above, males below. Panel titles above the females only, group names below
-#' the males only (the columns line up).
+#' the males only (the columns line up); when the panels wrap onto more than one row, the males get titles too.
 ct_dots <- function(X, ids, ncol = length(ids)) {
   titles <- stats::setNames(ct_title(X, ids), ids)
   patchwork::wrap_elements(full = ct_dot_block(X, ids, "Female", titles, ncol, show_groups = FALSE) /
-                                  ct_dot_block(X, ids, "Male", titles, ncol, show_titles = FALSE))
+                                  ct_dot_block(X, ids, "Male", titles, ncol, show_titles = ncol < length(ids)))
 }
 
 # ------------------------------------------------------------------ heatmap of d
 #' The measures of a compact heatmap: the main readouts of the domain and every measure with a stored adjusted p below
-#' 0.05 in any comparison of either sex.
+#' 0.05 in any comparison of either sex. The habituation trials are never selected here (they have their own panel).
 ct_selected <- function(X, domain) {
-  ms <- X$measures[X$measures$domain == domain & !X$measures$id %in% c("loco_index", "CombZ"), , drop = FALSE]
+  ms <- X$measures[X$measures$domain == domain & !X$measures$id %in% c("loco_index", "CombZ") & !X$measures$test %in% CT_HAB_TESTS, , drop = FALSE]
   sig <- unique(X$contrasts$id[!is.na(X$contrasts$adj_p) & X$contrasts$adj_p < .05])
   ms$id[ms$main | ms$id %in% sig]
 }

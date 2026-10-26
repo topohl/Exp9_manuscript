@@ -55,7 +55,7 @@ testthat::test_that("a bracket is drawn exactly where the stored adjusted p of a
 
 testthat::test_that("the behaviour heatmap shows the main readouts and every measure with a significant comparison, nothing else", {
   sel <- ct_selected_behaviour(X)
-  beh <- X$measures$id[X$measures$domain == "Behaviour" & X$measures$id != "loco_index"]
+  beh <- X$measures$id[X$measures$domain == "Behaviour" & X$measures$id != "loco_index" & !X$measures$test %in% CT_HAB_TESTS]
   sig <- unique(X$contrasts$id[X$contrasts$id %in% beh & X$contrasts$adj_p < .05])
   testthat::expect_setequal(sel, union(MAINS$Behaviour, sig))
   H <- ct_heatmap_data(X, sel)
@@ -72,6 +72,26 @@ testthat::test_that("the physiology heatmap shows the main readouts and the sign
   H <- ct_heatmap_data(X, sel); testthat::expect_identical(nrow(H$cells), length(sel) * 8L)
   k <- match(paste(H$cells$Sex, H$cells$id, H$cells$comparison), paste(X$contrasts$Sex, X$contrasts$id, X$contrasts$comparison))
   testthat::expect_false(anyNA(k)); testthat::expect_identical(H$cells$d, X$contrasts$d[k])
+})
+
+testthat::test_that("the habituation panels draw the stored values of all 24 habituation measures and stay out of Extended Data 2", {
+  h <- ct_habituation_ids(X); testthat::expect_length(h, 24L)
+  testthat::expect_setequal(unique(X$measures$test[X$measures$id %in% h]), CT_HAB_TESTS)
+  testthat::expect_true(all(CT_HAB_KEY %in% h)); testthat::expect_false(any(h %in% c(ct_selected_behaviour(X), ct_selected_physiology(X))))
+  testthat::expect_false(any(X$measures$main[X$measures$id %in% h]))
+  for (s in CT_SEXES) {
+    d <- ct_dot_data(X, CT_HAB_KEY, s); v <- X$values[X$values$id %in% CT_HAB_KEY & X$values$Sex == s, ]
+    k <- match(paste(d$points$Animal, d$points$id), paste(v$Animal, v$id))
+    testthat::expect_identical(nrow(d$points), nrow(v)); testthat::expect_false(anyNA(k)); testthat::expect_identical(d$points$value, v$value[k])
+    testthat::expect_identical(nrow(d$means), length(CT_HAB_KEY) * 3L)
+    want <- X$contrasts[X$contrasts$id %in% CT_HAB_KEY & X$contrasts$Sex == s & X$contrasts$comparison %in% CT_CMP[1:3] & X$contrasts$adj_p < .05, ]
+    testthat::expect_setequal(if (nrow(d$brackets)) paste(d$brackets$id, d$brackets$comparison) else character(0), paste(want$id, want$comparison))
+  }
+  testthat::expect_false(any(X$values$Batch[X$values$id == "nor_hab_total"] == "B1"))   # batch 1 novel object habituation was never tracked
+  H <- ct_heatmap_data(X, h); testthat::expect_identical(nrow(H$cells), 24L * 8L)
+  k <- match(paste(H$cells$Sex, H$cells$id, H$cells$comparison), paste(X$contrasts$Sex, X$contrasts$id, X$contrasts$comparison))
+  testthat::expect_false(anyNA(k)); testthat::expect_identical(H$cells$d, X$contrasts$d[k])
+  testthat::expect_true(all(grepl("habituation", X$contrasts$family[X$contrasts$id %in% h])))
 })
 
 testthat::test_that("the locomotion and spread panels restate the stored tables", {

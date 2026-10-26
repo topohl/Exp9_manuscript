@@ -4,7 +4,7 @@ Three pages, promoted as the identities `extended_data_01` to `_03` (Extended Da
 
 - **Extended Data 2**: conventional behaviour tests (main readouts per sex; d of the main readouts and of every measure with a significant comparison) and the exploratory locomotion-by-sex result.
 - **Extended Data 3**: physiology (main readouts; d of the main readouts and of every measure with a significant comparison) and the spread of CombZ after stress.
-- **Extended Data 1**: the analysed automated (SLEAP) values against manual (BORIS) scoring of the 20 batch 1 males, from `Analysis/Behavior/Validation` (SISanalyzer `behaviour_tests/rebuild_validation.R`). The agreement table of the SLEAPanalyzer release describes an earlier detector and is not used; that folder's README says why.
+- **Extended Data 1**: the analysed automated (SLEAP) values against manual (BORIS) scoring of the 20 batch 1 males, from `Analysis/Behavior/Validation` (SISanalyzer `behaviour_tests/rebuild_validation.R`). The agreement table of the SLEAPanalyzer release describes an earlier detector and is not used; that folder's README says why. Since bundle v13 also the habituation trials of the novel object and social preference tests (d: side preference and contact per animal; e: d of all 24 habituation measures); they are never selected into Extended Data 2.
 
 Panels carry short labels only; the sample sizes and which readouts are CombZ components are in the legends, the full measure names in the legends and the per-panel source data.
 

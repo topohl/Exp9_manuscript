@@ -1376,7 +1376,7 @@ figures:
     extended_data_number: 2
     canonical_publication_id: extended_data_02
     analysis_repository: SISanalyzer
-    sisanalyzer_bundle_id: ctp_v12_20261026_6af1e09
+    sisanalyzer_bundle_id: ctp_v13_20261026_b40d53f
     producing_entry_point: figures/scripts/extended_data_conventional_tests.R --publication
     rendering_repository_computes_statistics: false
     question: >-
@@ -1404,7 +1404,7 @@ figures:
     extended_data_number: 3
     canonical_publication_id: extended_data_03
     analysis_repository: SISanalyzer
-    sisanalyzer_bundle_id: ctp_v12_20261026_6af1e09
+    sisanalyzer_bundle_id: ctp_v13_20261026_b40d53f
     producing_entry_point: figures/scripts/extended_data_conventional_tests.R --publication
     rendering_repository_computes_statistics: false
     question: >-
@@ -1428,18 +1428,19 @@ figures:
   ED_scoring_validation:
     title: Extended Data Figure 1
     width_mm: 183
-    height_mm: 64
+    height_mm: 168
     layout_mode: whole_page
     manuscript_role: behavioural_extended_data
     is_numbered_manuscript_figure: true
     extended_data_number: 1
     canonical_publication_id: extended_data_01
     analysis_repository: SISanalyzer
-    sisanalyzer_bundle_id: ctp_v12_20261026_6af1e09
+    sisanalyzer_bundle_id: ctp_v13_20261026_b40d53f
     producing_entry_point: figures/scripts/extended_data_conventional_tests.R --publication
     rendering_repository_computes_statistics: false
     question: >-
-      Does the automated scoring agree with manual scoring of the same videos?
+      Does the automated scoring agree with manual scoring of the same videos, and do the groups differ in the habituation
+      trials, before the novel object or the mice are added?
     panels:
       - id: 01a
         description: >-
@@ -1450,6 +1451,12 @@ figures:
       - id: 01c
         description: >-
           Social preference: analysed automated values against manual scores, batch 1.
+      - id: 01d
+        description: >-
+          Habituation trials: preference for the side of the later novel object or stranger mouse, and total contact, per animal, batch-adjusted group means and 95% intervals; brackets with the adjusted P where it is below 0.05.
+      - id: 01e
+        description: >-
+          Cohen's d of all 24 habituation measures, four comparisons per sex.
   # Manuscript-SUPPORTING, not a numbered manuscript figure. This is a
   # candidate-comparison / immunostaining-planning visualisation over three
   # already-nominated proteins. It introduces no new inferential analysis: both
