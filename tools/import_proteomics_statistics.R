@@ -2,11 +2,12 @@
 # Import the proteomic test statistics that the per-panel source data does not carry, for stats.xlsx, from the preserved
 # original-centring version of pRoteomics (Analysis/_archive_proteomics_pre_renormalisation_2026-10-19: the version every
 # proteomic figure shows; the original centring is the primary analysis, Tobias 2026-10-25):
-#   protein_statistics.csv            Figure 3e-g leading-edge proteins: log2 fold change, moderated t, raw P, BH FDR (limma, 3 vs 3)
+#   protein_statistics.csv            Figure 3e-g leading-edge proteins: log2 fold change, moderated t, raw P, BH FDR (limma, 3 vs 3);
+#                                     df.total and limma's 95% interval, recovered exactly from those (see below; added 2026-10-26)
 #   term_statistics.csv               Figure 3e-g card terms: gene-set size, and NES, raw P and BH FDR of SUS - RES
 #   control_signature_statistics.csv  Figure 2g / ED5d pairings: signature genes mapped onto the ranking (the GSEA set size), NES, raw P, signature FDR
 #   control_term_statistics.csv       Figure 2h terms: set size, NES, raw P and BH FDR
-# Rows are selected and copied as stored; nothing is computed. Every archive file must carry the SHA-256 that the figure's own
+# Rows are selected and copied as stored; only the protein df and interval are derived (exactly). Every archive file must carry the SHA-256 that the figure's own
 # import recorded (source_data/pRoteomics/figure_03_adaptation/input_manifest.csv; provenance/source_manifests/
 # render_inputs_manifest.csv), and every value the figures show must be reproduced exactly (gates), so the rows are of the same
 # version. The archive's paths exceed 260 characters: pass a short root (subst Q: <archive>).
@@ -72,6 +73,21 @@ for (k in c("e", "f", "g")) {
 }
 PROT <- do.call(rbind, prot_rows); TERM <- do.call(rbind, term_rows)
 gate("protein rows: 3 exemplars x 3 contrasts x 7 proteins", nrow(PROT) == 63L, nrow(PROT))
+# The archive stores log2FC, t and P but not limma's df or interval. Both are exact functions of the stored values: the moderated
+# t is log2FC / SE, so SE = log2FC / t, and P = 2 pt(-|t|, df.total), so df.total is the root of that equation; the interval is
+# limma's own (topTable confint = TRUE): log2FC +- qt(0.975, df.total) SE. Gates: P recomputed from t and df.total equals the
+# stored P, and df.total lies between the residual df and residual + prior df of the compartment's fit (added 2026-10-26).
+df_total <- function(t, p) { f <- function(d) log(2 * stats::pt(-abs(t), d)) - log(p); stats::uniroot(f, c(1, 1e5), tol = 1e-12)$root }
+gate("protein rows: t is not 0", all(PROT$t != 0))
+PROT$df_total <- mapply(df_total, PROT$t, PROT$pval)
+se <- abs(PROT$log2fc / PROT$t)
+PROT$ci_low <- PROT$log2fc - stats::qt(0.975, PROT$df_total) * se; PROT$ci_high <- PROT$log2fc + stats::qt(0.975, PROT$df_total) * se
+gate("protein rows: P recomputed from t and the recovered df.total = stored P (relative 1e-10)",
+     max(abs(2 * stats::pt(-abs(PROT$t), PROT$df_total) / PROT$pval - 1)) < 1e-10)
+gate("protein rows: df.total is that of the compartment's fit (neuropil 60-64, soma and microglia 24-28)",
+     all(ifelse(PROT$dataset == "neuron_neuropil", PROT$df_total >= 60 & PROT$df_total <= 64, PROT$df_total >= 24 & PROT$df_total <= 28)),
+     paste(round(range(PROT$df_total), 2), collapse = "-"))
+PROT <- PROT[, c(setdiff(names(PROT), c("df_total", "ci_low", "ci_high", "test", "source_file")), "df_total", "ci_low", "ci_high", "test", "source_file")]
 
 # ---------------------------------------------------------------- Figure 2g / ED5d and Figure 2h: control-only GSEA
 ri <- rd(repo_path("provenance", "source_manifests", "render_inputs_manifest.csv"))

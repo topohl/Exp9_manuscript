@@ -1,5 +1,5 @@
 "file","rows","sha256","archive"
-"protein_statistics.csv",63,"6d73106d537a9026dfe7a484eadf04246e422cd7acc59711445b911983e8a205","Analysis/_archive_proteomics_pre_renormalisation_2026-10-19 (original centring; pRoteomics b478a13)"
+"protein_statistics.csv",63,"345d47e4e241f44de5eda92833db0340c0fee3731163dbc99dd5988ef79198a7","Analysis/_archive_proteomics_pre_renormalisation_2026-10-19 (original centring; pRoteomics b478a13)"
 "term_statistics.csv",9,"c8940e78afe377af08a6636c492c23940c39df6cd60373071532f3ec3e11ae1d","Analysis/_archive_proteomics_pre_renormalisation_2026-10-19 (original centring; pRoteomics b478a13)"
 "control_signature_statistics.csv",30,"d447fba1ebe8c841569a089d19016461165f4cc3937c7661effd021d364b4526","Analysis/_archive_proteomics_pre_renormalisation_2026-10-19 (original centring; pRoteomics b478a13)"
 "control_term_statistics.csv",7,"9c56364fa96b414c18230ceb21f9f774c687bc3868849f51c79fbaac247511d6","Analysis/_archive_proteomics_pre_renormalisation_2026-10-19 (original centring; pRoteomics b478a13)"

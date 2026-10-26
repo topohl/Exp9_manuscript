@@ -56,6 +56,19 @@ test_that("every row of the statistics map resolves to stored values", {
   expect_equal(sum(g$Estimate[grepl("^RFID cohort .*: (Female|Male), ", g$Quantity)]), nrow(a2))
 })
 
+test_that("every statistics row has a 95% CI around its estimate, or a declared reason for none", {
+  map <- utils::read.csv(repo_path("figures", "contracts", "stats_map.csv"), stringsAsFactors = FALSE,
+                         colClasses = "character", na.strings = "")
+  all <- do.call(rbind, lapply(stats_tables(map), function(x) x[, c("Estimate", "CI low", "CI high", "Note", ".ci_na")]))
+  ci <- !all$.ci_na
+  expect_false(any(is.na(all$`CI low`[ci]) | is.na(all$`CI high`[ci])))
+  expect_true(all(grepl("no CI: ", all$Note[!ci], fixed = TRUE)))
+  e <- suppressWarnings(as.numeric(all$Estimate[ci]))
+  expect_true(all(as.numeric(all$`CI low`[ci]) <= e & e <= as.numeric(all$`CI high`[ci]), na.rm = TRUE))
+  m <- map[1, ]; m$ci_none <- NA; m$ci_low <- NA; m$ci_high <- NA; m$estimate <- "susceptibility_threshold"
+  expect_error(stats_tables(m), "no CI and no declared reason")
+})
+
 test_that("stats.xlsx has an about sheet and one sheet per map sheet", {
   map <- utils::read.csv(repo_path("figures", "contracts", "stats_map.csv"), stringsAsFactors = FALSE,
                          colClasses = "character", na.strings = "")

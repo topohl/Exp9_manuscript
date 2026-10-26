@@ -190,11 +190,18 @@ stats_rows <- function(m, vars) {
       if (length(v) != 1L) NA else v
     })
     names(vals) <- unname(STATS_FIELDS)
+    # A row has a 95% CI, or the map declares why it has none (ci_none): the CI cells then read "n/a" and the reason goes to Note.
+    no_ci <- c(is.na(vals[["CI low"]]), is.na(vals[["CI high"]]))
+    if (xor(no_ci[1], no_ci[2])) stop("stats map: '", m$quantity, "' has only one CI bound", call. = FALSE)
+    why <- if (all(no_ci) && !is.null(m$ci_none) && !is.na(m$ci_none)) stats_fill(m$ci_none, r) else NA_character_
+    if (all(no_ci) && is.na(why) && !counting)
+      stop("stats map: '", stats_fill(m$quantity, r), "' has no CI and no declared reason (ci_none)", call. = FALSE)
+    if (!is.na(why)) vals[["Note"]] <- paste0(if (!is.na(vals[["Note"]])) paste0(vals[["Note"]], "; ") else "", "no CI: ", why)
     data.frame(Panel = if (is.na(m$panel)) "" else m$panel, Quantity = stats_fill(m$quantity, r),
                as.data.frame(lapply(vals, function(v) if (is.numeric(v)) v else as.character(v)),
                              check.names = FALSE, stringsAsFactors = FALSE),
                Source = paste0(src, if (!is.na(m$filter) && nzchar(m$filter)) paste0(" [", m$filter, "]") else ""),
-               check.names = FALSE, stringsAsFactors = FALSE)
+               .ci_na = !is.na(why), check.names = FALSE, stringsAsFactors = FALSE)
   }))
 }
 
@@ -207,7 +214,7 @@ stats_tables <- function(map, vars = stats_vars()) {
     if (!is.null(out)) out$sheet <- map$sheet[i]
     out
   })
-  cols <- c("Panel", "Quantity", unname(STATS_FIELDS), "Source", "sheet")
+  cols <- c("Panel", "Quantity", unname(STATS_FIELDS), "Source", ".ci_na", "sheet")
   # numbers stay numbers; in a column that also holds text (e.g. df "3, 190.3") they are printed to 4 digits
   all <- do.call(rbind, lapply(Filter(Negate(is.null), rows), function(x) {
     x[] <- lapply(x, function(v) if (is.numeric(v)) ifelse(is.na(v), NA_character_, format(v, digits = 15, trim = TRUE)) else as.character(v))
@@ -218,6 +225,7 @@ stats_tables <- function(map, vars = stats_vars()) {
     all[[k]] <- if (all(is.na(v) | !is.na(num))) num else
       ifelse(!is.na(num), vapply(num, stats_text, ""), v)
   }
+  all$.ci_na <- all$.ci_na == "TRUE"   # rows with no CI by declaration: wb_stats writes "n/a" into their CI cells
   sheets <- unique(map$sheet)
   stats::setNames(lapply(sheets, function(s) {
     x <- all[all$sheet == s, setdiff(cols, "sheet"), drop = FALSE]; rownames(x) <- NULL; x }), sheets)
@@ -234,7 +242,7 @@ wb_stats <- function(tables, out_file, build, vars = stats_vars()) {
               paste0(build$commit, if (isTRUE(build$clean)) "" else " (uncommitted changes)"),
               format(Sys.time(), "%Y-%m-%d %H:%M %Z"),
               paste(basename(vars[c("ebb", "fsb", "s30b", "ctp")]), collapse = "; "),
-              paste("Estimate with its CI where stored; n; test; statistic and df; P (raw) and the adjusted P with its",
+              paste("Estimate with its 95% CI (n/a where none is defined, the reason in Note); n; test; statistic and df; P (raw) and the adjusted P with its",
                     "correction family. Source names the file and filter each row was read from."),
               "The source data workbooks (source_data/<figure>.xlsx) hold every plotted value."),
     stringsAsFactors = FALSE)
@@ -243,7 +251,10 @@ wb_stats <- function(tables, out_file, build, vars = stats_vars()) {
   openxlsx::setColWidths(wb, "about", cols = 1:2, widths = c(20, 120))
   for (s in names(tables)) {
     openxlsx::addWorksheet(wb, s)
-    openxlsx::writeData(wb, s, tables[[s]], headerStyle = WB_BOLD())
+    x <- tables[[s]]; na <- if (is.null(x$.ci_na)) rep(FALSE, nrow(x)) else x$.ci_na; x$.ci_na <- NULL
+    openxlsx::writeData(wb, s, x, headerStyle = WB_BOLD())
+    for (k in match(c("CI low", "CI high"), names(x))) for (i in which(na))   # numbers stay numbers; "n/a" only where declared
+      openxlsx::writeData(wb, s, "n/a", startCol = k, startRow = i + 1L)
     openxlsx::setColWidths(wb, s, cols = 2, widths = 60)
     openxlsx::freezePane(wb, s, firstRow = TRUE)
   }
