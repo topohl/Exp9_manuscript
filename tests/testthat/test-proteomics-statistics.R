@@ -1,4 +1,4 @@
-# source_data/proteomics_statistics: rows imported from the preserved original-centring archive by
+# source_data/proteomics_statistics: rows imported from the primary pRoteomics analysis (original centring) by
 # tools/import_proteomics_statistics.R for stats.xlsx. Every file matches its manifest and nothing else is in the folder.
 testthat::test_that("the proteomic statistics import matches its manifest", {
   source(testthat::test_path("..", "..", "R", "paths.R"))

@@ -367,7 +367,7 @@ figures:
           external validation is panel g. It draws the strongest canonical term
           per contrast for selected contrasts only; the complete term inventory
           is the released control_anatomical_go_bp_gsea supplementary table,
-          40,680 rows across all 11 contrasts, not a figure panel.
+          41,406 rows across all 11 contrasts, not a figure panel.
         producer_script: figures/scripts/figure_02_panels.R
         renderer: f9_internal_main
         render_mode: copy_svg

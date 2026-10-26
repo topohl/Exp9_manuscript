@@ -32,17 +32,22 @@ testthat::test_that("Figure 3 programmes are the seven v3 registry themes", {
     z$theme_id, p$source_theme_id[match(z$programme_id, p$programme_id)])))
 })
 
-testthat::test_that("the SUS-RES programme atlas equals the frozen v3 theme atlas", {
-  # Figure 3b and the Extended Data Fig. 6 atlases must be the same theme
-  # aggregation. The frozen SUS-RES atlas (the former panel 3b, drawn by
-  # f9_gsea_atlas) is the reference, cell for cell.
+testthat::test_that("the SUS-RES programme atlas equals the theme atlas of the same version", {
+  # Figure 3b and the Extended Data Fig. 7 atlases must be the same theme
+  # aggregation: Figure 3b aggregates the selection inventory, the atlases
+  # (f9_atlas_cells) the theme-assignment table, both imported from the same
+  # pRoteomics version (provenance/source_manifests/primary_inputs.csv).
+  # Cell for cell, SUS - RES.
+  th <- repo_path("results", "tables", "10_biological_integration",
+                  "gsea_wgcna_concordance", "global",
+                  "ontology_aware_gsea_theme_assignments_all_contrasts.csv")
+  testthat::skip_if_not(file.exists(th), "theme-assignment table not in the render workspace")
   cells <- f3a_programme_cells(f3a_inventory_for_test())
   cells <- cells[cells$contrast == "SUS - RES", , drop = FALSE]
   cells$theme_id <- f3a_programmes()$source_theme_id[
     match(cells$programme_id, f3a_programmes()$programme_id)]
-  ref <- utils::read.csv(repo_path(
-    "source_data", "pRoteomics", "figure_03", "figure_03b_source_data.csv"),
-    stringsAsFactors = FALSE)
+  ref <- f9_atlas_cells(utils::read.csv(th, stringsAsFactors = FALSE,
+                                        check.names = FALSE), "SUS - RES")
   m <- merge(cells, ref, by = c("dataset", "spatial_unit", "theme_id"),
              suffixes = c("", "_ref"))
   testthat::expect_identical(nrow(cells), nrow(ref))

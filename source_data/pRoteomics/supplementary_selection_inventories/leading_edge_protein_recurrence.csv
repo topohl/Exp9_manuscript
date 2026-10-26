@@ -8647,7 +8647,7 @@ SUS - RES,Efnb3,7,3,1,neuron_neuropil:CA1_so;neuron_neuropil:CA2_sr;neuron_neuro
 SUS - RES,Eif3f,7,3,1,neuron_neuropil:CA1_so;neuron_neuropil:CA2_sr;neuron_neuropil:CA3_sr,RNA processing / splicing / RNP organization;Translation / ribosome biogenesis,claim_eligible_supported_terms,RECURRENT_CORE,8,3
 SUS - RES,Gnal,7,3,3,microglia:CA1;neuron_neuropil:CA3_so;neuron_soma:CA2_sp,Synaptic signaling / vesicle-mediated transport,claim_eligible_supported_terms,RECURRENT_CORE,10,3
 SUS - RES,Lamtor1,7,3,2,microglia:CA3;neuron_neuropil:CA1_sr;neuron_neuropil:CA2_sr,Autophagy / endolysosomal trafficking;Translation / ribosome biogenesis,claim_eligible_supported_terms,RECURRENT_CORE,24,3
-SUS - RES,Pkp1,7,3,2,microglia:CA3;neuron_neuropil:CA1_so;neuron_neuropil:CA2_sr,Translation / ribosome biogenesis,claim_eligible_supported_terms,RECURRENT_CORE,39,7
+SUS - RES,Pkp1,7,3,2,microglia:CA3;neuron_neuropil:CA1_so;neuron_neuropil:CA2_sr,Translation / ribosome biogenesis,claim_eligible_supported_terms,RECURRENT_CORE,39,6
 SUS - RES,Pmch,7,3,2,microglia:DG;neuron_neuropil:CA3_so;neuron_neuropil:DG_po,Synaptic signaling / vesicle-mediated transport,claim_eligible_supported_terms,RECURRENT_CORE,11,4
 SUS - RES,Rac3,7,3,1,neuron_neuropil:CA3_sr;neuron_neuropil:DG_mo;neuron_neuropil:DG_po,Neuron projection development;Synaptic signaling / vesicle-mediated transport,claim_eligible_supported_terms,RECURRENT_CORE,23,3
 SUS - RES,Rasgrf1,7,3,1,neuron_neuropil:CA2_sr;neuron_neuropil:DG_mo;neuron_neuropil:DG_po,Neuron projection development;Synaptic signaling / vesicle-mediated transport,claim_eligible_supported_terms,RECURRENT_CORE,14,3
@@ -10334,7 +10334,7 @@ SUS - RES,Arr3,0,0,2,neuron_neuropil:CA2_sr;neuron_soma:CA2_sp,,all_supported_te
 SUS - RES,Arrb1,0,0,2,microglia:CA2;neuron_neuropil:CA2_so;neuron_neuropil:CA3_so;neuron_neuropil:CA3_sr,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,14,4
 SUS - RES,Arsa,0,0,1,neuron_neuropil:CA1_slm,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,1,1
 SUS - RES,As3mt,0,0,2,microglia:CA1;neuron_soma:CA1_sp,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,5,2
-SUS - RES,Asah1,0,0,2,neuron_neuropil:CA2_slm;neuron_soma:CA1_sp,Epidermal / keratinocyte differentiation,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,2,2
+SUS - RES,Asah1,0,0,1,neuron_soma:CA1_sp,Epidermal / keratinocyte differentiation,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,2,1
 SUS - RES,Asns,0,0,1,neuron_neuropil:CA1_slm,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,4,1
 SUS - RES,Aspa,0,0,1,neuron_soma:CA1_sp,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,1,1
 SUS - RES,Asph,0,0,3,microglia:CA1;neuron_neuropil:CA1_slm;neuron_neuropil:CA1_so;neuron_neuropil:CA2_sr;neuron_neuropil:CA3_so;neuron_neuropil:CA3_sr;neuron_neuropil:DG_po;neuron_soma:CA1_sp,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,34,8
@@ -10692,7 +10692,7 @@ SUS - RES,Dpp7,0,0,1,neuron_neuropil:CA2_so,,all_supported_terms,NOT_IN_A_CLAIM_
 SUS - RES,Dpp9,0,0,1,neuron_neuropil:CA2_so,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,1,1
 SUS - RES,Dr1,0,0,1,neuron_neuropil:CA2_sr;neuron_neuropil:CA3_sr,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,10,2
 SUS - RES,Drap1,0,0,2,microglia:CA2;neuron_neuropil:CA1_so;neuron_neuropil:CA2_so;neuron_neuropil:CA2_sr;neuron_neuropil:CA3_sr,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,10,5
-SUS - RES,Dsp,0,0,2,neuron_neuropil:CA2_slm;neuron_soma:CA1_sp,Epidermal / keratinocyte differentiation,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,2,2
+SUS - RES,Dsp,0,0,1,neuron_soma:CA1_sp,Epidermal / keratinocyte differentiation,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,2,1
 SUS - RES,Dstn,0,0,2,microglia:CA1;neuron_neuropil:CA2_sr,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,11,2
 SUS - RES,Dtd1,0,0,1,neuron_soma:CA2_sp,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,1,1
 SUS - RES,Dusp15,0,0,1,neuron_soma:CA2_sp,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,6,1
@@ -11915,7 +11915,6 @@ SUS - RES,Spon1,0,0,2,neuron_neuropil:CA2_so;neuron_soma:CA2_sp,,all_supported_t
 SUS - RES,Spr,0,0,1,neuron_neuropil:CA1_so,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,3,1
 SUS - RES,Spred1,0,0,1,neuron_soma:CA2_sp,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,1,1
 SUS - RES,Sprn,0,0,1,microglia:CA1,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,1,1
-SUS - RES,Sprr1b,0,0,1,neuron_neuropil:CA2_slm,Epidermal / keratinocyte differentiation,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,1,1
 SUS - RES,Spry2,0,0,2,microglia:CA1;neuron_neuropil:CA1_so;neuron_neuropil:CA2_sr;neuron_neuropil:CA3_sr;neuron_neuropil:DG_po,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,13,5
 SUS - RES,Sptan1,0,0,2,microglia:CA1;microglia:DG;neuron_neuropil:CA3_sr,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,3,3
 SUS - RES,Sptb,0,0,1,neuron_neuropil:CA3_sr,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,1,1
@@ -11993,8 +11992,8 @@ SUS - RES,Tfg,0,0,1,neuron_neuropil:DG_po,,all_supported_terms,NOT_IN_A_CLAIM_EL
 SUS - RES,Tfrc,0,0,3,microglia:CA1;microglia:DG;neuron_neuropil:CA1_so;neuron_neuropil:CA1_sr;neuron_neuropil:CA2_sr;neuron_soma:CA2_sp,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,11,6
 SUS - RES,Tgfb1i1,0,0,1,neuron_neuropil:CA2_so;neuron_neuropil:CA2_sr,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,6,2
 SUS - RES,Tgfbrap1,0,0,3,microglia:CA1;neuron_neuropil:CA1_so;neuron_neuropil:CA2_sr;neuron_soma:CA2_sp,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,12,4
-SUS - RES,Tgm1,0,0,2,neuron_neuropil:CA2_slm;neuron_soma:CA1_sp,Epidermal / keratinocyte differentiation,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,2,2
-SUS - RES,Tgm3,0,0,2,neuron_neuropil:CA2_slm;neuron_soma:CA1_sp,Epidermal / keratinocyte differentiation,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,2,2
+SUS - RES,Tgm1,0,0,1,neuron_soma:CA1_sp,Epidermal / keratinocyte differentiation,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,2,1
+SUS - RES,Tgm3,0,0,1,neuron_soma:CA1_sp,Epidermal / keratinocyte differentiation,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,2,1
 SUS - RES,Tha1,0,0,2,neuron_neuropil:CA1_slm;neuron_soma:CA1_sp,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,12,2
 SUS - RES,Them4,0,0,2,microglia:CA1;neuron_neuropil:CA1_slm;neuron_neuropil:CA1_sr;neuron_neuropil:CA3_sr;neuron_neuropil:DG_po,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,11,5
 SUS - RES,Thnsl2,0,0,1,neuron_soma:CA1_sp,,all_supported_terms,NOT_IN_A_CLAIM_ELIGIBLE_THEME,6,1

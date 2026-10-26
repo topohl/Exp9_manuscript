@@ -96,12 +96,35 @@ testthat::test_that("a materialised provenance-only input is exactly the recorde
   testthat::skip_if(!file.exists(ri))
   d <- utils::read.csv(ri, stringsAsFactors = FALSE)
   po <- d[d$disposition == "PROVENANCE_ONLY", , drop = FALSE]
+  # an input re-imported from the primary pRoteomics tree is recorded there instead
+  pi <- repo_path("provenance", "source_manifests", "primary_inputs.csv")
+  if (file.exists(pi)) {
+    p <- utils::read.csv(pi, stringsAsFactors = FALSE)
+    k <- match(po$declared_path, p$declared_path)
+    po$sha256[!is.na(k)] <- p$sha256[k[!is.na(k)]]
+  }
   local <- vapply(po$declared_path, function(p) repo_path(p), character(1))
   present <- file.exists(local)
   testthat::skip_if(!any(present), "no provenance-only input is materialised")
   for (i in which(present)) {
     testthat::expect_identical(unname(tools::sha256sum(local[[i]])), po$sha256[i],
                                info = po$declared_path[i])
+  }
+})
+
+testthat::test_that("every input re-imported from the primary tree is exactly the recorded bytes", {
+  # tools/import_primary_inputs.R records each input it takes from the
+  # regenerated primary analysis; the copy the figures read must match.
+  pi <- repo_path("provenance", "source_manifests", "primary_inputs.csv")
+  testthat::skip_if(!file.exists(pi))
+  p <- utils::read.csv(pi, stringsAsFactors = FALSE)
+  testthat::expect_true(all(grepl("^[0-9a-f]{40}$", p$source_commit)))
+  local <- vapply(p$declared_path, function(x) repo_path(x), character(1))
+  tracked <- startsWith(p$declared_path, "source_data/")
+  testthat::expect_true(all(file.exists(local[tracked])))
+  for (i in which(file.exists(local))) {
+    testthat::expect_identical(unname(tools::sha256sum(local[[i]])), p$sha256[i],
+                               info = p$declared_path[i])
   }
 })
 

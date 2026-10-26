@@ -50,7 +50,7 @@ rendering never addresses upstream internal folder structure.
 | `source_data/pRoteomics/` | frozen scientific source-data bundle + manifest |
 | `source_data/MMMSociability/` | frozen behaviour bundles + manifest (byte-exact, `-text` in `.gitattributes`) |
 | `source_data/SISanalyzer/` | frozen conventional-tests bundles |
-| `source_data/proteomics_statistics/` | proteomic test statistics for stats.xlsx (t, P, set sizes), rows copied from the original-centring archive by `tools/import_proteomics_statistics.R` |
+| `source_data/proteomics_statistics/` | proteomic test statistics for stats.xlsx (t, P, set sizes), rows copied from the primary pRoteomics analysis by `tools/import_proteomics_statistics.R` |
 | `source_data/MMMSociability_candidates/` | CC4 candidate bundles (MMMSociability Stage 31), byte-exact; pinned in `config/cc4_candidate_bundles.yml` |
 | | Only the bundles pinned in `config/*.yml` are read; the other bundle directories are earlier imports, kept unchanged for provenance. |
 | `provenance/` | claim provenance, publication registry, source manifests |
