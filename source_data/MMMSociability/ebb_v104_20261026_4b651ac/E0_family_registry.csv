@@ -1,0 +1,16 @@
+family_id,tier,question,members,method,declared_m
+P-CC1,primary,CC1,Q1|crossing_rate; Q1|shared_zone_use,holm,2
+P-TR,primary,CC1-CC4,Q2b|crossing_rate; Q2b|shared_zone_use,holm,2
+S-CC1-ORG,secondary,CC1,Q1|occupancy_dispersion; Q1|fragmentation,holm,2
+S-TR-ORG,secondary,CC1-CC4,Q2b|occupancy_dispersion; Q2b|fragmentation,holm,2
+FU-CC1|crossing_rate,follow-up,,RS_by_sex_CC1|crossing_rate|Female; RS_by_sex_CC1|crossing_rate|Male,holm,2
+FU-CC1|shared_zone_use,follow-up,,RS_by_sex_CC1|shared_zone_use|Female; RS_by_sex_CC1|shared_zone_use|Male,holm,2
+FU-CC1|occupancy_dispersion,follow-up,,RS_by_sex_CC1|occupancy_dispersion|Female; RS_by_sex_CC1|occupancy_dispersion|Male,holm,2
+FU-CC1|fragmentation,follow-up,,RS_by_sex_CC1|fragmentation|Female; RS_by_sex_CC1|fragmentation|Male,holm,2
+FU-TR|crossing_rate,follow-up,,TR_by_sex|crossing_rate|Female; TR_by_sex|crossing_rate|Male,holm,2
+FU-TR|shared_zone_use,follow-up,,TR_by_sex|shared_zone_use|Female; TR_by_sex|shared_zone_use|Male,holm,2
+FU-TR|occupancy_dispersion,follow-up,,TR_by_sex|occupancy_dispersion|Female; TR_by_sex|occupancy_dispersion|Male,holm,2
+FU-TR|fragmentation,follow-up,,TR_by_sex|fragmentation|Female; TR_by_sex|fragmentation|Male,holm,2
+PR1,prediction,,3 Spearman associations,BH,3
+PR2,prediction,,2 behaviour-only full-refit permutation tests,holm,2
+PR3,prediction,,3 feature x Sex interactions,BH,3

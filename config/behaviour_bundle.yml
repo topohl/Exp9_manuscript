@@ -1,10 +1,10 @@
-bundle_id: ebb_v103_20261022_26de745
-manifest_sha256: c82a3957aac328c170f38f86994b8f65a77eda3aa6c5316ce6bf9b2ec915a71a
+bundle_id: ebb_v104_20261026_4b651ac
+manifest_sha256: 9fe3c1a68db9a1d569791d684d710cb25b7098bc08f6ce03c53409bb87195c42
 config_id: E9_SIS_RFID_BEHAVIOR_CANONICAL
-config_version: 1.0.3
-config_sha256: 7f99d9e8a73758b80a66cc7c5ee12d26ff29a97f67da6da2cf7ae730eac7dee2
-mmm_git_commit: 26de745a858a0d7d35a06c8c53d7ac4f53364317
-stage29_run_commit: 78a6c60b60654a14af2cee70acee714bf99bea06
+config_version: 1.0.4
+config_sha256: 54a46eca459775d0ab91da40c7ab924f732ac0ae35b8b0e8c397b66a947c0fb5
+mmm_git_commit: 4b651acae4b7a21a74023d1e403771cd04a94ae4
+stage29_run_commit: 6d81c73dc6f3681b8cb582bd0afb7b647c756fa6
 producer: topohl/MMMSociability Analysis/16b_canonical_behavior_bundle.R
-imported_at: 2026-10-22T14:30:38+0200
+imported_at: 2026-10-26T21:43:24+0100
 importer: tools/import_behaviour_bundle.R

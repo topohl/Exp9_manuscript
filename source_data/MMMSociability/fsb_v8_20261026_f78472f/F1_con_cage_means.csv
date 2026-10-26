@@ -1,0 +1,97 @@
+measure,measure_label,unit,tier,Sex,CC,Batch,CageEpisodeID,Group,n_animals,n_in_cage,animals,cage_mean
+crossing_rate,RFID position-change rate,position changes/hour,primary,Female,CC1,B3,B3|sys.3|CC1,CON,4,4,OR413;OR414;OR415;OR416,20.677253185398275
+crossing_rate,RFID position-change rate,position changes/hour,primary,Female,CC1,B4,B4|sys.3|CC1,CON,4,4,OR537;OR538;OR539;OR540,24.4245186971284
+crossing_rate,RFID position-change rate,position changes/hour,primary,Female,CC1,B6,B6|sys.2|CC1,CON,4,4,OR639;OR643;OR644;OR645,28.141463695742374
+crossing_rate,RFID position-change rate,position changes/hour,primary,Female,CC2,B3,B3|sys.2|CC2,CON,4,4,OR413;OR414;OR415;OR416,23.8683269526633
+crossing_rate,RFID position-change rate,position changes/hour,primary,Female,CC2,B4,B4|sys.2|CC2,CON,4,4,OR537;OR538;OR539;OR540,18.733194276915953
+crossing_rate,RFID position-change rate,position changes/hour,primary,Female,CC2,B6,B6|sys.5|CC2,CON,4,4,OR639;OR643;OR644;OR645,27.499180442582677
+crossing_rate,RFID position-change rate,position changes/hour,primary,Female,CC3,B3,B3|sys.4|CC3,CON,4,4,OR413;OR414;OR415;OR416,25.58526437054485
+crossing_rate,RFID position-change rate,position changes/hour,primary,Female,CC3,B4,B4|sys.5|CC3,CON,4,4,OR537;OR538;OR539;OR540,20.220659072457526
+crossing_rate,RFID position-change rate,position changes/hour,primary,Female,CC3,B6,B6|sys.2|CC3,CON,4,4,OR639;OR643;OR644;OR645,35.406115859483975
+crossing_rate,RFID position-change rate,position changes/hour,primary,Female,CC4,B3,B3|sys.1|CC4,CON,4,4,OR413;OR414;OR415;OR416,28.790826324806577
+crossing_rate,RFID position-change rate,position changes/hour,primary,Female,CC4,B4,B4|sys.4|CC4,CON,4,4,OR537;OR538;OR539;OR540,21.61053026746725
+crossing_rate,RFID position-change rate,position changes/hour,primary,Female,CC4,B6,B6|sys.3|CC4,CON,4,4,OR639;OR643;OR644;OR645,34.4858134176376
+crossing_rate,RFID position-change rate,position changes/hour,primary,Male,CC1,B1,B1|sys.3|CC1,CON,4,4,OQ760;OQ761;OQ763;OQ765,25.663683844990224
+crossing_rate,RFID position-change rate,position changes/hour,primary,Male,CC1,B2,B2|sys.4|CC1,CON,4,4,OR126;OR127;OR128;OR129,18.226872847674123
+crossing_rate,RFID position-change rate,position changes/hour,primary,Male,CC1,B5,B5|sys.3|CC1,CON,4,4,OR621;OR622;OR623;OR624,18.001551383719775
+crossing_rate,RFID position-change rate,position changes/hour,primary,Male,CC2,B1,B1|sys.1|CC2,CON,4,4,OQ760;OQ761;OQ763;OQ765,20.651636308462024
+crossing_rate,RFID position-change rate,position changes/hour,primary,Male,CC2,B2,B2|sys.2|CC2,CON,4,4,OR126;OR127;OR128;OR129,16.06673747162825
+crossing_rate,RFID position-change rate,position changes/hour,primary,Male,CC2,B5,B5|sys.4|CC2,CON,4,4,OR621;OR622;OR623;OR624,17.84548564526665
+crossing_rate,RFID position-change rate,position changes/hour,primary,Male,CC3,B1,B1|sys.5|CC3,CON,4,4,OQ760;OQ761;OQ763;OQ765,31.10692097121515
+crossing_rate,RFID position-change rate,position changes/hour,primary,Male,CC3,B2,B2|sys.3|CC3,CON,4,4,OR126;OR127;OR128;OR129,18.96190537004905
+crossing_rate,RFID position-change rate,position changes/hour,primary,Male,CC3,B5,B5|sys.1|CC3,CON,4,4,OR621;OR622;OR623;OR624,25.78411871991225
+crossing_rate,RFID position-change rate,position changes/hour,primary,Male,CC4,B1,B1|sys.2|CC4,CON,4,4,OQ760;OQ761;OQ763;OQ765,32.269436981888
+crossing_rate,RFID position-change rate,position changes/hour,primary,Male,CC4,B2,B2|sys.1|CC4,CON,4,4,OR126;OR127;OR128;OR129,22.20491411723785
+crossing_rate,RFID position-change rate,position changes/hour,primary,Male,CC4,B5,B5|sys.4|CC4,CON,4,4,OR621;OR622;OR623;OR624,32.81436935559857
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Female,CC1,B3,B3|sys.3|CC1,CON,4,4,OR413;OR414;OR415;OR416,0.26887292966371124
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Female,CC1,B4,B4|sys.3|CC1,CON,4,4,OR537;OR538;OR539;OR540,0.31937216296937077
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Female,CC1,B6,B6|sys.2|CC1,CON,4,4,OR639;OR643;OR644;OR645,0.300313428295183
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Female,CC2,B3,B3|sys.2|CC2,CON,4,4,OR413;OR414;OR415;OR416,0.24085347288957498
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Female,CC2,B4,B4|sys.2|CC2,CON,4,4,OR537;OR538;OR539;OR540,0.217158578358466
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Female,CC2,B6,B6|sys.5|CC2,CON,4,4,OR639;OR643;OR644;OR645,0.24178958633577452
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Female,CC3,B3,B3|sys.4|CC3,CON,4,4,OR413;OR414;OR415;OR416,0.22649947053954778
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Female,CC3,B4,B4|sys.5|CC3,CON,4,4,OR537;OR538;OR539;OR540,0.27561733681018774
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Female,CC3,B6,B6|sys.2|CC3,CON,4,4,OR639;OR643;OR644;OR645,0.1758743947559765
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Female,CC4,B3,B3|sys.1|CC4,CON,4,4,OR413;OR414;OR415;OR416,0.24525732758805574
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Female,CC4,B4,B4|sys.4|CC4,CON,4,4,OR537;OR538;OR539;OR540,0.3547233009655145
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Female,CC4,B6,B6|sys.3|CC4,CON,4,4,OR639;OR643;OR644;OR645,0.206473672455796
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Male,CC1,B1,B1|sys.3|CC1,CON,4,4,OQ760;OQ761;OQ763;OQ765,0.27367154714953323
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Male,CC1,B2,B2|sys.4|CC1,CON,4,4,OR126;OR127;OR128;OR129,0.22786133770245148
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Male,CC1,B5,B5|sys.3|CC1,CON,4,4,OR621;OR622;OR623;OR624,0.3063026743323878
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Male,CC2,B1,B1|sys.1|CC2,CON,4,4,OQ760;OQ761;OQ763;OQ765,0.20535984441622024
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Male,CC2,B2,B2|sys.2|CC2,CON,4,4,OR126;OR127;OR128;OR129,0.2483670159091195
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Male,CC2,B5,B5|sys.4|CC2,CON,4,4,OR621;OR622;OR623;OR624,0.194685200031607
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Male,CC3,B1,B1|sys.5|CC3,CON,4,4,OQ760;OQ761;OQ763;OQ765,0.30809909258902723
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Male,CC3,B2,B2|sys.3|CC3,CON,4,4,OR126;OR127;OR128;OR129,0.238020185371278
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Male,CC3,B5,B5|sys.1|CC3,CON,4,4,OR621;OR622;OR623;OR624,0.215167389913033
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Male,CC4,B1,B1|sys.2|CC4,CON,4,4,OQ760;OQ761;OQ763;OQ765,0.19224603804001375
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Male,CC4,B2,B2|sys.1|CC4,CON,4,4,OR126;OR127;OR128;OR129,0.2821321775766595
+shared_zone_use,shared RFID-position occupancy,fraction of co-assigned dyadic time,primary,Male,CC4,B5,B5|sys.4|CC4,CON,4,4,OR621;OR622;OR623;OR624,0.2778026660302475
+occupancy_dispersion,occupancy dispersion,bits,secondary,Female,CC1,B3,B3|sys.3|CC1,CON,4,4,OR413;OR414;OR415;OR416,2.10116419858346
+occupancy_dispersion,occupancy dispersion,bits,secondary,Female,CC1,B4,B4|sys.3|CC1,CON,4,4,OR537;OR538;OR539;OR540,2.218610844244495
+occupancy_dispersion,occupancy dispersion,bits,secondary,Female,CC1,B6,B6|sys.2|CC1,CON,4,4,OR639;OR643;OR644;OR645,2.2148096198165623
+occupancy_dispersion,occupancy dispersion,bits,secondary,Female,CC2,B3,B3|sys.2|CC2,CON,4,4,OR413;OR414;OR415;OR416,2.2830778011366823
+occupancy_dispersion,occupancy dispersion,bits,secondary,Female,CC2,B4,B4|sys.2|CC2,CON,4,4,OR537;OR538;OR539;OR540,2.33065778252685
+occupancy_dispersion,occupancy dispersion,bits,secondary,Female,CC2,B6,B6|sys.5|CC2,CON,4,4,OR639;OR643;OR644;OR645,2.1203574763304074
+occupancy_dispersion,occupancy dispersion,bits,secondary,Female,CC3,B3,B3|sys.4|CC3,CON,4,4,OR413;OR414;OR415;OR416,2.19119720097026
+occupancy_dispersion,occupancy dispersion,bits,secondary,Female,CC3,B4,B4|sys.5|CC3,CON,4,4,OR537;OR538;OR539;OR540,2.211846442375795
+occupancy_dispersion,occupancy dispersion,bits,secondary,Female,CC3,B6,B6|sys.2|CC3,CON,4,4,OR639;OR643;OR644;OR645,2.60266732151905
+occupancy_dispersion,occupancy dispersion,bits,secondary,Female,CC4,B3,B3|sys.1|CC4,CON,4,4,OR413;OR414;OR415;OR416,2.3023502494475876
+occupancy_dispersion,occupancy dispersion,bits,secondary,Female,CC4,B4,B4|sys.4|CC4,CON,4,4,OR537;OR538;OR539;OR540,1.9951715117101625
+occupancy_dispersion,occupancy dispersion,bits,secondary,Female,CC4,B6,B6|sys.3|CC4,CON,4,4,OR639;OR643;OR644;OR645,2.295570813130783
+occupancy_dispersion,occupancy dispersion,bits,secondary,Male,CC1,B1,B1|sys.3|CC1,CON,4,4,OQ760;OQ761;OQ763;OQ765,2.0713343460383373
+occupancy_dispersion,occupancy dispersion,bits,secondary,Male,CC1,B2,B2|sys.4|CC1,CON,4,4,OR126;OR127;OR128;OR129,1.9398013393804425
+occupancy_dispersion,occupancy dispersion,bits,secondary,Male,CC1,B5,B5|sys.3|CC1,CON,4,4,OR621;OR622;OR623;OR624,1.9161658647901376
+occupancy_dispersion,occupancy dispersion,bits,secondary,Male,CC2,B1,B1|sys.1|CC2,CON,4,4,OQ760;OQ761;OQ763;OQ765,2.224373145261025
+occupancy_dispersion,occupancy dispersion,bits,secondary,Male,CC2,B2,B2|sys.2|CC2,CON,4,4,OR126;OR127;OR128;OR129,1.9600002840489825
+occupancy_dispersion,occupancy dispersion,bits,secondary,Male,CC2,B5,B5|sys.4|CC2,CON,4,4,OR621;OR622;OR623;OR624,2.1968670800316747
+occupancy_dispersion,occupancy dispersion,bits,secondary,Male,CC3,B1,B1|sys.5|CC3,CON,4,4,OQ760;OQ761;OQ763;OQ765,1.9899189004916076
+occupancy_dispersion,occupancy dispersion,bits,secondary,Male,CC3,B2,B2|sys.3|CC3,CON,4,4,OR126;OR127;OR128;OR129,2.1212618426057825
+occupancy_dispersion,occupancy dispersion,bits,secondary,Male,CC3,B5,B5|sys.1|CC3,CON,4,4,OR621;OR622;OR623;OR624,2.3774162078160974
+occupancy_dispersion,occupancy dispersion,bits,secondary,Male,CC4,B1,B1|sys.2|CC4,CON,4,4,OQ760;OQ761;OQ763;OQ765,2.26437971384258
+occupancy_dispersion,occupancy dispersion,bits,secondary,Male,CC4,B2,B2|sys.1|CC4,CON,4,4,OR126;OR127;OR128;OR129,2.01445957199157
+occupancy_dispersion,occupancy dispersion,bits,secondary,Male,CC4,B5,B5|sys.4|CC4,CON,4,4,OR621;OR622;OR623;OR624,2.1994270544848
+fragmentation,fragmentation,proportion of bouts,secondary,Female,CC1,B3,B3|sys.3|CC1,CON,4,4,OR413;OR414;OR415;OR416,0.4561688586290015
+fragmentation,fragmentation,proportion of bouts,secondary,Female,CC1,B4,B4|sys.3|CC1,CON,4,4,OR537;OR538;OR539;OR540,0.4228119035764665
+fragmentation,fragmentation,proportion of bouts,secondary,Female,CC1,B6,B6|sys.2|CC1,CON,4,4,OR639;OR643;OR644;OR645,0.41677443375904
+fragmentation,fragmentation,proportion of bouts,secondary,Female,CC2,B3,B3|sys.2|CC2,CON,4,4,OR413;OR414;OR415;OR416,0.374001210653753
+fragmentation,fragmentation,proportion of bouts,secondary,Female,CC2,B4,B4|sys.2|CC2,CON,4,4,OR537;OR538;OR539;OR540,0.49794330307762374
+fragmentation,fragmentation,proportion of bouts,secondary,Female,CC2,B6,B6|sys.5|CC2,CON,4,4,OR639;OR643;OR644;OR645,0.3456196581196583
+fragmentation,fragmentation,proportion of bouts,secondary,Female,CC3,B3,B3|sys.4|CC3,CON,4,4,OR413;OR414;OR415;OR416,0.47210026845987424
+fragmentation,fragmentation,proportion of bouts,secondary,Female,CC3,B4,B4|sys.5|CC3,CON,4,4,OR537;OR538;OR539;OR540,0.4413355113355115
+fragmentation,fragmentation,proportion of bouts,secondary,Female,CC3,B6,B6|sys.2|CC3,CON,4,4,OR639;OR643;OR644;OR645,0.450946080431974
+fragmentation,fragmentation,proportion of bouts,secondary,Female,CC4,B3,B3|sys.1|CC4,CON,4,4,OR413;OR414;OR415;OR416,0.43874418160498874
+fragmentation,fragmentation,proportion of bouts,secondary,Female,CC4,B4,B4|sys.4|CC4,CON,4,4,OR537;OR538;OR539;OR540,0.4615248492507268
+fragmentation,fragmentation,proportion of bouts,secondary,Female,CC4,B6,B6|sys.3|CC4,CON,4,4,OR639;OR643;OR644;OR645,0.3892183549848565
+fragmentation,fragmentation,proportion of bouts,secondary,Male,CC1,B1,B1|sys.3|CC1,CON,4,4,OQ760;OQ761;OQ763;OQ765,0.42261602993395253
+fragmentation,fragmentation,proportion of bouts,secondary,Male,CC1,B2,B2|sys.4|CC1,CON,4,4,OR126;OR127;OR128;OR129,0.4425185732954165
+fragmentation,fragmentation,proportion of bouts,secondary,Male,CC1,B5,B5|sys.3|CC1,CON,4,4,OR621;OR622;OR623;OR624,0.504894364965546
+fragmentation,fragmentation,proportion of bouts,secondary,Male,CC2,B1,B1|sys.1|CC2,CON,4,4,OQ760;OQ761;OQ763;OQ765,0.4854109095232935
+fragmentation,fragmentation,proportion of bouts,secondary,Male,CC2,B2,B2|sys.2|CC2,CON,4,4,OR126;OR127;OR128;OR129,0.5388098210106322
+fragmentation,fragmentation,proportion of bouts,secondary,Male,CC2,B5,B5|sys.4|CC2,CON,4,4,OR621;OR622;OR623;OR624,0.5279043867851165
+fragmentation,fragmentation,proportion of bouts,secondary,Male,CC3,B1,B1|sys.5|CC3,CON,4,4,OQ760;OQ761;OQ763;OQ765,0.44026112551744
+fragmentation,fragmentation,proportion of bouts,secondary,Male,CC3,B2,B2|sys.3|CC3,CON,4,4,OR126;OR127;OR128;OR129,0.5771134735897038
+fragmentation,fragmentation,proportion of bouts,secondary,Male,CC3,B5,B5|sys.1|CC3,CON,4,4,OR621;OR622;OR623;OR624,0.430041956082309
+fragmentation,fragmentation,proportion of bouts,secondary,Male,CC4,B1,B1|sys.2|CC4,CON,4,4,OQ760;OQ761;OQ763;OQ765,0.5092508466192678
+fragmentation,fragmentation,proportion of bouts,secondary,Male,CC4,B2,B2|sys.1|CC4,CON,4,4,OR126;OR127;OR128;OR129,0.47628061125440274
+fragmentation,fragmentation,proportion of bouts,secondary,Male,CC4,B5,B5|sys.4|CC4,CON,4,4,OR621;OR622;OR623;OR624,0.4571295032850492

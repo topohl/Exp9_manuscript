@@ -10,7 +10,7 @@
 #
 # Rendering only. Every panel plots stored values of the pinned bundles, read
 # through R/behaviour_bundle.R, R/stage30_bundle.R and R/figure_support_bundle.R:
-# the Stage 29 v1.0.3 behaviour bundle (ebb), the Stage 30 figure bundle (s30b) and
+# the Stage 29 v1.0.4 behaviour bundle (ebb), the Stage 30 figure bundle (s30b) and
 # the figure-support bundle (fsb: descriptive CON cage means and the CombZ
 # components as they enter CombZ, figure_01_option3_*; from fsb_v2 also the
 # verbatim rows of the MMM post hoc CON/RES/SUS run 29b, figure_01_option3b_house
@@ -86,18 +86,18 @@ bundles:
   ebb:
     pin: config/behaviour_bundle.yml
     reader: R/behaviour_bundle.R
-    bundle_id: ebb_v103_20261022_26de745
-    manifest_sha256: c82a3957aac328c170f38f86994b8f65a77eda3aa6c5316ce6bf9b2ec915a71a
+    bundle_id: ebb_v104_20261026_4b651ac
+    manifest_sha256: 9fe3c1a68db9a1d569791d684d710cb25b7098bc08f6ce03c53409bb87195c42
   s30b:
     pin: config/stage30_bundle.yml
     reader: R/stage30_bundle.R
-    bundle_id: s30b_v12_20261022_660e2f6
-    manifest_sha256: 9b1039c85a7478c39f0b9a9584f7c968d7d50a6813ae1e648f135e91b6536343
+    bundle_id: s30b_v13_20261026_dab983e
+    manifest_sha256: 4f132adb14942d509f23b1d1a5fac2a36ef1174f91adde1979c05f943c80fd38
   fsb:
     pin: config/figure_support_bundle.yml
     reader: R/figure_support_bundle.R
-    bundle_id: fsb_v7_20261025_daafa7a
-    manifest_sha256: e7e6b8c592a66fc97784b9602ce727df59cc0e99cb614bd8064f71dba2a55a4f
+    bundle_id: fsb_v8_20261026_f78472f
+    manifest_sha256: cd8ac33dd155908091ec8e061cf6cf09ca2ea3014bae0c292893c34f370f0bda
 libraries:
   - R/panels/behaviour_figure_style.R
   - R/panels/behaviour_figure1_panels.R
@@ -598,7 +598,7 @@ candidates:
       b, e and f exactly as option 3 (same builders, arguments and boxes, so the same panel SVGs) and c
       and d rebuilt at option 3's boxes. c (110 x 53): per measure (position-change rate; social-spatial
       overlap) and sex, the animals as circles coloured by group, the post hoc three-group means and 95%
-      CIs (fsb P1, verbatim from the MMM post hoc run 29b; registry POSTHOC_CON_CONTRASTS v1.2), and
+      CIs (fsb P1, verbatim from the MMM post hoc run 29b; registry POSTHOC_CON_CONTRASTS v1.3), and
       under each sex a forest of RES - CON, SUS - CON and SUS - RES with the Holm P (m = 3) of each row;
       no CON cage means and no female - male row. Group-mean intervals beyond the presentational y
       limits end in an arrowhead at the limit (the CON means; Kenward-Roger df below 2). d (62 x 53):
@@ -640,7 +640,7 @@ candidates:
           First active phase after CC1, per measure and sex: animals as circles by group (ebb A1), the post
           hoc batch-balanced CON / RES / SUS means with 95% CIs, and under each sex the post hoc RES - CON,
           SUS - CON and SUS - RES contrasts with their Holm P (fsb P1, primary model; registry
-          POSTHOC_CON_CONTRASTS v1.2); the legend quotes the registered FU-CC1 and P-CC1 results (ebb C2,
+          POSTHOC_CON_CONTRASTS v1.3); the legend quotes the registered FU-CC1 and P-CC1 results (ebb C2,
           E_multiplicity), the n, the Kenward-Roger df and the one sensitivity disagreement (fsb P1, P1b)
         args: {key_prefix: f1o3b_, plot_top_mm: 7.95, axis_mm: 47.5}
         jitter_seed: [2, 2]

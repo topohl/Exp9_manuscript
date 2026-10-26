@@ -1,0 +1,9 @@
+step,event,timing,role,detail,n_animals,n_windows
+1,first cage change (CC1),P25,reference,no RFID recording exists before CC1,,
+2,first active phase after CC1,"18:30-06:30 (12 h), from an estimated 2.3-8.5 h after the change",primary window (CC1),bin-free RFID position-change rate and shared RFID-position occupancy,111,111
+3,cage changes CC2-CC4,after CC1,stressor,SIS: repeated changes of cage composition; CON: never regrouped,,
+4,active phase after each of CC2-CC4,18:30-06:30 (12 h) after each change,trajectory windows (CC1-CC4),same window definition at every cage change,111,444
+5,later behavioural outcome tests,during and after the paradigm,outcome,novel-object recognition and sucrose preference,,
+6,terminal physiology,terminal,outcome,"corticosterone, adrenal weight, spleen weight",,
+7,CombZ computed,after all components,outcome,unweighted mean of six within-sex control-referenced z-scores,117,
+8,RES/SUS assigned,after CombZ,classification,within-sex control mean minus one control population SD,117,

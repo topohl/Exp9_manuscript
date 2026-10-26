@@ -2,7 +2,7 @@
 # (figures/candidates/behaviour_v101_s30_candidates.R, figures/contracts/behaviour_v101_s30_contract.yml,
 # figures/contracts/behaviour_v101_s30_annotation_map.csv; CANDIDATE_SPEC D).
 #
-# The candidates plot stored values of two pinned bundles: the Stage 29 v1.0.3 behaviour bundle
+# The candidates plot stored values of two pinned bundles: the Stage 29 v1.0.4 behaviour bundle
 # (ebb) and the Stage 30 figure bundle (s30b). The risks are a statistic computed here, a number
 # on a panel that is not a stored cell, wording the manuscript bans, an output that differs from
 # its receipt, and a candidate that looks promoted. These guards pin each of them.
@@ -127,7 +127,7 @@ OPTION3 <- "figure_01_option3_house"; OPTION3_D <- "figure_01_option3_panel_d"
 # Figure 1 option 3b (OPTION3B_SPEC): option 3 with c (post hoc CON / RES / SUS, fsb P1) and d rebuilt.
 OPTION3B <- "figure_01_option3b_house"
 # The frozen post hoc registry whose rows (fsb P1, P1b) option 3b may draw or quote.
-POSTHOC_REGISTRY_SHA256 <- "443845e2e24bafe2027cb3da278ed89d48778fd3ca4a6dbadc1f384ca8fa52a4"
+POSTHOC_REGISTRY_SHA256 <- "c594d4e84b3fc81d3a3f3c5aaab932191949a1c1b162c7e62bf871f8f7e26c0d"
 # Fill and stroke colours an SVG draws (svglite style attributes), upper-case hex.
 svg_colours <- function(path) {
   txt <- paste(readLines(path, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
