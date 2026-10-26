@@ -17,12 +17,12 @@ figures:
     manuscript_role: primary_behavioural_figure
     is_numbered_manuscript_figure: true
     analysis_repository: topohl/MMMSociability
-    analysis_frozen_at: 78a6c60b60654a14af2cee70acee714bf99bea06
+    analysis_frozen_at: 6d81c73dc6f3681b8cb582bd0afb7b647c756fa6
     behaviour_bundle_id: ebb_v104_20261026_4b651ac
-    behaviour_config_version: "1.0.3"
-    behaviour_config_sha256: 7f99d9e8a73758b80a66cc7c5ee12d26ff29a97f67da6da2cf7ae730eac7dee2
+    behaviour_config_version: "1.0.4"
+    behaviour_config_sha256: 54a46eca459775d0ab91da40c7ab924f732ac0ae35b8b0e8c397b66a947c0fb5
     figure_support_bundle_id: fsb_v8_20261026_f78472f
-    figure_support_frozen_at: 26e7f43bf0a2fdda357f5ca7bbee16e68ea3576d
+    figure_support_frozen_at: f78472f46b48c83c8b77de5da0e6a28d562729bf
     source_data_frozen_in: source_data/MMMSociability/ebb_v104_20261026_4b651ac
     figure_support_source_data_frozen_in: source_data/MMMSociability/fsb_v8_20261026_f78472f
     rendering_repository_computes_statistics: false
@@ -133,7 +133,7 @@ figures:
         required_columns: [AnimalNum, Group, Sex, observed_CombZ, heldout_prediction, Movement_mean, crossing_rate_equiv_per_h]
         expected_rows: 111
         scientific_contract: descriptive_sex_stratified_association_no_model_fitted_here
-        statistic: Stage 09 sex-stratified Spearman rho of Movement_mean with CombZ, BH q within sex over three features (descriptive, not an interaction test); least-squares display line and 95% band from the post hoc run 29c (registry POSTHOC_MOVEMENT_COMBZ_FIT v1.2; display only, adds no test)
+        statistic: Stage 09 sex-stratified Spearman rho of Movement_mean with CombZ, BH q within sex over three features (descriptive, not an interaction test); least-squares display line and 95% band from the post hoc run 29c (registry POSTHOC_MOVEMENT_COMBZ_FIT v1.3; display only, adds no test)
         colour_encoding: group by colour; the y axis is the score the groups were cut from
         biological_unit: AnimalID
         hemisphere_handling: not_applicable_behavioural
@@ -1237,12 +1237,12 @@ figures:
     extended_data_number: 4
     canonical_publication_id: extended_data_04
     analysis_repository: topohl/MMMSociability
-    analysis_frozen_at: 78a6c60b60654a14af2cee70acee714bf99bea06
+    analysis_frozen_at: 6d81c73dc6f3681b8cb582bd0afb7b647c756fa6
     behaviour_bundle_id: ebb_v104_20261026_4b651ac
-    behaviour_config_version: "1.0.3"
-    behaviour_config_sha256: 7f99d9e8a73758b80a66cc7c5ee12d26ff29a97f67da6da2cf7ae730eac7dee2
+    behaviour_config_version: "1.0.4"
+    behaviour_config_sha256: 54a46eca459775d0ab91da40c7ab924f732ac0ae35b8b0e8c397b66a947c0fb5
     figure_support_bundle_id: fsb_v8_20261026_f78472f
-    figure_support_frozen_at: 26e7f43bf0a2fdda357f5ca7bbee16e68ea3576d
+    figure_support_frozen_at: f78472f46b48c83c8b77de5da0e6a28d562729bf
     source_data_frozen_in: source_data/MMMSociability/ebb_v104_20261026_4b651ac
     figure_support_source_data_frozen_in: source_data/MMMSociability/fsb_v8_20261026_f78472f
     historical_generation: bundle_render
