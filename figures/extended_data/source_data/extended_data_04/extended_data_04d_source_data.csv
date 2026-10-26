@@ -1,7 +1,7 @@
 "Feature","Sex","Spearman rho"
-"Mean movement","Female",-0.504884249770003
-"Movement RMSSD","Female",-0.337291211664462
-"Entropy ACF1","Female",-0.281983450736719
-"Mean movement","Male",-0.455416005378006
-"Movement RMSSD","Male",-0.246895661990002
-"Entropy ACF1","Male",-0.074100951459442
+"Mean movement","Female",-0.508391672346102
+"Movement RMSSD","Female",-0.341413147128488
+"Entropy ACF1","Female",-0.288012550370667
+"Mean movement","Male",-0.459770580728234
+"Movement RMSSD","Male",-0.250120948234156
+"Entropy ACF1","Male",-0.0795839380745041
