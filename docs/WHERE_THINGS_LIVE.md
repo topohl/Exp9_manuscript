@@ -10,12 +10,12 @@ The Word file `S:\Lab_Member\Tobi\Paper\E9SIS\manuscript_resiliencandsusceptibil
 
 | What | Produced in | Enters this repository as | Rendered by |
 |---|---|---|---|
-| Figure 1 (home-cage RFID behaviour, CombZ, prediction) | MMMSociability (`Analysis/Behavior/RFID` holds its outputs) | frozen bundles `ebb_v103_20261022_26de745` and `fsb_v7_20261025_daafa7a` (outcome version ov3) under `source_data/MMMSociability/` | `figures/scripts/figure_01_panels.R`, entry point `figures/scripts/figure_01.R` |
+| Figure 1 (home-cage RFID behaviour, CombZ, prediction) | MMMSociability (`Analysis/Behavior/RFID` holds its outputs) | frozen bundles `ebb_v104_20261026_4b651ac` and `fsb_v8_20261026_f78472f` (outcome version ov4) under `source_data/MMMSociability/` | `figures/scripts/figure_01_panels.R`, entry point `figures/scripts/figure_01.R` |
 | Figures 2 and 3; Extended Data 5 to 8 | pRoteomics (`Analysis/proteomics`) | `source_data/pRoteomics/` with `manifest.csv` | the `final_truth_v9` renderers in `figures/`, per-panel source data under `figures/main/source_data/` and `figures/extended_data/source_data/` |
 | Extended Data 4 (behaviour) | MMMSociability | the same frozen bundles as Figure 1 | `figures/scripts/extended_data_behaviour_panels.R` |
 | Withheld (formerly Extended Data 4 and 7) | | | withheld; registry ids `withheld_wgcna`, `withheld_identity_locations` |
 | Extended Data 1 to 3 (conventional tests, physiology, heterogeneity, locomotion; manual versus automated scoring; habituation trials) | SISanalyzer (`Analysis/Behavior/All_tests`, `Analysis/Behavior/Validation`, `Analysis/Physiology`, `Analysis/Resilience`) | frozen bundle `ctp_v14_20261026_f146fe4` under `source_data/SISanalyzer/` | `figures/scripts/extended_data_conventional_tests.R`, per-panel source data under `figures/extended_data/source_data/`; see `CONVENTIONAL_TESTS_CANDIDATE.md` |
-| CC4, Stage 30, WGCNA theme and GO candidates | MMMSociability or pRoteomics | `source_data/MMMSociability_candidates/`, `source_data/pRoteomics/*_candidate`, `source_data/MMMSociability/` (Stage 30: `s30b_v12_20261022_660e2f6`) | the `*_candidate.R` renderers in `figures/`; see `ADD_A_CANDIDATE.md` |
+| CC4, Stage 30, WGCNA theme and GO candidates | MMMSociability or pRoteomics | `source_data/MMMSociability_candidates/`, `source_data/pRoteomics/*_candidate`, `source_data/MMMSociability/` (Stage 30: `s30b_v13_20261026_dab983e`) | the `*_candidate.R` renderers in `figures/`; see `ADD_A_CANDIDATE.md` |
 
 Registry of what is canonical, with the commit and hash of every promoted artefact: `provenance/publication_registry/canonical_publication_registry.csv`. Hash manifests of every import: `provenance/source_manifests/`; `tools/verify_source_bundles.R` checks them.
 
@@ -35,4 +35,4 @@ Their code is in the SISanalyzer repository (`behaviour_tests`, `physiology_test
 
 - Mentions of `docs/*.md` files that are not in this folder (`COMBZ_CANONICAL_DEFINITION.md`, `MANUSCRIPT_STATISTICAL_CONTRACT.md`, `OUTPUT_CONTRACTS.md`, `DATASETS.md`, and others) refer to the MMMSociability or pRoteomics repository. `figures/README.md` cites `docs/OUTPUT_CONTRACTS.md`, which is in pRoteomics.
 - The pRoteomics commit once recorded in the README no longer resolves; see the notes under the source table in `README.md`.
-- The Stage 30 candidate family keeps the name `behaviour_v101_s30` for its paths and receipt keys although it draws from `ebb_v103` and `s30b_v12`; it is renamed at its next re-render.
+- The Stage 30 candidate family keeps the name `behaviour_v101_s30` for its paths and receipt keys although it draws from `ebb_v104` and `s30b_v13`; it is renamed at its next re-render.
