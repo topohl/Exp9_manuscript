@@ -87,107 +87,107 @@
 "heatmap","Male","soc_hab_total","Contact (s)","Total contact with the empty cups (s)","SUS - CON",0.641,0.342,FALSE
 "heatmap","Male","soc_hab_total","Contact (s)","Total contact with the empty cups (s)","RES - SUS",-0.106,0.971,FALSE
 "heatmap","Male","soc_hab_total","Contact (s)","Total contact with the empty cups (s)","SIS - CON",0.582,0.283,FALSE
-"heatmap","Female","nor_distance_change","Distance, test − hab. (cm)","Change in distance, test minus habituation (cm)","RES - CON",-0.411,0.619,FALSE
-"heatmap","Female","nor_distance_change","Distance, test − hab. (cm)","Change in distance, test minus habituation (cm)","SUS - CON",-0.209,0.984,FALSE
-"heatmap","Female","nor_distance_change","Distance, test − hab. (cm)","Change in distance, test minus habituation (cm)","RES - SUS",-0.202,0.744,FALSE
+"heatmap","Female","nor_distance_change","Distance, test − hab. (cm)","Change in distance, test minus habituation (cm)","RES - CON",-0.411,0.543,FALSE
+"heatmap","Female","nor_distance_change","Distance, test − hab. (cm)","Change in distance, test minus habituation (cm)","SUS - CON",-0.209,0.885,FALSE
+"heatmap","Female","nor_distance_change","Distance, test − hab. (cm)","Change in distance, test minus habituation (cm)","RES - SUS",-0.202,0.734,FALSE
 "heatmap","Female","nor_distance_change","Distance, test − hab. (cm)","Change in distance, test minus habituation (cm)","SIS - CON",-0.329,0.971,FALSE
 "heatmap","Male","nor_distance_change","Distance, test − hab. (cm)","Change in distance, test minus habituation (cm)","RES - CON",0.196,0.76,FALSE
 "heatmap","Male","nor_distance_change","Distance, test − hab. (cm)","Change in distance, test minus habituation (cm)","SUS - CON",0.005,0.995,FALSE
-"heatmap","Male","nor_distance_change","Distance, test − hab. (cm)","Change in distance, test minus habituation (cm)","RES - SUS",0.191,0.914,FALSE
+"heatmap","Male","nor_distance_change","Distance, test − hab. (cm)","Change in distance, test minus habituation (cm)","RES - SUS",0.191,0.958,FALSE
 "heatmap","Male","nor_distance_change","Distance, test − hab. (cm)","Change in distance, test minus habituation (cm)","SIS - CON",0.135,0.797,FALSE
-"heatmap","Female","nor_contact_change","Contact, test − hab. (s)","Change in total object contact, test minus habituation (s)","RES - CON",0.03,0.933,FALSE
-"heatmap","Female","nor_contact_change","Contact, test − hab. (s)","Change in total object contact, test minus habituation (s)","SUS - CON",-0.185,0.984,FALSE
-"heatmap","Female","nor_contact_change","Contact, test − hab. (s)","Change in total object contact, test minus habituation (s)","RES - SUS",0.215,0.744,FALSE
-"heatmap","Female","nor_contact_change","Contact, test − hab. (s)","Change in total object contact, test minus habituation (s)","SIS - CON",-0.06,0.971,FALSE
-"heatmap","Male","nor_contact_change","Contact, test − hab. (s)","Change in total object contact, test minus habituation (s)","RES - CON",0.559,0.537,FALSE
-"heatmap","Male","nor_contact_change","Contact, test − hab. (s)","Change in total object contact, test minus habituation (s)","SUS - CON",-0.081,0.995,FALSE
-"heatmap","Male","nor_contact_change","Contact, test − hab. (s)","Change in total object contact, test minus habituation (s)","RES - SUS",0.64,0.699,FALSE
-"heatmap","Male","nor_contact_change","Contact, test − hab. (s)","Change in total object contact, test minus habituation (s)","SIS - CON",0.343,0.638,FALSE
-"heatmap","Female","nor_d2_vs_hab","Test D2 − side D2","Novel-object preference minus habituation side preference (D2)","RES - CON",0.093,0.915,FALSE
-"heatmap","Female","nor_d2_vs_hab","Test D2 − side D2","Novel-object preference minus habituation side preference (D2)","SUS - CON",-0.008,0.984,FALSE
-"heatmap","Female","nor_d2_vs_hab","Test D2 − side D2","Novel-object preference minus habituation side preference (D2)","RES - SUS",0.101,0.759,FALSE
-"heatmap","Female","nor_d2_vs_hab","Test D2 − side D2","Novel-object preference minus habituation side preference (D2)","SIS - CON",0.052,0.971,FALSE
-"heatmap","Male","nor_d2_vs_hab","Test D2 − side D2","Novel-object preference minus habituation side preference (D2)","RES - CON",0.209,0.76,FALSE
-"heatmap","Male","nor_d2_vs_hab","Test D2 − side D2","Novel-object preference minus habituation side preference (D2)","SUS - CON",0.211,0.97,FALSE
-"heatmap","Male","nor_d2_vs_hab","Test D2 − side D2","Novel-object preference minus habituation side preference (D2)","RES - SUS",-0.002,0.996,FALSE
-"heatmap","Male","nor_d2_vs_hab","Test D2 − side D2","Novel-object preference minus habituation side preference (D2)","SIS - CON",0.213,0.797,FALSE
-"heatmap","Female","nor_hab_rearing","Rearing (n)","Rearing events (n, experimental)","RES - CON",-0.131,0.915,FALSE
-"heatmap","Female","nor_hab_rearing","Rearing (n)","Rearing events (n, experimental)","SUS - CON",-0.262,0.984,FALSE
+"heatmap","Female","nor_contact_change","Contact, test − hab. (s)","Change in total object contact, test minus habituation (s)","RES - CON",0.038,0.916,FALSE
+"heatmap","Female","nor_contact_change","Contact, test − hab. (s)","Change in total object contact, test minus habituation (s)","SUS - CON",-0.156,0.885,FALSE
+"heatmap","Female","nor_contact_change","Contact, test − hab. (s)","Change in total object contact, test minus habituation (s)","RES - SUS",0.194,0.734,FALSE
+"heatmap","Female","nor_contact_change","Contact, test − hab. (s)","Change in total object contact, test minus habituation (s)","SIS - CON",-0.043,0.971,FALSE
+"heatmap","Male","nor_contact_change","Contact, test − hab. (s)","Change in total object contact, test minus habituation (s)","RES - CON",0.558,0.537,FALSE
+"heatmap","Male","nor_contact_change","Contact, test − hab. (s)","Change in total object contact, test minus habituation (s)","SUS - CON",-0.1,0.991,FALSE
+"heatmap","Male","nor_contact_change","Contact, test − hab. (s)","Change in total object contact, test minus habituation (s)","RES - SUS",0.658,0.696,FALSE
+"heatmap","Male","nor_contact_change","Contact, test − hab. (s)","Change in total object contact, test minus habituation (s)","SIS - CON",0.335,0.655,FALSE
+"heatmap","Female","nor_d2_vs_hab","Test D2 − side D2","Novel-object preference minus habituation side preference (D2)","RES - CON",0.094,0.916,FALSE
+"heatmap","Female","nor_d2_vs_hab","Test D2 − side D2","Novel-object preference minus habituation side preference (D2)","SUS - CON",-0.004,0.992,FALSE
+"heatmap","Female","nor_d2_vs_hab","Test D2 − side D2","Novel-object preference minus habituation side preference (D2)","RES - SUS",0.098,0.766,FALSE
+"heatmap","Female","nor_d2_vs_hab","Test D2 − side D2","Novel-object preference minus habituation side preference (D2)","SIS - CON",0.054,0.971,FALSE
+"heatmap","Male","nor_d2_vs_hab","Test D2 − side D2","Novel-object preference minus habituation side preference (D2)","RES - CON",0.234,0.755,FALSE
+"heatmap","Male","nor_d2_vs_hab","Test D2 − side D2","Novel-object preference minus habituation side preference (D2)","SUS - CON",0.218,0.991,FALSE
+"heatmap","Male","nor_d2_vs_hab","Test D2 − side D2","Novel-object preference minus habituation side preference (D2)","RES - SUS",0.015,0.971,FALSE
+"heatmap","Male","nor_d2_vs_hab","Test D2 − side D2","Novel-object preference minus habituation side preference (D2)","SIS - CON",0.232,0.797,FALSE
+"heatmap","Female","nor_hab_rearing","Rearing (n)","Rearing events (n, experimental)","RES - CON",-0.131,0.916,FALSE
+"heatmap","Female","nor_hab_rearing","Rearing (n)","Rearing events (n, experimental)","SUS - CON",-0.262,0.885,FALSE
 "heatmap","Female","nor_hab_rearing","Rearing (n)","Rearing events (n, experimental)","RES - SUS",0.131,0.748,FALSE
 "heatmap","Female","nor_hab_rearing","Rearing (n)","Rearing events (n, experimental)","SIS - CON",-0.187,0.971,FALSE
 "heatmap","Male","nor_hab_rearing","Rearing (n)","Rearing events (n, experimental)","RES - CON",-0.522,0.537,FALSE
 "heatmap","Male","nor_hab_rearing","Rearing (n)","Rearing events (n, experimental)","SUS - CON",-0.003,0.995,FALSE
 "heatmap","Male","nor_hab_rearing","Rearing (n)","Rearing events (n, experimental)","RES - SUS",-0.519,0.721,FALSE
-"heatmap","Male","nor_hab_rearing","Rearing (n)","Rearing events (n, experimental)","SIS - CON",-0.349,0.638,FALSE
-"heatmap","Female","nor_hab_stationary","Stationary (s)","Time stationary (s)","RES - CON",-0.178,0.915,FALSE
-"heatmap","Female","nor_hab_stationary","Stationary (s)","Time stationary (s)","SUS - CON",0.147,0.984,FALSE
+"heatmap","Male","nor_hab_rearing","Rearing (n)","Rearing events (n, experimental)","SIS - CON",-0.349,0.655,FALSE
+"heatmap","Female","nor_hab_stationary","Stationary (s)","Time stationary (s)","RES - CON",-0.178,0.916,FALSE
+"heatmap","Female","nor_hab_stationary","Stationary (s)","Time stationary (s)","SUS - CON",0.147,0.885,FALSE
 "heatmap","Female","nor_hab_stationary","Stationary (s)","Time stationary (s)","RES - SUS",-0.325,0.706,FALSE
 "heatmap","Female","nor_hab_stationary","Stationary (s)","Time stationary (s)","SIS - CON",-0.043,0.971,FALSE
 "heatmap","Male","nor_hab_stationary","Stationary (s)","Time stationary (s)","RES - CON",-0.379,0.537,FALSE
-"heatmap","Male","nor_hab_stationary","Stationary (s)","Time stationary (s)","SUS - CON",-0.29,0.97,FALSE
-"heatmap","Male","nor_hab_stationary","Stationary (s)","Time stationary (s)","RES - SUS",-0.089,0.969,FALSE
-"heatmap","Male","nor_hab_stationary","Stationary (s)","Time stationary (s)","SIS - CON",-0.355,0.638,FALSE
-"heatmap","Female","nor_hab_speed","Speed (cm/s)","Speed while moving (cm/s)","RES - CON",0.445,0.619,FALSE
-"heatmap","Female","nor_hab_speed","Speed (cm/s)","Speed while moving (cm/s)","SUS - CON",0.033,0.984,FALSE
+"heatmap","Male","nor_hab_stationary","Stationary (s)","Time stationary (s)","SUS - CON",-0.29,0.991,FALSE
+"heatmap","Male","nor_hab_stationary","Stationary (s)","Time stationary (s)","RES - SUS",-0.089,0.958,FALSE
+"heatmap","Male","nor_hab_stationary","Stationary (s)","Time stationary (s)","SIS - CON",-0.355,0.655,FALSE
+"heatmap","Female","nor_hab_speed","Speed (cm/s)","Speed while moving (cm/s)","RES - CON",0.445,0.543,FALSE
+"heatmap","Female","nor_hab_speed","Speed (cm/s)","Speed while moving (cm/s)","SUS - CON",0.033,0.992,FALSE
 "heatmap","Female","nor_hab_speed","Speed (cm/s)","Speed while moving (cm/s)","RES - SUS",0.412,0.639,FALSE
 "heatmap","Female","nor_hab_speed","Speed (cm/s)","Speed while moving (cm/s)","SIS - CON",0.272,0.971,FALSE
 "heatmap","Male","nor_hab_speed","Speed (cm/s)","Speed while moving (cm/s)","RES - CON",0.544,0.537,FALSE
-"heatmap","Male","nor_hab_speed","Speed (cm/s)","Speed while moving (cm/s)","SUS - CON",0.142,0.995,FALSE
+"heatmap","Male","nor_hab_speed","Speed (cm/s)","Speed while moving (cm/s)","SUS - CON",0.142,0.991,FALSE
 "heatmap","Male","nor_hab_speed","Speed (cm/s)","Speed while moving (cm/s)","RES - SUS",0.401,0.89,FALSE
-"heatmap","Male","nor_hab_speed","Speed (cm/s)","Speed while moving (cm/s)","SIS - CON",0.413,0.638,FALSE
-"heatmap","Female","nor_hab_distance","Distance (cm)","Distance travelled (cm)","RES - CON",0.242,0.915,FALSE
-"heatmap","Female","nor_hab_distance","Distance (cm)","Distance travelled (cm)","SUS - CON",-0.141,0.984,FALSE
+"heatmap","Male","nor_hab_speed","Speed (cm/s)","Speed while moving (cm/s)","SIS - CON",0.413,0.655,FALSE
+"heatmap","Female","nor_hab_distance","Distance (cm)","Distance travelled (cm)","RES - CON",0.242,0.916,FALSE
+"heatmap","Female","nor_hab_distance","Distance (cm)","Distance travelled (cm)","SUS - CON",-0.141,0.885,FALSE
 "heatmap","Female","nor_hab_distance","Distance (cm)","Distance travelled (cm)","RES - SUS",0.384,0.639,FALSE
 "heatmap","Female","nor_hab_distance","Distance (cm)","Distance travelled (cm)","SIS - CON",0.083,0.971,FALSE
 "heatmap","Male","nor_hab_distance","Distance (cm)","Distance travelled (cm)","RES - CON",0.451,0.537,FALSE
-"heatmap","Male","nor_hab_distance","Distance (cm)","Distance travelled (cm)","SUS - CON",0.242,0.97,FALSE
-"heatmap","Male","nor_hab_distance","Distance (cm)","Distance travelled (cm)","RES - SUS",0.209,0.914,FALSE
-"heatmap","Male","nor_hab_distance","Distance (cm)","Distance travelled (cm)","SIS - CON",0.386,0.638,FALSE
-"heatmap","Female","nor_hab_prox","Near objects (s)","Time near the objects (s)","RES - CON",0.382,0.619,FALSE
-"heatmap","Female","nor_hab_prox","Near objects (s)","Time near the objects (s)","SUS - CON",-0.22,0.984,FALSE
-"heatmap","Female","nor_hab_prox","Near objects (s)","Time near the objects (s)","RES - SUS",0.602,0.464,FALSE
-"heatmap","Female","nor_hab_prox","Near objects (s)","Time near the objects (s)","SIS - CON",0.129,0.971,FALSE
-"heatmap","Male","nor_hab_prox","Near objects (s)","Time near the objects (s)","RES - CON",0.45,0.537,FALSE
-"heatmap","Male","nor_hab_prox","Near objects (s)","Time near the objects (s)","SUS - CON",0.277,0.97,FALSE
-"heatmap","Male","nor_hab_prox","Near objects (s)","Time near the objects (s)","RES - SUS",0.173,0.914,FALSE
-"heatmap","Male","nor_hab_prox","Near objects (s)","Time near the objects (s)","SIS - CON",0.398,0.638,FALSE
-"heatmap","Female","nor_hab_bout","Contact episode (s)","Mean contact episode (s)","RES - CON",-0.07,0.915,FALSE
-"heatmap","Female","nor_hab_bout","Contact episode (s)","Mean contact episode (s)","SUS - CON",0.624,0.686,FALSE
-"heatmap","Female","nor_hab_bout","Contact episode (s)","Mean contact episode (s)","RES - SUS",-0.694,0.464,FALSE
-"heatmap","Female","nor_hab_bout","Contact episode (s)","Mean contact episode (s)","SIS - CON",0.211,0.971,FALSE
-"heatmap","Male","nor_hab_bout","Contact episode (s)","Mean contact episode (s)","RES - CON",-0.539,0.537,FALSE
-"heatmap","Male","nor_hab_bout","Contact episode (s)","Mean contact episode (s)","SUS - CON",-0.304,0.97,FALSE
-"heatmap","Male","nor_hab_bout","Contact episode (s)","Mean contact episode (s)","RES - SUS",-0.235,0.914,FALSE
-"heatmap","Male","nor_hab_bout","Contact episode (s)","Mean contact episode (s)","SIS - CON",-0.467,0.638,FALSE
-"heatmap","Female","nor_hab_entries","Approaches (n)","Approaches to the objects (n)","RES - CON",0.518,0.619,FALSE
-"heatmap","Female","nor_hab_entries","Approaches (n)","Approaches to the objects (n)","SUS - CON",0.051,0.984,FALSE
-"heatmap","Female","nor_hab_entries","Approaches (n)","Approaches to the objects (n)","RES - SUS",0.467,0.639,FALSE
-"heatmap","Female","nor_hab_entries","Approaches (n)","Approaches to the objects (n)","SIS - CON",0.321,0.971,FALSE
-"heatmap","Male","nor_hab_entries","Approaches (n)","Approaches to the objects (n)","RES - CON",0.572,0.537,FALSE
-"heatmap","Male","nor_hab_entries","Approaches (n)","Approaches to the objects (n)","SUS - CON",0.412,0.97,FALSE
-"heatmap","Male","nor_hab_entries","Approaches (n)","Approaches to the objects (n)","RES - SUS",0.16,0.914,FALSE
-"heatmap","Male","nor_hab_entries","Approaches (n)","Approaches to the objects (n)","SIS - CON",0.526,0.638,FALSE
-"heatmap","Female","nor_hab_latency","Latency (s)","Latency to first contact (s)","RES - CON",-0.821,0.317,FALSE
-"heatmap","Female","nor_hab_latency","Latency (s)","Latency to first contact (s)","SUS - CON",-0.628,0.686,FALSE
-"heatmap","Female","nor_hab_latency","Latency (s)","Latency to first contact (s)","RES - SUS",-0.194,0.744,FALSE
+"heatmap","Male","nor_hab_distance","Distance (cm)","Distance travelled (cm)","SUS - CON",0.242,0.991,FALSE
+"heatmap","Male","nor_hab_distance","Distance (cm)","Distance travelled (cm)","RES - SUS",0.209,0.958,FALSE
+"heatmap","Male","nor_hab_distance","Distance (cm)","Distance travelled (cm)","SIS - CON",0.386,0.655,FALSE
+"heatmap","Female","nor_hab_prox","Near objects (s)","Time near the objects (s)","RES - CON",0.421,0.543,FALSE
+"heatmap","Female","nor_hab_prox","Near objects (s)","Time near the objects (s)","SUS - CON",-0.194,0.885,FALSE
+"heatmap","Female","nor_hab_prox","Near objects (s)","Time near the objects (s)","RES - SUS",0.615,0.639,FALSE
+"heatmap","Female","nor_hab_prox","Near objects (s)","Time near the objects (s)","SIS - CON",0.162,0.971,FALSE
+"heatmap","Male","nor_hab_prox","Near objects (s)","Time near the objects (s)","RES - CON",0.42,0.537,FALSE
+"heatmap","Male","nor_hab_prox","Near objects (s)","Time near the objects (s)","SUS - CON",0.264,0.991,FALSE
+"heatmap","Male","nor_hab_prox","Near objects (s)","Time near the objects (s)","RES - SUS",0.156,0.958,FALSE
+"heatmap","Male","nor_hab_prox","Near objects (s)","Time near the objects (s)","SIS - CON",0.373,0.655,FALSE
+"heatmap","Female","nor_hab_bout","Contact episode (s)","Mean contact episode (s)","RES - CON",-0.111,0.916,FALSE
+"heatmap","Female","nor_hab_bout","Contact episode (s)","Mean contact episode (s)","SUS - CON",0.344,0.885,FALSE
+"heatmap","Female","nor_hab_bout","Contact episode (s)","Mean contact episode (s)","RES - SUS",-0.456,0.639,FALSE
+"heatmap","Female","nor_hab_bout","Contact episode (s)","Mean contact episode (s)","SIS - CON",0.077,0.971,FALSE
+"heatmap","Male","nor_hab_bout","Contact episode (s)","Mean contact episode (s)","RES - CON",-0.438,0.537,FALSE
+"heatmap","Male","nor_hab_bout","Contact episode (s)","Mean contact episode (s)","SUS - CON",-0.185,0.991,FALSE
+"heatmap","Male","nor_hab_bout","Contact episode (s)","Mean contact episode (s)","RES - SUS",-0.254,0.958,FALSE
+"heatmap","Male","nor_hab_bout","Contact episode (s)","Mean contact episode (s)","SIS - CON",-0.358,0.655,FALSE
+"heatmap","Female","nor_hab_entries","Approaches (n)","Approaches to the objects (n)","RES - CON",0.556,0.543,FALSE
+"heatmap","Female","nor_hab_entries","Approaches (n)","Approaches to the objects (n)","SUS - CON",0.162,0.885,FALSE
+"heatmap","Female","nor_hab_entries","Approaches (n)","Approaches to the objects (n)","RES - SUS",0.394,0.639,FALSE
+"heatmap","Female","nor_hab_entries","Approaches (n)","Approaches to the objects (n)","SIS - CON",0.391,0.971,FALSE
+"heatmap","Male","nor_hab_entries","Approaches (n)","Approaches to the objects (n)","RES - CON",0.484,0.537,FALSE
+"heatmap","Male","nor_hab_entries","Approaches (n)","Approaches to the objects (n)","SUS - CON",0.349,0.991,FALSE
+"heatmap","Male","nor_hab_entries","Approaches (n)","Approaches to the objects (n)","RES - SUS",0.135,0.958,FALSE
+"heatmap","Male","nor_hab_entries","Approaches (n)","Approaches to the objects (n)","SIS - CON",0.446,0.655,FALSE
+"heatmap","Female","nor_hab_latency","Latency (s)","Latency to first contact (s)","RES - CON",-0.821,0.318,FALSE
+"heatmap","Female","nor_hab_latency","Latency (s)","Latency to first contact (s)","SUS - CON",-0.628,0.885,FALSE
+"heatmap","Female","nor_hab_latency","Latency (s)","Latency to first contact (s)","RES - SUS",-0.193,0.734,FALSE
 "heatmap","Female","nor_hab_latency","Latency (s)","Latency to first contact (s)","SIS - CON",-0.746,0.348,FALSE
 "heatmap","Male","nor_hab_latency","Latency (s)","Latency to first contact (s)","RES - CON",0.412,0.537,FALSE
-"heatmap","Male","nor_hab_latency","Latency (s)","Latency to first contact (s)","SUS - CON",-0.646,0.97,FALSE
+"heatmap","Male","nor_hab_latency","Latency (s)","Latency to first contact (s)","SUS - CON",-0.646,0.991,FALSE
 "heatmap","Male","nor_hab_latency","Latency (s)","Latency to first contact (s)","RES - SUS",1.058,0.206,FALSE
-"heatmap","Male","nor_hab_latency","Latency (s)","Latency to first contact (s)","SIS - CON",0.061,0.879,FALSE
-"heatmap","Female","nor_hab_side_pref","Side D2","Preference for the later novel-object side (D2)","RES - CON",0.088,0.915,FALSE
-"heatmap","Female","nor_hab_side_pref","Side D2","Preference for the later novel-object side (D2)","SUS - CON",-0.098,0.984,FALSE
-"heatmap","Female","nor_hab_side_pref","Side D2","Preference for the later novel-object side (D2)","RES - SUS",0.186,0.744,FALSE
-"heatmap","Female","nor_hab_side_pref","Side D2","Preference for the later novel-object side (D2)","SIS - CON",0.011,0.974,FALSE
-"heatmap","Male","nor_hab_side_pref","Side D2","Preference for the later novel-object side (D2)","RES - CON",0.056,0.895,FALSE
-"heatmap","Male","nor_hab_side_pref","Side D2","Preference for the later novel-object side (D2)","SUS - CON",-0.541,0.97,FALSE
-"heatmap","Male","nor_hab_side_pref","Side D2","Preference for the later novel-object side (D2)","RES - SUS",0.597,0.699,FALSE
-"heatmap","Male","nor_hab_side_pref","Side D2","Preference for the later novel-object side (D2)","SIS - CON",-0.138,0.797,FALSE
-"heatmap","Female","nor_hab_total","Contact (s)","Total object contact (s)","RES - CON",0.521,0.619,FALSE
-"heatmap","Female","nor_hab_total","Contact (s)","Total object contact (s)","SUS - CON",0.366,0.984,FALSE
-"heatmap","Female","nor_hab_total","Contact (s)","Total object contact (s)","RES - SUS",0.154,0.748,FALSE
-"heatmap","Female","nor_hab_total","Contact (s)","Total object contact (s)","SIS - CON",0.46,0.971,FALSE
-"heatmap","Male","nor_hab_total","Contact (s)","Total object contact (s)","RES - CON",0.152,0.78,FALSE
-"heatmap","Male","nor_hab_total","Contact (s)","Total object contact (s)","SUS - CON",0.208,0.97,FALSE
-"heatmap","Male","nor_hab_total","Contact (s)","Total object contact (s)","RES - SUS",-0.056,0.969,FALSE
+"heatmap","Male","nor_hab_latency","Latency (s)","Latency to first contact (s)","SIS - CON",0.06,0.88,FALSE
+"heatmap","Female","nor_hab_side_pref","Side D2","Preference for the later novel-object side (D2)","RES - CON",0.068,0.916,FALSE
+"heatmap","Female","nor_hab_side_pref","Side D2","Preference for the later novel-object side (D2)","SUS - CON",-0.122,0.885,FALSE
+"heatmap","Female","nor_hab_side_pref","Side D2","Preference for the later novel-object side (D2)","RES - SUS",0.189,0.734,FALSE
+"heatmap","Female","nor_hab_side_pref","Side D2","Preference for the later novel-object side (D2)","SIS - CON",-0.011,0.973,FALSE
+"heatmap","Male","nor_hab_side_pref","Side D2","Preference for the later novel-object side (D2)","RES - CON",0.047,0.911,FALSE
+"heatmap","Male","nor_hab_side_pref","Side D2","Preference for the later novel-object side (D2)","SUS - CON",-0.551,0.991,FALSE
+"heatmap","Male","nor_hab_side_pref","Side D2","Preference for the later novel-object side (D2)","RES - SUS",0.598,0.696,FALSE
+"heatmap","Male","nor_hab_side_pref","Side D2","Preference for the later novel-object side (D2)","SIS - CON",-0.147,0.797,FALSE
+"heatmap","Female","nor_hab_total","Contact (s)","Total object contact (s)","RES - CON",0.509,0.543,FALSE
+"heatmap","Female","nor_hab_total","Contact (s)","Total object contact (s)","SUS - CON",0.359,0.885,FALSE
+"heatmap","Female","nor_hab_total","Contact (s)","Total object contact (s)","RES - SUS",0.149,0.748,FALSE
+"heatmap","Female","nor_hab_total","Contact (s)","Total object contact (s)","SIS - CON",0.45,0.971,FALSE
+"heatmap","Male","nor_hab_total","Contact (s)","Total object contact (s)","RES - CON",0.15,0.784,FALSE
+"heatmap","Male","nor_hab_total","Contact (s)","Total object contact (s)","SUS - CON",0.211,0.991,FALSE
+"heatmap","Male","nor_hab_total","Contact (s)","Total object contact (s)","RES - SUS",-0.061,0.958,FALSE
 "heatmap","Male","nor_hab_total","Contact (s)","Total object contact (s)","SIS - CON",0.172,0.797,FALSE
