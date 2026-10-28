@@ -153,9 +153,9 @@ testthat::test_that("Figure 2 and the proteomics Extended Data are registered fr
                                    "canonical_publication_registry.csv"),
                          stringsAsFactors = FALSE, colClasses = "character")
   sha <- function(p) unname(tools::sha256sum(p))
-  # Extended Data numbers of 2026-10-20 (renumbered by first citation)
-  panels <- list(figure_02 = paste0("2", letters[1:8]),
-                 extended_data_05 = paste0("05", letters[1:4]),
+  # Extended Data numbers of 2026-10-20 (renumbered by first citation); Figure 2 a-l and ED5 a-f since 2026-10-28
+  panels <- list(figure_02 = paste0("2", letters[1:12]),
+                 extended_data_05 = paste0("05", letters[1:6]),
                  extended_data_06 = paste0("06", letters[1:4]),
                  extended_data_07 = paste0("07", letters[1:5]),
                  extended_data_08 = paste0("08", letters[1:3]))
@@ -192,7 +192,8 @@ testthat::test_that("Figure 2 and the proteomics Extended Data are registered fr
   rd <- function(pid, panel) utils::read.csv(repo_path(
     "figures", if (startsWith(pid, "figure_")) "main" else "extended_data", "source_data", pid,
     paste0(pid, panel, "_source_data.csv")), stringsAsFactors = FALSE)
-  testthat::expect_equal(unique(rd("figure_02", "d")$colour_limit), 2)
+  for (p in c("f", "g", "h", "i"))   # the GO programme panels, on the fixed NES limit
+    testthat::expect_equal(unique(rd("figure_02", p)$colour_limit), 2)
   testthat::expect_equal(unique(rd("extended_data_05", "c")$colour_limit), 1)
   testthat::expect_equal(unique(rd("extended_data_08", "a")$colour_limit), 0.6)
   for (p in c("a", "b"))
