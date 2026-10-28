@@ -6,9 +6,12 @@
 # from the primary tree:
 #   Figure 2d        marker classes per acquisition and animal         -> results/ render workspace (declared path)
 #   Figure 2f-2i     GO programmes of regions and layers (selections)  -> results/ render workspace (declared path)
+#   Figure 2j-2l     input territories, afferent sources, inhibitory share -> results/ render workspace (declared path)
 #   Figure 3b-g      selection inventories                             -> source_data/pRoteomics/supplementary_selection_inventories
 #   Ext. Data Fig. 7 theme-assignment table                            -> results/ render workspace (over the size ceiling)
-# (Figure 2d and the GO panels, 2f-2i since 2026-10-28, were added on 2026-10-27; the former Figure 2h GO candidate left with its panel.)
+# (Figure 2d and the GO panels, 2f-2i since 2026-10-28, were added on 2026-10-27; the former Figure 2h GO candidate left with its panel;
+# Figure 2j-2l on 2026-10-28.) A results/spatial_validation table is imported only if it is the table its producing run wrote
+# (SHA-256 in that run's manifest, where the run records it), with committed code that is unchanged at the current revision.
 # The tree must hold the approved primary centring (config/normalisation.yml). Each import is recorded in
 # provenance/source_manifests/primary_inputs.csv (declared path, source path, source commit, SHA-256, previous SHA-256),
 # which the import-boundary tests and tools/import_proteomics_statistics.R read; the bundle manifest rows of the
@@ -39,8 +42,11 @@ WORK <- data.frame(stringsAsFactors = FALSE,
                "results/source_data/spatial_validation/map_anatomical_programmes/anatomical_programme_display_terms.csv",
                "results/source_data/spatial_validation/map_input_territories/input_territory_scores_by_animal.csv",
                "results/source_data/spatial_validation/map_input_territories/input_territory_tests.csv",
+               "results/source_data/spatial_validation/map_input_territories/input_territory_sensitivity.csv",
+               "results/source_data/spatial_validation/map_input_territories/input_territory_protein_contrasts.csv",
                "results/source_data/spatial_validation/map_afferent_sources/afferent_source_scores_by_animal.csv",
                "results/source_data/spatial_validation/map_afferent_sources/afferent_source_contrasts.csv",
+               "results/source_data/spatial_validation/map_afferent_sources/afferent_source_sets.csv",
                "results/source_data/spatial_validation/compare_lamina_synapses/inhibitory_share_by_animal.csv",
                "results/source_data/spatial_validation/compare_lamina_synapses/inhibitory_share_contrasts.csv",
                "results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv"),
@@ -50,16 +56,42 @@ WORK <- data.frame(stringsAsFactors = FALSE,
              "results/spatial_validation/map_anatomical_programmes/global/tables/anatomical_programme_display_terms.csv",
              "results/spatial_validation/map_input_territories/global/tables/input_territory_scores_by_animal.csv",
              "results/spatial_validation/map_input_territories/global/tables/input_territory_tests.csv",
+             "results/spatial_validation/map_input_territories/global/tables/input_territory_sensitivity.csv",
+             "results/spatial_validation/map_input_territories/global/tables/input_territory_protein_contrasts.csv",
              "results/spatial_validation/map_afferent_sources/global/tables/afferent_source_scores_by_animal.csv",
              "results/spatial_validation/map_afferent_sources/global/tables/afferent_source_contrasts.csv",
+             "results/spatial_validation/map_afferent_sources/global/tables/afferent_source_sets.csv",
              "results/spatial_validation/compare_lamina_synapses/global/tables/inhibitory_share_by_animal.csv",
              "results/spatial_validation/compare_lamina_synapses/global/tables/inhibitory_share_contrasts.csv",
              "results/integration/test_enrichment_module_concordance/global/tables/ontology_aware_gsea_theme_assignments_all_contrasts.csv"),
-  used_by = c("Figure 2d", "Figure 2d", "Figure 2d", "Figure 2f-2i", "Figure 2j", "Figure 2j", "Figure 2k", "Figure 2k", "Figure 2l", "Figure 2l",
-              "Extended Data Fig. 7a-e"))
+  used_by = c("Figure 2d", "Figure 2d", "Figure 2d", "Figure 2f-2i", "Figure 2j", "Figure 2j", "Figure 2j", "Figure 2j", "Figure 2k",
+              "Figure 2k", "Figure 2k", "Figure 2l", "Figure 2l", "Extended Data Fig. 7a-e"))
+# A spatial_validation table must come from a finished run of committed code that the current revision has not changed:
+# the run manifest's commit, the script and the R/spatial helpers it names unchanged since, and, where the run records output hashes,
+# the table's SHA-256 among them.
+run_checked <- function(source) {
+  m <- regmatches(source, regexec("^results/spatial_validation/([^/]+)/global/tables/", source))[[1]]
+  if (!length(m)) return(invisible(TRUE))
+  man <- yaml::read_yaml(file.path(p_root, "results", "spatial_validation", m[2], "global", "manifests", "run_manifest.yml"))
+  script <- file.path("analysis", "spatial_validation", paste0(m[2], ".R"))
+  code <- paste(readLines(file.path(p_root, script), warn = FALSE), collapse = "
+")
+  helpers <- file.path("R", "spatial", Filter(function(f) grepl(f, code, fixed = TRUE),
+                                              list.files(file.path(p_root, "R", "spatial"), pattern = "[.]R$")))
+  same <- system2("git", c("-C", shQuote(p_root), "diff", "--quiet", man$git_commit, "HEAD", "--", script, helpers)) == 0L
+  prov <- man$parameters$provenance
+  if (!same) stop(script, " changed since its last run (", man$git_commit, "); rerun it before importing.", call. = FALSE)
+  if (!is.null(prov)) {
+    if (isTRUE(prov$code_uncommitted)) stop(script, " last ran with uncommitted code; rerun it at a commit.", call. = FALSE)
+    if (!identical(prov$output_sha256[[basename(source)]], sha(file.path(p_root, source))))
+      stop(source, " is not the table its run wrote (run manifest).", call. = FALSE)
+  }
+  invisible(TRUE)
+}
 for (i in seq_len(nrow(WORK))) {
   src <- file.path(p_root, WORK$source[i]); dst <- repo_path(WORK$declared[i])
   if (!file.exists(src)) stop("Missing in the primary tree: ", WORK$source[i], call. = FALSE)
+  run_checked(WORK$source[i])
   new <- sha(src); old <- sha(dst)
   if (!identical(new, old)) {
     dir.create(dirname(dst), recursive = TRUE, showWarnings = FALSE)

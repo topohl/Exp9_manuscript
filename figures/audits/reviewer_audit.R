@@ -300,6 +300,8 @@ CLASS <- c(
   v9_external_main = "supporting_validation",
   v9_go_soma = "central_descriptive", v9_go_ca1 = "central_descriptive",
   v9_go_ca2 = "central_descriptive", v9_go_dg = "central_descriptive",
+  v9_input_territories = "central_inferential", v9_afferent_sources = "supporting_validation",
+  v9_inhibitory_share = "central_inferential",
   v9_dap_track = "central_inferential", v9_atlas = "central_inferential",
   v9_bridge = "central_descriptive", v9_curve_syn = "central_inferential",
   v9_curve_rna = "central_inferential", v9_curve_ox = "central_inferential",

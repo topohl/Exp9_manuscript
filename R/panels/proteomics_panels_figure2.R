@@ -980,14 +980,20 @@ hf_programme_dots <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # postsynaptic proteins, and its excess over abundance-matched random protein
 # sets (each animal against its own random sets), and tests across the control
 # animals. This renderer only draws: one line per animal from its presynaptic
-# to its postsynaptic excess; 0 is the random-set median and the grey bar the
-# widest central 95% of any animal's random sets; P values (BH, control
-# animals) above a column test it against random, the bracket pre vs post.
+# to its postsynaptic excess; 0 is the random-set median and the grey bar runs
+# from the lowest 2.5% to the highest 97.5% quantile of the animals' random
+# sets; P values (BH, control animals; drawn if < 0.05) above the Pre column and
+# below the Post column test that class against random, the bracket pre vs post.
+# The source data also carry the replication, the post hoc sensitivity analyses
+# and the per-protein territory contrasts computed there.
 hf_input_territories <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   fam <- hf_fam()
   grp <- as.character(unlist(panel$groups %||% "CON"))
+  deps <- unlist(panel$input_dependencies)
   sc <- hv_read_csv(repo_path(panel$primary_source))
-  ts <- hv_read_csv(repo_path(unlist(panel$input_dependencies)[1]))
+  ts <- hv_read_csv(repo_path(deps[1]))
+  sv <- hv_read_csv(repo_path(grep("input_territory_sensitivity", deps, value = TRUE)))
+  pc <- hv_read_csv(repo_path(grep("input_territory_protein_contrasts", deps, value = TRUE)))
   sc <- sc[sc$group %in% grp & sc$protein_class %in% c("presynaptic", "postsynaptic"), , drop = FALSE]
   ts_all <- ts
   ts <- ts[ts$animal_set == paste(grp, collapse = "+"), , drop = FALSE]
@@ -1005,8 +1011,8 @@ hf_input_territories <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   low <- min(c(sc$y, nul$null_q025_excess))
   rng <- top - low
   plab <- function(p) ifelse(p < 0.001, "italic(P)*'<0.001'",
-                             sprintf("italic(P)*'=%s'", formatC(signif(p, 2), format = "fg", digits = 2)))
-  # pre vs matched random above the presynaptic column; pre vs post as a bracket above both
+                             sprintf("italic(P)*'=%s'", formatC(signif(p, 2), format = "fg", digits = 2, flag = "#")))
+  # vs matched random: above the Pre column, below the Post column; pre vs post as a bracket above both
   vr <- ts[grepl("vs matched random", ts$comparison) & ts$p_adjust < 0.05, , drop = FALSE]
   vr$x <- ifelse(grepl("^presynaptic", vr$comparison), 1, 2)
   vr$y <- ifelse(vr$x == 1, top + 0.08 * rng, low - 0.1 * rng)
@@ -1048,26 +1054,41 @@ hf_input_territories <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                    legend.position = "none", plot.margin = ggplot2::margin(1, 1, 0.5, 0.5, "mm"))
   out <- sc[, c("AnimalID", "group", "territory", "territory_label", "protein_class", "n_proteins", "same_input_z",
                 "same_region_z", "input_organisation_d", "null_median_d", "null_q025_d", "null_q975_d",
-                "excess_over_random", "p_greater_than_random", "p_less_than_random", "p_presynaptic_minus_postsynaptic")]
+                "excess_over_random", "null_q025_excess", "null_q975_excess", "p_greater_than_random", "p_less_than_random",
+                "p_presynaptic_minus_postsynaptic")]
   out$row_type <- "animal"
   # the stressed animals' replication travels with the control comparisons (never pooled, never plotted)
   tt <- ts_all[, c("animal_set", "territory", "territory_label", "comparison", "estimate", "std_error", "ci_low", "ci_high",
-                   "df", "t_value", "p_value", "p_adjust", "n_animals", "animals_positive", "method")]
+                   "df", "t_value", "p_value", "p_adjust", "n_animals", "animals_positive", "animals", "method")]
   tt$row_type <- ifelse(tt$animal_set == paste(grp, collapse = "+"), "comparison", "replication_comparison")
   tt$group <- tt$animal_set
   tt$animal_set <- NULL
-  all_cols <- union(names(out), names(tt))
-  out[setdiff(all_cols, names(out))] <- NA
-  tt[setdiff(all_cols, names(tt))] <- NA
-  out <- rbind(out[, all_cols], tt[, all_cols])
+  # post hoc sensitivity analyses and per-protein territory contrasts, as computed in pRoteomics (never drawn)
+  sv$row_type <- "sensitivity"
+  sv$territory_label <- ts_all$territory_label[match(sv$territory, ts_all$territory)]
+  sv$group <- sv$animal_set
+  sv$animal_set <- NULL
+  pc$row_type <- "protein_contrast"
+  pc$group <- paste(grp, collapse = "+")
+  blocks <- list(out, tt, sv, pc)
+  all_cols <- Reduce(union, lapply(blocks, names))
+  out <- do.call(rbind, lapply(blocks, function(b) { b[setdiff(all_cols, names(b))] <- NA; b[, all_cols] }))
+  n_rep <- unique(ts_all$n_animals[ts_all$animal_set != paste(grp, collapse = "+")])
   out$legend_text_moved <- paste0(
-    "control animals only (n = ", n_an, "); d per animal: mean Fisher z of the same-input lamina pairs minus the ",
-    "same-region pairs (perforant path: CA1 SLM-CA2 SLM, CA1 SLM-DG mo, CA2 SLM-DG mo vs SLM-SR, SLM-SO in CA1 and CA2 and ",
-    "DG mo-po; mossy fibre: DG po-CA3 SR vs DG po-mo, CA3 SR-SO); SynGO presynaptic / postsynaptic proteins without glial, ",
-    "vascular and mitochondrial genes, observed in every acquisition; plotted: d minus the animal's own abundance-matched ",
-    "random-set median (1000 sets), grey bar: the widest central 95% of any animal's random sets; P above a column: vs ",
-    "random, bracket: presynaptic vs postsynaptic excess; one-sample t test over animals, BH; stressed animals replicate in ",
-    "the source data")
+    "control animals only (n = ", n_an, "); d per animal: mean Fisher z (Spearman, protein-centred laminar profiles) of the ",
+    "same-input lamina pairs minus the same-region pairs (perforant path: CA1 SLM-CA2 SLM, CA1 SLM-DG mo, CA2 SLM-DG mo vs ",
+    "SLM-SR and SLM-SO in CA1 and CA2 and DG mo-po; mossy fibre: DG po-CA3 SR vs DG po-mo, CA3 SR-SO); SynGO ",
+    "presynaptic-only / postsynaptic-only proteins (annotated to both: neither) without glial, vascular and mitochondrial ",
+    "genes, observed in every retained acquisition of all ten laminae; animal rows, excess_over_random: d minus the ",
+    "animal's own abundance-matched random-set median (1000 sets); grey bar: lowest 2.5% to highest 97.5% quantile of the ",
+    "animals' random sets (null_q025_excess, null_q975_excess); P above Pre and below Post: that class vs random, bracket: ",
+    "presynaptic vs postsynaptic excess (comparison rows: one-sample t test over animals, BH over the 6 control ",
+    "comparisons); the per-animal P columns are descriptive (rank of d among the animal's random sets; class-label ",
+    "permutation of d(pre) - d(post)); replication_comparison rows: stressed animals with a complete ten-lamina profile ",
+    "(n = ", paste(n_rep, collapse = "/"), "), BH separately; sensitivity rows: post hoc analyses (lamina-label permutation, ",
+    "cross-host pairs, without the shared DG pair, laminar-SD-matched null, without GABAergic-terminal proteins, left-out ",
+    "animal re-entered); protein_contrast rows: control-animal mean territory contrast of every synaptic protein ",
+    "(descriptive)")
   write_csv_safe(out, csv_path)
   hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
@@ -1087,8 +1108,10 @@ hf_input_territories <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 hf_afferent_sources <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   fam <- hf_fam()
   grp <- as.character(unlist(panel$groups %||% "CON"))
+  deps <- unlist(panel$input_dependencies)
   sc <- hv_read_csv(repo_path(panel$primary_source))
-  ct <- hv_read_csv(repo_path(unlist(panel$input_dependencies)[1]))
+  ct <- hv_read_csv(repo_path(deps[1]))
+  members <- hv_read_csv(repo_path(grep("afferent_source_sets", deps, value = TRUE)))
   sc <- sc[sc$group %in% grp, , drop = FALSE]
   ct_all <- ct
   ct <- ct[ct$animal_set == paste(grp, collapse = "+"), , drop = FALSE]
@@ -1155,21 +1178,28 @@ hf_afferent_sources <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   tl$row_type <- "tile"
   cc <- ct_all[, c("animal_set", "origin_class", "minus_class", "origin_label", "lamina_a", "lamina_b", "expectation", "estimate", "std_error",
                    "ci_low", "ci_high", "df", "t_value", "p_value", "p_adjust", "n_animals", "animals_positive", "n_proteins",
-                   "method")]
+                   "animals", "method")]
   cc$row_type <- ifelse(cc$animal_set == paste(grp, collapse = "+"), "contrast", "replication_contrast")
   out <- tl[, c("origin_class", "origin_label", "lamina", "excess", "predicted_target", "row_type")]
-  all_cols <- union(names(out), names(cc))
-  out[setdiff(all_cols, names(out))] <- NA
-  cc[setdiff(all_cols, names(cc))] <- NA
-  out <- rbind(out[, all_cols], cc[, all_cols])
+  # the values behind each tile (control animals) and the class members, as computed in pRoteomics
+  at <- sc[, c("AnimalID", "origin_class", "origin_label", "lamina", "n_proteins", "score", "null_mean", "excess")]
+  at$row_type <- "animal_tile"
+  members$row_type <- "class_member"
+  blocks <- list(out, at, cc, members)
+  all_cols <- Reduce(union, lapply(blocks, names))
+  out <- do.call(rbind, lapply(blocks, function(b) { b[setdiff(all_cols, names(b))] <- NA; b[, all_cols] }))
   out$group <- ifelse(is.na(out$animal_set), paste(grp, collapse = "+"), out$animal_set)
+  out$group[out$row_type == "class_member"] <- NA
   out$animal_set <- NULL
+  n_rep <- unique(ct_all$n_animals[ct_all$animal_set != paste(grp, collapse = "+")])
   out$legend_text_moved <- paste0(
     "control animals only (n = ", n_an, "); proteins grouped by the cell type whose mRNA they are enriched in (whole-mouse-brain ",
-    "10x reference, other animals); tile: mean over animals of the class score minus the abundance-matched random-set ",
-    "score; outlined: the target lamina of each pre-declared afferent contrast (perforant path, Schaffer collaterals, mossy ",
-    "fibres); contrasts ",
-    "(one-sample t test over animals, BH) in the source data; full colour beyond ", intToUtf8(0xb1), lim, " (uncapped values here)")
+    "10x reference, other animals; class_member rows, thresholds in Methods); tile: mean over animals of the class score ",
+    "minus the abundance-matched random-set score (animal_tile rows: the control animals' values); outlined: the target ",
+    "lamina of each pre-declared afferent contrast (perforant path, Schaffer collaterals, mossy fibres); contrast rows: ",
+    "one-sample t test over animals, BH over the 8 pre-declared contrasts; replication_contrast rows: stressed animals with ",
+    "a complete ten-lamina profile (n = ", paste(n_rep, collapse = "/"), "), BH separately; full colour beyond ",
+    intToUtf8(0xb1), lim, " (uncapped values here)")
   write_csv_safe(out, csv_path)
   hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
@@ -1214,7 +1244,7 @@ hf_inhibitory_share <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   sig <- sig[order(sig$hi - sig$lo), , drop = FALSE]
   sig$y <- max(y) + 0.13 * rng * seq_len(nrow(sig))
   sig$label <- ifelse(sig$p_adjust < 0.001, "italic(P)*'<0.001'",
-                      sprintf("italic(P)*'=%s'", formatC(signif(sig$p_adjust, 2), format = "fg", digits = 2)))
+                      sprintf("italic(P)*'=%s'", formatC(signif(sig$p_adjust, 2), format = "fg", digits = 2, flag = "#")))
   tick <- 0.025 * rng
   brk <- rbind(data.frame(x = sig$lo, xend = sig$hi, y = sig$y, yend = sig$y),
                data.frame(x = sig$lo, xend = sig$lo, y = sig$y, yend = sig$y - tick),
@@ -1245,12 +1275,13 @@ hf_inhibitory_share <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                    axis.ticks.x = ggplot2::element_blank(),
                    legend.position = "none", plot.margin = ggplot2::margin(1, 1, 0.5, 0.5, "mm"))
   out <- an[, c("AnimalID", "group", "lamina", "n_acquisitions", "inhibitory_presynaptic_share_log2",
-                "presynaptic_share_centred", "inhibitory_postsynaptic_share_log2", "postsynaptic_share_centred")]
+                "presynaptic_share_centred", "inhibitory_postsynaptic_share_log2", "postsynaptic_share_centred",
+                "gad2_vgat_share_log2", "vglut2_minus_vglut1_log2", "vglut2_acquisitions_observed")]
   out$row_type <- "animal_lamina"
   cc <- ct_all[, intersect(c("group", "lamina_a", "lamina_b", "comparison_type", "estimate", "std_error", "ci_low",
                              "ci_high", "df", "t_value", "p_value", "p_adjust", "n_animals", "animals_positive",
                              "estimate_gad2_vgat_only", "pooled_std_error", "pooled_df", "pooled_p_value",
-                             "pooled_p_adjust", "method"), names(ct_all))]
+                             "pooled_p_adjust", "animals", "method"), names(ct_all))]
   cc$row_type <- ifelse(cc$group == paste(grp, collapse = "+"), "lamina_comparison", "replication_lamina_comparison")
   all_cols <- union(names(out), names(cc))
   out[setdiff(all_cols, names(out))] <- NA
@@ -1260,8 +1291,9 @@ hf_inhibitory_share <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "control animals only (n = ", length(unique(an$AnimalID)), "); per acquisition, mean log2 GAD1, GAD2, VGAT minus log2 ",
     "VGLUT1 (label-free relative share, not a synapse count), animal mean over hemispheres, centred on the animal's ",
     "ten laminae; bar: mean; brackets: comparisons with BH-adjusted P < 0.05 (paired t over the control animals, BH over ",
-    "the ", nrow(ct), " pre-declared pairs); all pairs, the stressed-animal replication, a pooled-error sensitivity, GAD2 + ",
-    "VGAT only and VGLUT2 in the source data")
+    "the ", nrow(ct), " pre-declared pairs); all pairs, the stressed-animal replication (every stressed animal with both ",
+    "laminae of a pair; animals named), a pooled-error sensitivity, GAD2 + VGAT only and VGLUT2 relative to VGLUT1 ",
+    "(gad2_vgat_share_log2, vglut2_minus_vglut1_log2; animal rows) in the source data")
   write_csv_safe(out, csv_path)
   hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))

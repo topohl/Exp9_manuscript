@@ -192,13 +192,15 @@ panels:
     main_or_ed: main_unique
     groups: [CON]
     narrative: >-
-      laminae that receive the same input are more alike across subfields than
-      abundance-matched random proteins in their presynaptic, not their postsynaptic
-      proteins (which fall below random in the perforant-path territory); control
-      animals; the mossy-fibre laminae are the positive control.
+      laminae that share an input territory are more alike across subfields, relative to
+      same-region laminae, in their presynaptic proteins than for abundance-matched random
+      proteins and than in their postsynaptic proteins, which are not more input-organised
+      than random; control animals; the mossy-fibre laminae are the positive control.
     primary_source: results/source_data/spatial_validation/map_input_territories/input_territory_scores_by_animal.csv
     input_dependencies:
       - results/source_data/spatial_validation/map_input_territories/input_territory_tests.csv
+      - results/source_data/spatial_validation/map_input_territories/input_territory_sensitivity.csv
+      - results/source_data/spatial_validation/map_input_territories/input_territory_protein_contrasts.csv
 
   - id: v9_afferent_sources
     renderer: hf_afferent_sources
@@ -208,12 +210,14 @@ panels:
     main_or_ed: main_unique
     groups: [CON]
     narrative: >-
-      proteins whose mRNA is enriched in entorhinal neurons sit in the perforant-path
-      laminae, those of CA3 and granule cells in the Schaffer-collateral and mossy-fibre
-      laminae (whole-mouse-brain single-cell reference of other animals); control animals.
+      proteins whose mRNA is enriched in entorhinal, CA3 or granule cells are higher in the
+      perforant-path, Schaffer-collateral or mossy-fibre lamina than in the neighbouring
+      lamina of the same region (whole-mouse-brain single-cell reference of other animals);
+      control animals.
     primary_source: results/source_data/spatial_validation/map_afferent_sources/afferent_source_scores_by_animal.csv
     input_dependencies:
       - results/source_data/spatial_validation/map_afferent_sources/afferent_source_contrasts.csv
+      - results/source_data/spatial_validation/map_afferent_sources/afferent_source_sets.csv
 
   - id: v9_inhibitory_share
     renderer: hf_inhibitory_share

@@ -397,10 +397,10 @@ figures:
         reader: "Input territories: same-input minus same-region similarity of SynGO presynaptic and postsynaptic laminar profiles in control animals, as excess over matched random protein sets"
         v9_panel_id: v9_input_territories
         description: >-
-          laminae that share an input (perforant-path territory; mossy fibre as positive
-          control) are more alike than matched random proteins in their presynaptic, not
-          their postsynaptic proteins. Statistics computed in pRoteomics
-          map_input_territories; control animals, stressed animals as replication.
+          laminae that share an input territory (perforant path; mossy fibre as positive
+          control) are more alike than for matched random proteins in their presynaptic
+          proteins, and more than in their postsynaptic proteins. Statistics computed in
+          pRoteomics map_input_territories; control animals, stressed animals as replication.
         producer_script: figures/scripts/figure_02_panels.R
         renderer: hf_input_territories
         render_mode: copy_svg
@@ -410,6 +410,8 @@ figures:
         input_dependencies:
           - results/source_data/spatial_validation/map_input_territories/input_territory_scores_by_animal.csv
           - results/source_data/spatial_validation/map_input_territories/input_territory_tests.csv
+          - results/source_data/spatial_validation/map_input_territories/input_territory_sensitivity.csv
+          - results/source_data/spatial_validation/map_input_territories/input_territory_protein_contrasts.csv
         scientific_contract: input_territory_organisation
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
@@ -421,10 +423,11 @@ figures:
         reader: "Laminar location of proteins grouped by the cell type whose mRNA they are enriched in (whole-mouse-brain single-cell reference), control animals, with the pre-declared afferent contrasts"
         v9_panel_id: v9_afferent_sources
         description: >-
-          proteins whose mRNA is enriched in entorhinal neurons sit in the perforant-path
-          laminae, CA3-enriched proteins in the Schaffer-collateral laminae and granule-enriched
-          proteins in the mossy-fibre lamina; mRNA of other animals is the proxy. Statistics
-          computed in pRoteomics map_afferent_sources; stressed animals as replication.
+          proteins whose mRNA is enriched in entorhinal neurons (relative to every hippocampal
+          cell type) are higher in the perforant-path laminae than in the neighbouring SR or
+          DG po, CA3-enriched proteins in SR than in SLM and granule-enriched proteins in CA3
+          SR than in SO; mRNA of other animals is the proxy. Statistics computed in pRoteomics
+          map_afferent_sources; stressed animals as replication.
         producer_script: figures/scripts/figure_02_panels.R
         renderer: hf_afferent_sources
         render_mode: copy_svg
@@ -434,6 +437,7 @@ figures:
         input_dependencies:
           - results/source_data/spatial_validation/map_afferent_sources/afferent_source_scores_by_animal.csv
           - results/source_data/spatial_validation/map_afferent_sources/afferent_source_contrasts.csv
+          - results/source_data/spatial_validation/map_afferent_sources/afferent_source_sets.csv
         scientific_contract: afferent_source_location
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
@@ -445,9 +449,9 @@ figures:
         reader: "Inhibitory presynaptic share (GAD1, GAD2, VGAT relative to VGLUT1) of every lamina in control animals, with the pre-declared lamina comparisons"
         v9_panel_id: v9_inhibitory_share
         description: >-
-          a within-acquisition ratio, so independent of normalisation; label-free, so it
-          compares laminae and is not a synapse count. Comparisons computed in pRoteomics
-          compare_lamina_synapses (paired over the control animals, BH).
+          inhibitory presynaptic share of every lamina (caveats in the legend). Comparisons
+          computed in pRoteomics compare_lamina_synapses (paired t over the control animals,
+          BH over 15); stressed animals as replication.
         producer_script: figures/scripts/figure_02_panels.R
         renderer: hf_inhibitory_share
         render_mode: copy_svg

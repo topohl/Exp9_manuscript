@@ -28,7 +28,8 @@ code <- git_code_state()
 # Where a figure's numbers were computed, for the 'about' sheet. The registry's source_commit is the render commit
 # for figures drawn here, so it is not used for them: a SISanalyzer figure names its pinned bundle and producer
 # commit; a figure drawn here from pRoteomics exports names the pRoteomics commits recorded for the files its
-# contract entry reads (render inputs and source_data/pRoteomics imports).
+# contract entry reads (render inputs, source_data/pRoteomics imports and the primary-tree imports of
+# provenance/source_manifests/primary_inputs.csv).
 sd_analysis_origin <- function(row, entry) {
   if (identical(row$originating_analysis, "SISanalyzer")) {
     pin <- yaml::read_yaml(repo_path("config", "conventional_bundle.yml"))
@@ -39,8 +40,10 @@ sd_analysis_origin <- function(row, entry) {
   paths <- unique(unlist(lapply(entry$panels, function(p) unlist(p[c("figure_source", "primary_source", "input_dependencies")]))))
   ri <- utils::read.csv(repo_path("provenance", "source_manifests", "render_inputs_manifest.csv"), colClasses = "character")
   pr <- utils::read.csv(repo_path("source_data", "pRoteomics", "manifest.csv"), colClasses = "character")
+  primary <- utils::read.csv(repo_path("provenance", "source_manifests", "primary_inputs.csv"), colClasses = "character")
   dirs <- unique(sub("^source_data/pRoteomics/([^/]+)/.*$", "\\1", grep("^source_data/pRoteomics/", paths, value = TRUE)))
-  commits <- unique(c(ri$source_commit[ri$declared_path %in% paths], pr$source_commit[pr$publication_id %in% dirs]))
+  commits <- unique(c(ri$source_commit[ri$declared_path %in% paths], pr$source_commit[pr$publication_id %in% dirs],
+                      primary$source_commit[primary$declared_path %in% paths]))
   if (!length(commits)) stop(row$publication_id, ": no pRoteomics commit recorded for its inputs", call. = FALSE)
   list(analysis = "topohl/pRoteomics (frozen exports; figure drawn by Exp9_manuscript)", commit = paste(commits, collapse = ", "))
 }
