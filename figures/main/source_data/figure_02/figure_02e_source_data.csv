@@ -1,31 +1,11 @@
-marker,dataset,compartment,displayed_value,true_value,colour_scale_censored
-Ptbp2,neuron_soma,Soma,3,5.09970188655,TRUE
-Anp32a,neuron_soma,Soma,3,3.1053692503654,TRUE
-Hdac5,neuron_soma,Soma,0.110366024346501,0.110366024346501,FALSE
-Npm1,neuron_soma,Soma,3,4.1712817737751,TRUE
-Camk2a,neuron_soma,Soma,-0.255871615420702,-0.255871615420702,FALSE
-Snap25,neuron_soma,Soma,-2.1873486147758,-2.1873486147758,FALSE
-Syp,neuron_soma,Soma,-1.8669286943178,-1.8669286943178,FALSE
-Ctss,neuron_soma,Soma,-0.1554116097752,-0.1554116097752,FALSE
-C1qa,neuron_soma,Soma,-1.1318553099287,-1.1318553099287,FALSE
-P2ry12,neuron_soma,Soma,-1.2269884283309,-1.2269884283309,FALSE
-Ptbp2,neuron_neuropil,Neuropil,-0.0341938477327997,-0.0341938477327997,FALSE
-Anp32a,neuron_neuropil,Neuropil,-1.0179500305966,-1.0179500305966,FALSE
-Hdac5,neuron_neuropil,Neuropil,-0.0287556508135989,-0.0287556508135989,FALSE
-Npm1,neuron_neuropil,Neuropil,-1.4812810508328,-1.4812810508328,FALSE
-Camk2a,neuron_neuropil,Neuropil,0.177687162500199,0.177687162500199,FALSE
-Snap25,neuron_neuropil,Neuropil,0.0262545305816033,0.0262545305816033,FALSE
-Syp,neuron_neuropil,Neuropil,0.2228114210114,0.2228114210114,FALSE
-Ctss,neuron_neuropil,Neuropil,0,0,FALSE
-C1qa,neuron_neuropil,Neuropil,0,0,FALSE
-P2ry12,neuron_neuropil,Neuropil,0,0,FALSE
-Ptbp2,microglia,Microglia ROI,-0.1343210783303,-0.1343210783303,FALSE
-Anp32a,microglia,Microglia ROI,0,0,FALSE
-Hdac5,microglia,Microglia ROI,-0.003105479317,-0.003105479317,FALSE
-Npm1,microglia,Microglia ROI,0,0,FALSE
-Camk2a,microglia,Microglia ROI,0,0,FALSE
-Snap25,microglia,Microglia ROI,0,0,FALSE
-Syp,microglia,Microglia ROI,0.166937072168,0.166937072168,FALSE
-Ctss,microglia,Microglia ROI,1.3136530544293,1.3136530544293,FALSE
-C1qa,microglia,Microglia ROI,0.286875582441699,0.286875582441699,FALSE
-P2ry12,microglia,Microglia ROI,0.9484433967326,0.9484433967326,FALSE
+internal_contrast,external_signature,level,NES,signature_FDR,signature_fdr_family,single_set_p_unadjusted,legend_text_moved
+DG_vs_mean_other_soma_regions,DG,Regional identity,3.68973924854974,1.2e-10,soma_tissue,1e-10,"expected pairings only; each unit against the mean of its siblings unless a pair is named; grey point = signature-family FDR >= 0.05; the complete specificity inventory is in Extended Data Fig. 5d - stated in the figure legend, not on the artwork"
+CA3_vs_mean_other_soma_regions,CA2/3,Regional identity,3.31622838044165,1.2e-10,soma_tissue,1e-10,"expected pairings only; each unit against the mean of its siblings unless a pair is named; grey point = signature-family FDR >= 0.05; the complete specificity inventory is in Extended Data Fig. 5d - stated in the figure legend, not on the artwork"
+CA1_vs_mean_other_soma_regions,CA1,Regional identity,3.09765063222406,1.2e-10,soma_tissue,1e-10,"expected pairings only; each unit against the mean of its siblings unless a pair is named; grey point = signature-family FDR >= 0.05; the complete specificity inventory is in Extended Data Fig. 5d - stated in the figure legend, not on the artwork"
+DG_neuropil_vs_mean_non_DG_regions,DG,Regional identity,2.93807928387244,6e-10,neuropil_subregion,1e-10,"expected pairings only; each unit against the mean of its siblings unless a pair is named; grey point = signature-family FDR >= 0.05; the complete specificity inventory is in Extended Data Fig. 5d - stated in the figure legend, not on the artwork"
+CA2_vs_mean_other_soma_regions,CA2/3,Regional identity,2.43206044188955,1.2e-10,soma_tissue,1e-10,"expected pairings only; each unit against the mean of its siblings unless a pair is named; grey point = signature-family FDR >= 0.05; the complete specificity inventory is in Extended Data Fig. 5d - stated in the figure legend, not on the artwork"
+CA1_SO_vs_CA3_SO,CA1,Regional identity,2.30599852803019,1.00024990821906e-7,neuropil_subregion,3.33416636073019e-8,"expected pairings only; each unit against the mean of its siblings unless a pair is named; grey point = signature-family FDR >= 0.05; the complete specificity inventory is in Extended Data Fig. 5d - stated in the figure legend, not on the artwork"
+CA1_SO_vs_CA3_SO,CA2/3,Regional identity,-1.91825885366278,8.0174927113702e-4,neuropil_subregion,6.6812439261418e-4,"expected pairings only; each unit against the mean of its siblings unless a pair is named; grey point = signature-family FDR >= 0.05; the complete specificity inventory is in Extended Data Fig. 5d - stated in the figure legend, not on the artwork"
+CA1_SR_vs_mean_other_CA1_strata,SR,CA1 laminar identity,2.95098757145277,1.5e-10,ca1_strata,1e-10,"expected pairings only; each unit against the mean of its siblings unless a pair is named; grey point = signature-family FDR >= 0.05; the complete specificity inventory is in Extended Data Fig. 5d - stated in the figure legend, not on the artwork"
+CA1_SLM_vs_mean_other_CA1_strata,SLM,CA1 laminar identity,2.90299039653814,1.5e-10,ca1_strata,1e-10,"expected pairings only; each unit against the mean of its siblings unless a pair is named; grey point = signature-family FDR >= 0.05; the complete specificity inventory is in Extended Data Fig. 5d - stated in the figure legend, not on the artwork"
+CA1_SO_vs_mean_other_CA1_strata,SO,CA1 laminar identity,1.95238030374319,3.3482726749559e-4,ca1_strata,2.7902272291299e-4,"expected pairings only; each unit against the mean of its siblings unless a pair is named; grey point = signature-family FDR >= 0.05; the complete specificity inventory is in Extended Data Fig. 5d - stated in the figure legend, not on the artwork"
