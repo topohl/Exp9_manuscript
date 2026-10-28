@@ -74,8 +74,9 @@ testthat::test_that("acquisition count is never presented as biological n", {
 
 # ---- S32: F2e source data must retain uncapped values ---------------------
 testthat::test_that("display saturation never reaches the released source data", {
-  z <- sidecar("figure_02", "v9_compartment")
-  testthat::skip_if_not(!is.null(z), "figure_02 not built")
+  # the marker heatmap is Extended Data Fig. 5f since 2026-10-28
+  z <- sidecar("extended_data", "v9_compartment")
+  testthat::skip_if_not(!is.null(z), "extended_data not built")
   cen <- z[z$colour_scale_censored %in% TRUE, , drop = FALSE]
   testthat::expect_gt(nrow(cen), 0L)
   testthat::expect_true(all(abs(cen$true_value) > abs(cen$displayed_value)))
@@ -88,8 +89,9 @@ testthat::test_that("display saturation never reaches the released source data",
 testthat::test_that("the baseline fingerprint never says hits", {
   src <- code_of(repo_path("R", "proteomics_panels_revised.R"))
   testthat::expect_false(grepl("top hits", src, fixed = TRUE))
-  z <- sidecar("figure_02", "v9_fingerprint")
-  testthat::skip_if_not(!is.null(z), "figure_02 not built")
+  # the fingerprint moved from Figure 2 to Extended Data 5e on 2026-10-27
+  z <- sidecar("extended_data", "v9_fingerprint")
+  testthat::skip_if_not(!is.null(z), "extended_data not built")
   # and the ordering must stay phenotype-blind
   testthat::expect_true(all(c("gene_peak_unit", "gene_peak_dataset") %in%
                               names(z)))
@@ -116,13 +118,14 @@ testthat::test_that("only external comparisons are called validation", {
   indep <- a[grepl("^YES", a$independent_validation), , drop = FALSE]
   # exactly one panel may claim independent validation: the external one
   testthat::expect_identical(indep$panel_id, "v9_external_main")
-  h <- a[a$panel_id == "v9_internal_main", ]
-  testthat::expect_false(grepl("^YES", h$independent_validation))
+  # since 2026-10-27 the GO panels of regions and layers (2f-2i since 2026-10-28) carry this role
+  go_ids <- c("v9_go_soma", "v9_go_ca1", "v9_go_ca2", "v9_go_dg")
+  h <- a[a$panel_id %in% go_ids, ]
+  testthat::expect_false(any(grepl("^YES", h$independent_validation)))
   roles <- vapply(V9$panels, function(p) as.character(p$role %||% ""),
                   character(1))
   ids <- vapply(V9$panels, function(p) as.character(p$id), character(1))
-  testthat::expect_identical(roles[ids == "v9_internal_main"],
-                             "functional_characterization")
+  testthat::expect_true(all(roles[ids %in% go_ids] == "functional_characterization"))
   testthat::expect_false(any(roles == "internal_validation"))
 })
 
@@ -414,7 +417,7 @@ testthat::test_that("no heatmap clips silently", {
 })
 
 testthat::test_that("only the saturating tail of F2e is marked", {
-  p <- file.path(FIGD, "figure_02", "panels", "v9_compartment.svg")
+  p <- file.path(FIGD, "extended_data", "panels", "v9_compartment.svg")
   testthat::skip_if_not(file.exists(p), "F2e not rendered")
   txt <- paste(readLines(p, warn = FALSE, encoding = "UTF-8"), collapse = " ")
   labs <- sub(".*>([^<]*)</text>", "\\1",

@@ -1,7 +1,7 @@
 # Manuscript palette
 
 `config/manuscript_palette.yml` is the single colour source of every figure
-(`palette_version: manuscript_palette_v3.2`).
+(`palette_version: manuscript_palette_v3.3`).
 
 - Groups: CON `#6B7296` (slate blue), RES `#BFBCB4` (warm grey), SUS `#C74C56`
   (red). RES is light and nearly grey, so group is never shown by colour alone:
@@ -9,6 +9,8 @@
 - Diverging (signed effects): low `#6679D9`, white at zero, high `#F2CA4E`.
 - Fixed colour limits by measure (`diverging_limits`): standardized mean
   difference 1, correlation 0.6, NES 2, z 2, set-mean z 1.
+- Regions (v3.3, Figure 2c only, where compartment is shape): CA1 `#44AA99`,
+  CA2 `#882255`, CA3 `#C98B2B`, DG `#117733`.
 
 ## How renderers use it
 

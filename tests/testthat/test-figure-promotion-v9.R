@@ -26,11 +26,11 @@ testthat::test_that("exactly one canonical generation is declared per manuscript
     testthat::expect_identical(as.character(f$layout_mode), "absolute")
   }
 
-  # Figure 2 remains a-h; Figure 3 (layout of 2026-10-20) is a-d and the rows e-g,
-  # each a header, a card, a curve and the proteins
+  # Figure 2 (re-laid out 2026-10-27; the marker heatmap to ED5 and the input-territory row j-l 2026-10-28) is a-l; Figure 3 (layout of
+  # 2026-10-20) is a-d and the rows e-g, each a header, a card, a curve and the proteins
   testthat::expect_identical(
     vapply(y$figures[["02"]]$panels, function(p) as.character(p$id), character(1)),
-    paste0("2", letters[1:8]))
+    paste0("2", letters[1:12]))
   testthat::expect_identical(
     vapply(y$figures[["03"]]$panels, function(p) as.character(p$id), character(1)),
     c(paste0("3", letters[1:4]), unlist(lapply(c("3e", "3f", "3g"), function(r) paste0(r, c("", "_card", "_curve", "_proteins"))))))

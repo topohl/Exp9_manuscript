@@ -52,9 +52,9 @@ Use an isolated candidate root during review:
 Rscript "figures/scripts/figure_03.R" --output-root "C:\path\to\candidate"
 ```
 
-Figure 2a, the anatomy schematic, is rendered (`f9_schematic`) and validated,
-materialized and assembled like every other panel; it is no longer deferred to
-Illustrator.
+Figure 2a is an empty box of declared size (`hf_schematic_space`, since
+2026-10-27): the author draws the workflow schematic into it by hand, as for
+Figure 3c. The box is validated, materialized and assembled like every other panel.
 
 The authoring outputs intentionally remain separate from the journal export
 package, which `tools/package_journal_figures.R` writes under `export/<bundle>/`

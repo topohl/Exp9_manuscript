@@ -133,11 +133,13 @@ testthat::test_that("the spatial-identity panels are promoted without the comple
   y <- pub_contract()
   f <- y$figures$ED_spatial_validation
 
-  # Bilateral agreement and precision (a, b), then the spatial identity (c, d).
+  # Bilateral agreement and precision (a, b), then the spatial identity (c, d) and,
+  # since 2026-10-27, the control-only protein fingerprint formerly in Figure 2 (e) and, since
+  # 2026-10-28, the marker-protein heatmap formerly Figure 2e (f).
   # The former identity panel c drew 14 of 2,826 FDR-supported positive GO
   # terms under a complete-inventory caption and is deliberately absent.
   testthat::expect_identical(
-    vapply(f$panels, function(p) as.character(p$id), character(1)), paste0("05", letters[1:4]))
+    vapply(f$panels, function(p) as.character(p$id), character(1)), paste0("05", letters[1:6]))
   testthat::expect_true(nzchar(as.character(f$withheld_panel %||% "")))
 
   src <- paste(readLines(repo_path("R", "proteomics_panels_extended_data.R"), warn = FALSE),

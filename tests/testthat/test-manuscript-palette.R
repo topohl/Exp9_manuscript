@@ -17,8 +17,10 @@ PAL <- yaml::read_yaml(repo("config", "manuscript_palette.yml"))
 LE <- intToUtf8(0x2264); GE <- intToUtf8(0x2265); MINUS <- intToUtf8(0x2212)
 
 testthat::test_that("the palette contract holds the v3 colours", {
-  testthat::expect_identical(PAL$palette_version, "manuscript_palette_v3.2")
+  testthat::expect_identical(PAL$palette_version, "manuscript_palette_v3.3")
   testthat::expect_identical(unlist(PAL$group), c(CON = "#6B7296", RES = "#BFBCB4", SUS = "#C74C56"))
+  # v3.3 (2026-10-27): region colours for the Figure 2 PCA
+  testthat::expect_identical(unlist(PAL$region), c(CA1 = "#44AA99", CA2 = "#882255", CA3 = "#C98B2B", DG = "#117733"))
   testthat::expect_identical(unlist(PAL$diverging), c(low = "#6679D9", mid = "#FFFFFF", high = "#F2CA4E"))
   testthat::skip_if_not_installed("farver")
   de <- function(a, b) as.numeric(farver::compare_colour(farver::decode_colour(a), farver::decode_colour(b),
@@ -110,8 +112,8 @@ testthat::test_that("every signed fill goes through hv_diverging()", {
 })
 
 testthat::test_that("everything a contract renderer reaches is held to the same rules, function by function", {
-  # The contracts also name renderers that live in older modules beside superseded code (2c and 2f in
-  # house_final_v7, ED3c and ED8b in story_v5, the ED4 cell-type panel in house_v2_figure_panels), and every
+  # The contracts also name renderers that live in older modules beside superseded code (2c, 2d and the GO
+  # panels 2f-2i in house_final_v7, ED3c and ED8b in story_v5, the ED4 cell-type panel in house_v2_figure_panels), and every
   # renderer calls helpers. Every function a contract renderer can reach through R/panels, outside the files
   # checked whole above, is checked on its own, so the superseded code beside it keeps its own colours.
   renderers <- character()
@@ -143,7 +145,7 @@ testthat::test_that("everything a contract renderer reaches is held to the same 
     for (d in defs[[n]]) todo <- c(todo, setdiff(intersect(all.names(d$body), names(defs)), reached))
   }
   outside <- reached[!vapply(reached, function(n) all(vapply(defs[[n]], `[[`, "", "file") %in% PANELS), logical(1))]
-  testthat::expect_true(all(c("hf_pca_compact", "hf_bilateral_main", "s5_ed_ca2_displacement",
+  testthat::expect_true(all(c("hf_pca_compact", "hf_programme_dots", "s5_ed_ca2_displacement",
                               "s5_ed_network_distance", "hvp_ed_celltype") %in% outside))
   for (n in outside) for (d in defs[[n]]) {
     code <- d$code[!grepl("^\\s*#", d$code)]

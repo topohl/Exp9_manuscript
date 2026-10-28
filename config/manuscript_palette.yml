@@ -8,7 +8,7 @@
 # No red-vs-green contrast is used anywhere. The diverging scale is
 # colour-blind safe (blue / yellow, not red / green).
 
-palette_version: manuscript_palette_v3.2
+palette_version: manuscript_palette_v3.3
 
 # ---------------------------------------------------------------- groups
 # Experimental group identity (v3, 2026-10-06): slate blue CON, warm grey RES,
@@ -32,6 +32,17 @@ dataset_label:
   neuron_neuropil: "Neuropil"
   neuron_soma: "Soma"
   microglia: "Microglia-enriched ROI"
+
+# ------------------------------------------------------------- regions
+# Hippocampal region identity (v3.3, 2026-10-27), for the Figure 2 PCA, where
+# compartment is carried by shape. Chosen to stay apart under deuteranopia,
+# protanopia and tritanopia (pairwise CIE76 dE >= 22) and from every colour
+# above (dE >= 25); greyscale lightness differs (L* 32 to 73).
+region:
+  CA1: "#44AA99"      # teal
+  CA2: "#882255"      # wine
+  CA3: "#C98B2B"      # amber
+  DG: "#117733"       # green
 
 # ------------------------------------------------- signed molecular effect
 # ONE diverging scale for every signed molecular quantity in the manuscript

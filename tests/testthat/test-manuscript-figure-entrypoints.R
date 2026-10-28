@@ -8,8 +8,8 @@ testthat::test_that("manuscript figure contract has exact unique panel identitie
   ids2 <- vapply(fig2$panels, function(x) as.character(x$id), character(1))
   ids3 <- vapply(fig3$panels, function(x) as.character(x$id), character(1))
 
-  # Figure 2 remains a-h; Figure 3 (2026-10-20) is a-d and the rows e-g
-  testthat::expect_identical(ids2, paste0("2", letters[1:8]))
+  # Figure 2 (re-laid out 2026-10-27; the marker heatmap to ED5 2026-10-28) is a-i; Figure 3 (2026-10-20) is a-d and the rows e-g
+  testthat::expect_identical(ids2, paste0("2", letters[1:12]))
   testthat::expect_identical(ids3, c(paste0("3", letters[1:4]), unlist(lapply(c("3e", "3f", "3g"), function(r) paste0(r, c("", "_card", "_curve", "_proteins"))))))
   testthat::expect_false(anyDuplicated(c(ids2, ids3)) > 0L)
   testthat::expect_identical(fig2$contract_version,
@@ -18,17 +18,17 @@ testthat::test_that("manuscript figure contract has exact unique panel identitie
                              "manuscript_figures_v4_figure3_adaptation")
 })
 
-testthat::test_that("Figure 2a is a rendered anatomy schematic, not a placeholder", {
+testthat::test_that("Figure 2a is a rendered box for the hand-drawn schematic, not a deferred slot", {
   source(testthat::test_path("..", "..", "R", "paths.R"))
   source(repo_path("R", "manuscript_figure_utils.R"))
   fig2 <- manuscript_figure_contract("02")
   panel_2a <- fig2$panels[[1]]
 
-  # Before the promotion this slot was deferred_to_illustrator with no asset at
-  # all. The promoted generation draws it, so it must now behave like every
-  # other automated panel.
+  # Before the 2026-10 promotions this slot was deferred_to_illustrator with no
+  # asset at all. Since 2026-10-27 the author draws the schematic by hand into an
+  # empty box of declared size (as Figure 3c); the box is still an automated panel.
   testthat::expect_identical(panel_2a$id, "2a")
-  testthat::expect_identical(as.character(panel_2a$renderer), "f9_schematic")
+  testthat::expect_identical(as.character(panel_2a$renderer), "hf_schematic_space")
   testthat::expect_true(manuscript_figure_panel_is_automated(panel_2a))
   testthat::expect_true(nzchar(as.character(panel_2a$figure_source)))
   testthat::expect_true(nzchar(as.character(panel_2a$primary_source)))
@@ -41,9 +41,11 @@ testthat::test_that("contract pins canonical panels and does not use newest-file
   helper_text <- paste(readLines(repo_path("R", "manuscript_figure_utils.R"), warn = FALSE), collapse = "\n")
 
   # Each promoted panel names one exact asset produced by the v9 entry points.
-  for (asset in c("v9_schematic.svg", "v9_depth.svg", "v9_pca.svg",
-                  "v9_fingerprint.svg", "v9_compartment.svg", "v9_bilateral_main.svg",
-                  "v9_external_main.svg", "v9_internal_main.svg",
+  for (asset in c("v9_schematic_space_f2.svg", "v9_depth.svg", "v9_pca.svg",
+                  "v9_marker_classes.svg", "v9_compartment.svg", "v9_external_main.svg",
+                  "v9_go_soma.svg", "v9_go_ca1.svg", "v9_go_ca2.svg", "v9_go_dg.svg",
+                  "v9_input_territories.svg", "v9_afferent_sources.svg", "v9_inhibitory_share.svg",
+                  "v9_fingerprint.svg",
                   "v9_dap_track.svg", "v9_atlas.svg",
                   "v9_schematic_space.svg", "v9_adaptation_state.svg",
                   "v9_row_syn.svg", "v9_row_rna.svg", "v9_row_ox.svg",

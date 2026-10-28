@@ -46,6 +46,7 @@ hv_tile_border <- function() "grey85"
 # side of a heatmap tile in cell units (config/manuscript_palette.yml heatmap$tile)
 hv_tile <- function() as.numeric(hv_palette()$heatmap$tile %||% 1)
 hv_dataset_colours <- function() unlist(hv_palette()$dataset)
+hv_region_colours <- function() unlist(hv_palette()$region)
 hv_dataset_label <- function(x) {
   l <- unlist(hv_palette()$dataset_label)
   out <- unname(l[as.character(x)])

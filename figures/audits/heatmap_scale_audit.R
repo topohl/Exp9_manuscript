@@ -214,8 +214,9 @@ rows <- do.call(rbind, lapply(seq_len(nrow(SPEC)), function(i) {
   on_bar <- if (drawn_fixed)
     all(hv_diverging_labels(pal_lim)[c(1, 5)] %in% labs) else
     any(grepl("≥|≤", labs))
+  # the cards print every value with the typographic minus (hv_minus), as the renderer does
   printed <- identical(SPEC$disclosure[i], "printed") &&
-    all(sprintf("%.1f", v) %in% labs)
+    all(hv_minus(sprintf("%.1f", v)) %in% labs)
   data.frame(
     figure = fig_of$figure[match(pid, fig_of$panel_id)],
     panel = fig_of$panel_label[match(pid, fig_of$panel_id)],

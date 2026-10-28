@@ -5,15 +5,16 @@
 #   protein_statistics.csv            Figure 3e-g leading-edge proteins: log2 fold change, moderated t, raw P, BH FDR (limma, 3 vs 3);
 #                                     df.total and limma's 95% interval, recovered exactly from those (see below)
 #   term_statistics.csv               Figure 3e-g card terms: gene-set size, and NES, raw P and BH FDR of SUS - RES
-#   control_signature_statistics.csv  Figure 2g / ED5d pairings: signature genes mapped onto the ranking (the GSEA set size), NES, raw P, signature FDR
-#   control_term_statistics.csv       Figure 2h terms: set size, NES, raw P and BH FDR
+#   control_signature_statistics.csv  Figure 2e / ED5d pairings: signature genes mapped onto the ranking (the GSEA set size), NES, raw P, signature FDR
+# The GO programme panels of Figure 2 (2f-2i, since 2026-10-27) carry set size, NES, raw P and BH FDR in their own source
+# data (pRoteomics map_anatomical_programmes), so they need no table here; the former 2h table was retired with that panel.
 # Rows are selected and copied as stored; only the protein df and interval are derived (exactly). Files are read at their
 # paths in the regenerated tree (the legacy paths of the figure imports are mapped). A file the figures read directly must
 # carry the SHA-256 their import recorded (provenance/source_manifests/primary_inputs.csv, else render_inputs_manifest.csv);
 # every value the figures show must be reproduced (gates, 1e-12), so the rows are of the same version.
 #
 # Usage (from the repository root):  Rscript tools/import_proteomics_statistics.R <primary tree root, short path> [--replace]
-# Writes source_data/proteomics_statistics/ (an existing folder only with --replace): the four tables, inputs.csv (source
+# Writes source_data/proteomics_statistics/ (an existing folder only with --replace): the three tables, inputs.csv (source
 # file, SHA-256) and 00_manifest.csv (file, rows, SHA-256, source).
 
 suppressWarnings(source(file.path("R", "paths.R")))
@@ -104,7 +105,7 @@ gate("protein rows: df.total is that of the compartment's fit (neuropil 60-64, s
      paste(round(range(PROT$df_total), 2), collapse = "-"))
 PROT <- PROT[, c(setdiff(names(PROT), c("df_total", "ci_low", "ci_high", "test", "source_file")), "df_total", "ci_low", "ci_high", "test", "source_file")]
 
-# ---------------------------------------------------------------- Figure 2g / ED5d and Figure 2h: control-only GSEA
+# ---------------------------------------------------------------- Figure 2e / ED5d: control-only GSEA against external signatures
 ri <- rd(repo_path("provenance", "source_manifests", "render_inputs_manifest.csv"))
 pi_path <- repo_path("provenance", "source_manifests", "primary_inputs.csv")
 pi <- if (file.exists(pi_path)) rd(pi_path) else data.frame(declared_path = character(), sha256 = character())
@@ -114,26 +115,19 @@ recorded <- function(rel) {   # the SHA-256 of the copy the figures read: the pr
 }
 CS <- "results/source_data/04_differential_expression_enrichment/control_spatial_identity_validation/global/"
 e2 <- read_input(paste0(CS, "figure2e_source_data.csv"), recorded(paste0(CS, "figure2e_source_data.csv")))
-f2 <- read_input(paste0(CS, "figure2f_regions_CA1layers_source_data.csv"), recorded(paste0(CS, "figure2f_regions_CA1layers_source_data.csv")))
 SIG <- e2[, c("internal_contrast", "external_signature", "expected_match", "mapped_unique_genes", "NES", "p_value", "signature_FDR", "signature_fdr_family")]
 d5 <- rd(repo_path("figures", "extended_data", "source_data", "extended_data_05", "extended_data_05d_source_data.csv"))
 m5 <- merge(d5, SIG, by = c("internal_contrast", "external_signature"), suffixes = c("", "_arc"))
 gate("ED5d: all 30 pairings found; NES and signature FDR = the figure's", nrow(m5) == 30L && num_eq(m5$NES, m5$NES_arc) && num_eq(m5$signature_FDR, m5$signature_FDR_arc), nrow(m5))
-d2h <- rd(repo_path("figures", "main", "source_data", "figure_02", "figure_02h_source_data.csv"))
-TRM <- f2[, c("contrast", "ID", "Description", "setSize", "NES", "pvalue", "p.adjust")]
-m2 <- merge(d2h, TRM, by = c("contrast", "Description"), suffixes = c("", "_arc"))
-gate("2h: all terms found once; NES, set size and BH FDR = the figure's", nrow(m2) == nrow(d2h) && !anyDuplicated(m2[, c("contrast", "Description")]) &&
-       num_eq(m2$NES, m2$NES_arc) && num_eq(m2$setSize, m2$setSize_arc) && num_eq(m2$p_adjust, m2$p.adjust), nrow(m2))
-TRM <- m2[, c("contrast", "ID", "Description", "setSize", "NES", "pvalue", "p.adjust")]
 
 # ---------------------------------------------------------------- write
 if (dir.exists(OUT)) unlink(OUT, recursive = TRUE)
 dir.create(OUT, recursive = TRUE)
-TABLES <- list(protein_statistics = PROT, term_statistics = TERM, control_signature_statistics = SIG, control_term_statistics = TRM,
+TABLES <- list(protein_statistics = PROT, term_statistics = TERM, control_signature_statistics = SIG,
                inputs = do.call(rbind, INPUTS))
 for (n in names(TABLES)) utils::write.csv(TABLES[[n]], file.path(OUT, paste0(n, ".csv")), row.names = FALSE, fileEncoding = "UTF-8")
 f <- paste0(names(TABLES), ".csv")
 man <- data.frame(file = f, rows = vapply(TABLES, nrow, 0L), sha256 = vapply(file.path(OUT, f), sha, ""),
                   source = paste0("pRoteomics primary analysis (Analysis/proteomics_original, original centring) at ", rev), row.names = NULL)
 utils::write.csv(man, file.path(OUT, "00_manifest.csv"), row.names = FALSE)
-cat("imported", nrow(PROT), "protein rows,", nrow(TERM), "card terms,", nrow(SIG), "signature pairings,", nrow(TRM), "control terms ->", OUT, "\n")
+cat("imported", nrow(PROT), "protein rows,", nrow(TERM), "card terms,", nrow(SIG), "signature pairings ->", OUT, "\n")

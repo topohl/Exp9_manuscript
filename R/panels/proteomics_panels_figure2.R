@@ -250,9 +250,9 @@ hf_depth_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 # Part 22 measured two defects in the previous main PCA: a 20 x 15 mm block of
 # exactly 0.0% ink, and a legend line terminating exactly on the panel boundary.
 # Both came from a right-hand legend competing with the data for a 42 mm box.
-# Here the legend moves to the bottom as a single deterministic row, region is
-# NOT encoded (it would not be readable at this size and implying it would be
-# dishonest), and the caption says so.
+# 2026-10-27 (reviewer: colour by subgroup): region is colour (palette region
+# block) and compartment is shape, so each region x compartment cluster can be
+# named; the box was widened for the two keys.
 hf_pca_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   fam <- hf_fam()
   d <- hv_read_csv(repo_path(panel$primary_source))
@@ -267,16 +267,55 @@ hf_pca_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   ds <- sg_compartment_levels()
   d <- d[d$dataset %in% ds, , drop = FALSE]
   d$lab <- factor(sg_compartment_label(d$dataset), levels = sg_compartments()$short)
-  d <- d[order(d$lab, d$Sample), , drop = FALSE]
+  regions <- sg_region_levels()
+  d$region_lab <- factor(toupper(as.character(d$region)), levels = toupper(regions))
+  if (anyNA(d$region_lab)) stop("hf_pca_compact: unknown region in ", panel$primary_source, call. = FALSE)
+  d <- d[order(d$lab, d$region_lab, d$Sample), , drop = FALSE]
+  shapes <- stats::setNames(c(16, 17, 15)[seq_along(ds)], sg_compartments()$short)
+  # 2026-10-28: the anatomical groups the two axes separate are named in the
+  # panel, as in the hand-edited figure. A label sits beside its group, just
+  # outside the 3rd-97th percentile extent of its members on the given side
+  # (side: r, l = right, left; t, b = above, below; br = below, right-aligned; rt = right, at the top).
+  lay <- tolower(as.character(d$layer))
+  grp <- list(
+    list(label = "DG soma", keep = d$dataset == "neuron_soma" & d$region_lab == "DG", side = "br"),
+    list(label = "CA soma", keep = d$dataset == "neuron_soma" & d$region_lab != "DG", side = "t"),
+    list(label = "DG MO,\nmicroglia ROI", keep = d$region_lab == "DG" & (lay == "mo" | d$dataset == "microglia"),
+         side = "r"),
+    list(label = "SLM", keep = lay == "slm", side = "t"),
+    list(label = "DG PO", keep = lay == "po", side = "r"),
+    list(label = "Microglia ROI", keep = d$dataset == "microglia" & d$region_lab %in% c("CA1", "CA2"),
+         side = "rt"),
+    list(label = "SO, SR", keep = lay %in% c("so", "sr") | (d$dataset == "microglia" & d$region_lab == "CA3"),
+         side = "r"))
+  rx <- diff(range(d$PC1)); ry <- diff(range(d$PC2))
+  q <- function(v, p) stats::quantile(v, p, names = FALSE)
+  glab <- do.call(rbind, lapply(grp, function(g) {
+    if (!any(g$keep)) return(NULL)
+    x <- d$PC1[g$keep]; y <- d$PC2[g$keep]
+    switch(g$side,
+           r = data.frame(label = g$label, x = q(x, 0.97) + 0.04 * rx, y = stats::median(y), hj = 0, vj = 0.5),
+           l = data.frame(label = g$label, x = q(x, 0.03) - 0.05 * rx, y = stats::median(y), hj = 1, vj = 0.5),
+           t = data.frame(label = g$label, x = stats::median(x), y = q(y, 0.97) + 0.04 * ry, hj = 0.5, vj = 0),
+           b = data.frame(label = g$label, x = stats::median(x), y = q(y, 0.03) - 0.04 * ry, hj = 0.5, vj = 1),
+           br = data.frame(label = g$label, x = q(x, 0.97), y = q(y, 0.03) - 0.04 * ry, hj = 1, vj = 1),
+           rt = data.frame(label = g$label, x = q(x, 0.97) + 0.04 * rx, y = q(y, 0.97), hj = 0, vj = 0.5))
+  }))
 
   p <- ggplot2::ggplot(d, ggplot2::aes(PC1, PC2)) +
-    ggplot2::geom_point(ggplot2::aes(colour = lab), size = 0.5, stroke = 0,
-                        alpha = 0.85) +
-    ggplot2::scale_colour_manual(
-      values = stats::setNames(unname(hv_dataset_colours()[ds]),
-                               sg_compartments()$short), name = NULL) +
-    ggplot2::guides(colour = ggplot2::guide_legend(
-      ncol = 1, override.aes = list(size = 1.1))) +
+    # symbols large enough that compartment (shape) reads at print size; the region key is a swatch
+    # from a second, invisible layer, so no key glyph repeats a compartment shape
+    ggplot2::geom_point(ggplot2::aes(colour = region_lab, shape = lab), size = 0.85,
+                        stroke = 0, alpha = 0.75, show.legend = c(colour = FALSE, shape = TRUE)) +
+    ggplot2::geom_point(ggplot2::aes(colour = region_lab), alpha = 0, key_glyph = "rect",
+                        show.legend = c(colour = TRUE, shape = FALSE)) +
+    ggplot2::geom_text(data = glab, ggplot2::aes(x, y, label = label, hjust = hj, vjust = vj), family = fam,
+                       size = hf_sz(HF_MIN_PT), colour = "black", lineheight = 0.9) +
+    ggplot2::scale_colour_manual(values = hv_region_colours()[levels(d$region_lab)], name = "Region") +
+    ggplot2::scale_shape_manual(values = shapes, name = "Compartment") +
+    ggplot2::guides(colour = ggplot2::guide_legend(ncol = 1, order = 1, override.aes = list(alpha = 1)),
+                    shape = ggplot2::guide_legend(ncol = 1, order = 2, override.aes = list(size = 1.1, colour = "grey30",
+                                                                                         alpha = 1))) +
     # typographic minus on both PC axes (2026-10-07), as on every v9 axis
     ggplot2::scale_x_continuous(labels = hv_minus_labels) +
     ggplot2::scale_y_continuous(labels = hv_minus_labels) +
@@ -286,12 +325,16 @@ hf_pca_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       # a scatter is drawn square (house style); the key goes to the side so
       # the square can use the box's height
       aspect.ratio = 1,
+      axis.text = ggplot2::element_text(colour = "black"),
       legend.position = "right",
       legend.margin = ggplot2::margin(0, 0, 0, 0),
       legend.box.margin = ggplot2::margin(0, 0, 0, -1),
-      legend.key.size = ggplot2::unit(2.4, "mm"),
+      legend.key.size = ggplot2::unit(2.2, "mm"),
+      legend.title = ggplot2::element_text(size = HF_MIN_PT, colour = "black"),
+      legend.text = ggplot2::element_text(size = HF_MIN_PT, colour = "black"),
       plot.margin = ggplot2::margin(1, 1, 1, 1, "mm"))
-  write_csv_safe(d[, c("Sample", "PC1", "PC2", "dataset")], csv_path)
+  write_csv_safe(d[, intersect(c("Sample", "PC1", "PC2", "dataset", "region", "layer", "region_layer",
+                                 "animal_id"), names(d))], csv_path)
   hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }
@@ -591,6 +634,635 @@ hf_internal_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   }
   write_csv_safe(g[, c("contrast", "Description", "level", "NES", "p_adjust",
                        "setSize")], csv_path)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
+  invisible(list(status = "ok"))
+}
+
+# ==========================================================================
+# a. Space for the sampling schematic, drawn by hand (2026-10-27)
+# ==========================================================================
+#
+# The author draws the workflow schematic in Illustrator; the figure keeps an
+# empty box of the declared size for it, as Figure 3c does.
+hf_schematic_space <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+  p <- ggplot2::ggplot() + ggplot2::theme_void()
+  write_csv_safe(data.frame(panel = panel$id,
+                            note = "space for a schematic drawn by hand; no data"), csv_path)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
+  invisible(list(status = "ok"))
+}
+
+# ==========================================================================
+# d. Reference marker classes in every acquisition (2026-10-27; control
+#    animals and compartment comparisons 2026-10-28)
+# ==========================================================================
+#
+# Marker classes from external references (Allen cell types; GO, MGI; SynGO),
+# scored per acquisition on the joint cross-compartment scale by pRoteomics
+# (score_compartment_markers). Only the animals of panel$groups (control) are
+# drawn. Points are acquisitions, the larger marks the animal means, the bar
+# their mean. The brackets show the significant compartment comparisons
+# pRoteomics computed on the same animal means (repeated-measures linear model,
+# BH); this renderer only draws them.
+hf_marker_classes <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+  fam <- hf_fam()
+  deps <- as.character(unlist(panel$input_dependencies))
+  acq <- hv_read_csv(repo_path(panel$primary_source))
+  ani <- hv_read_csv(repo_path(deps[1]))
+  ct <- hv_read_csv(repo_path(deps[2]))
+  grp <- as.character(unlist(panel$groups %||% "CON"))
+  acq <- acq[acq$group %in% grp, , drop = FALSE]
+  ani <- ani[ani$group %in% grp, , drop = FALSE]
+  if (!nrow(acq) || !nrow(ani)) stop("hf_marker_classes: no acquisitions of ", paste(grp, collapse = ", "), call. = FALSE)
+  if (!setequal(unique(ct$group), grp) || !setequal(unique(ct$n_animals), length(unique(ani$AnimalID))))
+    stop("hf_marker_classes: the comparisons were not computed on the animals drawn", call. = FALSE)
+  ds <- sg_compartment_levels()
+  lab <- stats::setNames(sg_compartments()$short, ds)
+  cls <- c("Soma markers", "Neuropil markers", "Microglia/PVM markers")
+  # plain two-line headers (2026-10-28); the references and class sizes are in the legend
+  nmk <- tapply(acq$n_markers_in_class, acq$marker_class, max)
+  strip <- stats::setNames(sub(" markers$", "\nmarkers", cls), cls)
+  if (!setequal(unique(acq$marker_class), cls) || !setequal(unique(ct$marker_class), cls))
+    stop("hf_marker_classes: unexpected marker classes in ", panel$primary_source, call. = FALSE)
+  for (nm in c("acq", "ani", "ct")) {
+    x <- get(nm)
+    x$cls <- factor(strip[as.character(x$marker_class)], levels = strip[cls])
+    if ("dataset" %in% names(x)) x$comp <- factor(lab[as.character(x$dataset)], levels = lab)
+    assign(nm, x)
+  }
+  acq <- acq[is.finite(acq$score_log2_vs_typical_protein), , drop = FALSE]
+  # deterministic horizontal spread: rank within compartment x class, no RNG
+  acq <- acq[order(acq$cls, acq$comp, acq$AnimalID, acq$Sample), , drop = FALSE]
+  acq$k <- stats::ave(seq_len(nrow(acq)), acq$cls, acq$comp, FUN = seq_along)
+  acq$n <- stats::ave(seq_len(nrow(acq)), acq$cls, acq$comp, FUN = length)
+  acq$x <- as.numeric(acq$comp) + ((acq$k - 0.5) / acq$n - 0.5) * 0.55
+  mm <- stats::aggregate(animal_mean_score ~ cls + comp, data = ani, FUN = mean)
+  # the animal means side by side in a fixed animal order, inside the bar
+  aid <- sort(unique(ani$AnimalID))
+  ani$x <- as.numeric(ani$comp) + (match(ani$AnimalID, aid) - (length(aid) + 1) / 2) * 0.1
+  cols <- stats::setNames(unname(hv_dataset_colours()[ds]), lab)
+  dark <- vapply(cols, hv_darken, character(1), amount = 0.35)
+
+  # brackets mark the significant comparisons only (adjusted P < 0.05, 2026-10-28); every comparison stays in the
+  # sidecar. Within a marker class each bracket gets its own level, neighbouring pairs below the outer pair.
+  ct$xa <- match(as.character(ct$compartment_a), ds); ct$xb <- match(as.character(ct$compartment_b), ds)
+  ct$lo <- pmin(ct$xa, ct$xb); ct$hi <- pmax(ct$xa, ct$xb)
+  sig <- ct[ct$p_adjust < 0.05, , drop = FALSE]
+  sig <- sig[order(sig$cls, sig$hi - sig$lo, sig$lo), , drop = FALSE]
+  sig$level <- stats::ave(seq_len(nrow(sig)), sig$cls, FUN = seq_along)
+  rng <- diff(range(acq$score_log2_vs_typical_protein))
+  # each level tall enough for its label (about 0.22 of the data range at this box size)
+  step <- 0.22 * rng
+  sig$y <- max(acq$score_log2_vs_typical_protein) + step * (sig$level - 0.45)
+  sig$tick <- 0.03 * rng
+  sig$label <- ifelse(sig$p_adjust < 0.001, "italic(P)*'<0.001'",
+                      sprintf("italic(P)*'=%s'", formatC(signif(sig$p_adjust, 2), format = "fg", digits = 2)))
+  brk <- rbind(data.frame(cls = sig$cls, x = sig$lo + 0.06, xend = sig$hi - 0.06, y = sig$y, yend = sig$y),
+               data.frame(cls = sig$cls, x = sig$lo + 0.06, xend = sig$lo + 0.06, y = sig$y, yend = sig$y - sig$tick),
+               data.frame(cls = sig$cls, x = sig$hi - 0.06, xend = sig$hi - 0.06, y = sig$y, yend = sig$y - sig$tick))
+  top <- if (nrow(sig)) max(sig$y) + 0.2 * rng else max(acq$score_log2_vs_typical_protein)
+
+  p <- ggplot2::ggplot() +
+    ggplot2::geom_hline(yintercept = 0, linewidth = hv_lw("reference_pt"), colour = "grey80") +
+    ggplot2::geom_point(data = acq, ggplot2::aes(x, score_log2_vs_typical_protein, colour = comp),
+                        size = 0.35, stroke = 0, alpha = 0.45) +
+    ggplot2::geom_point(data = ani, ggplot2::aes(x, animal_mean_score),
+                        colour = unname(dark[as.character(ani$comp)]), size = 0.8, stroke = 0) +
+    ggplot2::geom_errorbar(data = mm, ggplot2::aes(as.numeric(comp), ymin = animal_mean_score,
+                                                   ymax = animal_mean_score),
+                           width = 0.5, linewidth = hv_lw("data_pt"), colour = "black") +
+    ggplot2::geom_segment(data = brk, ggplot2::aes(x = x, xend = xend, y = y, yend = yend),
+                          linewidth = hv_lw("reference_pt"), colour = "black") +
+    ggplot2::geom_text(data = sig, ggplot2::aes((lo + hi) / 2, y + 0.02 * rng, label = label), parse = TRUE,
+                       vjust = 0, family = fam, size = hf_sz(HF_MIN_PT), colour = "black") +
+    # headroom for the top label, which is drawn above its anchor
+    ggplot2::geom_blank(data = data.frame(cls = ct$cls, y = top), ggplot2::aes(2, y)) +
+    ggplot2::scale_colour_manual(values = cols, guide = "none") +
+    ggplot2::scale_x_continuous(breaks = seq_along(lab), labels = lab,
+                                expand = ggplot2::expansion(add = 0.45)) +
+    # ticks only over the data, not over the brackets
+    ggplot2::scale_y_continuous(breaks = function(l) {
+      b <- pretty(range(acq$score_log2_vs_typical_protein))
+      b[b >= min(acq$score_log2_vs_typical_protein) - 0.5 & b <= max(acq$score_log2_vs_typical_protein) + 0.5]
+    }, labels = hv_minus_labels) +
+    ggplot2::facet_wrap(~cls, nrow = 1) +
+    ggplot2::labs(x = NULL, y = "Marker abundance (log2,\nrelative to typical protein)") +
+    hf_theme() +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 35, hjust = 1, colour = "black"),
+                   axis.text.y = ggplot2::element_text(colour = "black"),
+                   strip.text = ggplot2::element_text(size = hf_pt(5.4), lineheight = 0.95, vjust = 0),
+                   panel.spacing = ggplot2::unit(1.2, "mm"),
+                   plot.margin = ggplot2::margin(0.5, 0.5, 0.5, 0.5, "mm"))
+  means <- merge(ani[, c("dataset", "marker_class", "AnimalID", "group", "n_acquisitions", "animal_mean_score")],
+                 stats::setNames(mm, c("cls", "comp", "mean_of_animal_means")) |>
+                   transform(marker_class = names(strip)[match(as.character(cls), strip)],
+                             dataset = names(lab)[match(as.character(comp), lab)]) |>
+                   subset(select = c("dataset", "marker_class", "mean_of_animal_means")),
+                 by = c("dataset", "marker_class"))
+  means$row_type <- "animal_mean"
+  cmp <- ct[, intersect(c("marker_class", "compartment_a", "compartment_b", "mean_a", "mean_b", "estimate",
+                          "std_error", "ci_low", "ci_high", "df", "t_value", "p_value", "p_adjust", "n_animals",
+                          "group", "method"), names(ct))]
+  cmp$label_a <- unname(lab[as.character(cmp$compartment_a)])
+  cmp$label_b <- unname(lab[as.character(cmp$compartment_b)])
+  cmp$row_type <- "compartment_comparison"
+  all_cols <- union(names(means), names(cmp))
+  means[setdiff(all_cols, names(means))] <- NA
+  cmp[setdiff(all_cols, names(cmp))] <- NA
+  out <- rbind(means[, all_cols], cmp[, all_cols])
+  out$legend_text_moved <- paste0(
+    "control animals only (n = ", length(aid), "); points: acquisitions (", nrow(acq), "); larger marks: animal means; ",
+    "bar: mean of the animal means; brackets: compartments that differ (BH-adjusted P < 0.05 over the ", nrow(ct),
+    " comparisons, all of them in this table), compared on the animal means with a repeated-measures linear model ",
+    "(compartment + animal as block, pooled error, df = ", unique(ct$df), "); joint cross-compartment scale, observed values only; marker references: soma GO, MGI; ",
+    "neuropil SynGO, GO; microglia/PVM Allen cell types; markers per class: ",
+    paste(sprintf("%s %d", tolower(sub(" markers$", "", cls)), as.integer(nmk[cls])), collapse = ", "))
+  write_csv_safe(out, csv_path)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
+  invisible(list(status = "ok"))
+}
+
+# ==========================================================================
+# f-i. GO biological-process programmes of regions and layers (2026-10-28)
+# ==========================================================================
+#
+# One family of sibling units per panel (panel$families; several would sit side
+# by side), under a family header over a thin rule. Rows are the displayed terms,
+# grouped by the unit each was chosen for, and that cell is shaded. Every unit of
+# the term's family is drawn, so its enrichment elsewhere stays visible (a term
+# is never shown as absent where it is enriched): colour is NES on the
+# manuscript's fixed NES scale, size is -log10 q, and q >= 0.05 is a small grey
+# dot. Terms were chosen in pRoteomics (map_anatomical_programmes) on direct
+# contrasts against every sibling unit, which the panel does not redraw.
+#
+# Everything is placed in millimetres inside the panel's box, so the panels of
+# one row share one dot pitch (HF_GO_PITCH_MM) and their headers and rows line
+# up: the dot grid sits at the box's right edge, a term name ends just left of
+# it and takes a second line only when one line does not fit the box. The
+# legend (panel$legend) is drawn by hand below the grid, on the same scales. A
+# row is tall enough to keep two two-line names apart.
+HF_GO_PITCH_MM <- c(col = 4.6, row = 4.4)
+
+hf_programme_dots <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+  fam <- hf_fam()
+  d <- hv_read_csv(repo_path(panel$primary_source))
+  sel <- as.character(panel$selection %||% "curated")
+  fams <- as.character(unlist(panel$families))
+  heads <- as.character(unlist(panel$family_labels))
+  if (!length(fams) || length(heads) != length(fams))
+    stop("hf_programme_dots: panel needs families and one family_label each", call. = FALSE)
+  d <- d[d$selection == sel & d$family %in% fams, , drop = FALSE]
+  miss <- setdiff(fams, d$family)
+  if (length(miss)) stop("hf_programme_dots: no '", sel, "' rows for ", paste(miss, collapse = ", "), call. = FALSE)
+  pc <- HF_GO_PITCH_MM[["col"]]
+  pr <- HF_GO_PITCH_MM[["row"]]
+  # width in mm of the widest line, measured with the font svglite writes
+  tw <- function(x, pt = HF_MIN_PT) vapply(strsplit(x, "\n", fixed = TRUE), function(l)
+    max(systemfonts::string_width(l, family = fam, size = pt, res = 72)) / 72 * 25.4, numeric(1))
+  cols <- do.call(rbind, lapply(seq_along(fams), function(i) {
+    f <- d[d$family == fams[i], , drop = FALSE]
+    data.frame(family = fams[i], unit = unique(f$unit[order(f$unit_order)]), k = i, stringsAsFactors = FALSE)
+  }))
+  # column index, 0.8 of a column between families
+  cols$j <- seq_len(nrow(cols)) + (cols$k - 1) * 0.8
+  hd <- do.call(rbind, lapply(seq_along(fams), function(i) {
+    j <- cols$j[cols$k == i]
+    data.frame(j0 = min(j) - 0.4, j1 = max(j) + 0.4, jm = mean(range(j)), label = heads[i])
+  }))
+  # the grid ends 0.4 mm inside the box's right edge, or further in where the last family header is wider
+  # than its columns
+  last <- nrow(hd)
+  x_end <- min(w_mm - 0.4, w_mm - 0.2 - tw(hd$label[last], 5.6) / 2 + (max(cols$j) - hd$jm[last] + 0.5) * pc)
+  xj <- function(j) x_end - (max(cols$j) - j + 0.5) * pc
+  cols$x <- xj(cols$j)
+  hd$x0 <- xj(hd$j0); hd$x1 <- xj(hd$j1); hd$xm <- xj(hd$jm)
+  d$x <- cols$x[match(paste(d$family, d$unit), paste(cols$family, cols$unit))]
+  home <- d[d$unit == d$selected_for_unit, , drop = FALSE]
+  home <- home[order(match(home$family, fams), home$selected_for_order, home$display_rank), , drop = FALSE]
+  ids <- unique(home$ID)
+  # from the top of the box (y is negative downwards): family header, rule, unit names, then the rows
+  y_head <- -0.2; y_rule <- -2.5; y_unit <- -4.2; y_grid <- -4.7
+  rows <- data.frame(ID = ids, y = y_grid - (seq_along(ids) - 0.5) * pr, stringsAsFactors = FALSE)
+  y_low <- y_grid - length(ids) * pr
+  if (-y_low > h_mm - 0.3)
+    stop("hf_programme_dots: ", length(ids), " rows need ", round(-y_low + 0.3, 1), " mm; the box is ", h_mm,
+         " mm high", call. = FALSE)
+  # GPCR is defined in the legend; every other term keeps its GO name. A name takes a second line, split
+  # where its wider line is narrowest, only when one line does not fit left of the grid.
+  short <- function(x) gsub("G protein-coupled receptor", "GPCR", x, fixed = TRUE)
+  x_lab <- min(cols$x) - pc / 2 - 0.8
+  fit <- function(x) {
+    if (tw(x) <= x_lab) return(x)
+    sp <- gregexpr(" ", x, fixed = TRUE)[[1]]
+    two <- if (sp[1] > 0)
+      vapply(sp, function(s) paste0(substr(x, 1, s - 1), "\n", substr(x, s + 1, nchar(x))), character(1)) else x
+    best <- two[which.min(tw(two))]
+    if (tw(best) > x_lab)
+      stop("hf_programme_dots: '", x, "' needs ", round(tw(best), 1), " mm in two lines; the box leaves ",
+           round(x_lab, 1), " mm left of the grid", call. = FALSE)
+    best
+  }
+  rows$label <- vapply(short(home$Description[match(ids, home$ID)]), fit, character(1), USE.NAMES = FALSE)
+  d$y <- rows$y[match(d$ID, rows$ID)]
+  # one cell per term x unit (a term chosen for two units of a family is listed twice in the display table)
+  cell <- d[!duplicated(paste(d$ID, d$family, d$unit)), , drop = FALSE]
+  cell$home <- paste(cell$ID, cell$family, cell$unit) %in% paste(home$ID, home$family, home$unit)
+  cell$supported <- is.finite(cell$p.adjust) & cell$p.adjust < 0.05
+  cell$mlq <- pmin(-log10(cell$p.adjust), 8)
+  sup <- cell[cell$supported, , drop = FALSE]
+  ns <- cell[!cell$supported, , drop = FALSE]
+  hm <- cell[cell$home, c("x", "y"), drop = FALSE]
+  lim <- hv_diverging_limit("nes")
+  # hairline guides (about 0.25 pt) through the cells of each family's own rows only, so no guide crosses
+  # a cell that was not tested
+  fy <- stats::aggregate(y ~ family, data = cell, FUN = range)
+  vg <- merge(cols, data.frame(family = fy$family, y0 = fy$y[, 1] - pr / 2, y1 = fy$y[, 2] + pr / 2), by = "family")
+  hg <- merge(unique(cell[, c("family", "y")]),
+              data.frame(family = fams, x0 = xj(hd$j0 + 0.1), x1 = xj(hd$j1 - 0.1)), by = "family")
+  hair <- 0.12
+  tile <- 0.92 * min(pc, pr)
+  ge <- paste0(intToUtf8(0x2265), " 0.05")
+
+  p <- ggplot2::ggplot() +
+    # the shaded cell is square (house style), centred on its dot
+    ggplot2::geom_tile(data = hm, ggplot2::aes(x, y), width = tile, height = tile, fill = "grey90", colour = NA) +
+    ggplot2::annotate("segment", x = vg$x, xend = vg$x, y = vg$y0, yend = vg$y1,
+                      linewidth = hair, colour = "grey85") +
+    ggplot2::annotate("segment", x = hg$x0, xend = hg$x1, y = hg$y, yend = hg$y,
+                      linewidth = hair, colour = "grey85") +
+    ggplot2::geom_point(data = ns, ggplot2::aes(x, y), size = 0.45, colour = "grey60", stroke = 0) +
+    # colour "transparent" (not NA, which ggplot2 4 drops as missing): svglite writes stroke: none
+    ggplot2::geom_point(data = sup, ggplot2::aes(x, y, fill = NES, size = mlq), shape = 21,
+                        colour = "transparent", stroke = 0) +
+    hv_diverging(measure = "nes", name = "NES", breaks = c(-lim, 0, lim)) +
+    ggplot2::scale_size_area(max_size = as.numeric(panel$max_point_mm %||% 2.3), limits = c(0, 8)) +
+    ggplot2::annotate("text", x = x_lab, y = rows$y, label = rows$label, family = fam,
+                      size = hf_sz(HF_MIN_PT), colour = "black", hjust = 1, vjust = 0.5, lineheight = 0.85) +
+    ggplot2::annotate("text", x = cols$x, y = y_unit, label = cols$unit, family = fam,
+                      size = hf_sz(HF_MIN_PT), colour = "black", vjust = 0) +
+    ggplot2::annotate("segment", x = hd$x0, xend = hd$x1, y = y_rule, yend = y_rule,
+                      linewidth = hv_lw("axis_pt"), colour = "black") +
+    ggplot2::annotate("text", x = hd$xm, y = y_head, label = hd$label, family = fam,
+                      size = hf_sz(5.6), colour = "black", vjust = 1)
+
+  if (isTRUE(panel$legend)) {
+    # bottom-left of the box: NES colourbar (vector rectangles, never a raster), -log10 q sizes and the grey
+    # dot in one row, the shaded cell below; drawn through the panel's own fill and size scales
+    lab3 <- hv_diverging_label_fun(lim)(c(-lim, 0, lim))
+    x0 <- 0.3
+    y_top <- -h_mm + 8.8
+    if (y_top > y_low - 1.5)
+      stop("hf_programme_dots: the legend needs 8.8 mm below the grid; the box leaves ",
+           round(h_mm + y_low - 1.5, 1), " mm", call. = FALSE)
+    y_bar <- c(y_top - 2.3, y_top - 3.6)
+    bx <- x0 + tw(lab3[1]) / 2 + c(0, 9)
+    nb <- 40
+    bar <- data.frame(xmin = bx[1] + diff(bx) * (seq_len(nb) - 1) / nb, xmax = bx[1] + diff(bx) * seq_len(nb) / nb,
+                      NES = seq(-lim, lim, length.out = nb))
+    sx <- bx[2] + tw(lab3[3]) / 2 + 2.5
+    keys <- data.frame(x = sx + 1 + (0:2) * 3, y = mean(y_bar), mlq = c(2, 4, 8),
+                       label = c("2", "4", paste0(intToUtf8(0x2265), "8")))
+    gx <- max(keys$x) + 1.2 + 2.5
+    y_cell <- y_top - 3.9 - 1.8 - 1.0 - 0.9
+    p <- p +
+      ggplot2::geom_rect(data = bar, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = y_bar[2], ymax = y_bar[1],
+                                                  fill = NES), colour = NA) +
+      ggplot2::annotate("text", x = c(x0, sx), y = y_top, label = c("NES", paste0(intToUtf8(0x2212), "log10 q")),
+                        family = fam, size = hf_sz(HF_MIN_PT), colour = "black", hjust = 0, vjust = 1) +
+      ggplot2::annotate("text", x = c(bx[1], mean(bx), bx[2]), y = y_bar[2] - 0.3, label = lab3, family = fam,
+                        size = hf_sz(HF_MIN_PT), colour = "black", vjust = 1) +
+      ggplot2::geom_point(data = keys, ggplot2::aes(x, y, size = mlq), shape = 21, fill = "grey40",
+                          colour = "transparent", stroke = 0) +
+      ggplot2::annotate("text", x = keys$x, y = y_bar[2] - 0.3, label = keys$label, family = fam,
+                        size = hf_sz(HF_MIN_PT), colour = "black", vjust = 1) +
+      ggplot2::annotate("point", x = gx, y = mean(y_bar), size = 0.45, colour = "grey60", stroke = 0) +
+      ggplot2::annotate("text", x = gx + 0.9, y = mean(y_bar), label = paste("q", ge), family = fam,
+                        size = hf_sz(HF_MIN_PT), colour = "black", hjust = 0, vjust = 0.5) +
+      ggplot2::annotate("tile", x = x0 + 0.9, y = y_cell, width = 1.8, height = 1.8, fill = "grey90") +
+      ggplot2::annotate("text", x = x0 + 2.6, y = y_cell, label = "unit the term was chosen for", family = fam,
+                        size = hf_sz(HF_MIN_PT), colour = "black", hjust = 0, vjust = 0.5)
+    if (gx + 0.9 + tw(paste("q", ge)) > w_mm)
+      stop("hf_programme_dots: the legend is wider than the box", call. = FALSE)
+  }
+
+  # one data unit is one millimetre: the panel fills the box, nothing outside it takes space
+  p <- p +
+    ggplot2::coord_cartesian(xlim = c(0, w_mm), ylim = c(-h_mm, 0), expand = FALSE, clip = "off") +
+    ggplot2::labs(x = NULL, y = NULL) +
+    hf_theme() +
+    ggplot2::theme(axis.line = ggplot2::element_blank(), axis.ticks = ggplot2::element_blank(),
+                   axis.text = ggplot2::element_blank(), axis.ticks.length = ggplot2::unit(0, "pt"),
+                   legend.position = "none", plot.margin = ggplot2::margin(0, 0, 0, 0))
+  cell$legend_text_moved <- paste0(
+    "terms: ", d$display_selection_rule[1], "; shaded: the unit the term was chosen for; every unit of the ",
+    "family drawn; colour: NES (fixed scale, full colour beyond ", intToUtf8(0xb1), lim, "); size: ",
+    intToUtf8(0x2212), "log10 q; grey dot: q ", ge, "; GPCR, G protein-coupled receptor; ",
+    "control animals only (n = 3)")
+  cell$colour_limit <- lim
+  keep <- intersect(c("family", "selected_for_unit", "display_rank", "ID", "Description", "unit", "contrast",
+                      "NES", "pvalue", "p.adjust", "setSize", "supported", "home", "colour_limit",
+                      "analytical_source", "legend_text_moved"), names(cell))
+  cell <- cell[order(match(cell$family, fams), -cell$y, cell$x), , drop = FALSE]
+  write_csv_safe(cell[, keep], csv_path)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
+  invisible(list(status = "ok"))
+}
+
+# ==========================================================================
+# j. Input territories (2026-10-28)
+# ==========================================================================
+#
+# Laminae that receive the same afferent pathway resemble each other across
+# subfields in their presynaptic proteins, not in their postsynaptic ones.
+# pRoteomics map_input_territories computes, per animal, d = mean similarity
+# (Spearman, Fisher z, protein-centred laminar profiles) of the same-input
+# pairs minus that of the same-region pairs, for SynGO presynaptic and
+# postsynaptic proteins, and its excess over abundance-matched random protein
+# sets (each animal against its own random sets), and tests across the control
+# animals. This renderer only draws: one line per animal from its presynaptic
+# to its postsynaptic excess; 0 is the random-set median and the grey bar the
+# widest central 95% of any animal's random sets; P values (BH, control
+# animals) above a column test it against random, the bracket pre vs post.
+hf_input_territories <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+  fam <- hf_fam()
+  grp <- as.character(unlist(panel$groups %||% "CON"))
+  sc <- hv_read_csv(repo_path(panel$primary_source))
+  ts <- hv_read_csv(repo_path(unlist(panel$input_dependencies)[1]))
+  sc <- sc[sc$group %in% grp & sc$protein_class %in% c("presynaptic", "postsynaptic"), , drop = FALSE]
+  ts_all <- ts
+  ts <- ts[ts$animal_set == paste(grp, collapse = "+"), , drop = FALSE]
+  if (!nrow(sc) || !nrow(ts)) stop("hf_input_territories: no rows for ", paste(grp, collapse = "+"), call. = FALSE)
+  n_an <- length(unique(sc$AnimalID))
+  if (any(ts$n_animals != n_an)) stop("hf_input_territories: tests and scores disagree on the animals", call. = FALSE)
+  terr <- c(perforant_path = "Perforant path", mossy_fibre = "Mossy fibre\n(positive control)")
+  sc$tf <- factor(unname(terr[sc$territory]), levels = terr)
+  ts$tf <- factor(unname(terr[ts$territory]), levels = terr)
+  sc$x <- ifelse(sc$protein_class == "presynaptic", 1, 2)
+  sc$y <- sc$excess_over_random
+  nul <- merge(stats::aggregate(null_q025_excess ~ tf + x, data = sc, FUN = min),
+               stats::aggregate(null_q975_excess ~ tf + x, data = sc, FUN = max), by = c("tf", "x"))
+  top <- max(c(sc$y, nul$null_q975_excess))
+  low <- min(c(sc$y, nul$null_q025_excess))
+  rng <- top - low
+  plab <- function(p) ifelse(p < 0.001, "italic(P)*'<0.001'",
+                             sprintf("italic(P)*'=%s'", formatC(signif(p, 2), format = "fg", digits = 2)))
+  # pre vs matched random above the presynaptic column; pre vs post as a bracket above both
+  vr <- ts[grepl("vs matched random", ts$comparison) & ts$p_adjust < 0.05, , drop = FALSE]
+  vr$x <- ifelse(grepl("^presynaptic", vr$comparison), 1, 2)
+  vr$y <- ifelse(vr$x == 1, top + 0.08 * rng, low - 0.1 * rng)
+  vr$vj <- ifelse(vr$x == 1, 0, 1)
+  vr$label <- plab(vr$p_adjust)
+  pp <- ts[ts$comparison == "presynaptic vs postsynaptic" & ts$p_adjust < 0.05, , drop = FALSE]
+  pp$y <- top + 0.32 * rng
+  pp$label <- plab(pp$p_adjust)
+  tick <- 0.03 * rng
+  brk <- rbind(data.frame(tf = pp$tf, x = 1, xend = 2, y = pp$y, yend = pp$y),
+               data.frame(tf = pp$tf, x = 1, xend = 1, y = pp$y, yend = pp$y - tick),
+               data.frame(tf = pp$tf, x = 2, xend = 2, y = pp$y, yend = pp$y - tick))
+  p <- ggplot2::ggplot(sc, ggplot2::aes(x, y)) +
+    ggplot2::geom_rect(data = nul, ggplot2::aes(xmin = x - 0.17, xmax = x + 0.17, ymin = null_q025_excess,
+                                                ymax = null_q975_excess), inherit.aes = FALSE, fill = "grey88", colour = NA) +
+    ggplot2::geom_hline(yintercept = 0, linewidth = hv_lw("reference_pt"), colour = "grey45") +
+    ggplot2::geom_line(ggplot2::aes(group = AnimalID), linewidth = hv_lw("reference_pt"), colour = "grey55") +
+    # borderless animal marks
+    ggplot2::geom_point(size = 1.3, colour = "black", stroke = 0) +
+    ggplot2::geom_segment(data = brk, ggplot2::aes(x = x, xend = xend, y = y, yend = yend), inherit.aes = FALSE,
+                          linewidth = hv_lw("reference_pt"), colour = "black") +
+    ggplot2::geom_text(data = pp, ggplot2::aes(x = 1.5, y = y + 0.02 * rng, label = label), parse = TRUE, vjust = 0,
+                       family = fam, size = hf_sz(HF_MIN_PT), colour = "black") +
+    ggplot2::geom_text(data = vr, ggplot2::aes(x = x, y = y, label = label, vjust = vj), parse = TRUE,
+                       family = fam, size = hf_sz(HF_MIN_PT), colour = "black") +
+    ggplot2::geom_blank(data = data.frame(tf = factor(terr, levels = terr), x = 1.5, y = c(top + 0.5 * rng, low - 0.3 * rng)),
+                        ggplot2::aes(x, y)) +
+    ggplot2::facet_grid(. ~ tf) +
+    ggplot2::scale_x_continuous(breaks = c(1, 2), labels = c("Pre", "Post"), limits = c(0.55, 2.45)) +
+    ggplot2::scale_y_continuous(labels = hv_minus_labels, breaks = scales::breaks_pretty(4)) +
+    ggplot2::labs(x = "SynGO proteins",
+                  y = paste0("Input organisation (", intToUtf8(0x394), "z)\nexcess over matched random proteins")) +
+    hf_theme() +
+    ggplot2::theme(axis.text = ggplot2::element_text(size = HF_MIN_PT, colour = "black"),
+                   axis.title = ggplot2::element_text(size = HF_MIN_PT, colour = "black", lineheight = 0.9),
+                   strip.text = ggplot2::element_text(size = HF_MIN_PT, colour = "black", lineheight = 0.9,
+                                                      margin = ggplot2::margin(0, 0, 1, 0, "mm")),
+                   strip.background = ggplot2::element_blank(), panel.spacing.x = ggplot2::unit(2, "mm"),
+                   legend.position = "none", plot.margin = ggplot2::margin(1, 1, 0.5, 0.5, "mm"))
+  out <- sc[, c("AnimalID", "group", "territory", "territory_label", "protein_class", "n_proteins", "same_input_z",
+                "same_region_z", "input_organisation_d", "null_median_d", "null_q025_d", "null_q975_d",
+                "excess_over_random", "p_greater_than_random", "p_less_than_random", "p_presynaptic_minus_postsynaptic")]
+  out$row_type <- "animal"
+  # the stressed animals' replication travels with the control comparisons (never pooled, never plotted)
+  tt <- ts_all[, c("animal_set", "territory", "territory_label", "comparison", "estimate", "std_error", "ci_low", "ci_high",
+                   "df", "t_value", "p_value", "p_adjust", "n_animals", "animals_positive", "method")]
+  tt$row_type <- ifelse(tt$animal_set == paste(grp, collapse = "+"), "comparison", "replication_comparison")
+  tt$group <- tt$animal_set
+  tt$animal_set <- NULL
+  all_cols <- union(names(out), names(tt))
+  out[setdiff(all_cols, names(out))] <- NA
+  tt[setdiff(all_cols, names(tt))] <- NA
+  out <- rbind(out[, all_cols], tt[, all_cols])
+  out$legend_text_moved <- paste0(
+    "control animals only (n = ", n_an, "); d per animal: mean Fisher z of the same-input lamina pairs minus the ",
+    "same-region pairs (perforant path: CA1 SLM-CA2 SLM, CA1 SLM-DG mo, CA2 SLM-DG mo vs SLM-SR, SLM-SO in CA1 and CA2 and ",
+    "DG mo-po; mossy fibre: DG po-CA3 SR vs DG po-mo, CA3 SR-SO); SynGO presynaptic / postsynaptic proteins without glial, ",
+    "vascular and mitochondrial genes, observed in every acquisition; plotted: d minus the animal's own abundance-matched ",
+    "random-set median (1000 sets), grey bar: the widest central 95% of any animal's random sets; P above a column: vs ",
+    "random, bracket: presynaptic vs postsynaptic excess; one-sample t test over animals, BH; stressed animals replicate in ",
+    "the source data")
+  write_csv_safe(out, csv_path)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
+  invisible(list(status = "ok"))
+}
+
+# ==========================================================================
+# k. Where the proteins of each cell type sit (2026-10-28)
+# ==========================================================================
+#
+# Proteins grouped by the cell type whose mRNA they are enriched in (whole-
+# mouse-brain 10x reference of other animals; pRoteomics map_afferent_sources):
+# entorhinal neurons, other afferent neurons, CA3, granule, CA1 or CA2 cells,
+# interneurons, glia and vascular cells. Square tiles: control-animal mean of
+# the class score minus that of abundance-matched random proteins, per lamina
+# (log2, laminar profiles centred within animal). Outlined: the target lamina
+# of each pre-declared afferent contrast; statistics in the source data.
+hf_afferent_sources <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+  fam <- hf_fam()
+  grp <- as.character(unlist(panel$groups %||% "CON"))
+  sc <- hv_read_csv(repo_path(panel$primary_source))
+  ct <- hv_read_csv(repo_path(unlist(panel$input_dependencies)[1]))
+  sc <- sc[sc$group %in% grp, , drop = FALSE]
+  ct_all <- ct
+  ct <- ct[ct$animal_set == paste(grp, collapse = "+"), , drop = FALSE]
+  n_an <- length(unique(sc$AnimalID))
+  if (!nrow(sc) || any(ct$n_animals != n_an)) stop("hf_afferent_sources: scores and contrasts disagree", call. = FALSE)
+  sc$excess <- sc$score - sc$null_mean
+  tl <- stats::aggregate(excess ~ origin_class + lamina, data = sc, FUN = mean)
+  rows <- c(entorhinal = "Entorhinal neurons", other_afferent = "Other afferent neurons", ca3 = "CA3 pyramidal cells",
+            granule = "Granule cells", ca1 = "CA1 pyramidal cells", ca2 = "CA2 pyramidal cells",
+            interneuron = "Interneurons", astrocyte = "Astrocytes", vascular = "Vascular cells",
+            oligodendrocyte = "Oligodendrocytes")
+  if (!all(names(rows) %in% tl$origin_class)) stop("hf_afferent_sources: origin class missing", call. = FALSE)
+  tl <- tl[tl$origin_class %in% names(rows), , drop = FALSE]
+  lam <- c("CA1_so", "CA1_sr", "CA1_slm", "CA2_so", "CA2_sr", "CA2_slm", "CA3_so", "CA3_sr", "DG_mo", "DG_po")
+  reg <- sub("_.*", "", lam)
+  xpos <- seq_along(lam) + (match(reg, unique(reg)) - 1) * 0.4
+  names(xpos) <- lam
+  ypos <- stats::setNames(rev(seq_along(rows)), names(rows))
+  tl$x <- xpos[tl$lamina]
+  tl$y <- ypos[tl$origin_class]
+  # display limit 0.5: stronger values take full colour (disclosed on the colourbar; uncapped in the source data)
+  lim <- 0.5
+  # outlined: the target lamina of every pre-declared afferent contrast (and only those)
+  pred <- ct[ct$expectation %in% c("perforant path", "Schaffer collaterals", "mossy fibres") & is.na(ct$minus_class),
+             c("origin_class", "lamina_a"), drop = FALSE]
+  names(pred) <- c("origin_class", "lamina")
+  pred$x <- xpos[pred$lamina]
+  pred$y <- ypos[pred$origin_class]
+  hd <- do.call(rbind, lapply(unique(reg), function(r) data.frame(region = r, x0 = min(xpos[reg == r]) - 0.45,
+                                                                    x1 = max(xpos[reg == r]) + 0.45)))
+  top <- length(rows) + 0.5
+  p <- ggplot2::ggplot(tl, ggplot2::aes(x, y, fill = excess)) +
+    ggplot2::geom_tile(width = 1, height = 1, colour = hv_tile_border(), linewidth = hv_lw("tile_border_pt")) +
+    ggplot2::geom_tile(data = pred, ggplot2::aes(x, y), inherit.aes = FALSE, width = 0.94, height = 0.94, fill = "transparent",
+                       colour = "black", linewidth = hv_lw("axis_pt")) +
+    hv_diverging(limits = c(-lim, lim), name = "log2 vs\nmatched\nproteins", breaks = c(-lim, 0, lim),
+                 labels = hv_diverging_label_fun(lim), oob = scales::squish) +
+    ggplot2::annotate("segment", x = hd$x0, xend = hd$x1, y = top + 0.35, yend = top + 0.35,
+                      linewidth = hv_lw("axis_pt"), colour = "black") +
+    ggplot2::annotate("text", x = (hd$x0 + hd$x1) / 2, y = top + 0.55, label = hd$region, vjust = 0, family = fam,
+                      size = hf_sz(HF_MIN_PT), colour = "black") +
+    ggplot2::annotate("text", x = xpos, y = 0.35, label = toupper(sub(".*_", "", lam)), angle = 90, hjust = 1,
+                      family = fam, size = hf_sz(HF_MIN_PT), colour = "black") +
+    ggplot2::annotate("text", x = 0.25, y = ypos, label = unname(rows), hjust = 1, family = fam,
+                      size = hf_sz(HF_MIN_PT), colour = "black") +
+    ggplot2::annotate("text", x = 0.25, y = top + 0.55, label = "mRNA enriched in", hjust = 1, vjust = 0, family = fam,
+                      size = hf_sz(HF_MIN_PT), colour = "black") +
+    ggplot2::scale_x_continuous(breaks = NULL) +
+    ggplot2::scale_y_continuous(breaks = NULL) +
+    ggplot2::coord_fixed(ratio = 1, clip = "off", expand = FALSE, xlim = c(0.5, max(xpos) + 0.5),
+                         ylim = c(0.5, top)) +
+    ggplot2::guides(fill = ggplot2::guide_colourbar(display = "rectangles", nbin = 40, title.position = "top",
+                                                    theme = ggplot2::theme(legend.key.width = ggplot2::unit(1.4, "mm"),
+                                                                           legend.key.height = ggplot2::unit(7, "mm")))) +
+    ggplot2::labs(x = NULL, y = NULL) +
+    hf_theme() +
+    ggplot2::theme(axis.line = ggplot2::element_blank(), axis.ticks = ggplot2::element_blank(),
+                   legend.title = ggplot2::element_text(size = HF_MIN_PT, colour = "black", lineheight = 0.9),
+                   legend.text = ggplot2::element_text(size = HF_MIN_PT, colour = "black"),
+                   legend.margin = ggplot2::margin(0, 0, 0, 1, "mm"),
+                   plot.margin = ggplot2::margin(3.5, 0.5, 4, 20, "mm"))
+  tl$origin_label <- unname(rows[tl$origin_class])
+  tl$predicted_target <- paste(tl$origin_class, tl$lamina) %in% paste(pred$origin_class, pred$lamina)
+  tl$row_type <- "tile"
+  cc <- ct_all[, c("animal_set", "origin_class", "minus_class", "origin_label", "lamina_a", "lamina_b", "expectation", "estimate", "std_error",
+                   "ci_low", "ci_high", "df", "t_value", "p_value", "p_adjust", "n_animals", "animals_positive", "n_proteins",
+                   "method")]
+  cc$row_type <- ifelse(cc$animal_set == paste(grp, collapse = "+"), "contrast", "replication_contrast")
+  out <- tl[, c("origin_class", "origin_label", "lamina", "excess", "predicted_target", "row_type")]
+  all_cols <- union(names(out), names(cc))
+  out[setdiff(all_cols, names(out))] <- NA
+  cc[setdiff(all_cols, names(cc))] <- NA
+  out <- rbind(out[, all_cols], cc[, all_cols])
+  out$group <- ifelse(is.na(out$animal_set), paste(grp, collapse = "+"), out$animal_set)
+  out$animal_set <- NULL
+  out$legend_text_moved <- paste0(
+    "control animals only (n = ", n_an, "); proteins grouped by the cell type whose mRNA they are enriched in (whole-mouse-brain ",
+    "10x reference, other animals); tile: mean over animals of the class score minus the abundance-matched random-set ",
+    "score; outlined: the target lamina of each pre-declared afferent contrast (perforant path, Schaffer collaterals, mossy ",
+    "fibres); contrasts ",
+    "(one-sample t test over animals, BH) in the source data; full colour beyond ", intToUtf8(0xb1), lim, " (uncapped values here)")
+  write_csv_safe(out, csv_path)
+  hv_save_panel(p, svg_path, w_mm, h_mm)
+  invisible(list(status = "ok"))
+}
+
+# ==========================================================================
+# l. Inhibitory presynaptic share of every lamina (2026-10-28)
+# ==========================================================================
+#
+# GAD1, GAD2 and VGAT relative to VGLUT1 in every acquisition (a within-sample
+# log2 ratio), each animal's ten laminae centred on their mean, computed with
+# the lamina comparisons in pRoteomics compare_lamina_synapses. Points:
+# control animals; bar: their mean; brackets: the comparisons with BH-adjusted
+# P < 0.05 (paired over the control animals; all pre-declared pairs, the
+# stressed-animal replication and the sensitivities in the source data).
+hf_inhibitory_share <- function(panel, svg_path, csv_path, w_mm, h_mm) {
+  fam <- hf_fam()
+  grp <- as.character(unlist(panel$groups %||% "CON"))
+  an <- hv_read_csv(repo_path(panel$primary_source))
+  ct <- hv_read_csv(repo_path(unlist(panel$input_dependencies)[1]))
+  an <- an[an$group %in% grp, , drop = FALSE]
+  ct_all <- ct
+  ct <- ct[ct$group %in% paste(grp, collapse = "+"), , drop = FALSE]
+  if (any(ct$n_animals != length(unique(an$AnimalID)))) stop("hf_inhibitory_share: animals disagree", call. = FALSE)
+  lam <- c("CA1_so", "CA1_sr", "CA1_slm", "CA2_so", "CA2_sr", "CA2_slm", "CA3_so", "CA3_sr", "DG_mo", "DG_po")
+  reg <- sub("_.*", "", lam)
+  xpos <- seq_along(lam) + (match(reg, unique(reg)) - 1) * 0.6
+  names(xpos) <- lam
+  an$x <- xpos[an$lamina]
+  an$region <- sub("_.*", "", an$lamina)
+  k <- stats::ave(seq_len(nrow(an)), an$lamina, FUN = seq_along)
+  an$xj <- an$x + (k - 2) * 0.16
+  mn <- stats::aggregate(presynaptic_share_centred ~ lamina + region + x, data = an, FUN = mean)
+  col <- unlist(hv_palette()$region)
+  y <- an$presynaptic_share_centred
+  rng <- diff(range(y))
+  sig <- ct[ct$p_adjust < 0.05, , drop = FALSE]
+  sig$xa <- xpos[sig$lamina_a]
+  sig$xb <- xpos[sig$lamina_b]
+  sig$lo <- pmin(sig$xa, sig$xb)
+  sig$hi <- pmax(sig$xa, sig$xb)
+  sig <- sig[order(sig$hi - sig$lo), , drop = FALSE]
+  sig$y <- max(y) + 0.13 * rng * seq_len(nrow(sig))
+  sig$label <- ifelse(sig$p_adjust < 0.001, "italic(P)*'<0.001'",
+                      sprintf("italic(P)*'=%s'", formatC(signif(sig$p_adjust, 2), format = "fg", digits = 2)))
+  tick <- 0.025 * rng
+  brk <- rbind(data.frame(x = sig$lo, xend = sig$hi, y = sig$y, yend = sig$y),
+               data.frame(x = sig$lo, xend = sig$lo, y = sig$y, yend = sig$y - tick),
+               data.frame(x = sig$hi, xend = sig$hi, y = sig$y, yend = sig$y - tick))
+  # stratum names on the axis, the region name as a second line under the middle of its strata
+  lab <- toupper(sub(".*_", "", lam))
+  rc <- tapply(xpos, reg, mean)
+  brk_x <- c(xpos, rc)
+  brk_lab <- c(lab, paste0("\n", names(rc)))
+  p <- ggplot2::ggplot(an, ggplot2::aes(xj, presynaptic_share_centred)) +
+    ggplot2::geom_hline(yintercept = 0, linewidth = hv_lw("reference_pt"), colour = "grey70") +
+    ggplot2::geom_point(ggplot2::aes(colour = region), size = 0.9, alpha = 0.8, stroke = 0) +
+    ggplot2::geom_segment(data = mn, ggplot2::aes(x = x - 0.3, xend = x + 0.3, y = presynaptic_share_centred,
+                                                  yend = presynaptic_share_centred), inherit.aes = FALSE,
+                          linewidth = 0.45, colour = "black") +
+    ggplot2::geom_segment(data = brk, ggplot2::aes(x = x, xend = xend, y = y, yend = yend), inherit.aes = FALSE,
+                          linewidth = hv_lw("reference_pt"), colour = "black") +
+    ggplot2::geom_text(data = sig, ggplot2::aes(x = (lo + hi) / 2, y = y + 0.02 * rng, label = label), inherit.aes = FALSE,
+                       parse = TRUE, vjust = 0, family = fam, size = hf_sz(HF_MIN_PT), colour = "black") +
+    ggplot2::scale_colour_manual(values = col, guide = "none") +
+    ggplot2::scale_x_continuous(breaks = unname(brk_x), labels = brk_lab, expand = ggplot2::expansion(add = 0.5)) +
+    ggplot2::scale_y_continuous(labels = hv_minus_labels, breaks = scales::breaks_pretty(4)) +
+    ggplot2::coord_cartesian(clip = "off") +
+    ggplot2::labs(x = NULL, y = "Inhibitory share, centred\n(log2 GAD, VGAT : VGLUT1)") +
+    hf_theme() +
+    ggplot2::theme(axis.text = ggplot2::element_text(size = HF_MIN_PT, colour = "black"),
+                   axis.title.y = ggplot2::element_text(size = HF_MIN_PT, colour = "black", lineheight = 0.9),
+                   axis.ticks.x = ggplot2::element_blank(),
+                   legend.position = "none", plot.margin = ggplot2::margin(1, 1, 0.5, 0.5, "mm"))
+  out <- an[, c("AnimalID", "group", "lamina", "n_acquisitions", "inhibitory_presynaptic_share_log2",
+                "presynaptic_share_centred", "inhibitory_postsynaptic_share_log2", "postsynaptic_share_centred")]
+  out$row_type <- "animal_lamina"
+  cc <- ct_all[, intersect(c("group", "lamina_a", "lamina_b", "comparison_type", "estimate", "std_error", "ci_low",
+                             "ci_high", "df", "t_value", "p_value", "p_adjust", "n_animals", "animals_positive",
+                             "estimate_gad2_vgat_only", "pooled_std_error", "pooled_df", "pooled_p_value",
+                             "pooled_p_adjust", "method"), names(ct_all))]
+  cc$row_type <- ifelse(cc$group == paste(grp, collapse = "+"), "lamina_comparison", "replication_lamina_comparison")
+  all_cols <- union(names(out), names(cc))
+  out[setdiff(all_cols, names(out))] <- NA
+  cc[setdiff(all_cols, names(cc))] <- NA
+  out <- rbind(out[, all_cols], cc[, all_cols])
+  out$legend_text_moved <- paste0(
+    "control animals only (n = ", length(unique(an$AnimalID)), "); per acquisition, mean log2 GAD1, GAD2, VGAT minus log2 ",
+    "VGLUT1 (label-free relative share, not a synapse count), animal mean over hemispheres, centred on the animal's ",
+    "ten laminae; bar: mean; brackets: comparisons with BH-adjusted P < 0.05 (paired t over the control animals, BH over ",
+    "the ", nrow(ct), " pre-declared pairs); all pairs, the stressed-animal replication, a pooled-error sensitivity, GAD2 + ",
+    "VGAT only and VGLUT2 in the source data")
+  write_csv_safe(out, csv_path)
   hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))
 }

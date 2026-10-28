@@ -325,32 +325,8 @@ f9_ed_identity_subsets <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 }
 
 # ==========================================================================
-# F2 b. Sequencing depth, with an honest horizontal offset
+# F2 b. Proteome depth per acquisition
 # ==========================================================================
-#
-# Defect 5. The frozen renderer sorted by value and then set the offset to
-# (rank %% 5 - 2) * 0.07, so horizontal position was a deterministic function
-# of rank: five discrete lanes and a period-5 diagonal staircase in both tails
-# that a reader can mistake for structure. The offset is now proportional to
-# LOCAL DENSITY - points are binned on the value axis and spread symmetrically
-# across a width proportional to the square root of the bin count - so
-# horizontal extent means "many runs here" and nothing else. Quartile and
-# median crossbars state the spread instead of leaving it to ink density.
-# Fully deterministic: no random jitter is used anywhere.
-f9_sina_offset <- function(v, nbin = 34L, wmax = 0.40) {
-  b <- cut(v, breaks = nbin, labels = FALSE, include.lowest = TRUE)
-  n <- table(b)
-  off <- numeric(length(v))
-  for (k in unique(b)) {
-    i <- which(b == k)
-    m <- length(i)
-    if (m == 1L) { off[i] <- 0; next }
-    w <- wmax * sqrt(m / max(n))
-    off[i] <- seq(-w, w, length.out = m)
-  }
-  off
-}
-
 f9_depth_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   fam <- hf_fam()
   # PB-02. This panel used to read the tidy CSV that the manuscript_figures_v2
@@ -389,7 +365,6 @@ f9_depth_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                   levels = sg_compartments()$short)
   d <- d[!is.na(d$lab), , drop = FALSE]
   d <- d[order(d$lab, d$val), , drop = FALSE]
-  d$off <- unlist(lapply(split(d$val, d$lab), f9_sina_offset), use.names = FALSE)
 
   # Part-26. DESCRIPTIVE violin, no test. The frozen renderer drew 323 raw
   # points whose horizontal position was a function of rank; the points are
@@ -406,33 +381,43 @@ f9_depth_compact <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   n_animals <- if ("AnimalID" %in% names(d))
     length(unique(d$AnimalID[!is.na(d$AnimalID)])) else NA_integer_
 
+  # 2026-10-28: drawn as in the hand-edited figure - solid violins in the
+  # compartment colours with a white median and interquartile box, the n in
+  # the panel; the acquisitions themselves are in the sidecar.
   q <- function(p) function(v) stats::quantile(v, p, names = FALSE)
-  p <- ggplot2::ggplot(d, ggplot2::aes(as.integer(lab) + off, val)) +
-    ggplot2::geom_violin(ggplot2::aes(x = as.integer(lab), group = lab),
-                         width = 0.86, colour = "grey45", fill = NA,
-                         linewidth = 0.22, bw = "nrd0", trim = TRUE) +
-    ggplot2::geom_point(ggplot2::aes(colour = lab), size = 0.38, alpha = 0.55) +
-    ggplot2::stat_summary(ggplot2::aes(x = as.integer(lab)), fun.min = q(0.25),
-                          fun.max = q(0.75), fun = stats::median,
-                          geom = "crossbar", width = 0.34, linewidth = 0.16,
-                          colour = "grey20", fill = NA) +
-    ggplot2::scale_colour_manual(
+  # two short lines fit the 26-mm box; the animals are stated in the legend
+  ntxt <- paste0("n = ", paste(as.integer(acq), collapse = ", "), "\nacquisitions")
+  p <- ggplot2::ggplot(d, ggplot2::aes(as.integer(lab), val)) +
+    ggplot2::geom_violin(ggplot2::aes(group = lab, fill = lab), width = 0.62,
+                         colour = NA, bw = "nrd0", trim = TRUE) +
+    ggplot2::stat_summary(fun.min = q(0.25), fun.max = q(0.75), fun = stats::median,
+                          geom = "crossbar", width = 0.2, linewidth = 0.22,
+                          colour = "white", fill = NA) +
+    # the n sits below the lowest acquisition, clear of the neuropil tail
+    ggplot2::annotate("text", x = 3.62, y = min(d$val) - 0.13 * diff(range(d$val)), label = ntxt, hjust = 1,
+                      vjust = 0, lineheight = 0.95, family = fam,
+                      size = hf_sz(HF_MIN_PT), colour = "black") +
+    ggplot2::scale_fill_manual(
       values = stats::setNames(
         unname(hv_dataset_colours()[sg_compartment_levels()]),
         sg_compartments()$short), guide = "none") +
     ggplot2::scale_x_continuous(breaks = 1:3, labels = sg_compartments()$short,
-                                limits = c(0.5, 3.5)) +
+                                limits = c(0.5, 3.62)) +
+    # thousands separated by a comma
+    ggplot2::scale_y_continuous(labels = function(x) formatC(x, format = "d", big.mark = ","),
+                                expand = ggplot2::expansion(mult = c(0.05, 0.04))) +
     ggplot2::labs(x = NULL, y = "Proteins identified") +
-    hf_theme(grid = "y") +
+    hf_theme() +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(size = HF_MIN_PT, angle = 30,
-                                          hjust = 1))
+      axis.text.x = ggplot2::element_text(size = HF_MIN_PT, angle = 35,
+                                          hjust = 1, colour = "black"),
+      axis.text.y = ggplot2::element_text(size = HF_MIN_PT, colour = "black"))
   out <- d[, c("dataset", "val")]
   out$n_acquisitions_in_compartment <- as.integer(acq[as.character(d$lab)])
   out$n_biological_replicates <- n_animals
   out$encoding_note <- paste0(
-    "descriptive violin of the acquisition-level distribution with median and ",
-    "interquartile crossbar and all acquisitions overplotted; the biological ",
+    "descriptive violin of the acquisition-level distribution with a median and ",
+    "interquartile box; every acquisition is listed here; the biological ",
     "replicate is the animal, not the acquisition, and no group comparison is ",
     "made in this panel")
   write_csv_safe(out, csv_path)
@@ -472,8 +457,18 @@ f9_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   d$true_val <- if (!is.na(tcol)) as.numeric(d[[tcol]]) else d$val
   d$comp <- factor(sg_compartment_label(d$ds), levels = sg_compartments()$short)
   mk <- unique(d$marker)
-  # markers across, compartments down (2026-10-20): square tiles fit the box
-  d$xpos <- match(d$marker, mk)
+  # markers across, compartments down (2026-10-20): square tiles fit the box;
+  # a gap between the marker classes (2026-10-28), as in the hand-edited figure
+  kcol <- intersect("marker_class", names(d))[1]
+  mclass <- if (!is.na(kcol)) as.character(d[[kcol]])[match(mk, d$marker)] else rep("", length(mk))
+  mx <- seq_along(mk) + 0.45 * (match(mclass, unique(mclass)) - 1)
+  d$xpos <- mx[match(d$marker, mk)]
+  ushort <- c("Soma markers" = "Soma", "Neuropil markers" = "Neuropil", "Microglia/PVM markers" = "Microglia/PVM")
+  ch <- do.call(rbind, lapply(unique(mclass), function(k) {
+    x <- mx[mclass == k]
+    data.frame(x0 = min(x) - 0.44, x1 = max(x) + 0.44, xm = mean(range(x)),
+               label = if (k %in% names(ushort)) ushort[[k]] else k)
+  }))
   d$ypos <- nlevels(d$comp) + 1L - as.integer(d$comp)
   capcol <- intersect("centered_log2_display_cap", names(d))[1]
   cap <- if (!is.na(capcol)) max(abs(as.numeric(d[[capcol]])), na.rm = TRUE)
@@ -483,10 +478,12 @@ f9_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   cen <- d[d$censored, , drop = FALSE]
 
   p <- ggplot2::ggplot(d, ggplot2::aes(xpos, ypos)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = val), width = hv_tile(), height = hv_tile()) +
+    # hairline outline (house heatmap style): a value near zero is white, and must still read as a cell
+    ggplot2::geom_tile(ggplot2::aes(fill = val), width = hv_tile(), height = hv_tile(),
+                       colour = hv_tile_border(), linewidth = hv_lw("tile_border_pt")) +
     # only the tail that actually saturates is marked, so the colourbar
     # never implies an overflow bin that does not exist
-    hv_diverging(limits = lim, name = NULL, labels = function(b) {
+    hv_diverging(limits = lim, name = "log2 vs\nprotein\nmedian", labels = function(b) {
       s <- hv_minus(format(b, trim = TRUE))
       hi <- any(is.finite(d$true_val) & d$true_val > lim[2] + 1e-9)
       lo <- any(is.finite(d$true_val) & d$true_val < lim[1] - 1e-9)
@@ -499,24 +496,30 @@ f9_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       }
       s
     }) +
-    ggplot2::scale_x_continuous(breaks = seq_along(mk), labels = mk,
-                                limits = c(0.5, length(mk) + 0.5), expand = c(0, 0),
-                                position = "top") +
+    # limits on the coordinate system, not the scales, so the class headers above the tiles are kept
+    ggplot2::scale_x_continuous(breaks = mx, labels = mk) +
     ggplot2::scale_y_continuous(breaks = seq_len(nlevels(d$comp)),
-                                labels = rev(levels(d$comp)),
-                                limits = c(0.5, nlevels(d$comp) + 0.5),
-                                expand = c(0, 0)) +
-    ggplot2::coord_fixed(ratio = 1) +
+                                labels = rev(levels(d$comp))) +
+    # marker-class headers over a thin rule, the classes of panel d (2026-10-28)
+    ggplot2::annotate("segment", x = ch$x0, xend = ch$x1, y = nlevels(d$comp) + 0.75,
+                      yend = nlevels(d$comp) + 0.75, linewidth = hv_lw("axis_pt"), colour = "black") +
+    ggplot2::annotate("text", x = ch$xm, y = nlevels(d$comp) + 0.95, label = ch$label, family = fam,
+                      size = hf_sz(HF_MIN_PT), colour = "black", vjust = 0) +
+    ggplot2::coord_fixed(ratio = 1, xlim = c(0.5, max(mx) + 0.5), ylim = c(0.5, nlevels(d$comp) + 0.5),
+                         expand = FALSE, clip = "off") +
+    ggplot2::guides(fill = ggplot2::guide_colourbar(display = "rectangles", nbin = 40)) +
     ggplot2::labs(x = NULL, y = NULL) +
     hf_theme_tile() +
     ggplot2::theme(
-      axis.text.x.top = ggplot2::element_text(size = HF_MIN_PT, face = "italic",
-                                              angle = 45, hjust = 0, vjust = 0),
-      axis.text.y = ggplot2::element_text(size = HF_MIN_PT, colour = "grey15",
-                                          face = "bold"),
-      legend.position = "bottom",
-      legend.key.height = ggplot2::unit(1.6, "mm"),
-      legend.key.width = ggplot2::unit(5, "mm"),
+      axis.text.x = ggplot2::element_text(size = HF_MIN_PT, face = "italic", colour = "black",
+                                          angle = 45, hjust = 1, vjust = 1),
+      axis.text.y = ggplot2::element_text(size = HF_MIN_PT, colour = "black"),
+      legend.position = "right",
+      legend.title = ggplot2::element_text(size = HF_MIN_PT, colour = "black"),
+      legend.text = ggplot2::element_text(size = HF_MIN_PT, colour = "black"),
+      legend.key.height = ggplot2::unit(3, "mm"),
+      legend.key.width = ggplot2::unit(1.4, "mm"),
+      plot.margin = ggplot2::margin(4, 1, 1, 1, "mm"),
       legend.margin = ggplot2::margin(0, 0, 0, 0),
       plot.caption = ggplot2::element_text(size = HF_MIN_PT, colour = "grey30",
                                            hjust = 0))
@@ -529,8 +532,7 @@ f9_compartment <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       ggplot2::geom_text(data = cen,
                          ggplot2::aes(xpos, ypos,
                                       label = sprintf("%.1f", true_val)),
-                         family = fam, size = hf_sz(5.0), colour = "grey10",
-                         fontface = "bold")
+                         family = fam, size = hf_sz(5.0), colour = "grey10")
   }
   out <- d[, c("marker", "ds", "comp", "val", "true_val", "censored")]
   names(out) <- c("marker", "dataset", "compartment", "displayed_value",

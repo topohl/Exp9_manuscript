@@ -2,10 +2,13 @@
 # Import the proteomic figure inputs that differ in the regenerated primary analysis of pRoteomics (original centring,
 # Analysis/proteomics_original, rebuilt on the corrected pipeline in October 2026). Every input the proteomic figures read
 # was compared with its counterpart there (provenance/source_manifests/primary_input_check.csv): all others are byte- or
-# value-identical, have no producer in the regenerated tree, or feed no promoted panel, and stay as imported. Three differ:
-#   Figure 2h        control GO-BP GSEA candidate (term sizes 10-800)  -> results/ render workspace (declared path)
+# value-identical, have no producer in the regenerated tree, or feed no promoted panel, and stay as imported. These come
+# from the primary tree:
+#   Figure 2d        marker classes per acquisition and animal         -> results/ render workspace (declared path)
+#   Figure 2f-2i     GO programmes of regions and layers (selections)  -> results/ render workspace (declared path)
 #   Figure 3b-g      selection inventories                             -> source_data/pRoteomics/supplementary_selection_inventories
 #   Ext. Data Fig. 7 theme-assignment table                            -> results/ render workspace (over the size ceiling)
+# (Figure 2d and the GO panels, 2f-2i since 2026-10-28, were added on 2026-10-27; the former Figure 2h GO candidate left with its panel.)
 # The tree must hold the approved primary centring (config/normalisation.yml). Each import is recorded in
 # provenance/source_manifests/primary_inputs.csv (declared path, source path, source commit, SHA-256, previous SHA-256),
 # which the import-boundary tests and tools/import_proteomics_statistics.R read; the bundle manifest rows of the
@@ -30,11 +33,30 @@ rows <- list()
 
 # ---------------------------------------------------------------- render-workspace inputs (gitignored; recorded by hash)
 WORK <- data.frame(stringsAsFactors = FALSE,
-  declared = c("results/source_data/04_differential_expression_enrichment/control_spatial_identity_validation/global/figure2f_regions_CA1layers_source_data.csv",
+  declared = c("results/source_data/spatial_validation/score_compartment_markers/marker_class_scores_by_acquisition.csv",
+               "results/source_data/spatial_validation/score_compartment_markers/marker_class_scores_by_animal.csv",
+               "results/source_data/spatial_validation/score_compartment_markers/marker_class_compartment_contrasts.csv",
+               "results/source_data/spatial_validation/map_anatomical_programmes/anatomical_programme_display_terms.csv",
+               "results/source_data/spatial_validation/map_input_territories/input_territory_scores_by_animal.csv",
+               "results/source_data/spatial_validation/map_input_territories/input_territory_tests.csv",
+               "results/source_data/spatial_validation/map_afferent_sources/afferent_source_scores_by_animal.csv",
+               "results/source_data/spatial_validation/map_afferent_sources/afferent_source_contrasts.csv",
+               "results/source_data/spatial_validation/compare_lamina_synapses/inhibitory_share_by_animal.csv",
+               "results/source_data/spatial_validation/compare_lamina_synapses/inhibitory_share_contrasts.csv",
                "results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv"),
-  source = c("results/differential_abundance/validate_control_spatial_identity/global/tables/source_data/figure2f_regions_CA1layers_source_data.csv",
+  source = c("results/spatial_validation/score_compartment_markers/global/tables/marker_class_scores_by_acquisition.csv",
+             "results/spatial_validation/score_compartment_markers/global/tables/marker_class_scores_by_animal.csv",
+             "results/spatial_validation/score_compartment_markers/global/tables/marker_class_compartment_contrasts.csv",
+             "results/spatial_validation/map_anatomical_programmes/global/tables/anatomical_programme_display_terms.csv",
+             "results/spatial_validation/map_input_territories/global/tables/input_territory_scores_by_animal.csv",
+             "results/spatial_validation/map_input_territories/global/tables/input_territory_tests.csv",
+             "results/spatial_validation/map_afferent_sources/global/tables/afferent_source_scores_by_animal.csv",
+             "results/spatial_validation/map_afferent_sources/global/tables/afferent_source_contrasts.csv",
+             "results/spatial_validation/compare_lamina_synapses/global/tables/inhibitory_share_by_animal.csv",
+             "results/spatial_validation/compare_lamina_synapses/global/tables/inhibitory_share_contrasts.csv",
              "results/integration/test_enrichment_module_concordance/global/tables/ontology_aware_gsea_theme_assignments_all_contrasts.csv"),
-  used_by = c("Figure 2h", "Extended Data Fig. 7a-e"))
+  used_by = c("Figure 2d", "Figure 2d", "Figure 2d", "Figure 2f-2i", "Figure 2j", "Figure 2j", "Figure 2k", "Figure 2k", "Figure 2l", "Figure 2l",
+              "Extended Data Fig. 7a-e"))
 for (i in seq_len(nrow(WORK))) {
   src <- file.path(p_root, WORK$source[i]); dst <- repo_path(WORK$declared[i])
   if (!file.exists(src)) stop("Missing in the primary tree: ", WORK$source[i], call. = FALSE)

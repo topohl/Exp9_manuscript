@@ -1,8 +1,0 @@
-"contrast","ID","Description","setSize","NES","pvalue","p.adjust"
-"CA1_SLM_vs_mean_other_CA1_strata","GO:0006119","oxidative phosphorylation",105,2.98995976039443,1e-10,3.22608695652174e-09
-"CA1_SO_vs_mean_other_CA1_strata","GO:0098916","anterograde trans-synaptic signaling",480,2.23944739784466,1e-10,4.04200461308984e-09
-"CA1_SR_vs_mean_other_CA1_strata","GO:0099504","synaptic vesicle cycle",207,2.4205024596472,1e-10,3.53333333333333e-09
-"CA1_vs_mean_other_soma_regions","GO:0008380","RNA splicing",270,2.06205620447409,1e-10,1.28633333333333e-07
-"CA2_vs_mean_other_soma_regions","GO:0015986","proton motive force-driven ATP synthesis",58,3.01669441876781,1e-10,2.66137931034483e-09
-"CA3_vs_mean_other_soma_regions","GO:0043038","amino acid activation",42,2.2866529212775,1.09651669712062e-07,4.59941079803096e-06
-"DG_vs_mean_other_soma_regions","GO:0006396","RNA processing",458,3.17117610007214,1e-10,3.74660194174757e-09

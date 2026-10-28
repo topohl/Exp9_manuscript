@@ -173,40 +173,62 @@ f9_external_main <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     stop("f9_external_main: signature_FDR is absent from ", panel$primary_source, call. = FALSE)
   k$sig <- is.finite(k$signature_FDR) & k$signature_FDR < 0.05
   k$single_set_p_unadjusted <- k$p_adjust
-  k$lab <- paste0(f9_short_contrast(k$internal_contrast), "  →  ",
-                  k$external_signature)
+  # 2026-10-28: compact - each unit is named, the legend says it is compared with the mean of its siblings
+  # unless a pair is named; an expected-negative pairing says so on the artwork
+  unit_name <- function(x) {
+    x <- sub("^(.+)_vs_mean_other_soma_regions$", "\\1 soma", x)
+    x <- sub("^DG_neuropil_vs_mean_non_DG_regions$", "DG neuropil", x)
+    x <- sub("^CA1_(.+)_vs_mean_other_CA1_strata$", "CA1 \\1", x)
+    gsub("_", " ", x)
+  }
+  k$lab <- paste0(unit_name(k$internal_contrast), "  ", intToUtf8(0x2192), "  ", k$external_signature)
+  k$note <- ifelse(grepl("opposing", k$match_type), paste0("expected ", intToUtf8(0x3c), " 0"), "")
+  xl <- c(min(-2, floor(min(k$NES))), max(4, ceiling(max(k$NES))))
+  # one narrow column: the CA1-strata block below the regions block, each under a plain header over a
+  # rule, rows at one pitch (highest NES on top of each block)
+  gap <- 1.6
   k <- k[order(k$level, k$NES), , drop = FALSE]
-  k$ypos <- seq_len(nrow(k))
+  st <- k$level == "CA1 laminar identity"
+  k$ypos <- NA_real_
+  k$ypos[st] <- seq_len(sum(st))
+  k$ypos[!st] <- sum(st) + gap + seq_len(sum(!st))
+  hd <- data.frame(label = c("CA1 strata", "Regions"),
+                   y = c(sum(st) + 0.8, nrow(k) + gap + 0.8))
+  hair <- 0.12
 
   p <- ggplot2::ggplot(k, ggplot2::aes(NES, ypos)) +
-    ggplot2::geom_vline(xintercept = 0, linewidth = hv_lw("reference_pt"),
-                        colour = "grey65") +
-    ggplot2::geom_segment(ggplot2::aes(x = 0, xend = NES, yend = ypos,
-                                       colour = level),
-                          linewidth = hv_lw("reference_pt")) +
-    ggplot2::geom_point(ggplot2::aes(colour = level, shape = sig), size = 1.1,
-                        fill = "white", stroke = 0.4) +
-    ggplot2::scale_shape_manual(values = c("TRUE" = 16, "FALSE" = 21),
-                                guide = "none") +
-    ggplot2::scale_colour_manual(
-      values = c("Regional identity" = "#1F3D52",
-                 "CA1 laminar identity" = "#C2A878"), name = NULL) +
-    ggplot2::scale_y_continuous(breaks = k$ypos, labels = k$lab,
-                                expand = ggplot2::expansion(add = 0.8)) +
-    ggplot2::scale_x_continuous(labels = hv_minus_labels) +
-    ggplot2::labs(x = "NES vs external hippocampal signature", y = NULL) +
-    hf_theme(grid = "x") +
-    ggplot2::theme(axis.text.y = ggplot2::element_text(size = HF_MIN_PT),
+    ggplot2::annotate("segment", x = xl[1], xend = xl[2], y = k$ypos, yend = k$ypos,
+                      linewidth = hair, colour = "grey88") +
+    # the zero line of each block
+    ggplot2::annotate("segment", x = 0, xend = 0, y = c(0.5, sum(st) + gap + 0.5),
+                      yend = c(sum(st) + 0.5, nrow(k) + gap + 0.5),
+                      linewidth = hv_lw("reference_pt"), colour = "grey55") +
+    ggplot2::geom_segment(ggplot2::aes(x = 0, xend = NES, yend = ypos), linewidth = hv_lw("reference_pt"),
+                          colour = "grey15") +
+    # grey point: signature-family FDR >= 0.05 (borderless, as everywhere)
+    ggplot2::geom_point(ggplot2::aes(colour = sig), size = 1.1, stroke = 0) +
+    # an expected-negative pairing says so beside its own row, right of zero where that row is empty
+    ggplot2::geom_text(data = k[nzchar(k$note), , drop = FALSE], ggplot2::aes(0.15, ypos, label = note),
+                       hjust = 0, vjust = 0.5, family = fam, size = hf_sz(HF_MIN_PT), colour = "black") +
+    ggplot2::scale_colour_manual(values = c("TRUE" = "grey15", "FALSE" = "grey65"), guide = "none") +
+    ggplot2::annotate("segment", x = xl[1], xend = xl[2], y = hd$y, yend = hd$y,
+                      linewidth = hv_lw("axis_pt"), colour = "black") +
+    ggplot2::annotate("text", x = mean(xl), y = hd$y + 0.25, label = hd$label, vjust = 0, family = fam,
+                      size = hf_sz(5.6), colour = "black") +
+    ggplot2::scale_y_continuous(breaks = k$ypos, labels = k$lab) +
+    ggplot2::scale_x_continuous(labels = hv_minus_labels, breaks = seq(xl[1], xl[2], 2)) +
+    ggplot2::coord_cartesian(xlim = xl, ylim = c(0.5, nrow(k) + gap + 0.5), expand = FALSE, clip = "off") +
+    ggplot2::labs(x = "NES vs external signature", y = NULL) +
+    hf_theme() +
+    ggplot2::theme(axis.text.y = ggplot2::element_text(size = HF_MIN_PT, colour = "black", lineheight = 0.85),
+                   axis.text.x = ggplot2::element_text(colour = "black"),
+                   axis.line.y = ggplot2::element_blank(), axis.ticks.y = ggplot2::element_blank(),
+                   plot.margin = ggplot2::margin(4, 2, 0.5, 0.5, "mm"),
                    legend.position = "none")
-  nreg <- sum(k$level == "Regional identity")
-  if (nreg > 0 && nreg < nrow(k)) {
-    p <- p + ggplot2::annotate("segment", x = -Inf, xend = Inf,
-                               y = nreg + 0.5, yend = nreg + 0.5,
-                               linewidth = 0.3, colour = "grey55")
-  }
+  k <- k[order(k$level, -k$NES), , drop = FALSE]
   k$legend_text_moved <- paste0(
-    "expected pairings only; filled point = signature-family FDR < 0.05; the ",
-    "complete specificity inventory is in Extended Data Fig. 5d - stated in the ",
+    "expected pairings only; each unit against the mean of its siblings unless a pair is named; grey point = ",
+    "signature-family FDR >= 0.05; the complete specificity inventory is in Extended Data Fig. 5d - stated in the ",
     "figure legend, not on the artwork")
   write_csv_safe(k[, c("internal_contrast", "external_signature", "level", "NES",
                        "signature_FDR", "signature_fdr_family",

@@ -293,11 +293,13 @@ write_csv_safe(gp, file.path(OUT, "gsea_statistical_provenance_audit.csv"))
 ctr <- s9f_contract()
 rows <- list()
 CLASS <- c(
-  v9_schematic = "technical_QC", v9_depth = "technical_QC",
+  v9_schematic_space_f2 = "technical_QC", v9_depth = "technical_QC",
   v9_pca = "central_descriptive", v9_fingerprint = "central_descriptive",
-  v9_compartment = "supporting_validation", v9_bilateral_main = "technical_QC",
+  v9_marker_classes = "supporting_validation",
+  v9_compartment = "supporting_validation",
   v9_external_main = "supporting_validation",
-  v9_internal_main = "central_descriptive",
+  v9_go_soma = "central_descriptive", v9_go_ca1 = "central_descriptive",
+  v9_go_ca2 = "central_descriptive", v9_go_dg = "central_descriptive",
   v9_dap_track = "central_inferential", v9_atlas = "central_inferential",
   v9_bridge = "central_descriptive", v9_curve_syn = "central_inferential",
   v9_curve_rna = "central_inferential", v9_curve_ox = "central_inferential",
