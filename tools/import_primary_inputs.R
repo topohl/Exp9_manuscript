@@ -67,8 +67,9 @@ WORK <- data.frame(stringsAsFactors = FALSE,
   used_by = c("Figure 2d", "Figure 2d", "Figure 2d", "Figure 2f-2i", "Figure 2j", "Figure 2j", "Figure 2j", "Figure 2j", "Figure 2k",
               "Figure 2k", "Figure 2k", "Figure 2l", "Figure 2l", "Extended Data Fig. 7a-e"))
 # A spatial_validation table must come from a finished run of committed code that the current revision has not changed:
-# the run manifest's commit, the script and the R/spatial helpers it names unchanged since, and, where the run records output hashes,
-# the table's SHA-256 among them.
+# the run manifest's commit, the script and the R/spatial helpers it names unchanged since, and, where the run records its
+# provenance, committed code at run time (an unknown state is refused) and the table's SHA-256 among its outputs. Shared
+# helpers outside R/spatial (R/paths.R, R/statistics, R/qc) are not covered.
 run_checked <- function(source) {
   m <- regmatches(source, regexec("^results/spatial_validation/([^/]+)/global/tables/", source))[[1]]
   if (!length(m)) return(invisible(TRUE))
@@ -82,7 +83,8 @@ run_checked <- function(source) {
   prov <- man$parameters$provenance
   if (!same) stop(script, " changed since its last run (", man$git_commit, "); rerun it before importing.", call. = FALSE)
   if (!is.null(prov)) {
-    if (isTRUE(prov$code_uncommitted)) stop(script, " last ran with uncommitted code; rerun it at a commit.", call. = FALSE)
+    if (!identical(prov$code_uncommitted, FALSE))
+      stop(script, " last ran with uncommitted code (or an unknown state); rerun it at a commit.", call. = FALSE)
     if (!identical(prov$output_sha256[[basename(source)]], sha(file.path(p_root, source))))
       stop(source, " is not the table its run wrote (run manifest).", call. = FALSE)
   }

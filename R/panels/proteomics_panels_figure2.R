@@ -990,10 +990,15 @@ hf_input_territories <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   fam <- hf_fam()
   grp <- as.character(unlist(panel$groups %||% "CON"))
   deps <- unlist(panel$input_dependencies)
+  dep <- function(name) {   # one declared input per table, read by name
+    f <- grep(name, deps, value = TRUE, fixed = TRUE)
+    if (length(f) != 1L) stop("hf_input_territories: input ", name, " not declared once", call. = FALSE)
+    hv_read_csv(repo_path(f))
+  }
   sc <- hv_read_csv(repo_path(panel$primary_source))
-  ts <- hv_read_csv(repo_path(deps[1]))
-  sv <- hv_read_csv(repo_path(grep("input_territory_sensitivity", deps, value = TRUE)))
-  pc <- hv_read_csv(repo_path(grep("input_territory_protein_contrasts", deps, value = TRUE)))
+  ts <- dep("input_territory_tests")
+  sv <- dep("input_territory_sensitivity")
+  pc <- dep("input_territory_protein_contrasts")
   sc <- sc[sc$group %in% grp & sc$protein_class %in% c("presynaptic", "postsynaptic"), , drop = FALSE]
   ts_all <- ts
   ts <- ts[ts$animal_set == paste(grp, collapse = "+"), , drop = FALSE]
@@ -1109,9 +1114,14 @@ hf_afferent_sources <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   fam <- hf_fam()
   grp <- as.character(unlist(panel$groups %||% "CON"))
   deps <- unlist(panel$input_dependencies)
+  dep <- function(name) {   # one declared input per table, read by name
+    f <- grep(name, deps, value = TRUE, fixed = TRUE)
+    if (length(f) != 1L) stop("hf_afferent_sources: input ", name, " not declared once", call. = FALSE)
+    hv_read_csv(repo_path(f))
+  }
   sc <- hv_read_csv(repo_path(panel$primary_source))
-  ct <- hv_read_csv(repo_path(deps[1]))
-  members <- hv_read_csv(repo_path(grep("afferent_source_sets", deps, value = TRUE)))
+  ct <- dep("afferent_source_contrasts")
+  members <- dep("afferent_source_sets")
   sc <- sc[sc$group %in% grp, , drop = FALSE]
   ct_all <- ct
   ct <- ct[ct$animal_set == paste(grp, collapse = "+"), , drop = FALSE]
@@ -1219,7 +1229,9 @@ hf_inhibitory_share <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   fam <- hf_fam()
   grp <- as.character(unlist(panel$groups %||% "CON"))
   an <- hv_read_csv(repo_path(panel$primary_source))
-  ct <- hv_read_csv(repo_path(unlist(panel$input_dependencies)[1]))
+  f <- grep("inhibitory_share_contrasts", unlist(panel$input_dependencies), value = TRUE, fixed = TRUE)
+  if (length(f) != 1L) stop("hf_inhibitory_share: input inhibitory_share_contrasts not declared once", call. = FALSE)
+  ct <- hv_read_csv(repo_path(f))
   an <- an[an$group %in% grp, , drop = FALSE]
   ct_all <- ct
   ct <- ct[ct$group %in% paste(grp, collapse = "+"), , drop = FALSE]
