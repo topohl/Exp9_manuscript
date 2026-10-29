@@ -21,10 +21,10 @@ figures:
     behaviour_bundle_id: ebb_v104_20261026_4b651ac
     behaviour_config_version: "1.0.4"
     behaviour_config_sha256: 54a46eca459775d0ab91da40c7ab924f732ac0ae35b8b0e8c397b66a947c0fb5
-    figure_support_bundle_id: fsb_v9_20261029_abb28c6
+    figure_support_bundle_id: fsb_v10_20261030_b74873b
     figure_support_frozen_at: abb28c636fa3e3d0f600e9434a739469ef30e7de
     source_data_frozen_in: source_data/MMMSociability/ebb_v104_20261026_4b651ac
-    figure_support_source_data_frozen_in: source_data/MMMSociability/fsb_v9_20261029_abb28c6
+    figure_support_source_data_frozen_in: source_data/MMMSociability/fsb_v10_20261030_b74873b
     rendering_repository_computes_statistics: false
     visual_lineage: >-
       The layout Tobias assembled by hand on 2026-10-12 from the pipelines' panels and
@@ -56,10 +56,10 @@ figures:
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01a.svg
         source_data: results/figures/manuscript/figure_01_panels/figure_01a_source_data.csv
-        primary_source: source_data/MMMSociability/fsb_v9_20261029_abb28c6/T1_design_ages.csv
+        primary_source: source_data/MMMSociability/fsb_v10_20261030_b74873b/T1_design_ages.csv
         input_dependencies:
-          - source_data/MMMSociability/fsb_v9_20261029_abb28c6/T1_design_ages.csv
-          - source_data/MMMSociability/fsb_v9_20261029_abb28c6/T1b_design_ages_by_animal.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/T1_design_ages.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/T1b_design_ages_by_animal.csv
         required_columns: [event_order, event_id, event_label, source, definition, n_animals, age_min, age_max, unit]
         expected_rows: 8
         scientific_contract: design_schematic_temporal_precedence
@@ -78,10 +78,10 @@ figures:
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01b.svg
         source_data: results/figures/manuscript/figure_01_panels/figure_01b_source_data.csv
-        primary_source: source_data/MMMSociability/fsb_v9_20261029_abb28c6/F2_combz_components.csv
+        primary_source: source_data/MMMSociability/fsb_v10_20261030_b74873b/F2_combz_components.csv
         input_dependencies:
-          - source_data/MMMSociability/fsb_v9_20261029_abb28c6/F2_combz_components.csv
-          - source_data/MMMSociability/fsb_v9_20261029_abb28c6/F2b_combz_definition.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/F2_combz_components.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/F2b_combz_definition.csv
           - source_data/MMMSociability/ebb_v104_20261026_4b651ac/A2b_combz_thresholds.csv
         required_columns: [AnimalNum, Sex, Batch, Group, component, signed_z, present, CombZ, susceptibility_threshold, below_threshold, heatmap_order_within_sex]
         expected_rows: 702
@@ -102,9 +102,9 @@ figures:
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/figure_01_panels/figure_01c.svg
         source_data: results/figures/manuscript/figure_01_panels/figure_01c_source_data.csv
-        primary_source: source_data/MMMSociability/fsb_v9_20261029_abb28c6/D1_domain_heatmap_cells.csv
+        primary_source: source_data/MMMSociability/fsb_v10_20261030_b74873b/D1_domain_heatmap_cells.csv
         input_dependencies:
-          - source_data/MMMSociability/fsb_v9_20261029_abb28c6/D1_domain_heatmap_cells.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/D1_domain_heatmap_cells.csv
         required_columns: [heatmap_id, variant, row_key, row_label, display_tier, PhaseClass, Sex, contrast, cell_status, hedges_g, marker, marker_class]
         expected_rows: 504
         scientific_contract: descriptive_effect_sizes_with_stored_post_hoc_markers
@@ -128,8 +128,8 @@ figures:
         primary_source: source_data/MMMSociability/ebb_v104_20261026_4b651ac/A2_prediction_animals.csv
         input_dependencies:
           - source_data/MMMSociability/ebb_v104_20261026_4b651ac/A2_prediction_animals.csv
-          - source_data/MMMSociability/fsb_v9_20261029_abb28c6/E1_movement_combz_spearman_by_sex.csv
-          - source_data/MMMSociability/fsb_v9_20261029_abb28c6/E2_movement_combz_fit_lines.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/E1_movement_combz_spearman_by_sex.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/E2_movement_combz_fit_lines.csv
         required_columns: [AnimalNum, Group, Sex, observed_CombZ, heldout_prediction, Movement_mean, crossing_rate_equiv_per_h]
         expected_rows: 111
         scientific_contract: descriptive_sex_stratified_association_no_model_fitted_here
@@ -1503,10 +1503,10 @@ figures:
     behaviour_bundle_id: ebb_v104_20261026_4b651ac
     behaviour_config_version: "1.0.4"
     behaviour_config_sha256: 54a46eca459775d0ab91da40c7ab924f732ac0ae35b8b0e8c397b66a947c0fb5
-    figure_support_bundle_id: fsb_v9_20261029_abb28c6
+    figure_support_bundle_id: fsb_v10_20261030_b74873b
     figure_support_frozen_at: abb28c636fa3e3d0f600e9434a739469ef30e7de
     source_data_frozen_in: source_data/MMMSociability/ebb_v104_20261026_4b651ac
-    figure_support_source_data_frozen_in: source_data/MMMSociability/fsb_v9_20261029_abb28c6
+    figure_support_source_data_frozen_in: source_data/MMMSociability/fsb_v10_20261030_b74873b
     historical_generation: bundle_render
     rendering_repository_computes_statistics: false
     scientific_contract_summary: >-
@@ -1530,10 +1530,10 @@ figures:
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04a.svg
         source_data: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04a_source_data.csv
-        primary_source: source_data/MMMSociability/fsb_v9_20261029_abb28c6/E7_animal_features.csv
+        primary_source: source_data/MMMSociability/fsb_v10_20261030_b74873b/E7_animal_features.csv
         input_dependencies:
-          - source_data/MMMSociability/fsb_v9_20261029_abb28c6/E7_animal_features.csv
-          - source_data/MMMSociability/fsb_v9_20261029_abb28c6/E7b_secondary_fit_lines.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/E7_animal_features.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/E7b_secondary_fit_lines.csv
           - source_data/MMMSociability/ebb_v104_20261026_4b651ac/C2_estimates.csv
           - source_data/MMMSociability/ebb_v104_20261026_4b651ac/E_multiplicity.csv
         scientific_contract: secondary_feature_associations_per_animal_display
@@ -1552,9 +1552,9 @@ figures:
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04b.svg
         source_data: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04b_source_data.csv
-        primary_source: source_data/MMMSociability/fsb_v9_20261029_abb28c6/E6_feature_correlations.csv
+        primary_source: source_data/MMMSociability/fsb_v10_20261030_b74873b/E6_feature_correlations.csv
         input_dependencies:
-          - source_data/MMMSociability/fsb_v9_20261029_abb28c6/E6_feature_correlations.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/E6_feature_correlations.csv
         scientific_contract: descriptive_feature_correlations_no_test
         biological_unit: AnimalID
         hemisphere_handling: not_applicable_behavioural
@@ -1572,9 +1572,9 @@ figures:
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04c.svg
         source_data: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04c_source_data.csv
-        primary_source: source_data/MMMSociability/fsb_v9_20261029_abb28c6/E5_ladder_registered.csv
+        primary_source: source_data/MMMSociability/fsb_v10_20261030_b74873b/E5_ladder_registered.csv
         input_dependencies:
-          - source_data/MMMSociability/fsb_v9_20261029_abb28c6/E5_ladder_registered.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/E5_ladder_registered.csv
           - source_data/MMMSociability/ebb_v104_20261026_4b651ac/C2_estimates.csv
           - source_data/MMMSociability/ebb_v104_20261026_4b651ac/E_multiplicity.csv
         scientific_contract: fixed_a_priori_model_registry_no_model_selected_on_performance
@@ -1598,10 +1598,10 @@ figures:
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04d.svg
         source_data: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04d_source_data.csv
-        primary_source: source_data/MMMSociability/fsb_v9_20261029_abb28c6/E5b_ladder_beyond_movement.csv
+        primary_source: source_data/MMMSociability/fsb_v10_20261030_b74873b/E5b_ladder_beyond_movement.csv
         input_dependencies:
-          - source_data/MMMSociability/fsb_v9_20261029_abb28c6/E5b_ladder_beyond_movement.csv
-          - source_data/MMMSociability/fsb_v9_20261029_abb28c6/E5_ladder_registered.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/E5b_ladder_beyond_movement.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/E5_ladder_registered.csv
         scientific_contract: exploratory_rungs_registered_before_fitting_labelled_exploratory
         biological_unit: AnimalID
         hemisphere_handling: not_applicable_behavioural
@@ -1618,9 +1618,9 @@ figures:
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04e.svg
         source_data: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04e_source_data.csv
-        primary_source: source_data/MMMSociability/fsb_v9_20261029_abb28c6/E4b_spearman_by_sex_ci.csv
+        primary_source: source_data/MMMSociability/fsb_v10_20261030_b74873b/E4b_spearman_by_sex_ci.csv
         input_dependencies:
-          - source_data/MMMSociability/fsb_v9_20261029_abb28c6/E4b_spearman_by_sex_ci.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/E4b_spearman_by_sex_ci.csv
           - source_data/MMMSociability/ebb_v104_20261026_4b651ac/E_multiplicity.csv
         scientific_contract: descriptive_stratified_estimates_no_test_no_correction
         biological_unit: AnimalID
@@ -1641,9 +1641,9 @@ figures:
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04f.svg
         source_data: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04f_source_data.csv
-        primary_source: source_data/MMMSociability/fsb_v9_20261029_abb28c6/E8_interaction_per_sd.csv
+        primary_source: source_data/MMMSociability/fsb_v10_20261030_b74873b/E8_interaction_per_sd.csv
         input_dependencies:
-          - source_data/MMMSociability/fsb_v9_20261029_abb28c6/E8_interaction_per_sd.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/E8_interaction_per_sd.csv
           - source_data/MMMSociability/ebb_v104_20261026_4b651ac/E_multiplicity.csv
         scientific_contract: formal_interaction_test_negative_result_reported_as_such
         biological_unit: AnimalID
@@ -1664,9 +1664,9 @@ figures:
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04g.svg
         source_data: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04g_source_data.csv
-        primary_source: source_data/MMMSociability/fsb_v9_20261029_abb28c6/D1_domain_heatmap_cells.csv
+        primary_source: source_data/MMMSociability/fsb_v10_20261030_b74873b/D1_domain_heatmap_cells.csv
         input_dependencies:
-          - source_data/MMMSociability/fsb_v9_20261029_abb28c6/D1_domain_heatmap_cells.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/D1_domain_heatmap_cells.csv
         scientific_contract: descriptive_effect_sizes_with_stored_post_hoc_markers
         biological_unit: AnimalID
         hemisphere_handling: not_applicable_behavioural
