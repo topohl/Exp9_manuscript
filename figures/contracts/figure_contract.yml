@@ -1492,7 +1492,7 @@ figures:
   ED_behaviour_models:
     title: Extended Data Figure 4
     width_mm: 183
-    height_mm: 137
+    height_mm: 166
     layout_mode: absolute
     manuscript_role: behavioural_extended_data
     is_numbered_manuscript_figure: true
@@ -1514,7 +1514,8 @@ figures:
       early features per animal (a), how the early features and the first-night Figure 1c domains relate (b), the
       complete a-priori model registry with a permutation test for every model that has a predictor (c; ebb C2 and
       PR2, the sex-adjusted permutations from post hoc run 29e), whether any other first-night domain adds to mean
-      movement (d; exploratory, run 29e) and everything the study can say about sex (e, f). The ladder is shown in
+      movement (d; exploratory, run 29e), everything the study can say about sex (e, f) and Figure 1c's domain heatmap in the
+      first active phase after CC1 (g; fsb D1 cc1_a1, added 2026-10-29).
       registry order and names no winner; the sex panels license a negative statement and block a positive one.
       Early-window coverage (fsb E3: every animal has every slot) is stated in the legend.
     prohibited_wording: female-specific; sex-specific; stronger in females; the effect was driven by females
@@ -1541,7 +1542,7 @@ figures:
         x: 4
         "y": 4
         w: 100
-        h: 52
+        h: 50
       - id: 04b
         description: >-
           Spearman correlations among the three Stage 09 early features and the six first-night Figure 1c domains,
@@ -1560,7 +1561,7 @@ figures:
         x: 106
         "y": 4
         w: 73
-        h: 52
+        h: 50
       - id: 04c
         description: >-
           The five a-priori prediction models: predictors as a matrix, leave-one-animal-out R2, the repeated grouped
@@ -1584,9 +1585,9 @@ figures:
           mean (white tick), not to the leave-one-animal-out point; the pale box is the 2.5-97.5% range of the 1000
           permutation draws.
         x: 4
-        "y": 59
+        "y": 57
         w: 84
-        h: 42
+        h: 40
       - id: 04d
         description: >-
           Beyond movement (exploratory, run 29e): each first-night Figure 1c domain alone (cross-validated R2) and
@@ -1605,9 +1606,9 @@ figures:
         biological_unit: AnimalID
         hemisphere_handling: not_applicable_behavioural
         x: 92
-        "y": 59
+        "y": 57
         w: 87
-        h: 42
+        h: 40
       - id: 04e
         description: >-
           Sex-stratified Spearman correlations of each early feature with later integrated resilience, with the
@@ -1628,9 +1629,9 @@ figures:
           The producer script refuses to render if any feature-by-sex interaction is rejected in its stored family
           (ebb E_multiplicity PR3), because these estimates are only honest as context while none is.
         x: 4
-        "y": 104
-        w: 100
-        h: 30
+        "y": 100
+        w: 106
+        h: 31
       - id: 04f
         description: >-
           Formal feature-by-sex interaction tests per SD of the feature (male minus female slope; run 29e rescales the
@@ -1648,10 +1649,31 @@ figures:
         biological_unit: AnimalID
         hemisphere_handling: not_applicable_behavioural
         q_values_printed_not_starred: true
-        x: 108
-        "y": 104
-        w: 71
-        h: 30
+        x: 4
+        "y": 133
+        w: 106
+        h: 31
+      - id: 04g
+        description: >-
+          Figure 1c's behavioural domain heatmap for the first active (dark) phase after the first cage change (Stage 14
+          heatmap cc1_a1, resolution variant picked): the stored Hedges g of RES-CON, SUS-CON and RES-SUS per sex and the
+          stored post hoc markers (BH q < 0.05; none in this window). The HMM row is not drawn (no first-night latent-state
+          score, config v1.0.1).
+        producer_script: figures/scripts/extended_data_behaviour_panels.R
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04g.svg
+        source_data: results/figures/manuscript/extended_data_behaviour_panels/extended_data_behaviour_ed04g_source_data.csv
+        primary_source: source_data/MMMSociability/fsb_v9_20261029_abb28c6/D1_domain_heatmap_cells.csv
+        input_dependencies:
+          - source_data/MMMSociability/fsb_v9_20261029_abb28c6/D1_domain_heatmap_cells.csv
+        scientific_contract: descriptive_effect_sizes_with_stored_post_hoc_markers
+        biological_unit: AnimalID
+        hemisphere_handling: not_applicable_behavioural
+        x: 113
+        "y": 100
+        w: 66
+        h: 64
 
 
 

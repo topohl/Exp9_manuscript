@@ -86,10 +86,10 @@ testthat::test_that("the contract declares the panels the renderer writes, from 
   testthat::skip_if_not_installed("yaml")
   B <- ed_bundles()
   fig <- manuscript_figure_contract("ED_behaviour_models")
-  # one figure since 2026-10-20; a-f since the 2026-10-29 redesign: secondary features, feature correlations, the model
-  # ladder, beyond movement, and sex (per-sex rho, interactions)
+  # one figure since 2026-10-20; a-g since the 2026-10-29 redesign: secondary features, feature correlations, the model
+  # ladder, beyond movement, sex (per-sex rho, interactions) and Figure 1c's domain heatmap for the first active phase
   testthat::expect_identical(vapply(fig$panels, function(x) as.character(x$id), character(1)),
-                             paste0("04", letters[1:6]))
+                             paste0("04", letters[1:7]))
   testthat::expect_identical(as.character(fig$canonical_publication_id), "extended_data_04")
   {
     testthat::expect_identical(as.character(fig$behaviour_bundle_id), B$pin$bundle_id)
@@ -119,6 +119,18 @@ testthat::test_that("ED4 a draws the secondary features per animal from fsb E7, 
   testthat::expect_equal(E7$CombZ, B$A2$observed_CombZ[m], tolerance = 1e-12)
   testthat::expect_equal(E7$Movement_mean, B$A2$Movement_mean[m], tolerance = 1e-12)
   testthat::expect_false(anyNA(E7[, c("Movement_rmssd", "Entropy_acf1")]))
+})
+
+testthat::test_that("ED4 g: Figure 1c's heatmap for the first active phase holds every domain but the HMM row", {
+  B <- ed_bundles()
+  D1 <- fsb_bundle_table("D1_domain_heatmap_cells", B$fsb)
+  g <- D1[D1$heatmap_id == "cc1_a1" & D1$variant == "picked", ]
+  testthat::expect_identical(nrow(g), 42L)
+  testthat::expect_identical(sum(g$cell_status == "estimated"), 36L)
+  testthat::expect_setequal(unique(g$row_key[g$cell_status != "estimated"]), "hmm_state_architecture")
+  testthat::expect_setequal(unique(g$Sex), c("Female", "Male"))
+  testthat::expect_setequal(unique(g$contrast), c("RES-CON", "SUS-CON", "RES-SUS"))
+  testthat::expect_false(any(is.na(g$hedges_g[g$cell_status == "estimated"])))
 })
 
 testthat::test_that("ED4 f: the interactions per SD are the stored Stage 09 terms rescaled, with the stored PR3 P and q", {

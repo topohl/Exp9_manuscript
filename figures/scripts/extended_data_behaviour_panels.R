@@ -19,6 +19,7 @@
 # Every value comes from the bundles Figure 1 is drawn from:
 #   ebb C2_estimates / E_multiplicity: the Stage 09 associations (PR1), the ladder (PR2) and the feature x sex terms (PR3);
 #   fsb E4b: the per-sex Spearman intervals (post hoc run 29d);
+#   fsb D1: the Stage 14 domain heatmap cells (Figure 1c's table), here its first-active-phase heatmap cc1_a1;
 #   fsb E5-E8: the post hoc run 29e (registry POSTHOC_PREDICTION_LADDER v1.0): the ladder with the within-sex permutation
 #       of the two sex-adjusted models, the exploratory first-night domain rungs, the early-feature correlations, the
 #       per-animal values with the display lines of the two secondary features, and the interactions per SD.
@@ -32,6 +33,7 @@
 #   d  beyond movement (exploratory): each first-night domain alone and added to mean movement
 #   e  the per-sex Spearman rho of the three features with their bootstrap intervals (descriptive)
 #   f  the feature x sex interactions per SD of the feature, with the stored BH q
+#   g  Figure 1c's domain heatmap for the first active phase after CC1 (fsb D1, heatmap cc1_a1; added 2026-10-29)
 #
 # WORDING DISCIPLINE. The sex panels license a negative statement and block a positive one; the renderer refuses to
 # draw if any interaction is rejected in its stored family (PR3). The ladder names no winner and is drawn in registry
@@ -341,6 +343,67 @@ PF <- bh_panel(pf, 1, 1, data = data.frame(Feature = unname(FEATURE_LABEL[ix$fea
   `CI high (95%)` = ix$ci_high_per_sd, `P (stored, PR3)` = ix$p_stored, `q (BH across the three features, stored)` = ix$q_bh_stored,
   check.names = FALSE, stringsAsFactors = FALSE))
 
+# ================================================================== g: the Figure 1c domain heatmap, first active phase after CC1
+# Figure 1c's grammar (f1v2_panel_domains: stored Hedges g in square tiles, the stored post hoc markers as dots, tier
+# gaps, the fixed smd limit) for the Stage 14 heatmap "cc1_a1" (variant "picked"), the window of the Stage 09 features.
+# The HMM row is not drawn: config v1.0.1 defines no first-night latent-state score (its cells are stored "not_shown").
+G_CONTRAST <- c("RES-CON" = "RES\n−CON", "SUS-CON" = "SUS\n−CON", "RES-SUS" = "RES\n−SUS")
+G_ROW_LABEL <- c(psychomotor_rate = "Movement")                                     # as Figure 1c
+D1 <- fsb("D1_domain_heatmap_cells")
+hg <- D1[D1$heatmap_id == "cc1_a1" & D1$variant == "picked", , drop = FALSE]
+if (nrow(hg) != 42L || sum(hg$cell_status == "estimated") != 36L || any(hg$row_key[hg$cell_status != "estimated"] != "hmm_state_architecture"))
+  stop("fsb D1 cc1_a1 / picked must hold 36 estimated cells and only the HMM row not shown.", call. = FALSE)
+hg <- hg[hg$cell_status == "estimated", , drop = FALSE]
+if (any(toupper(as.character(hg$marker)) == "TRUE" & hg$marker_class != "posthoc"))
+  stop("A stored marker that is not post hoc has no glyph in panel g.", call. = FALSE)
+grows <- unique(hg[order(hg$row_order), c("row_order", "row_key", "row_label", "display_tier")])
+grows$display <- ifelse(grows$row_key %in% names(G_ROW_LABEL), G_ROW_LABEL[grows$row_key], grows$row_label)
+tier_i <- match(grows$display_tier, unique(grows$display_tier))
+y_tb <- seq_len(nrow(grows)) + (tier_i - 1L) * 0.5                                  # tiers half a row apart, as Figure 1c
+grows$y <- max(y_tb) + 1 - y_tb
+hg$y <- grows$y[match(hg$row_key, grows$row_key)]
+hg$x <- match(hg$contrast, names(G_CONTRAST))
+hg$column <- factor(paste("Dark phase", SEX_LABEL[hg$Sex], sep = "\n"), levels = paste("Dark phase", SEX_LABEL, sep = "\n"))
+if (anyNA(hg$x) || anyNA(hg$column)) stop("panel g: an unknown sex or contrast in fsb D1.", call. = FALSE)
+hg$label <- sub("^-", MINUS, formatC(hg$hedges_g, format = "f", digits = 2))
+gdots <- hg[toupper(as.character(hg$marker)) == "TRUE", , drop = FALSE]
+G_LIMIT <- S14_G_LIMIT
+pg_heat <- ggplot(hg, aes(x, y)) +
+  geom_tile(aes(fill = hedges_g), width = TILE, height = TILE) +
+  geom_text(aes(label = label), size = f1h_text(), colour = INK) +
+  geom_point(data = gdots, size = 0.55, colour = INK, position = position_nudge(x = 0.33, y = 0.28)) +
+  facet_wrap(~column, nrow = 1) +
+  s14_fill(G_LIMIT, fixed = TRUE) +
+  scale_x_continuous(breaks = seq_along(G_CONTRAST), labels = unname(G_CONTRAST), limits = c(0.5, length(G_CONTRAST) + 0.5), expand = c(0, 0)) +
+  scale_y_continuous(breaks = grows$y, labels = grows$display, limits = c(0.5, max(grows$y) + 0.5), expand = c(0, 0)) +
+  labs(x = NULL, y = NULL) +
+  theme_f1(style = "house") +
+  theme(axis.line = element_blank(), axis.ticks = element_blank(),
+        axis.text.x = element_text(size = txt_pt, colour = INK, lineheight = 0.9),
+        axis.text.y = element_text(size = ttl_pt, colour = INK),
+        strip.text.x = element_text(size = ttl_pt, colour = INK, face = "bold", lineheight = 0.92, margin = margin(b = 1.5)),
+        panel.spacing.x = grid::unit(1.6, "mm"), aspect.ratio = max(grows$y) / length(G_CONTRAST), plot.margin = margin(8, 1, 0, 1))
+gbl <- s14_bar_labels(G_LIMIT, fixed = TRUE)
+gbarv <- data.frame(value = seq(-G_LIMIT, G_LIMIT, length.out = 61))
+pg_bar <- ggplot(gbarv, aes(value, 1, fill = value)) + geom_tile(width = 2 * G_LIMIT / 60, height = 1) + s14_fill(G_LIMIT, fixed = TRUE) +
+  scale_x_continuous(breaks = gbl$breaks, labels = gbl$labels, expand = c(0, 0)) + scale_y_continuous(breaks = NULL, expand = c(0, 0)) +
+  labs(x = "Hedges *g*", y = NULL) + theme_f1(style = "house") +
+  theme(axis.line = element_blank(), axis.title.x = f1h_markdown(margin = margin(t = 1)), plot.margin = margin(1, 5, 1, 1))
+pg_key <- ggplot() +
+  annotate("point", x = 0, y = 0, size = 0.9, colour = INK) +
+  annotate("text", x = 0.35, y = 0, label = "post hoc q < 0.05", hjust = 0, size = f1h_text(), colour = INK) +
+  scale_x_continuous(limits = c(-0.3, 4), expand = c(0, 0)) + scale_y_continuous(limits = c(-1, 1)) +
+  theme_void() + theme(plot.margin = margin(0, 0, 0, 0))
+pg <- pg_heat / (pg_key + pg_bar + patchwork::plot_layout(widths = c(0.8, 1))) + patchwork::plot_layout(heights = c(1, 0.11)) +
+  patchwork::plot_annotation(theme = theme(plot.margin = margin(0, 0, 0, 0), plot.background = F1H_BACKGROUND))
+gcell <- hg[order(match(hg$Sex, names(SEX_LABEL)), -hg$y, hg$x), , drop = FALSE]
+PG <- bh_panel(pg, 1, 1, data = data.frame(Window = gcell$window_label, Sex = gcell$Sex, Domain = grows$display[match(gcell$row_key, grows$row_key)],
+  Tier = gcell$display_tier, Comparison = gcell$contrast, `n compared` = gcell$n_comp_animals, `n reference` = gcell$n_ref_animals,
+  `Mean compared` = gcell$mean_comp, `Mean reference` = gcell$mean_ref, `Hedges g` = gcell$hedges_g, Estimate = gcell$estimate,
+  `CI low (95%)` = gcell$ci_low, `CI high (95%)` = gcell$ci_high, Test = gcell$test_used, df = gcell$df, Statistic = gcell$statistic,
+  P = gcell$p_raw, `q (BH, family)` = gcell$q_bh, `Correction family` = gcell$family_id,
+  `Post hoc marker drawn` = toupper(as.character(gcell$marker)) == "TRUE", check.names = FALSE, stringsAsFactors = FALSE))
+
 # ---------------------------------------------------------------- write out
 # Authored at the exact placed size (the absolute boxes of figures/contracts/figure_contract.yml), so scale = 1.0 and
 # native pt == printed pt.
@@ -348,7 +411,7 @@ BOX <- local({
   e <- yaml::read_yaml(repo_path("figures", "contracts", "figure_contract.yml"))$figures[["ED_behaviour_models"]]
   stats::setNames(lapply(e$panels, function(p) c(w = as.numeric(p$w), h = as.numeric(p$h))), vapply(e$panels, function(p) sub("^04", "ed04", p$id), ""))
 })
-PANELS <- list(ed04a = PA, ed04b = PB, ed04c = PC, ed04d = PD, ed04e = PE, ed04f = PF)
+PANELS <- list(ed04a = PA, ed04b = PB, ed04c = PC, ed04d = PD, ed04e = PE, ed04f = PF, ed04g = PG)
 if (!setequal(names(BOX), names(PANELS))) stop("The contract's ED4 panels differ from the panels this script draws.", call. = FALSE)
 for (id in names(PANELS)) { PANELS[[id]]$w_mm <- BOX[[id]][["w"]]; PANELS[[id]]$h_mm <- BOX[[id]][["h"]] }
 written <- vapply(names(PANELS), function(id) bh_save_svg(PANELS[[id]], file.path(OUT, paste0("extended_data_behaviour_", id, ".svg"))),
