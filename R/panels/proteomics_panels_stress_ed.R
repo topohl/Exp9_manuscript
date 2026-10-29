@@ -253,7 +253,8 @@ hf_ed_npy_lead <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   mn <- stats::aggregate(official_centred ~ group + x, data = sc, FUN = mean)
   t1 <- ts[ts$values == "official_centred" & ts$comparison == "SUS vs CON+RES", , drop = FALSE]
   if (nrow(t1) != 1L) stop("hf_ed_npy_lead: SUS vs CON+RES test missing", call. = FALSE)
-  txt <- sprintf("SUS − others %s log2 [%s, %s]\nP=%s (84 labellings); post hoc",
+  # the statistic only; the test (84 labellings) and its post hoc status are in the legend (legend_text_moved)
+  txt <- sprintf("SUS − others %s [%s, %s]\nP=%s",
                  hs_num(t1$estimate), hs_num(t1$ci_low), hs_num(t1$ci_high), hs_p(t1$p_permutation))
   xs <- c(seq_along(units), length(xl) + 0.6)
   p <- ggplot2::ggplot(an, ggplot2::aes(xj, official_centred)) +

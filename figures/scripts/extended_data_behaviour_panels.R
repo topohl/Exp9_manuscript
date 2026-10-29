@@ -238,7 +238,7 @@ pc_for <- ggplot(lad, aes(y = y)) +
   bh_forest_zero() +
   geom_rect(aes(xmin = null_q025, xmax = null_q975, ymin = y - ROW_H, ymax = y + ROW_H), fill = NULL_FILL, na.rm = TRUE) +
   geom_segment(aes(x = cv_r2_q025, xend = cv_r2_q975, yend = y), linewidth = 1.5, colour = CV_COL, lineend = "butt") +
-  geom_point(aes(x = repeated_cv_mean_r2), shape = 124, size = 1.5, colour = "white") +
+  geom_segment(aes(x = repeated_cv_mean_r2, xend = repeated_cv_mean_r2, y = y - 0.13, yend = y + 0.13), linewidth = 0.35, colour = "white") +
   geom_point(aes(x = loao_r2, colour = I(fill)), shape = 16, size = 1.9) +
   stat_col("p_text") + key_grobs(3.2) +
   scale_x_continuous(labels = f1_minus_labels, expand = expansion(mult = c(0.03, 0.04))) +
@@ -278,7 +278,7 @@ d_one <- function(kind, title, x_title, labels) {
       annotate("text", x = mov, y = D_YLIM[2] - 0.04, label = "Mean movement", hjust = 1.06, vjust = 1, size = f1h_text(), colour = SUPPORTED)
   p + geom_rect(aes(xmin = null_q025, xmax = null_q975, ymin = y - ROW_H, ymax = y + ROW_H), fill = NULL_FILL) +
     geom_segment(aes(x = lo, xend = hi, yend = y), linewidth = 1.5, colour = CV_COL, lineend = "butt") +
-    geom_point(aes(x = cv_mid), shape = 124, size = 1.5, colour = "white") +
+    geom_segment(aes(x = cv_mid, xend = cv_mid, y = y - 0.13, yend = y + 0.13), linewidth = 0.35, colour = "white") +
     geom_point(aes(x = est, colour = I(fill)), shape = 16, size = 1.9) +
     stat_col("q_text") +
     scale_x_continuous(labels = f1_minus_labels, breaks = function(l) pretty(l, n = 3), expand = expansion(mult = c(0.04, 0.04))) +

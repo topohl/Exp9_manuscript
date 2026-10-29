@@ -175,10 +175,10 @@ f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
 
   hdr <- ggplot2::ggplot() +
     ggplot2::annotate("text", x = 0, y = 1, hjust = 0, vjust = 1, family = fam,
-                      size = hf_sz(5.4), fontface = "bold", colour = acc,
+                      size = hf_sz(5.4), fontface = "bold", colour = "black",   # ink, as Figure 3's curves; the accent stays in the marks
                       label = prog$label[1]) +
     ggplot2::annotate("text", x = 0, y = 0.25, hjust = 0, vjust = 1,
-                      family = fam, size = hf_sz(5.0), colour = "grey35",
+                      family = fam, size = hf_sz(5.0), colour = "grey40",
                       label = f9_curve_stat_label(ev$NES, ev$FDR, ev$n_leading,
                                                   sum(ev$hits))) +
     ggplot2::coord_cartesian(xlim = c(0, 1), ylim = c(-0.2, 1.05),
@@ -605,7 +605,7 @@ f9_ed_ca2_missingness <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::scale_y_continuous(limits = c(0, ytop * 1.13),
                                 expand = c(0, 0)) +
     ggplot2::labs(x = NULL, y = "Fraction missing\nbefore imputation") +
-    hf_theme(grid = "y") +
+    hf_theme() +
     ggplot2::theme(axis.text.x = ggplot2::element_text(size = HF_MIN_PT),
                    axis.text.y = ggplot2::element_text(size = HF_MIN_PT),
                    legend.position = "right",

@@ -209,7 +209,7 @@ s5_ed_ca2_displacement <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::scale_shape_manual(values = c(CON = 16, RES = 17, SUS = 15), name = NULL) +
     ggplot2::labs(x = "Fraction missing before imputation",
                   y = "Centred value of proteins\nobserved in every sample") +
-    hv_theme(grid = "y") +
+    hv_theme() +
     ggplot2::theme(legend.position = "right", aspect.ratio = 1)
   b$mechanism <- paste0(
     "per-sample median centring uses observed values only, so a heavily ",
@@ -483,7 +483,7 @@ s5_ed_network_distance <- function(panel, svg_path, csv_path, w_mm, h_mm) {
                                 limits = c(0.5, 3.5)) +
     ggplot2::facet_wrap(~lab, nrow = 1, scales = "free_y") +
     ggplot2::labs(x = NULL, y = "Network distance\nfrom CON consensus") +
-    hv_theme(grid = "y")
+    hv_theme()
   d$exact_permutation_p <- nt$exact_p[match(as.character(d$dataset), nt$dataset)]
   d$min_attainable_p <- nt$min_attainable_p[match(as.character(d$dataset), nt$dataset)]
   d$reading <- paste0("each point is one animal-level network replicate; CON ",
