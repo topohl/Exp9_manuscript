@@ -10,7 +10,7 @@ The Word file `S:\Lab_Member\Tobi\Paper\E9SIS\manuscript_resiliencandsusceptibil
 
 | What | Produced in | Enters this repository as | Rendered by |
 |---|---|---|---|
-| Figure 1 (home-cage RFID behaviour, CombZ, prediction) | MMMSociability (`Analysis/Behavior/RFID` holds its outputs) | frozen bundles `ebb_v104_20261026_4b651ac` and `fsb_v8_20261026_f78472f` (outcome version ov4) under `source_data/MMMSociability/` | `figures/scripts/figure_01_panels.R`, entry point `figures/scripts/figure_01.R` |
+| Figure 1 (home-cage RFID behaviour, CombZ, prediction) | MMMSociability (`Analysis/Behavior/RFID` holds its outputs) | frozen bundles `ebb_v104_20261026_4b651ac` and `fsb_v9_20261029_abb28c6` (outcome version ov4) under `source_data/MMMSociability/` | `figures/scripts/figure_01_panels.R`, entry point `figures/scripts/figure_01.R` |
 | Figures 2 and 3; Extended Data 5 to 9 | pRoteomics (`Analysis/proteomics`; Figure 2d, 2f-2l and Extended Data 9 from the primary tree `Analysis/proteomics_original`) | `source_data/pRoteomics/` with `manifest.csv`; Figure 2d, 2f-2l and Extended Data 9: copied by `tools/import_primary_inputs.R`, recorded with SHA-256 and commit in `provenance/source_manifests/primary_inputs.csv` | the `final_truth_v9` renderers in `figures/`, per-panel source data under `figures/main/source_data/` and `figures/extended_data/source_data/` |
 | Extended Data 4 (behaviour) | MMMSociability | the same frozen bundles as Figure 1 | `figures/scripts/extended_data_behaviour_panels.R` |
 | Withheld (formerly Extended Data 4 and 7) | | | withheld; registry ids `withheld_wgcna`, `withheld_identity_locations` |

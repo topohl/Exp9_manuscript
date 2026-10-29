@@ -1,7 +1,7 @@
-bundle_id: fsb_v8_20261026_f78472f
-manifest_sha256: cd8ac33dd155908091ec8e061cf6cf09ca2ea3014bae0c292893c34f370f0bda
+bundle_id: fsb_v9_20261029_abb28c6
+manifest_sha256: 5c72e0f013789ecb6a3d519668bafb39fd2657ee9c5338f85d75fb764495b139
 registry_status: FROZEN
-mmm_git_commit: f78472f46b48c83c8b77de5da0e6a28d562729bf
+mmm_git_commit: abb28c636fa3e3d0f600e9434a739469ef30e7de
 stage29_bundle_id: ebb_v104_20261026_4b651ac
 stage29_bundle_manifest_sha256: 9fe3c1a68db9a1d569791d684d710cb25b7098bc08f6ce03c53409bb87195c42
 combz_table_sha256: 25672ebd419419bc3842d2a7ca04301a1bed2494fb8c7994ad34b729da42f848
@@ -23,9 +23,12 @@ scientific_recomputation: none; descriptive cage means and the frozen CombZ stan
   line and band were fitted there once; E3 is a verbatim copy of Stage 09's early-window
   coverage summary (slot counts, group-blind); E4 / E4b are verbatim copies of the
   hash-gated post hoc run 29d (registry POSTHOC_REPORTING_STATISTICS v1.1), where
-  the t, df and per-sex Spearman intervals were computed once; T1 / T1b are ages by
-  date arithmetic from the pinned planning workbook. Nothing is fitted here.
-created_at: 2026-10-26T21:42:09+0100
+  the t, df and per-sex Spearman intervals were computed once; E5-E8 are verbatim
+  copies of the hash-gated post hoc run 29e (registry POSTHOC_PREDICTION_LADDER v1.0),
+  where the ladder permutations, the exploratory domain rungs, the correlations, the
+  display lines and the interactions per SD were computed once; T1 / T1b are ages
+  by date arithmetic from the pinned planning workbook. Nothing is fitted here.
+created_at: 2026-10-29T18:40:22+0100
 producer: topohl/MMMSociability Analysis/16c_figure_support_bundle.R
-imported_at: 2026-10-26T21:43:25+0100
+imported_at: 2026-10-29T18:41:44+0100
 importer: tools/import_figure_support_bundle.R
