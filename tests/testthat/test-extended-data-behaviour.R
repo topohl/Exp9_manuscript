@@ -16,7 +16,9 @@ ed_bundles <- function() {
   pin <- behaviour_bundle_pin(); behaviour_bundle_verify(pin); fsb <- fsb_bundle_pin(); fsb_bundle_verify(fsb)
   list(pin = pin, fsb = fsb, C2 = behaviour_bundle_table("C2_estimates", pin), EM = behaviour_bundle_table("E_multiplicity", pin),
        A2 = behaviour_bundle_table("A2_prediction_animals", pin), E1 = fsb_bundle_table("E1_movement_combz_spearman_by_sex", fsb),
-       E3 = tryCatch(fsb_bundle_table("E3_early_window_coverage", fsb), error = function(e) NULL))
+       E3 = tryCatch(fsb_bundle_table("E3_early_window_coverage", fsb), error = function(e) NULL),
+       E5 = fsb_bundle_table("E5_ladder_registered", fsb), E5b = fsb_bundle_table("E5b_ladder_beyond_movement", fsb),
+       E7 = fsb_bundle_table("E7_animal_features", fsb), E8 = fsb_bundle_table("E8_interaction_per_sd", fsb))
 }
 
 testthat::test_that("the retired bridge contracts are still the recorded imports (history)", {
@@ -31,16 +33,40 @@ testthat::test_that("the retired bridge contracts are still the recorded imports
   }
 })
 
-testthat::test_that("the model ladder: five registered models on the same 111 animals, permutation only where run", {
+testthat::test_that("the model ladder: five registered models on the same 111 animals, a permutation for every model with a predictor", {
   B <- ed_bundles(); s09 <- B$C2[B$C2$source == "stage09", ]
   models <- c("mean_only", "movement_mean", "primary_behavior_family", "movement_mean_sex", "primary_behavior_family_sex")
   for (m in models) for (e in c("LOAO_R2", "repeated_CV_mean_R2"))
     testthat::expect_identical(sum(s09$model_id == paste0("stage09_", m) & s09$estimand == e), 1L, info = paste(m, e))
   testthat::expect_identical(unique(s09$n), 111L)
+  # Stage 09's own family (Figure 1e's Holm P) stays the two behaviour-only models
   pr2 <- B$EM[B$EM$family_id == "PR2", ]
   testthat::expect_setequal(pr2$member, paste0("permutation|", c("movement_mean", "primary_behavior_family")))
   cv <- s09[s09$estimand == "repeated_CV_mean_R2", ]
   testthat::expect_true(all(cv$estimate >= cv$ci_low & cv$estimate <= cv$ci_high))   # the tick sits inside its bar
+  # fsb E5 (post hoc run 29e): the same five models, the stored values, PR2 unchanged, the two sex-adjusted models permuted
+  # within sex in their own Holm family, and no P for the intercept-only baseline
+  E5 <- B$E5
+  testthat::expect_identical(E5$model_id, models)
+  for (m in models) testthat::expect_equal(E5$loao_r2[E5$model_id == m], s09$estimate[s09$model_id == paste0("stage09_", m) & s09$estimand == "LOAO_R2"],
+                                           tolerance = 1e-12, info = m)
+  testthat::expect_true(is.na(E5$permutation_p[1]) && nzchar(E5$not_tested_reason[1]))
+  testthat::expect_false(anyNA(E5$permutation_p[-1]))
+  for (m in c("movement_mean", "primary_behavior_family"))
+    testthat::expect_equal(E5$permutation_p[E5$model_id == m], pr2$p_raw[pr2$member == paste0("permutation|", m)], tolerance = 1e-12, info = m)
+  testthat::expect_true(all(grepl("within sex", E5$permutation_scheme[4:5])) && all(grepl("^29e-SEX", E5$family[4:5])))
+})
+
+testthat::test_that("the beyond-movement rungs are the registered exploratory set, with BH within each block", {
+  B <- ed_bundles(); bm <- B$E5b
+  doms <- c("shared_occupancy", "occupancy_dispersion", "temporal_flexibility", "temporal_volatility", "rest_like_posinact40")
+  testthat::expect_setequal(bm$model_id, c(paste0("alone_", doms), paste0("movement_plus_", doms), "movement_plus_all_domains"))
+  testthat::expect_true(all(bm$tier == "POST HOC exploratory"))
+  for (fam in unique(bm$family)) {
+    z <- bm[bm$family == fam, ]
+    testthat::expect_equal(z$q_bh, stats::p.adjust(z$permutation_p, "BH"), tolerance = 1e-12, info = fam)
+  }
+  testthat::expect_identical(as.integer(table(bm$family)), c(6L, 5L))
 })
 
 testthat::test_that("no feature-by-sex interaction is rejected (PR3), which is what licenses ED9 c", {
@@ -60,9 +86,10 @@ testthat::test_that("the contract declares the panels the renderer writes, from 
   testthat::skip_if_not_installed("yaml")
   B <- ed_bundles()
   fig <- manuscript_figure_contract("ED_behaviour_models")
-  # one figure since 2026-10-20: secondary features, the model ladder and sex
+  # one figure since 2026-10-20; a-f since the 2026-10-29 redesign: secondary features, feature correlations, the model
+  # ladder, beyond movement, and sex (per-sex rho, interactions)
   testthat::expect_identical(vapply(fig$panels, function(x) as.character(x$id), character(1)),
-                             paste0("04", letters[1:4]))
+                             paste0("04", letters[1:6]))
   testthat::expect_identical(as.character(fig$canonical_publication_id), "extended_data_04")
   {
     testthat::expect_identical(as.character(fig$behaviour_bundle_id), B$pin$bundle_id)
@@ -78,13 +105,28 @@ testthat::test_that("the contract declares the panels the renderer writes, from 
   }
 })
 
-testthat::test_that("ED9 a is honest about what it can draw: effect sizes, no per-animal secondary features", {
+testthat::test_that("ED4 a draws the secondary features per animal from fsb E7, the animals of ebb A2", {
   B <- ed_bundles()
   as <- B$C2[B$C2$model_id == "stage09_association", ]
   testthat::expect_setequal(as$construct, c("Movement_mean", "Movement_rmssd", "Entropy_acf1"))
   testthat::expect_identical(unique(as$n), 111L)
-  testthat::expect_false(any(grepl("rmssd|entropy", names(B$A2), ignore.case = TRUE)))
   testthat::expect_setequal(B$EM$member[B$EM$family_id == "PR1"], paste0("spearman|", c("Movement_mean", "Movement_rmssd", "Entropy_acf1")))
+  # the per-animal secondary features exist only in fsb E7 (post hoc run 29e); their animals, groups, CombZ and mean
+  # movement are ebb A2's
+  E7 <- B$E7; m <- match(as.character(E7$AnimalNum), as.character(B$A2$AnimalNum))
+  testthat::expect_identical(nrow(E7), 111L); testthat::expect_false(anyNA(m))
+  testthat::expect_identical(E7$Group, B$A2$Group[m])
+  testthat::expect_equal(E7$CombZ, B$A2$observed_CombZ[m], tolerance = 1e-12)
+  testthat::expect_equal(E7$Movement_mean, B$A2$Movement_mean[m], tolerance = 1e-12)
+  testthat::expect_false(anyNA(E7[, c("Movement_rmssd", "Entropy_acf1")]))
+})
+
+testthat::test_that("ED4 f: the interactions per SD are the stored Stage 09 terms rescaled, with the stored PR3 P and q", {
+  B <- ed_bundles(); ix <- B$C2[B$C2$model_id == "stage09_feature_x_sex", ]; pr3 <- B$EM[B$EM$family_id == "PR3", ]
+  E8 <- B$E8[match(ix$construct, B$E8$feature), ]
+  testthat::expect_equal(E8$estimate_per_sd, ix$estimate * E8$feature_sd, tolerance = 1e-9)
+  testthat::expect_equal(E8$p_stored, pr3$p_raw[match(paste0("feature_x_Sex|", ix$construct), pr3$member)], tolerance = 1e-12)
+  testthat::expect_true(all(E8$ci_low_per_sd < 0 & E8$ci_high_per_sd > 0))
 })
 
 testthat::test_that("the early-window coverage the ED4 legend states is the Stage 09 aggregate (fsb E3)", {
