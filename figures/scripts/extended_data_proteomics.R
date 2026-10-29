@@ -18,10 +18,10 @@ source(repo_path("R", "manuscript_figure_utils.R"))
 
 ALL <- c("ED_spatial_validation", "ED_ca2_slm_qc", "ED_enrichment_atlas",
          "ED_spatial_networks", "ED_stress_analyses")
-# --figures=ED_stress_analyses assembles only those contract keys (e.g. a page whose
-# siblings cannot be redrawn in this workspace)
-sel <- sub("^--figures=", "", grep("^--figures=", commandArgs(trailingOnly = TRUE), value = TRUE))
-figs <- if (length(sel)) strsplit(sel, ",", fixed = TRUE)[[1]] else ALL
+# E9_ED_FIGURES=ED_stress_analyses assembles only those contract keys (e.g. a page whose
+# siblings cannot be redrawn in this workspace); the command line belongs to manuscript_figure_main()
+sel <- Sys.getenv("E9_ED_FIGURES", unset = "")
+figs <- if (nzchar(sel)) strsplit(sel, ",", fixed = TRUE)[[1]] else ALL
 if (length(setdiff(figs, ALL))) stop("not a proteomics Extended Data key: ", paste(setdiff(figs, ALL), collapse = ", "), call. = FALSE)
 for (fig in figs) {
   manuscript_figure_main(fig)
