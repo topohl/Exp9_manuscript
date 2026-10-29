@@ -87,7 +87,7 @@ CT_TESTSHORT <- c(`Elevated plus maze` = "Plus maze", `Open field` = "Open field
 CT_HAB_TESTS <- c("Novel object recognition, habituation", "Social preference, habituation")
 CT_HAB_KEY <- c("nor_hab_side_pref", "nor_hab_total", "soc_hab_side_pref", "soc_hab_total")   # side bias and exploration before the stimulus
 ct_habituation_ids <- function(X) { ms <- X$measures[X$measures$test %in% CT_HAB_TESTS, , drop = FALSE]; ms$id[order(ms$order)] }
-CT_FOREST <- c(`Integrated Resilience (CombZ)` = "Integrated resilience", `Elevated plus maze: Open-arm share of time (%)` = "Plus maze, open arms",
+CT_FOREST <- c(`Integrated Resilience (CombZ)` = "ISS", `Elevated plus maze: Open-arm share of time (%)` = "Plus maze, open arms",
                `Open field: Time in centre (%)` = "Open field, centre", `Social preference: Social preference (D2)` = "Social preference D2",
                `Social preference: Social novelty preference (D2)` = "Social novelty D2",
                `Weight gain` = "Weight gain, weighings 2–6")   # the CombZ component, not the weight gain of the dot panel
@@ -239,13 +239,20 @@ ct_combz_spread <- function(X) {
   ref <- do.call(rbind, lapply(CT_SEXES, function(s) { r <- tl[tl$Sex == s, ]; mu <- r$`CON mean`; sd <- r$`CON SD (population)`
     data.frame(panel = CT_SEXLAB[[s]], y = c(mu, mu + sd, mu - sd), lt = c("solid", "22", "22"), stringsAsFactors = FALSE) }))
   ref$panel <- factor(ref$panel, CT_SEXLAB)
+  # key for the SIS column, which carries RES and SUS colours under one axis label: coloured words, as Figure 1d
+  # (top of the CON column, which is empty above the controls)
+  key <- data.frame(panel = factor(CT_SEXLAB[[CT_SEXES[[1]]]], CT_SEXLAB), x = .55, y = max(v$value, na.rm = TRUE) * c(1, .86),
+                    label = c("RES", "SUS"), colour = unname(unlist(P$group)[c("RES", "SUS")]), stringsAsFactors = FALSE)
+  if (any(v$Condition == "CON" & v$value > min(key$y) - .25)) stop("ED3c key would overlap a control animal.", call. = FALSE)
   ggplot2::ggplot(v, ggplot2::aes(x, value)) +
     ggplot2::geom_hline(data = ref, ggplot2::aes(yintercept = y, linetype = lt), linewidth = lw, colour = "grey55") +
     ggplot2::geom_point(ggplot2::aes(colour = Group), shape = 16, size = CT_PT, alpha = CT_ALPHA) +
+    ggplot2::geom_text(data = key, ggplot2::aes(x, y, label = label), colour = key$colour, hjust = 0, vjust = 1,
+                       size = ct_tx(T$legend_text_pt), family = T$family, inherit.aes = FALSE) +
     ggplot2::scale_linetype_identity() + ggplot2::scale_colour_manual(values = unlist(P$group)) +
     ggplot2::scale_x_continuous(breaks = 1:2, labels = c("CON", "SIS"), limits = c(.5, 2.5), expand = c(0, 0)) +
     ggplot2::scale_y_continuous(labels = ct_num, expand = ggplot2::expansion(mult = c(.05, .05))) +
-    ggplot2::facet_wrap(~panel, nrow = 1) + ggplot2::labs(x = NULL, y = "Integrated resilience") + ct_theme(P) +
+    ggplot2::facet_wrap(~panel, nrow = 1) + ggplot2::labs(x = NULL, y = "ISS") + ct_theme(P) +
     ggplot2::theme(strip.text = ggplot2::element_text(face = "bold", size = T$axis_title_pt, colour = "black", hjust = 0))
 }
 
@@ -264,8 +271,14 @@ ct_spread_batches <- function(X) {
   P <- X$P; T <- P$typography; lw <- P$line$axis_pt * .75; d <- ct_spread_batches_data(X)
   lim <- c(.5, 4)   # every stored ratio must fit: none is cut at the axis
   if (any(d$ratio < lim[1] | d$ratio > lim[2])) stop("A batch SD ratio lies outside the axis; widen it.", call. = FALSE)
+  # key in the males' panel (its upper right is empty): the two ways the SIS spread is measured, coloured words
+  key <- data.frame(panel = factor(CT_SEXLAB[[CT_SEXES[[2]]]], CT_SEXLAB), Batch = factor(CT_BATCH_ORDER[[6]], CT_BATCH_ORDER),
+                    ratio = c(4, 3.3), label = c("Within batch", "Within cages"), kind = c("All animals", "Inside cages"),
+                    stringsAsFactors = FALSE)
   ggplot2::ggplot(d, ggplot2::aes(Batch, ratio, colour = kind)) + ggplot2::geom_hline(yintercept = 1, linewidth = lw, colour = "grey55") +
     ggplot2::geom_point(shape = 16, size = CT_PT, position = ggplot2::position_dodge(width = .5)) +
+    ggplot2::geom_text(data = key, ggplot2::aes(Batch, ratio, label = label, colour = kind), hjust = 1, vjust = 1, nudge_x = .45,
+                       size = ct_tx(T$legend_text_pt), family = T$family, inherit.aes = FALSE) +
     ggplot2::scale_colour_manual(values = c(`All animals` = CT_MEAN, `Inside cages` = "grey62")) +
     ggplot2::scale_y_log10(breaks = c(.5, 1, 2, 4), labels = c("0.5", "1", "2", "4"), limits = lim) +
     ggplot2::facet_wrap(~panel, nrow = 1, scales = "free_x") + ggplot2::labs(x = NULL, y = "SD ratio, SIS / CON") + ct_theme(P) +

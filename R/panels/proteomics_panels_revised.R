@@ -750,6 +750,10 @@ f9_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   z$ypos <- match(z$gene, rev(lev))
   ny <- length(lev)
   lay <- sg_atlas_layout(z$sg_unit, z$dataset, ny, vertical_units = TRUE)
+  # the stored symbols are upper case; drawn in the mouse gene-symbol form the
+  # other pages use (Adcy9, Npy), and the source data keeps both (2026-10-30)
+  disp <- function(s) ifelse(s == toupper(s),
+                             paste0(substr(s, 1, 1), tolower(substring(s, 2))), s)
 
   # the manuscript's fixed z limit (palette v3.2, two SD): a single-protein z
   # beyond it takes full colour, and the sidecar keeps the uncapped con_z
@@ -758,7 +762,7 @@ f9_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     hv_diverging(measure = "z", name = "Baseline abundance\n(CON z-score)") +
     sg_atlas_headers(lay, fam, hf_sz(5.0), hf_sz(5.4)) +
     ggplot2::scale_x_continuous(expand = c(0, 0)) +
-    ggplot2::scale_y_continuous(breaks = seq_len(ny), labels = rev(lev), expand = c(0, 0)) +
+    ggplot2::scale_y_continuous(breaks = seq_len(ny), labels = disp(rev(lev)), expand = c(0, 0)) +
     ggplot2::coord_fixed(ratio = 1, xlim = lay$xlim, ylim = lay$ylim, clip = "off") +
     ggplot2::labs(x = NULL, y = NULL) +
     hf_theme_tile() +
@@ -781,6 +785,7 @@ f9_fingerprint <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     "rows are seriated by baseline peak spatial unit, taken from CON-only ",
     "con_z; no phenotype information enters the ordering. Ties break on gene ",
     "symbol, so the order is deterministic")
+  out$display_symbol <- disp(out$gene)
   out$colour_limit <- hv_diverging_limit("z")   # the limit the tiles draw
   write_csv_safe(out, csv_path)
   hv_save_panel(p, svg_path, w_mm, h_mm)
@@ -946,11 +951,11 @@ f9_ed_coupling <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     paste(u$Edge, u$Outcome, u$estimate, u$p.value, sep = "\r")])
   u$excludes_zero <- u$conf.low > 0 | u$conf.high < 0
   u$edge_lab <- sub(" - ", "–", toupper(gsub("_", " ", u$Edge)), fixed = TRUE)
-  u$out_lab <- factor(c(CombZ = "Integrated resilience",
+  u$out_lab <- factor(c(CombZ = "ISS",
                         delta_cort = "Corticosterone change",
                         Movement_AUC_z_vs_CON = "Movement AUC vs CON",
                         sucrose_pref = "Sucrose preference")[u$Outcome],
-                      levels = c("Integrated resilience", "Corticosterone change",
+                      levels = c("ISS", "Corticosterone change",
                                  "Sucrose preference", "Movement AUC vs CON"))
   # deterministic within-cell ordering so repeated builds are byte-identical
   u <- u[order(u$out_lab, u$edge_lab, u$test, u$window, u$Change, u$estimate), ]

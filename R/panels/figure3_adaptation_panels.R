@@ -313,19 +313,10 @@ f3a_state_map <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   z$supported_any <- z$RES_CON_n_fdr > 0 | z$SUS_CON_n_fdr > 0
   lim <- ceiling(max(abs(c(z$RES_CON_median_NES, z$SUS_CON_median_NES))) /
                    0.25) * 0.25 + 0.5
-  # Region labels sit at the panel edge, clear of the data. Both same-sign
-  # quadrants read shared / parallel and both opposite-sign quadrants
-  # divergent / opposing; the lower-left one sits up the left edge because the
-  # corner itself holds data.
-  ann <- data.frame(
-    x = c(-1, 1, -1, 1, 0, 1, 0) * lim,
-    y = c(1, 1, -0.5, -1, 1, 0, 0.07) * lim,
-    label = c("divergent /\nopposing", "shared /\nparallel",
-              "shared /\nparallel", "divergent /\nopposing",
-              "SUS-\nassociated", "RES-associated", "little detectable"),
-    angle = c(0, 0, 0, 0, 0, 90, 0),
-    hjust = c(0, 1, 0, 1, 0.5, 0.5, 0.5),
-    vjust = c(1, 1, 0.5, 0, 1, 0, 0))
+  # No region labels in the square (2026-10-30): at this size they overlapped
+  # each other and the points. The legend names the sign quadrants (same sign:
+  # shared / parallel; opposite sign: divergent / opposing) and the grey square
+  # (both medians within 0.35 of zero).
   ex <- z[!is.na(z$exemplar), , drop = FALSE]
   # Each exemplar number takes the diagonal position just outside its ring
   # that has the fewest other points near it and stays inside the panel.
@@ -350,11 +341,6 @@ f3a_state_map <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_vline(xintercept = 0, colour = "grey75", linewidth = 0.25) +
     ggplot2::annotate("rect", xmin = -0.35, xmax = 0.35,
       ymin = -0.35, ymax = 0.35, fill = "grey95", colour = NA) +
-    ggplot2::geom_text(data = ann,
-      ggplot2::aes(x, y, label = label, angle = angle, hjust = hjust,
-                   vjust = vjust),
-      inherit.aes = FALSE, family = fam, size = hf_sz(4.6),
-      colour = "grey42", lineheight = 0.88) +
     ggplot2::geom_point(ggplot2::aes(colour = programme_short,
                                     shape = compartment,
                                     alpha = supported_any),

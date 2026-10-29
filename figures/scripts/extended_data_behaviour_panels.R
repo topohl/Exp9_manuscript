@@ -10,7 +10,7 @@
 # Notes: Rendering only. Reads stored bundle cells; computes no statistic.
 # ================================================================
 #
-# Extended Data 4: early behaviour and later integrated resilience, beyond Figure 1. Figure 1 shows one model and one
+# Extended Data 4: early behaviour and the later integrated stress score (ISS), beyond Figure 1. Figure 1 shows one model and one
 # association; this page shows what a reader needs to judge them: the two secondary features as animals, how the early
 # features relate to each other, the complete a-priori model set with its permutation tests, whether any other
 # behavioural domain adds to mean movement, and everything the study can say about sex. Redesigned 2026-10-29 (user
@@ -27,7 +27,7 @@
 #
 # Panels (house profile of Figure 1: 5 / 5.5-pt text, borderless circles coloured by group, square scatters, square
 # heatmap tiles, explanatory text in the legend):
-#   a  movement RMSSD and entropy ACF1 against later integrated resilience, per animal, with the display line
+#   a  movement RMSSD and entropy ACF1 against the later ISS, per animal, with the display line
 #   b  Spearman correlations among the early features and the first-night Figure 1c domains (lower triangle)
 #   c  the five a-priori models: predictors as a matrix, held-out R2 with the repeated-CV range and the permutation null
 #   d  beyond movement (exploratory): each first-night domain alone and added to mean movement
@@ -72,6 +72,8 @@ cell <- function(tab, column, ...) bundle_cell(tab, column, ...)
 
 FEATURES <- c("Movement_mean", "Movement_rmssd", "Entropy_acf1")
 FEATURE_LABEL <- c(Movement_mean = "Mean movement", Movement_rmssd = "Movement RMSSD", Entropy_acf1 = "Entropy ACF1")
+# x-axis titles of a carry the unit (Movement_mean and its RMSSD count position changes per 10-min bin)
+FEATURE_AXIS <- c(Movement_rmssd = "Movement RMSSD (position changes per 10 min)", Entropy_acf1 = "Entropy ACF1")
 DOMAINS <- c("shared_occupancy", "occupancy_dispersion", "temporal_flexibility", "temporal_volatility", "rest_like_posinact40")
 DOMAIN_LABEL <- c(psychomotor_rate = "Position-change rate", shared_occupancy = "Shared occupancy", occupancy_dispersion = "Occupancy dispersion",
                   temporal_flexibility = "Temporal flexibility", temporal_volatility = "Temporal volatility",
@@ -132,7 +134,7 @@ a_one <- function(feature, first) {
     scale_colour_manual(values = GROUP_COL, guide = "none") + scale_shape_manual(values = SEX_SHAPE, guide = "none") +
     scale_x_continuous(labels = f1_minus_labels) +
     scale_y_continuous(labels = f1_minus_labels, breaks = c(-1, 0, 1), expand = expansion(mult = c(0.04, 0.10))) +
-    labs(x = FEATURE_LABEL[[feature]], y = if (first) "Integrated Resilience (*z*)" else NULL) +
+    labs(x = FEATURE_AXIS[[feature]], y = if (first) "ISS (*z*)" else NULL) +
     theme_ed() + theme(aspect.ratio = 1, axis.title.y = f1h_markdown(margin = margin(r = 1)), axis.title.x = element_text(margin = margin(t = 1.5)))
 }
 # One key line for both scatters, on the letter's line and indented past it: sex by shape, group by colour (as Figure 1e).
@@ -156,7 +158,7 @@ a_assoc <- do.call(rbind, lapply(c("Movement_rmssd", "Entropy_acf1"), function(f
   `q (BH across the three features)` = cell(EM, "p_adjusted", family_id = "PR1", member = paste0("spearman|", f)),
   check.names = FALSE, stringsAsFactors = FALSE)))
 PA <- bh_panel(pa, 1, 1, data = list(
-  animals = data.frame(`Animal ID` = E7$AnimalNum, Group = E7$Group, Sex = E7$Sex, `Integrated resilience (CombZ)` = E7$CombZ,
+  animals = data.frame(`Animal ID` = E7$AnimalNum, Group = E7$Group, Sex = E7$Sex, `Integrated stress score (ISS, CombZ)` = E7$CombZ,
                        `Movement RMSSD` = E7$Movement_rmssd, `Entropy ACF1` = E7$Entropy_acf1, check.names = FALSE, stringsAsFactors = FALSE),
   display_line = data.frame(Feature = unname(FEATURE_LABEL[E7b$feature]), x = E7b$x, `Least-squares fit` = E7b$fit,
                             `CI low (95%)` = E7b$ci_low, `CI high (95%)` = E7b$ci_high, check.names = FALSE, stringsAsFactors = FALSE),
@@ -314,7 +316,7 @@ pe <- ggplot(es, aes(y = y)) +
   facet_wrap(~facet, nrow = 1) +
   scale_x_continuous(labels = f1_minus_labels, breaks = c(-0.6, -0.3, 0)) +
   scale_y_continuous(breaks = rev(seq_along(FEATURES)), labels = unname(FEATURE_LABEL[FEATURES]), limits = c(0.5, length(FEATURES) + 0.5)) +
-  labs(x = "Spearman *ρ* with later integrated resilience", y = NULL) +
+  labs(x = "Spearman *ρ* with later ISS", y = NULL) +
   theme_ed(9) + forest_y() +
   theme(axis.text.y = element_text(size = ttl_pt, colour = INK), axis.title.x = f1h_markdown(margin = margin(t = 1.5)),
         strip.text = element_text(size = ttl_pt, face = "bold", colour = INK, hjust = 0), panel.spacing.x = grid::unit(4, "mm"))

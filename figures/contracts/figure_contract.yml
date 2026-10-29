@@ -36,7 +36,7 @@ figures:
       circle/triangle sex encoding of the original behaviour main figure.
     scientific_contract_summary: >-
       Social instability stress and the behavioural tests (a); the later continuous
-      outcome CombZ ("Integrated resilience") and the same-sex control-referenced
+      outcome CombZ (the integrated stress score, ISS) and the same-sex control-referenced
       RES/SUS rule with the six components it averages (b); the Stage 14 behavioural
       domain effect sizes by phase, sex and contrast with its post hoc markers (c);
       early movement against the outcome by sex with Stage 09's descriptive
@@ -72,7 +72,7 @@ figures:
         w: 173
         h: 20
       - id: 1b
-        description: Later composite outcome (Integrated resilience) per animal with its six components, by sex, and the same-sex control-referenced classification rule
+        description: Later composite outcome (integrated stress score, ISS) per animal with its six components, by sex, and the same-sex control-referenced classification rule
         producer_script: figures/scripts/figure_01_panels.R
         render_mode: copy_svg
         source_data_mode: copy_csv
@@ -1510,7 +1510,7 @@ figures:
     historical_generation: bundle_render
     rendering_repository_computes_statistics: false
     scientific_contract_summary: >-
-      Early behaviour and later integrated resilience, beyond Figure 1 (redesigned 2026-10-29): the two secondary
+      Early behaviour and the later integrated stress score (ISS), beyond Figure 1 (redesigned 2026-10-29): the two secondary
       early features per animal (a), how the early features and the first-night Figure 1c domains relate (b), the
       complete a-priori model registry with a permutation test for every model that has a predictor (c; ebb C2 and
       PR2, the sex-adjusted permutations from post hoc run 29e), whether any other first-night domain adds to mean
@@ -1522,7 +1522,7 @@ figures:
     panels:
       - id: 04a
         description: >-
-          Movement RMSSD and entropy ACF1 against later integrated resilience per animal (group colour, sex shape),
+          Movement RMSSD and entropy ACF1 against the later ISS per animal (group colour, sex shape),
           the post hoc least-squares display line with its 95% band (run 29e), and the stored Spearman rho with the BH
           q across the three prespecified features (ebb C2, PR1).
         producer_script: figures/scripts/extended_data_behaviour_panels.R
@@ -1611,7 +1611,7 @@ figures:
         h: 40
       - id: 04e
         description: >-
-          Sex-stratified Spearman correlations of each early feature with later integrated resilience, with the
+          Sex-stratified Spearman correlations of each early feature with the later ISS, with the
           per-sex 95% percentile bootstrap intervals (run 29d), drawn as descriptive context.
         producer_script: figures/scripts/extended_data_behaviour_panels.R
         render_mode: copy_svg

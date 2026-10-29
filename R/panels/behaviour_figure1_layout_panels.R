@@ -6,7 +6,7 @@
 #   a  f1v2_panel_timeline    the SIS design (RFID implant; social instability stress between shuffle start and
 #                             shuffle stop; behaviour; samples) and the five behavioural tests, each with the
 #                             postnatal age range of the 117 CombZ animals (fsb T1, date arithmetic upstream);
-#   b  f1v2_panel_combz       per sex, female above male: later CombZ ("Integrated resilience") per animal at its
+#   b  f1v2_panel_combz       per sex, female above male: later CombZ (the integrated stress score, ISS) per animal at its
 #                             stored rank within sex (fsb F2), the stored threshold and CON-mean lines (ebb A2b),
 #                             the Animal ID row, the group strip and the six components' signed z as they enter
 #                             CombZ (option 3 b's grammar and guards, R/panels/behaviour_figure1_option3_panels.R);
@@ -25,7 +25,9 @@
 # R/panels/behaviour_figure1_panels.R, R/panels/behaviour_figure1_house_panels.R and
 # R/panels/behaviour_figure1_option3_panels.R sourced first; packages ggtext and patchwork.
 
-F1V2_OUTCOME <- "Integrated resilience"
+# the outcome's name on the page (Tobias 2026-10-30: "integrated stress score (ISS)"; higher = more resilient-like)
+F1V2_OUTCOME <- "Integrated stress score (ISS)"
+F1V2_OUTCOME_AXIS <- "Integrated stress\nscore (ISS)"
 # b's component rows (fsb F2b ids, stored order), named by what a high signed z means, as option 3 b; the
 # author's wording for NOR.
 F1V2_COMPONENT_LABEL <- c(NOR = "Novel object recognition", sucrose_pref = "Sucrose preference", weight_dev = "Body-weight change",
@@ -154,7 +156,7 @@ f1v2_combz_block <- function(s, ani, hm, gone, bnd, thr, legend, colourbar, fill
     xs + scale_colour_manual(values = GROUP_COL, name = NULL, drop = FALSE) +
     guides(colour = if (legend) guide_legend(override.aes = key_aes) else "none") +
     scale_y_continuous(labels = f1_minus_labels, breaks = c(-1, 0, 1), expand = expansion(mult = c(0.05, 0.12))) +
-    labs(y = sub(" ", "\n", F1V2_OUTCOME, fixed = TRUE)) +
+    labs(y = F1V2_OUTCOME_AXIS) +
     theme_f1(style = "house") + no_x +
     theme(legend.position = "inside", legend.position.inside = c(0.995, 1.04), legend.justification = c(1, 1),
           legend.direction = "horizontal", legend.background = element_blank(), legend.key.spacing.x = unit(3.5, "pt"),
@@ -226,7 +228,7 @@ f1v2_panel_combz <- function(tab, fsb, an, w_mm, h_mm) {
     patchwork::plot_annotation(theme = theme(plot.margin = margin(0, 0, 0, 0), plot.background = F1H_BACKGROUND))
   vals <- ani[order(match(ani$Sex, sexes), ani$x), , drop = FALSE]
   out <- data.frame(Sex = vals$Sex, `Animal ID` = vals$AnimalNum, Group = as.character(vals$Group),
-                    `Order within sex` = vals$x, `Integrated resilience (CombZ)` = vals$CombZ, check.names = FALSE,
+                    `Order within sex` = vals$x, `Integrated stress score (ISS, CombZ)` = vals$CombZ, check.names = FALSE,
                     stringsAsFactors = FALSE)
   for (k in F2b$component) {
     h <- hm[hm$component == k, , drop = FALSE]
@@ -341,7 +343,7 @@ f1v2_panel_movement <- function(tab, fsb, an, w_mm, h_mm) {
       scale_colour_manual(values = GROUP_COL, guide = "none") +
       scale_y_continuous(labels = f1_minus_labels, breaks = c(-1, 0, 1), expand = expansion(mult = c(0.04, 0.10))) +
       scale_x_continuous(labels = f1_minus_labels) +
-      labs(x = "Movement", y = "Integrated Resilience (*z*)") +
+      labs(x = "Movement (position changes per 10 min)", y = "ISS (*z*)") +
       theme_f1(style = "house") +
       theme(aspect.ratio = 1, axis.title.y = f1h_markdown(margin = margin(r = 1)), axis.title.x = element_text(margin = margin(t = 1.5)),
             plot.margin = margin(1, 1, if (bottom) 1 else 3, 1))
@@ -353,7 +355,7 @@ f1v2_panel_movement <- function(tab, fsb, an, w_mm, h_mm) {
   A2d <- A2[order(match(A2$Sex, c("Female", "Male")), A2$Movement_mean), , drop = FALSE]
   bh_panel(pd, w_mm, h_mm, data = list(
     animals = data.frame(Sex = A2d$Sex, `Animal ID` = A2d$AnimalNum, Group = as.character(A2d$Group),
-                         `Mean movement (early window)` = A2d$Movement_mean, `Integrated resilience (CombZ)` = A2d$observed_CombZ,
+                         `Mean movement (early window)` = A2d$Movement_mean, `Integrated stress score (ISS, CombZ)` = A2d$observed_CombZ,
                          check.names = FALSE, stringsAsFactors = FALSE),
     display_line = data.frame(Sex = E2$Sex, `Mean movement (early window)` = E2$x, `Least-squares fit` = E2$fit,
                               `CI low (95%)` = E2$ci_low, `CI high (95%)` = E2$ci_high, check.names = FALSE, stringsAsFactors = FALSE),
@@ -394,7 +396,7 @@ f1v2_panel_prediction <- function(tab, an, w_mm, h_mm) {
     annotation_custom(txt("CON", left, top(11.4), col = GROUP_COL[["CON"]])) +
     annotation_custom(txt("RES", left, top(13.5), col = s14_darken(GROUP_COL[["RES"]], 0.25))) +
     annotation_custom(txt("SUS", left, top(15.6), col = GROUP_COL[["SUS"]])) +
-    labs(x = "Observed Integrated Resilience", y = "Held-out predicted Integrated Resilience") +
+    labs(x = "Observed ISS", y = "Held-out predicted ISS") +
     theme_f1(style = "house") +
     theme(aspect.ratio = 1, axis.title.x = element_text(margin = margin(t = 1.5)), plot.margin = margin(1, 1, 1, 1))
   inset <- ggplot(nulls, aes(performance_value)) +

@@ -49,7 +49,7 @@ test_that("every row of the statistics map resolves to stored values", {
   c2 <- utils::read.csv(repo_path(v[["ebb"]], "C2_estimates.csv"), stringsAsFactors = FALSE)
   rho <- c2$estimate[c2$source == "stage09" & c2$model_id == "stage09_association" & c2$construct == "Movement_mean"]
   t <- tabs[["Text"]]
-  expect_equal(t$Estimate[t$Quantity == "Spearman rho, mean movement vs CombZ (pooled)"], rho)
+  expect_equal(t$Estimate[t$Quantity == "Spearman rho, mean movement vs ISS (pooled)"], rho)
   a2 <- utils::read.csv(repo_path(v[["ebb"]], "A2_prediction_animals.csv"), stringsAsFactors = FALSE)
   g <- tabs[["Group sizes"]]
   expect_equal(g$Estimate[g$Quantity == "RFID cohort (behaviour analyses): all"], nrow(a2))
