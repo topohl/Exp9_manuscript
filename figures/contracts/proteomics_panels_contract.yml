@@ -665,6 +665,70 @@ panels:
     main_or_ed: ed_unique
     narrative: every distinct edge-behaviour correlation; an underpowered null.
     primary_source: results/tables/08_behavior_physio_coupling/network_behavior_coupling/edge_behavior_correlations_fdr_all_tests.csv
+
+  # stress analyses added 2026-10-29 (pRoteomics test_stress_exposure, test_unit_specificity,
+  # compare_external_stress_studies); renderers in R/panels/proteomics_panels_stress_ed.R
+  - id: v9_ed_external_concordance
+    renderer: hf_ed_external_concordance
+    role: external_replication_null
+    spatial_axes: compartment+region+layer
+    phenotype_axes: SUS-RES+SUS-CON+RES-CON+stressed-CON
+    main_or_ed: ed_unique
+    narrative: >-
+      our SUS / RES / CON differences against 16 published hippocampal stress datasets, at gene and
+      GO-programme level, with the exact relabelling null of the nine animals; no agreement beyond chance.
+    primary_source: results/source_data/spatial_validation/compare_external_stress_studies/external_concordance_signatures.csv
+    input_dependencies:
+      - results/source_data/spatial_validation/compare_external_stress_studies/external_concordance_omnibus.csv
+  - id: v9_ed_external_agreement
+    renderer: hf_ed_external_agreement
+    role: external_heterogeneity
+    spatial_axes: none_intentional
+    phenotype_axes: SUS-RES+SUS-CON+RES-CON+stressed-CON
+    main_or_ed: ed_unique
+    narrative: >-
+      the published datasets agree with each other no better than with ours: there is no common
+      hippocampal SUS / RES signature to replicate.
+    primary_source: results/source_data/spatial_validation/compare_external_stress_studies/external_signature_agreement.csv
+    input_dependencies:
+      - results/source_data/spatial_validation/compare_external_stress_studies/external_concordance_signatures.csv
+  - id: v9_ed_exposure_microglia
+    renderer: hf_ed_exposure_microglia
+    role: stress_exposure_ratio
+    spatial_axes: region
+    phenotype_axes: stressed-CON
+    main_or_ed: ed_unique
+    narrative: >-
+      Aif1 (Iba1) relative to homeostatic microglia proteins is higher in all six stressed animals in
+      the CA2 microglia-enriched ROI only; seen in exploration, so a lead for staining.
+    primary_source: results/source_data/spatial_validation/test_stress_exposure/stress_exposure_panel_by_animal.csv
+    input_dependencies:
+      - results/source_data/spatial_validation/test_stress_exposure/stress_exposure_panel_tests.csv
+  - id: v9_ed_ca2_specificity
+    renderer: hf_ed_ca2_specificity
+    role: unit_specificity
+    spatial_axes: region+layer
+    phenotype_axes: SUS-RES+stressed-CON
+    main_or_ed: ed_unique
+    narrative: >-
+      direct contrasts between units: the CA2 SLM SUS-RES difference exceeds the laminar average but
+      hardly the neighbouring CA1 SLM or CA2 SR.
+    primary_source: results/source_data/spatial_validation/test_unit_specificity/unit_specificity_summary.csv
+    input_dependencies:
+      - results/source_data/spatial_validation/test_unit_specificity/unit_specificity_ca2_slm_proteins.csv
+  - id: v9_ed_npy_lead
+    renderer: hf_ed_npy_lead
+    role: post_hoc_lead
+    spatial_axes: region+layer
+    phenotype_axes: SUS-RES+SUS-CON+RES-CON
+    main_or_ed: ed_unique
+    groups: [CON, RES, SUS]
+    narrative: >-
+      Npy is lowest in the three susceptible animals across the units where it is fully observed;
+      selected after a probe, so a described lead.
+    primary_source: results/source_data/spatial_validation/test_stress_exposure/stress_exposure_npy_by_animal.csv
+    input_dependencies:
+      - results/source_data/spatial_validation/test_stress_exposure/stress_exposure_npy_tests.csv
 figures:
 
   - name: FIGURE_02
@@ -791,3 +855,18 @@ figures:
       - {panel: v9_ed_similarity,       label: a, x: 4,   "y": 4,   w: 175, h: 66}
       - {panel: v9_ed_network_distance, label: b, x: 4,   "y": 74,  w: 175, h: 44}
       - {panel: v9_ed_coupling,         label: c, x: 4,   "y": 122, w: 175, h: 42}
+
+  # stress analyses (2026-10-29): published stress datasets, exposure, unit specificity, the Npy lead
+  - name: ED_STRESS_ANALYSES
+    figure_key: extended_data
+    width_mm: 183
+    height_mm: 156
+    question: >-
+      Do published stress datasets share our SUS / RES / CON differences, and how specific are the
+      differences we see?
+    layout:
+      - {panel: v9_ed_external_concordance, label: a, x: 4,  "y": 4,   w: 100, h: 46}
+      - {panel: v9_ed_external_agreement,   label: b, x: 108, "y": 4,  w: 71,  h: 46}
+      - {panel: v9_ed_exposure_microglia,   label: c, x: 4,  "y": 54,  w: 70,  h: 48}
+      - {panel: v9_ed_ca2_specificity,      label: d, x: 78, "y": 54,  w: 101, h: 48}
+      - {panel: v9_ed_npy_lead,             label: e, x: 4,  "y": 106, w: 175, h: 46}

@@ -29,7 +29,7 @@ testthat::test_that("every numbered publication has exactly one canonical identi
   testthat::expect_false(anyDuplicated(ids) > 0L)
   testthat::expect_setequal(ids, c(
     "figure_01", "figure_02", "figure_03",
-    sprintf("extended_data_%02d", 1:8)))
+    sprintf("extended_data_%02d", 1:9)))
 })
 
 testthat::test_that("no panel id is reused across publications", {
@@ -48,7 +48,7 @@ testthat::test_that("the registry matches the contract and records the withheld 
   testthat::skip_if_not(file.exists(reg), "registry not generated")
   r <- utils::read.csv(reg, stringsAsFactors = FALSE)
 
-  testthat::expect_identical(sum(r$status == "CANONICAL"), 11L)   # Figures 1-3 and Extended Data 1-8
+  testthat::expect_identical(sum(r$status == "CANONICAL"), 12L)   # Figures 1-3 and Extended Data 1-9 (ED9 since 2026-10-29)
   withheld <- r[r$status != "CANONICAL", ]
   # Since the renumbering by first citation (2026-10-20) a withheld identity has no
   # number; it keeps its former id in previous_publication_id.
@@ -61,7 +61,7 @@ testthat::test_that("the registry matches the contract and records the withheld 
 
   y <- pub_contract()
   numbered <- Filter(function(f) isTRUE(f$is_numbered_manuscript_figure), y$figures)
-  testthat::expect_identical(length(numbered), 11L)
+  testthat::expect_identical(length(numbered), 12L)
 })
 
 testthat::test_that("the Extended Data promotion audit adjudicates all nine identities", {
@@ -86,7 +86,7 @@ testthat::test_that("the promoted Extended Data figures resolve to real assets",
   testthat::skip_if_not_installed("yaml")
   y <- pub_contract()
   for (k in c("ED_spatial_validation", "ED_ca2_slm_qc", "ED_enrichment_atlas",
-              "ED_spatial_networks", "ED_behaviour_models")) {
+              "ED_spatial_networks", "ED_stress_analyses", "ED_behaviour_models")) {
     f <- y$figures[[k]]
     testthat::expect_false(isTRUE(f$rendering_repository_computes_statistics))
     for (p in f$panels) {

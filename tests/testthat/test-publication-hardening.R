@@ -61,14 +61,17 @@ test_that("out-of-layer v9 renderers are exactly the seven that are documented",
   # f3a_ renderers are the v9 layer's own Figure 3 adaptation panels, sourced
   # by s9f_renderer_sources(), not an older generation. The Figure 2 re-layout of
   # 2026-10-27 retired hf_bilateral_main and added the hf_ marker, GO-programme
-  # and schematic-box renderers; 2026-10-28 added the input-territory row (j-l).
+  # and schematic-box renderers; 2026-10-28 added the input-territory row (j-l);
+  # 2026-10-29 the five panels of Extended Data 9 (R/panels/proteomics_panels_stress_ed.R).
   ct <- yaml::read_yaml(repo("figures", "contracts", "proteomics_panels_contract.yml"))
   used <- unique(vapply(ct$panels, function(p)
     as.character(p$renderer %||% ""), character(1)))
   used <- used[nzchar(used)]
   out_of_layer <- sort(used[!grepl("^(f9_|s9f_|f3a_)", used)])
   expect_equal(out_of_layer,
-               c("hf_afferent_sources", "hf_inhibitory_share", "hf_input_territories", "hf_marker_classes",
+               c("hf_afferent_sources", "hf_ed_ca2_specificity", "hf_ed_exposure_microglia",
+                 "hf_ed_external_agreement", "hf_ed_external_concordance", "hf_ed_npy_lead",
+                 "hf_inhibitory_share", "hf_input_territories", "hf_marker_classes",
                  "hf_pca_compact", "hf_programme_dots", "hf_schematic_space",
                  "hvp_ed_celltype", "s5_ed_ca2_displacement", "s5_ed_network_distance"))
 })

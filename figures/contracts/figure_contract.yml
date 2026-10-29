@@ -1344,6 +1344,140 @@ figures:
         w: 175
         h: 42
 
+  # Stress analyses (added 2026-10-29): published stress datasets against ours, how far the published datasets
+  # agree with each other, stress exposure in the microglia-enriched ROIs, the unit specificity of the CA2 SLM
+  # SUS-RES difference and the post hoc Npy lead. Statistics in pRoteomics (test_stress_exposure,
+  # test_unit_specificity, compare_external_stress_studies); imported by tools/import_primary_inputs.R.
+  ED_stress_analyses:
+    title: Extended Data Figure 9
+    width_mm: 183
+    height_mm: 156
+    layout_mode: absolute
+    manuscript_role: proteomics_extended_data
+    is_numbered_manuscript_figure: true
+    extended_data_number: 9
+    canonical_publication_id: extended_data_09
+    canonical_generation: final_truth_v9
+    producing_entry_point: figures/scripts/extended_data_proteomics_panels.R
+    assembled_pdf_source: results/figures/manuscript_candidates/final_truth_v9/extended_data/assembled/ED_STRESS_ANALYSES.pdf
+    rendering_repository_computes_statistics: false
+    question: >-
+      Do published stress datasets share our SUS / RES / CON differences, and how specific are the
+      differences we see?
+    panels:
+      - id: 09a
+        reader: "Agreement of our SUS / RES / CON differences with 16 published hippocampal stress datasets, against the relabelling null of the nine animals"
+        v9_panel_id: v9_ed_external_concordance
+        description: >-
+          Spearman correlation of our per-unit t with each published dataset's statistic, gene and
+          GO-programme level, mean over matched units; exact null over the 1,680 assignments of the nine
+          animals to three groups. Statistics computed in pRoteomics compare_external_stress_studies.
+        producer_script: figures/scripts/extended_data_proteomics_panels.R
+        renderer: hf_ed_external_concordance
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/extended_data/panels/v9_ed_external_concordance.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/extended_data/v9_ed_external_concordance_source_data.csv
+        input_dependencies:
+          - results/source_data/spatial_validation/compare_external_stress_studies/external_concordance_signatures.csv
+          - results/source_data/spatial_validation/compare_external_stress_studies/external_concordance_omnibus.csv
+        scientific_contract: external_replication_null
+        biological_unit: animal
+        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
+        x: 4
+        "y": 4
+        w: 100
+        h: 46
+      - id: 09b
+        reader: "Agreement between the published datasets themselves, and with ours"
+        v9_panel_id: v9_ed_external_agreement
+        description: >-
+          pairwise Spearman correlation between published datasets per contrast, beside our agreement with
+          each; no common hippocampal SUS / RES signature exists to replicate.
+        producer_script: figures/scripts/extended_data_proteomics_panels.R
+        renderer: hf_ed_external_agreement
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/extended_data/panels/v9_ed_external_agreement.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/extended_data/v9_ed_external_agreement_source_data.csv
+        input_dependencies:
+          - results/source_data/spatial_validation/compare_external_stress_studies/external_signature_agreement.csv
+          - results/source_data/spatial_validation/compare_external_stress_studies/external_concordance_signatures.csv
+        scientific_contract: external_heterogeneity
+        biological_unit: dataset
+        hemisphere_handling: not_applicable
+        x: 108
+        "y": 4
+        w: 71
+        h: 46
+      - id: 09c
+        reader: "Aif1 (Iba1) relative to homeostatic microglia proteins in the microglia-enriched ROIs, stressed animals against controls"
+        v9_panel_id: v9_ed_exposure_microglia
+        description: >-
+          animal means of a within-acquisition ratio in the four microglia-enriched ROIs; stressed minus CON
+          with the exact permutation P over 84 labellings. Statistics computed in pRoteomics test_stress_exposure.
+        producer_script: figures/scripts/extended_data_proteomics_panels.R
+        renderer: hf_ed_exposure_microglia
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/extended_data/panels/v9_ed_exposure_microglia.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/extended_data/v9_ed_exposure_microglia_source_data.csv
+        input_dependencies:
+          - results/source_data/spatial_validation/test_stress_exposure/stress_exposure_panel_by_animal.csv
+          - results/source_data/spatial_validation/test_stress_exposure/stress_exposure_panel_tests.csv
+        scientific_contract: stress_exposure_ratio
+        biological_unit: animal
+        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
+        x: 4
+        "y": 54
+        w: 70
+        h: 48
+      - id: 09d
+        reader: "Direct contrasts between units: is the CA2 SLM SUS-RES difference specific to CA2 SLM?"
+        v9_panel_id: v9_ed_ca2_specificity
+        description: >-
+          proteins with FDR < 0.05 for a unit alone and for direct unit-by-group contrasts, one model per
+          compartment with the animal blocked. Statistics computed in pRoteomics test_unit_specificity.
+        producer_script: figures/scripts/extended_data_proteomics_panels.R
+        renderer: hf_ed_ca2_specificity
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/extended_data/panels/v9_ed_ca2_specificity.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/extended_data/v9_ed_ca2_specificity_source_data.csv
+        input_dependencies:
+          - results/source_data/spatial_validation/test_unit_specificity/unit_specificity_summary.csv
+          - results/source_data/spatial_validation/test_unit_specificity/unit_specificity_ca2_slm_proteins.csv
+        scientific_contract: unit_specificity
+        biological_unit: protein
+        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
+        x: 78
+        "y": 54
+        w: 101
+        h: 48
+      - id: 09e
+        reader: "Post hoc lead: Npy lower in the three susceptible animals across the units where it is fully observed"
+        v9_panel_id: v9_ed_npy_lead
+        description: >-
+          unit-centred animal-level Npy and its score over units; SUS against the other six animals with the
+          exact permutation P over 84 labellings; selected after a probe, so a described lead. Statistics
+          computed in pRoteomics test_stress_exposure.
+        producer_script: figures/scripts/extended_data_proteomics_panels.R
+        renderer: hf_ed_npy_lead
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/extended_data/panels/v9_ed_npy_lead.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/extended_data/v9_ed_npy_lead_source_data.csv
+        input_dependencies:
+          - results/source_data/spatial_validation/test_stress_exposure/stress_exposure_npy_by_animal.csv
+          - results/source_data/spatial_validation/test_stress_exposure/stress_exposure_npy_tests.csv
+        scientific_contract: post_hoc_lead
+        biological_unit: animal
+        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
+        x: 4
+        "y": 106
+        w: 175
+        h: 46
+
   # Behavioural Extended Data, canonicalised in Phase 6A into two figures.
   #
   # The single ED9 that Phase 4 built carried the model ladder alongside the sex

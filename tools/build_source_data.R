@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
 # Build the source data of every published figure as Excel workbooks in the paper folder:
-# <paper folder>/source_data/<id>.xlsx (figure_01.xlsx ... extended_data_08.xlsx), one sheet per panel holding
+# <paper folder>/source_data/<id>.xlsx (figure_01.xlsx ... extended_data_09.xlsx), one sheet per panel holding
 # the values the panel plots, and an 'about' sheet (title, panels, analysis and render commits, build commit).
 #
 #   Rscript tools/build_source_data.R             build all (refuses uncommitted changes)

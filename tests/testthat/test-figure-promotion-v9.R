@@ -158,7 +158,8 @@ testthat::test_that("Figure 2 and the proteomics Extended Data are registered fr
                  extended_data_05 = paste0("05", letters[1:6]),
                  extended_data_06 = paste0("06", letters[1:4]),
                  extended_data_07 = paste0("07", letters[1:5]),
-                 extended_data_08 = paste0("08", letters[1:3]))
+                 extended_data_08 = paste0("08", letters[1:3]),
+                 extended_data_09 = paste0("09", letters[1:5]))   # the stress analyses, since 2026-10-29
   for (pid in names(panels)) {
     r <- reg[reg$publication_id == pid, , drop = FALSE]
     testthat::expect_identical(nrow(r), 1L, info = pid)

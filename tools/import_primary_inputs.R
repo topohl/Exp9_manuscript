@@ -7,6 +7,7 @@
 #   Figure 2d        marker classes per acquisition and animal         -> results/ render workspace (declared path)
 #   Figure 2f-2i     GO programmes of regions and layers (selections)  -> results/ render workspace (declared path)
 #   Figure 2j-2l     input territories, afferent sources, inhibitory share -> results/ render workspace (declared path)
+#   Ext. Data Fig. 9 stress exposure, unit specificity, published stress datasets, Npy lead -> results/ render workspace
 #   Figure 3b-g      selection inventories                             -> source_data/pRoteomics/supplementary_selection_inventories
 #   Ext. Data Fig. 7 theme-assignment table                            -> results/ render workspace (over the size ceiling)
 # (Figure 2d and the GO panels, 2f-2i since 2026-10-28, were added on 2026-10-27; the former Figure 2h GO candidate left with its panel;
@@ -49,7 +50,17 @@ WORK <- data.frame(stringsAsFactors = FALSE,
                "results/source_data/spatial_validation/map_afferent_sources/afferent_source_sets.csv",
                "results/source_data/spatial_validation/compare_lamina_synapses/inhibitory_share_by_animal.csv",
                "results/source_data/spatial_validation/compare_lamina_synapses/inhibitory_share_contrasts.csv",
-               "results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv"),
+               "results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv",
+               "results/source_data/spatial_validation/compare_external_stress_studies/external_concordance_signatures.csv",
+               "results/source_data/spatial_validation/compare_external_stress_studies/external_concordance_omnibus.csv",
+               "results/source_data/spatial_validation/compare_external_stress_studies/external_signature_agreement.csv",
+               "results/source_data/spatial_validation/test_stress_exposure/stress_exposure_panel_by_animal.csv",
+               "results/source_data/spatial_validation/test_stress_exposure/stress_exposure_panel_tests.csv",
+               "results/source_data/spatial_validation/test_stress_exposure/stress_exposure_unit_summary.csv",
+               "results/source_data/spatial_validation/test_stress_exposure/stress_exposure_npy_by_animal.csv",
+               "results/source_data/spatial_validation/test_stress_exposure/stress_exposure_npy_tests.csv",
+               "results/source_data/spatial_validation/test_unit_specificity/unit_specificity_summary.csv",
+               "results/source_data/spatial_validation/test_unit_specificity/unit_specificity_ca2_slm_proteins.csv"),
   source = c("results/spatial_validation/score_compartment_markers/global/tables/marker_class_scores_by_acquisition.csv",
              "results/spatial_validation/score_compartment_markers/global/tables/marker_class_scores_by_animal.csv",
              "results/spatial_validation/score_compartment_markers/global/tables/marker_class_compartment_contrasts.csv",
@@ -63,9 +74,21 @@ WORK <- data.frame(stringsAsFactors = FALSE,
              "results/spatial_validation/map_afferent_sources/global/tables/afferent_source_sets.csv",
              "results/spatial_validation/compare_lamina_synapses/global/tables/inhibitory_share_by_animal.csv",
              "results/spatial_validation/compare_lamina_synapses/global/tables/inhibitory_share_contrasts.csv",
-             "results/integration/test_enrichment_module_concordance/global/tables/ontology_aware_gsea_theme_assignments_all_contrasts.csv"),
+             "results/integration/test_enrichment_module_concordance/global/tables/ontology_aware_gsea_theme_assignments_all_contrasts.csv",
+             "results/spatial_validation/compare_external_stress_studies/global/tables/external_concordance_signatures.csv",
+             "results/spatial_validation/compare_external_stress_studies/global/tables/external_concordance_omnibus.csv",
+             "results/spatial_validation/compare_external_stress_studies/global/tables/external_signature_agreement.csv",
+             "results/spatial_validation/test_stress_exposure/global/tables/stress_exposure_panel_by_animal.csv",
+             "results/spatial_validation/test_stress_exposure/global/tables/stress_exposure_panel_tests.csv",
+             "results/spatial_validation/test_stress_exposure/global/tables/stress_exposure_unit_summary.csv",
+             "results/spatial_validation/test_stress_exposure/global/tables/stress_exposure_npy_by_animal.csv",
+             "results/spatial_validation/test_stress_exposure/global/tables/stress_exposure_npy_tests.csv",
+             "results/spatial_validation/test_unit_specificity/global/tables/unit_specificity_summary.csv",
+             "results/spatial_validation/test_unit_specificity/global/tables/unit_specificity_ca2_slm_proteins.csv"),
   used_by = c("Figure 2d", "Figure 2d", "Figure 2d", "Figure 2f-2i", "Figure 2j", "Figure 2j", "Figure 2j", "Figure 2j", "Figure 2k",
-              "Figure 2k", "Figure 2k", "Figure 2l", "Figure 2l", "Extended Data Fig. 7a-e"))
+              "Figure 2k", "Figure 2k", "Figure 2l", "Figure 2l", "Extended Data Fig. 7a-e",
+              rep("Extended Data Fig. 9a,b", 3), rep("Extended Data Fig. 9c", 3), rep("Extended Data Fig. 9e", 2),
+              rep("Extended Data Fig. 9d", 2)))
 # A spatial_validation table must come from a finished run of committed code that the current revision has not changed:
 # the run manifest's commit, the script and the R/spatial helpers it names unchanged since, and, where the run records its
 # provenance, committed code at run time (an unknown state is refused) and the table's SHA-256 among its outputs. Shared
