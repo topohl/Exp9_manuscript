@@ -1,4 +1,6 @@
-"Feature","Feature x sex interaction","CI low (95%)","CI high (95%)","P","q (BH across the three features)"
-"Mean movement",0.0383403410032433,-0.177382142592361,0.254062824598847,0.725284668429876,0.725284668429876
-"Movement RMSSD",0.0886867781038858,-0.129666806127312,0.307040362335084,0.422508650885968,0.633762976328952
-"Entropy ACF1",1.36625334486782,-0.896235736150752,3.6287424258864,0.233910937650941,0.633762976328952
+"table","Model","Role","Predictors","n","LOAO R2","Repeated-CV mean R2","Repeated-CV 2.5th percentile","Repeated-CV 97.5th percentile","Permutation scheme","Permutation P (raw)","P adjusted (Holm, family)","Family","Null 2.5th percentile","Null 97.5th percentile","Not tested"
+"models","mean_only","reference_baseline",,111,-0.0182644628099173,-0.0208937163207961,-0.0622041968836306,-0.00257792874147222,"none",,,,,,"intercept only: no predictor to permute"
+"models","movement_mean","primary_behavior_only","Movement_mean",111,0.23315094142091,0.229133421698744,0.188351370928504,0.255562569281648,"full outcome permutation with LOAO refit (Stage 09)",0.000999000999000999,0.001998001998002,"PR2 (Holm, m = 2)",-0.044269669614501,0.00581573202901786,
+"models","primary_behavior_family","primary_behavior_only","Movement_mean + Movement_rmssd + Entropy_acf1",111,0.227982695351102,0.222707997442607,0.174385144460565,0.261122643783539,"full outcome permutation with LOAO refit (Stage 09)",0.000999000999000999,0.001998001998002,"PR2 (Holm, m = 2)",-0.0845909650693379,0.00974096840637152,
+"models","movement_mean_sex","sex_adjusted_sensitivity","Movement_mean + Sex",111,0.226414747865618,0.221269629008461,0.177611138698722,0.256033493271704,"outcome permutation within sex with LOAO refit",0.000999000999000999,0.001998001998002,"29e-SEX (Holm, m = 2)",-0.0626053916968588,-0.00362287641752516,
+"models","primary_behavior_family_sex","sex_adjusted_sensitivity","Movement_mean + Movement_rmssd + Entropy_acf1 + Sex",111,0.219877582779328,0.213048213606903,0.160033929783999,0.263399121063263,"outcome permutation within sex with LOAO refit",0.000999000999000999,0.001998001998002,"29e-SEX (Holm, m = 2)",-0.103286316238559,0.000398554543554795,

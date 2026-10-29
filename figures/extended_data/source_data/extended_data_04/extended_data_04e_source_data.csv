@@ -1,0 +1,7 @@
+"Feature","Sex","n","Spearman rho","CI low (95%)","CI high (95%)","Interval"
+"Mean movement","Female",58,-0.508391672346102,-0.696831403222897,-0.252772895494887,"95% percentile bootstrap interval (post hoc; Stage 09 method: 5000 resamples of animals, seed 123)"
+"Movement RMSSD","Female",58,-0.341413147128488,-0.565723505508731,-0.0658002222885131,"95% percentile bootstrap interval (post hoc; Stage 09 method: 5000 resamples of animals, seed 123)"
+"Entropy ACF1","Female",58,-0.288012550370667,-0.514592352549787,-0.0278659309018912,"95% percentile bootstrap interval (post hoc; Stage 09 method: 5000 resamples of animals, seed 123)"
+"Mean movement","Male",53,-0.459770580728234,-0.651706601297791,-0.214021820947948,"95% percentile bootstrap interval (post hoc; Stage 09 method: 5000 resamples of animals, seed 123)"
+"Movement RMSSD","Male",53,-0.250120948234156,-0.488494399791863,0.0212788300493351,"95% percentile bootstrap interval (post hoc; Stage 09 method: 5000 resamples of animals, seed 123)"
+"Entropy ACF1","Male",53,-0.0795839380745041,-0.367220963582648,0.20297972074668,"95% percentile bootstrap interval (post hoc; Stage 09 method: 5000 resamples of animals, seed 123)"
