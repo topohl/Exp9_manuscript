@@ -2,6 +2,7 @@
 "figures/scripts/extended_data_behaviour.R","renders or assembles a published figure"
 "figures/scripts/extended_data_behaviour_panels.R","draws the panels of a published figure"
 "figures/scripts/extended_data_conventional_tests.R","draws the panels of a published figure"
+"figures/scripts/extended_data_homecage_panels.R","draws the panels of a published figure"
 "figures/scripts/extended_data_proteomics.R","renders or assembles a published figure"
 "figures/scripts/extended_data_proteomics_panels.R","draws the panels of a published figure"
 "figures/scripts/figure_01.R","manuscript entry point (assembles)"

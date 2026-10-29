@@ -29,7 +29,7 @@ testthat::test_that("every numbered publication has exactly one canonical identi
   testthat::expect_false(anyDuplicated(ids) > 0L)
   testthat::expect_setequal(ids, c(
     "figure_01", "figure_02", "figure_03",
-    sprintf("extended_data_%02d", 1:9)))
+    sprintf("extended_data_%02d", 1:10)))
 })
 
 testthat::test_that("no panel id is reused across publications", {
@@ -48,7 +48,7 @@ testthat::test_that("the registry matches the contract and records the withheld 
   testthat::skip_if_not(file.exists(reg), "registry not generated")
   r <- utils::read.csv(reg, stringsAsFactors = FALSE)
 
-  testthat::expect_identical(sum(r$status == "CANONICAL"), 12L)   # Figures 1-3 and Extended Data 1-9 (ED9 since 2026-10-29)
+  testthat::expect_identical(sum(r$status == "CANONICAL"), 13L)   # Figures 1-3 and Extended Data 1-10 (ED9 since 2026-10-29, ED10 since 2026-10-30)
   withheld <- r[r$status != "CANONICAL", ]
   # Since the renumbering by first citation (2026-10-20) a withheld identity has no
   # number; it keeps its former id in previous_publication_id.
@@ -61,7 +61,7 @@ testthat::test_that("the registry matches the contract and records the withheld 
 
   y <- pub_contract()
   numbered <- Filter(function(f) isTRUE(f$is_numbered_manuscript_figure), y$figures)
-  testthat::expect_identical(length(numbered), 12L)
+  testthat::expect_identical(length(numbered), 13L)
 })
 
 testthat::test_that("the Extended Data promotion audit adjudicates all nine identities", {
@@ -86,7 +86,7 @@ testthat::test_that("the promoted Extended Data figures resolve to real assets",
   testthat::skip_if_not_installed("yaml")
   y <- pub_contract()
   for (k in c("ED_spatial_validation", "ED_ca2_slm_qc", "ED_enrichment_atlas",
-              "ED_spatial_networks", "ED_stress_analyses", "ED_behaviour_models")) {
+              "ED_spatial_networks", "ED_stress_analyses", "ED_behaviour_models", "ED_homecage")) {
     f <- y$figures[[k]]
     testthat::expect_false(isTRUE(f$rendering_repository_computes_statistics))
     for (p in f$panels) {
@@ -121,7 +121,8 @@ testthat::test_that("the pre-restructure freeze manifest is complete", {
   # Identities created after the freeze (Extended Data 10-12, drawn from the SISanalyzer bundle) cannot be in it.
   # the freeze predates the renumbering of 2026-10-20, so an identity is looked up under the id it had
   # then; a merged identity lists each of its former ids, separated by ";"
-  keep <- r$status == "CANONICAL" & r$originating_analysis != "SISanalyzer"
+  # Extended Data 10 (the home-cage record, added 2026-10-30) is also newer than the freeze.
+  keep <- r$status == "CANONICAL" & r$originating_analysis != "SISanalyzer" & r$contract_key != "ED_homecage"
   canon <- unlist(strsplit(ifelse(nzchar(r$previous_publication_id[keep]),
                                   r$previous_publication_id[keep], r$publication_id[keep]), ";", fixed = TRUE))
   testthat::expect_true(all(canon %in% m$publication_id[!is.na(m$publication_id)]))

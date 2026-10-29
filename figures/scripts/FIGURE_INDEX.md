@@ -24,6 +24,8 @@ The **entry point** is what you run: it selects and validates the promoted artef
 | extended_data_06 | `figures/scripts/extended_data_proteomics_panels.R` | CANONICAL |
 | extended_data_07 | `figures/scripts/extended_data_proteomics_panels.R` | CANONICAL |
 | extended_data_08 | `figures/scripts/extended_data_proteomics_panels.R` | CANONICAL |
+| extended_data_09 | `figures/scripts/extended_data_proteomics_panels.R` | CANONICAL |
+| extended_data_10 | `figures/scripts/extended_data_homecage_panels.R` | CANONICAL |
 
 ## Every script in `figures/`
 
@@ -32,6 +34,7 @@ The **entry point** is what you run: it selects and validates the promoted artef
 | `figures/scripts/extended_data_behaviour.R` | renders or assembles a published figure |
 | `figures/scripts/extended_data_behaviour_panels.R` | draws the panels of a published figure |
 | `figures/scripts/extended_data_conventional_tests.R` | draws the panels of a published figure |
+| `figures/scripts/extended_data_homecage_panels.R` | draws the panels of a published figure |
 | `figures/scripts/extended_data_proteomics.R` | renders or assembles a published figure |
 | `figures/scripts/extended_data_proteomics_panels.R` | draws the panels of a published figure |
 | `figures/scripts/figure_01.R` | manuscript entry point (assembles) |

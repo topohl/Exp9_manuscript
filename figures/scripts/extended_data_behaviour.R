@@ -12,6 +12,6 @@
 source(file.path("R", "paths.R"))
 source(repo_path("R", "manuscript_figure_utils.R"))
 
-for (fig in c("ED_behaviour_models")) {
+for (fig in c("ED_behaviour_models", "ED_homecage")) {
   manuscript_figure_main(fig)
 }

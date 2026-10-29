@@ -22,7 +22,7 @@ figures:
     behaviour_config_version: "1.0.4"
     behaviour_config_sha256: 54a46eca459775d0ab91da40c7ab924f732ac0ae35b8b0e8c397b66a947c0fb5
     figure_support_bundle_id: fsb_v10_20261030_b74873b
-    figure_support_frozen_at: abb28c636fa3e3d0f600e9434a739469ef30e7de
+    figure_support_frozen_at: b74873bca68de415dd6fc79b94210cdfff627076
     source_data_frozen_in: source_data/MMMSociability/ebb_v104_20261026_4b651ac
     figure_support_source_data_frozen_in: source_data/MMMSociability/fsb_v10_20261030_b74873b
     rendering_repository_computes_statistics: false
@@ -1504,7 +1504,7 @@ figures:
     behaviour_config_version: "1.0.4"
     behaviour_config_sha256: 54a46eca459775d0ab91da40c7ab924f732ac0ae35b8b0e8c397b66a947c0fb5
     figure_support_bundle_id: fsb_v10_20261030_b74873b
-    figure_support_frozen_at: abb28c636fa3e3d0f600e9434a739469ef30e7de
+    figure_support_frozen_at: b74873bca68de415dd6fc79b94210cdfff627076
     source_data_frozen_in: source_data/MMMSociability/ebb_v104_20261026_4b651ac
     figure_support_source_data_frozen_in: source_data/MMMSociability/fsb_v10_20261030_b74873b
     historical_generation: bundle_render
@@ -1680,6 +1680,155 @@ figures:
   # Conventional behaviour tests, physiology and the manual-versus-automated scoring validation, drawn
   # as whole pages from the pinned SISanalyzer bundle (config/conventional_bundle.yml). Neither computes
   # anything; promoted through the self-rendered route of tools/promote_manuscript_render.R.
+  ED_homecage:
+    title: Extended Data Figure 10
+    width_mm: 183
+    height_mm: 168
+    layout_mode: absolute
+    manuscript_role: behavioural_extended_data
+    is_numbered_manuscript_figure: true
+    extended_data_number: 10
+    canonical_publication_id: extended_data_10
+    analysis_repository: topohl/MMMSociability
+    analysis_frozen_at: 6d81c73dc6f3681b8cb582bd0afb7b647c756fa6
+    behaviour_bundle_id: ebb_v104_20261026_4b651ac
+    behaviour_config_version: "1.0.4"
+    behaviour_config_sha256: 54a46eca459775d0ab91da40c7ab924f732ac0ae35b8b0e8c397b66a947c0fb5
+    figure_support_bundle_id: fsb_v10_20261030_b74873b
+    figure_support_frozen_at: b74873bca68de415dd6fc79b94210cdfff627076
+    source_data_frozen_in: source_data/MMMSociability/ebb_v104_20261026_4b651ac
+    figure_support_source_data_frozen_in: source_data/MMMSociability/fsb_v10_20261030_b74873b
+    historical_generation: bundle_render
+    rendering_repository_computes_statistics: false
+    scientific_contract_summary: >-
+      The home-cage record (added 2026-10-30): animals per batch, sex and group (a), one cage per sex minute by minute in
+      the first active phase after CC1 (b), the group actogram over the four cage-change epochs (c), first-night movement
+      after each cage change with the registered RES - SUS trajectory tests, all null (d; ebb E_multiplicity), the
+      association of first-night movement with the later ISS after each cage change in SIS and CON animals (e) and rank
+      stability across cage changes (f). Values of b-f from the post hoc run 29f (registry POSTHOC_CAGE_CHANGE_SERIES
+      v1.0, not blind: an unregistered look is disclosed), descriptive with bootstrap intervals; no new test claims.
+    prohibited_wording: female-specific; sex-specific; stress-specific; trajectories differ
+    panels:
+      - id: 10a
+        description: >-
+          Animals per batch, sex and later group, with the RFID-tracked animals in brackets when fewer (fsb S6 = ebb
+          A4).
+        producer_script: figures/scripts/extended_data_homecage_panels.R
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript/extended_data_homecage_panels/extended_data_homecage_ed10a.svg
+        source_data: results/figures/manuscript/extended_data_homecage_panels/extended_data_homecage_ed10a_source_data.csv
+        primary_source: source_data/MMMSociability/fsb_v10_20261030_b74873b/S6_cohort_table.csv
+        input_dependencies:
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/S6_cohort_table.csv
+        scientific_contract: cohort_counts_display
+        biological_unit: AnimalID
+        hemisphere_handling: not_applicable_behavioural
+        x: 4
+        "y": 4
+        w: 48
+        h: 46
+      - id: 10b
+        description: >-
+          One cage per sex (fixed by the 29f rule), position changes per minute of each animal in the first active
+          phase after CC1, with each animal's later group and ISS (fsb S4).
+        producer_script: figures/scripts/extended_data_homecage_panels.R
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript/extended_data_homecage_panels/extended_data_homecage_ed10b.svg
+        source_data: results/figures/manuscript/extended_data_homecage_panels/extended_data_homecage_ed10b_source_data.csv
+        primary_source: source_data/MMMSociability/fsb_v10_20261030_b74873b/S4_cage_raster.csv
+        input_dependencies:
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/S4_cage_raster.csv
+        scientific_contract: raw_series_display
+        biological_unit: AnimalID
+        hemisphere_handling: not_applicable_behavioural
+        x: 56
+        "y": 4
+        w: 123
+        h: 46
+      - id: 10c
+        description: >-
+          Group mean hourly movement with its t-based 95% interval over the four cage-change epochs, by sex; light
+          phases shaded (fsb S3).
+        producer_script: figures/scripts/extended_data_homecage_panels.R
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript/extended_data_homecage_panels/extended_data_homecage_ed10c.svg
+        source_data: results/figures/manuscript/extended_data_homecage_panels/extended_data_homecage_ed10c_source_data.csv
+        primary_source: source_data/MMMSociability/fsb_v10_20261030_b74873b/S3_actogram.csv
+        input_dependencies:
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/S3_actogram.csv
+        scientific_contract: group_series_display
+        biological_unit: AnimalID
+        hemisphere_handling: not_applicable_behavioural
+        x: 4
+        "y": 54
+        w: 175
+        h: 46
+      - id: 10d
+        description: >-
+          First-night movement after each cage change, every animal and the group means with t-based 95% intervals, by
+          sex (fsb S2, S2b), with the stored Holm P of the registered RES - SUS trajectory follow-up of each sex (ebb
+          E_multiplicity FU-TR).
+        producer_script: figures/scripts/extended_data_homecage_panels.R
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript/extended_data_homecage_panels/extended_data_homecage_ed10d.svg
+        source_data: results/figures/manuscript/extended_data_homecage_panels/extended_data_homecage_ed10d_source_data.csv
+        primary_source: source_data/MMMSociability/fsb_v10_20261030_b74873b/S2_animal_series.csv
+        input_dependencies:
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/S2_animal_series.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/S2b_group_series.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/S5_registered_tests.csv
+          - source_data/MMMSociability/ebb_v104_20261026_4b651ac/E_multiplicity.csv
+        scientific_contract: registered_null_trajectory_display
+        biological_unit: AnimalID
+        hemisphere_handling: not_applicable_behavioural
+        x: 4
+        "y": 104
+        w: 78
+        h: 60
+      - id: 10e
+        description: >-
+          Spearman rho of first-night movement with the later ISS after each cage change, SIS and CON, all animals and
+          within batch, with stratified bootstrap 95% intervals and two paired contrasts (fsb S1, S1b; post hoc,
+          descriptive).
+        producer_script: figures/scripts/extended_data_homecage_panels.R
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript/extended_data_homecage_panels/extended_data_homecage_ed10e.svg
+        source_data: results/figures/manuscript/extended_data_homecage_panels/extended_data_homecage_ed10e_source_data.csv
+        primary_source: source_data/MMMSociability/fsb_v10_20261030_b74873b/S1_association_by_cage_change.csv
+        input_dependencies:
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/S1_association_by_cage_change.csv
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/S1b_association_contrasts.csv
+        scientific_contract: posthoc_descriptive_intervals
+        biological_unit: AnimalID
+        hemisphere_handling: not_applicable_behavioural
+        x: 86
+        "y": 104
+        w: 52
+        h: 60
+      - id: 10f
+        description: >-
+          Rank stability of first-night movement between cage changes, SIS and CON, square tiles on the correlation
+          scale with the values printed (fsb S1c; intervals in the source data).
+        producer_script: figures/scripts/extended_data_homecage_panels.R
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript/extended_data_homecage_panels/extended_data_homecage_ed10f.svg
+        source_data: results/figures/manuscript/extended_data_homecage_panels/extended_data_homecage_ed10f_source_data.csv
+        primary_source: source_data/MMMSociability/fsb_v10_20261030_b74873b/S1c_rank_stability.csv
+        input_dependencies:
+          - source_data/MMMSociability/fsb_v10_20261030_b74873b/S1c_rank_stability.csv
+        scientific_contract: posthoc_descriptive_intervals
+        biological_unit: AnimalID
+        hemisphere_handling: not_applicable_behavioural
+        x: 142
+        "y": 104
+        w: 37
+        h: 60
   ED_conventional_tests:
     title: Extended Data Figure 2
     width_mm: 183

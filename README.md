@@ -15,7 +15,7 @@ repository.
 | Source | Owns | Frozen at |
 | --- | --- | --- |
 | [`topohl/pRoteomics`](https://github.com/topohl/pRoteomics) | preprocessing, QC, differential abundance, WGCNA, GSEA, spatial validation, spatial networks, all statistical models and canonical result tables | tag `pre-restructure-scientific-freeze-2026-09` (peels to `0f84a103dd895161711c643d0ba1c6e14082ba9a`); later exports are listed in `source_data/pRoteomics/manifest.csv` |
-| [`topohl/MMMSociability`](https://github.com/topohl/MMMSociability) | behavioural acquisition and analysis, CombZ outcome scoring, behaviour prediction models | bundles `ebb_v104_20261026_4b651ac` (MMMSociability `4b651ac`; Figure 1 and Extended Data 4, Stage 29 on outcome version ov4), `fsb_v10_20261030_b74873b` (`f78472f`; Figure 1 support) and `s30b_v13_20261026_dab983e` (`dab983e`; Stage 30) |
+| [`topohl/MMMSociability`](https://github.com/topohl/MMMSociability) | behavioural acquisition and analysis, CombZ outcome scoring, behaviour prediction models | bundles `ebb_v104_20261026_4b651ac` (MMMSociability `4b651ac`; Figure 1 and Extended Data 4, Stage 29 on outcome version ov4), `fsb_v10_20261030_b74873b` (`b74873b`; Figure 1 support) and `s30b_v13_20261026_dab983e` (`dab983e`; Stage 30) |
 | SISanalyzer (local) | conventional behaviour tests, physiology, heterogeneity and locomotion analyses of all 117 animals; the manual-versus-automated scoring validation and the habituation trials | bundle `ctp_v14_20261026_f146fe4` (SISanalyzer `f146fe4`); Extended Data 1 to 3 (`docs/CONVENTIONAL_TESTS_CANDIDATE.md`) |
 
 Notes on these pins (checked 2026-10-15):
@@ -71,6 +71,7 @@ historical generation names (`final_truth_v9`, `spatial_v6`, `ED1_FINAL_V9`,
 | `figure_03` | CANONICAL |
 | `extended_data_01` to `_03` | CANONICAL (scoring validation, conventional tests, physiology; drawn from the SISanalyzer bundle) |
 | `extended_data_04` | CANONICAL (behavioural prediction models, secondary features and sex) |
+| `extended_data_10` | CANONICAL (home-cage record: cohort, raw series, actogram, cage-change series; added 2026-10-30) |
 | `extended_data_05` to `_08` | CANONICAL (proteomics: bilateral agreement and spatial identity, CA2-SLM QC, enrichment atlases, networks) |
 | `withheld_wgcna`, `withheld_identity_locations` | WITHHELD (formerly `extended_data_04` and `_07`) |
 

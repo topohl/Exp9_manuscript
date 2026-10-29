@@ -38,9 +38,10 @@ testthat::test_that("the publication registry is internally coherent", {
   testthat::expect_true(all(nchar(r$hash[canon]) == 64L))
   testthat::expect_true(all(!nzchar(r$rendered_artifact[!canon])))
 
-  # The publication layer: Figures 1-3 and Extended Data 1-9 (eight since the
-  # merges of 2026-10-20, ED9 the stress analyses since 2026-10-29); 2 withheld.
-  testthat::expect_identical(sum(canon), 12L)
+  # The publication layer: Figures 1-3 and Extended Data 1-10 (eight since the
+  # merges of 2026-10-20, ED9 the stress analyses since 2026-10-29, ED10 the home-cage
+  # record since 2026-10-30); 2 withheld.
+  testthat::expect_identical(sum(canon), 13L)
   testthat::expect_identical(sum(!canon), 2L)
   testthat::expect_setequal(r$publication_id[!canon],
                             c("withheld_wgcna", "withheld_identity_locations"))
