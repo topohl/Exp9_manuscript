@@ -199,8 +199,14 @@ testthat::test_that("Figure 2 and the proteomics Extended Data are registered fr
   testthat::expect_equal(unique(rd("extended_data_08", "a")$colour_limit), 0.6)
   for (p in c("a", "b"))
     testthat::expect_equal(unique(rd("extended_data_07", p)$shared_NES_scale_limit), 2)
-  # ED7 c-e: the curves of the frozen Figure 3 export, on the shared strip limit
-  curves <- do.call(rbind, lapply(c("c", "d", "e"), function(p) rd("extended_data_07", p)))
+  # ED7 c-e: the curves of the frozen Figure 3 export, on the shared strip limit (the per-animal
+  # exemplar values below each curve are rows of their own)
+  curves <- do.call(rbind, lapply(c("c", "d", "e"), function(p) {
+    d <- rd("extended_data_07", p)
+    d <- d[d$row_type == "curve", c("shared_NES_strip_limit", "curve_source", "set_size", "leading_edge_n")]
+    testthat::expect_equal(nrow(d), 1L)
+    d
+  }))
   testthat::expect_equal(curves$shared_NES_strip_limit, c(2, 2, 2))
   testthat::expect_identical(unique(curves$curve_source),
     "source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv")
