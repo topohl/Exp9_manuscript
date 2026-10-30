@@ -16,8 +16,9 @@ WTC_ID <- "wgcna_theme_composition_candidate"   # the pRoteomics publication id,
 # Imported versions (tools/import_wgcna_theme_composition.R), each in its own bundle directory:
 #   v1  pRoteomics run f45209c, exported at 363e6f5 (2026-10-12)
 #   v2  primary tree, supermodule cut heights of 2026-10-26 (docs/WGCNA_THEME_COMPOSITION_CANDIDATE.md)
-WTC_VERSIONS <- c(v1 = WTC_ID, v2 = paste0(WTC_ID, "_v2"))
-WTC_CURRENT <- "v2"
+#   v3  primary tree, the rule-based display labels of 2026-10-30 (wheel labels only; committed label code)
+WTC_VERSIONS <- c(v1 = WTC_ID, v2 = paste0(WTC_ID, "_v2"), v3 = paste0(WTC_ID, "_v3"))
+WTC_CURRENT <- "v3"
 wtc_bundle_id <- function(version = WTC_CURRENT) {
   if (length(version) != 1L || !version %in% names(WTC_VERSIONS))
     stop("Unknown candidate version: ", paste(version, collapse = ", "), call. = FALSE)

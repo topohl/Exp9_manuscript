@@ -40,7 +40,7 @@ All values come from the pRoteomics step
 `analysis/integration/test_theme_module_composition.R`, exported by
 `tools/export_wgcna_theme_composition_candidate.R` and imported byte for byte by
 `tools/import_wgcna_theme_composition.R` (versions below). Nothing is
-recomputed here. The numbers are those of v2.
+recomputed here. The numbers are those of v3 (the same as v2).
 
 - Theme protein set: proteins annotated (`org.Mm.eg.db` 3.22.0, GOALL) to the
   theme's claim-eligible GO terms tested in that compartment, mapped through the
@@ -68,7 +68,15 @@ at both levels. The agreement is real and partial, not a one-to-one mapping.
 
 ## Versions
 
-- **v2** (current): primary pRoteomics tree (original centring,
+- **v3** (current): the v2 composition rerun at pRoteomics fb852b4 and exported there
+  (run and export at the same commit, which holds the label code and registries);
+  frozen in `source_data/pRoteomics/wgcna_theme_composition_candidate_v3/`, rendered to
+  `results/figures/manuscript_candidates/wgcna_theme_composition_v3/`. Every table
+  equals v2 except the wheel table's `canonical_display_label` (not drawn, so the
+  sheet is byte-identical to v2's): 23 modules now show the rule-based labels
+  (all 15 neuropil modules, soma m02 and m04-m07, microglia m02, m04 and m09),
+  decided on 2026-10-30.
+- **v2**: primary pRoteomics tree (original centring,
   `Analysis/proteomics_original`, branch `original-centring-2026-10-24`),
   supermodule cut heights of 2026-10-26 (0.55 neuropil and soma, 0.45
   microglia); frozen in
@@ -154,11 +162,11 @@ microglia-enriched ROI is not a purified cell population.
     Rscript tools/export_wgcna_theme_composition_candidate.R
 
     # this repository (each version imported once, then rendered into a new directory)
-    Rscript tools/import_wgcna_theme_composition.R <pRoteomics_root> v2
-    Rscript figures/candidates/wgcna_theme_composition_candidate.R [v1|v2] [new_output_directory]
+    Rscript tools/import_wgcna_theme_composition.R <pRoteomics_root> v3
+    Rscript figures/candidates/wgcna_theme_composition_candidate.R [v1|v2|v3] [new_output_directory]
 
 Default output: `results/figures/manuscript_candidates/wgcna_theme_composition_<version>/`
-(current version v2) with the sheet (SVG, PDF, PNG), per-panel source data,
+(current version v3) with the sheet (SVG, PDF, PNG), per-panel source data,
 `render_inputs.csv` and `render_manifest.csv`. The importer refuses an existing
 version directory or manifest entry and an export it has already imported; the
 renderer refuses an existing directory. A later version keeps the pRoteomics

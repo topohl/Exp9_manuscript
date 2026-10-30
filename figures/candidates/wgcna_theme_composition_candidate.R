@@ -83,7 +83,7 @@ if (sys.nframe() == 0L) {
     args <- args[-1L]
   }
   if (length(args) > 1L || (length(args) == 1L && !nzchar(args[[1]])))
-    stop("Usage: Rscript figures/candidates/wgcna_theme_composition_candidate.R [v1|v2] [new_output_directory]",
+    stop("Usage: Rscript figures/candidates/wgcna_theme_composition_candidate.R [v1|v2|v3] [new_output_directory]",
          call. = FALSE)
   wtc_render(if (length(args)) args[[1]] else
     repo_path("results", "figures", "manuscript_candidates", paste0("wgcna_theme_composition_", version)),

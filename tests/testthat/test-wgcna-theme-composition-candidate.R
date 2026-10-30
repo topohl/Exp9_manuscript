@@ -129,6 +129,26 @@ testthat::test_that("v2 keeps v1's module-level composition and theme summary", 
   testthat::expect_identical(XS$v2$summary, XS$v1$summary)
 })
 
+testthat::test_that("v3 differs from v2 only in the wheel's module labels (the rule-based labels of 2026-10-30)", {
+  # docs/WGCNA_THEME_COMPOSITION_CANDIDATE.md: same composition run inputs, the display labels of the primary tree's
+  # label registries; the label column is not drawn
+  testthat::skip_if_not(all(c("v2", "v3") %in% names(XS)))
+  for (part in c("long", "summary", "themes", "partition")) testthat::expect_identical(XS$v3[[part]], XS$v2[[part]], info = part)
+  w2 <- XS$v2$wheel; w3 <- XS$v3$wheel
+  testthat::expect_identical(w3[c("dataset", "module_id")], w2[c("dataset", "module_id")])
+  keep <- setdiff(names(w2), "canonical_display_label")
+  testthat::expect_identical(w3[keep], w2[keep])
+  changed <- w3$canonical_display_label != w2$canonical_display_label
+  expected <- list(neuron_neuropil = c("WGCNA_m01", "WGCNA_m02", "WGCNA_m03", "WGCNA_m04", "WGCNA_m05", "WGCNA_m06", "WGCNA_m07", "WGCNA_m08", "WGCNA_m09", "WGCNA_m10", "WGCNA_m11", "WGCNA_m12", "WGCNA_m13", "WGCNA_m14", "WGCNA_m15"),
+                   neuron_soma = c("WGCNA_m02", "WGCNA_m04", "WGCNA_m05", "WGCNA_m06", "WGCNA_m07"),
+                   microglia = c("WGCNA_m02", "WGCNA_m04", "WGCNA_m09"))
+  for (ds in names(expected))
+    testthat::expect_setequal(w3$module_id[changed & w3$dataset == ds], expected[[ds]])
+  # the soma labels reviewed on 2026-10-27 were already in v2
+  testthat::expect_true(all(w3$canonical_display_label[w3$dataset == "neuron_soma" & w3$module_id %in% c("WGCNA_m01", "WGCNA_m03")] ==
+                              w2$canonical_display_label[w2$dataset == "neuron_soma" & w2$module_id %in% c("WGCNA_m01", "WGCNA_m03")]))
+})
+
 testthat::test_that("the candidate computes no statistic and draws no group effect", {
   files <- c(repo_path("R", "panels", "wgcna_theme_composition_panels.R"),
              repo_path("figures", "candidates", "wgcna_theme_composition_candidate.R"))
