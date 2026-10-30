@@ -806,8 +806,8 @@
 <line x1='443.71' y1='51.31' x2='451.18' y2='51.31' style='stroke-width: 0.96; stroke: #6B7296; stroke-linecap: butt;' />
 <line x1='453.05' y1='54.58' x2='460.52' y2='54.58' style='stroke-width: 0.96; stroke: #BFBCB4; stroke-linecap: butt;' />
 <line x1='462.39' y1='77.75' x2='469.87' y2='77.75' style='stroke-width: 0.96; stroke: #C74C56; stroke-linecap: butt;' />
-<text x='456.79' y='17.32' text-anchor='end' style='font-size: 5.02px; font-family: "Arial";' textLength='87.33px' lengthAdjust='spacingAndGlyphs'>SUS − others −0.22 log2 [−0.40, −0.04]</text>
-<text x='456.79' y='22.74' text-anchor='end' style='font-size: 5.02px; font-family: "Arial";' textLength='73.28px' lengthAdjust='spacingAndGlyphs'>P=0.036 (84 labellings); post hoc</text>
+<text x='456.79' y='17.32' text-anchor='end' style='font-size: 5.02px; font-family: "Arial";' textLength='76.44px' lengthAdjust='spacingAndGlyphs'>SUS − others −0.22 [−0.40, −0.04]</text>
+<text x='456.79' y='22.74' text-anchor='end' style='font-size: 5.02px; font-family: "Arial";' textLength='18.84px' lengthAdjust='spacingAndGlyphs'>P=0.036</text>
 <polyline points='19.95,123.31 19.95,8.50 ' style='stroke-width: 0.48; stroke-linecap: butt;' />
 <text x='17.22' y='108.42' text-anchor='end' style='font-size: 5.00px; font-family: "Arial";' textLength='9.88px' lengthAdjust='spacingAndGlyphs'>−0.4</text>
 <text x='17.22' y='85.71' text-anchor='end' style='font-size: 5.00px; font-family: "Arial";' textLength='9.88px' lengthAdjust='spacingAndGlyphs'>−0.2</text>

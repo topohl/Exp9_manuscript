@@ -276,8 +276,8 @@
 <polyline points='76.84,36.47 78.33,36.47 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
 <polyline points='76.84,24.68 78.33,24.68 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
 <polyline points='76.84,12.89 78.33,12.89 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
-<text transform='translate(9.42,24.08) rotate(-90)' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Integrated</text>
-<text transform='translate(15.49,24.08) rotate(-90)' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>resilience</text>
+<text transform='translate(9.42,24.08) rotate(-90)' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Integrated stress</text>
+<text transform='translate(15.49,24.08) rotate(-90)' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>score (ISS)</text>
 <rect x='241.61' y='-0.18' width='4.98' height='4.98' style='stroke-width: 0.53; stroke: none; fill: #FFFFFF;' />
 <circle cx='244.10' cy='2.31' r='1.19' style='stroke-width: 0.35; stroke: none; fill: #6B7296;' />
 <rect x='261.98' y='-0.18' width='4.98' height='4.98' style='stroke-width: 0.53; stroke: none; fill: #FFFFFF;' />
@@ -957,8 +957,8 @@
 <polyline points='76.84,188.37 78.33,188.37 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
 <polyline points='76.84,174.24 78.33,174.24 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
 <polyline points='76.84,160.11 78.33,160.11 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
-<text transform='translate(9.42,171.17) rotate(-90)' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Integrated</text>
-<text transform='translate(15.49,171.17) rotate(-90)' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>resilience</text>
+<text transform='translate(9.42,171.17) rotate(-90)' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Integrated stress</text>
+<text transform='translate(15.49,171.17) rotate(-90)' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>score (ISS)</text>
 </g>
 <defs>
   <clipPath id='p2_23'>
@@ -2207,11 +2207,10 @@
 <polyline points='19.77,91.59 21.26,91.59 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
 <polyline points='19.77,61.63 21.26,61.63 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
 <polyline points='19.77,31.67 21.26,31.67 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
-<text transform='translate(10.81,90.45) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Integrated</text>
-<text transform='translate(10.81,64.12) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Resilience</text>
-<text transform='translate(10.81,37.21) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>(</text>
-<text transform='translate(10.81,35.39) rotate(-90)' style='font-size: 5.50px; font-style: italic;fill: #2B2B2B; font-family: "Arial";'>z</text>
-<text transform='translate(10.81,32.64) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>)</text>
+<text transform='translate(10.81,69.03) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>ISS</text>
+<text transform='translate(10.81,58.63) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>(</text>
+<text transform='translate(10.81,56.80) rotate(-90)' style='font-size: 5.50px; font-style: italic;fill: #2B2B2B; font-family: "Arial";'>z</text>
+<text transform='translate(10.81,54.05) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>)</text>
 <polyline points='21.26,120.26 140.53,120.26 ' style='stroke-width: 0.47; stroke-linecap: square;' />
 <polyline points='44.91,121.75 44.91,120.26 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
 <polyline points='79.46,121.75 79.46,120.26 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
@@ -2219,7 +2218,7 @@
 <text x='44.91' y='126.43' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>2</text>
 <text x='79.46' y='126.43' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>4</text>
 <text x='114.00' y='126.43' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>6</text>
-<text x='80.89' y='132.91' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Movement</text>
+<text x='80.89' y='132.91' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Movement (position changes per 10 min)</text>
 </g>
 <defs>
   <clipPath id='p4_7'>
@@ -2306,11 +2305,10 @@
 <polyline points='19.77,238.94 21.26,238.94 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
 <polyline points='19.77,204.62 21.26,204.62 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
 <polyline points='19.77,170.30 21.26,170.30 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
-<text transform='translate(10.81,227.51) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Integrated</text>
-<text transform='translate(10.81,201.18) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Resilience</text>
-<text transform='translate(10.81,174.27) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>(</text>
-<text transform='translate(10.81,172.44) rotate(-90)' style='font-size: 5.50px; font-style: italic;fill: #2B2B2B; font-family: "Arial";'>z</text>
-<text transform='translate(10.81,169.69) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>)</text>
+<text transform='translate(10.81,206.09) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>ISS</text>
+<text transform='translate(10.81,195.69) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>(</text>
+<text transform='translate(10.81,193.86) rotate(-90)' style='font-size: 5.50px; font-style: italic;fill: #2B2B2B; font-family: "Arial";'>z</text>
+<text transform='translate(10.81,191.11) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>)</text>
 <polyline points='21.26,257.32 140.53,257.32 ' style='stroke-width: 0.47; stroke-linecap: square;' />
 <polyline points='36.72,258.81 36.72,257.32 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
 <polyline points='60.82,258.81 60.82,257.32 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
@@ -2322,7 +2320,7 @@
 <text x='84.91' y='263.49' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>4</text>
 <text x='109.00' y='263.49' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>5</text>
 <text x='133.10' y='263.49' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>6</text>
-<text x='80.89' y='269.97' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Movement</text>
+<text x='80.89' y='269.97' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Movement (position changes per 10 min)</text>
 </g>
 </g>
 </g>
@@ -2522,7 +2520,7 @@
 <polyline points='19.74,112.74 21.24,112.74 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
 <polyline points='19.74,81.58 21.24,81.58 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
 <polyline points='19.74,50.42 21.24,50.42 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
-<text transform='translate(10.41,83.80) rotate(-90)' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Held-out predicted Integrated Resilience</text>
+<text transform='translate(10.41,83.80) rotate(-90)' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Held-out predicted ISS</text>
 <polyline points='21.24,143.65 140.93,143.65 ' style='stroke-width: 0.47; stroke-linecap: square;' />
 <polyline points='52.14,145.14 52.14,143.65 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
 <polyline points='83.30,145.14 83.30,143.65 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
@@ -2530,7 +2528,7 @@
 <text x='52.14' y='149.82' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>−1</text>
 <text x='83.30' y='149.82' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>0</text>
 <text x='114.47' y='149.82' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>1</text>
-<text x='81.08' y='156.30' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Observed Integrated Resilience</text>
+<text x='81.08' y='156.30' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Observed ISS</text>
 </g>
 <g clip-path='url(#p5_3)'>
 </g>

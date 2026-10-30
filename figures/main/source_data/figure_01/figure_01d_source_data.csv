@@ -1,4 +1,4 @@
-"table","Sex","Animal ID","Group","Mean movement (early window)","Integrated resilience (CombZ)","Least-squares fit","CI low (95%)","CI high (95%)","n","Spearman rho","P","q (BH within sex)"
+"table","Sex","Animal ID","Group","Mean movement (early window)","Integrated stress score (ISS, CombZ)","Least-squares fit","CI low (95%)","CI high (95%)","n","Spearman rho","P","q (BH within sex)"
 "animals","Female","692","RES",0.944444444444444,0.909694572941597,,,,,,,
 "animals","Female","690","RES",1.05555555555556,1.67440343483332,,,,,,,
 "animals","Female","695","RES",2.09722222222222,0.538139184622692,,,,,,,

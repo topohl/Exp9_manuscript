@@ -1,4 +1,4 @@
-"table","Animal ID","Group","Sex","Integrated resilience (CombZ)","Movement RMSSD","Entropy ACF1","Feature","x","Least-squares fit","CI low (95%)","CI high (95%)","n","Spearman rho","CI low (95%, bootstrap)","CI high (95%, bootstrap)","P","q (BH across the three features)"
+"table","Animal ID","Group","Sex","Integrated stress score (ISS, CombZ)","Movement RMSSD","Entropy ACF1","Feature","x","Least-squares fit","CI low (95%)","CI high (95%)","n","Spearman rho","CI low (95%, bootstrap)","CI high (95%, bootstrap)","P","q (BH across the three features)"
 "animals","13856","SUS","Male",-0.443243594002226,5.77634808361638,0.483698222489114,,,,,,,,,,,
 "animals","13857","RES","Male",0.134823707027848,5.98707528118156,0.451671776500247,,,,,,,,,,,
 "animals","1545","SUS","Female",-1.18545223848672,4.18414175829657,0.456399161486823,,,,,,,,,,,

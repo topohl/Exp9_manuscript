@@ -1612,6 +1612,8 @@
 <circle cx='294.04' cy='257.52' r='2.30' style='stroke-width: 0.34; stroke: none; fill: #6B7296; fill-opacity: 0.90;' />
 <circle cx='318.99' cy='252.35' r='2.30' style='stroke-width: 0.34; stroke: none; fill: #BFBCB4; fill-opacity: 0.90;' />
 <circle cx='318.55' cy='250.39' r='2.30' style='stroke-width: 0.34; stroke: none; fill: #BFBCB4; fill-opacity: 0.90;' />
+<text x='279.19' y='203.96' style='font-size: 5.20px;fill: #BFBCB4; font-family: "Arial";' textLength='10.66px' lengthAdjust='spacingAndGlyphs'>RES</text>
+<text x='279.19' y='211.35' style='font-size: 5.20px;fill: #C74C56; font-family: "Arial";' textLength='10.66px' lengthAdjust='spacingAndGlyphs'>SUS</text>
 </g>
 <g clip-path='url(#cpMC4wMHw1MTguNzR8MC4wMHw0ODEuODk=)'>
 </g>
@@ -1779,7 +1781,7 @@
 <g clip-path='url(#cpMjU5LjU5fDM4Ni4yMXwxODIuMjB8MzI2LjE3)'>
 </g>
 <g clip-path='url(#cpMC4wMHw1MTguNzR8MC4wMHw0ODEuODk=)'>
-<text transform='translate(266.72,255.27) rotate(-90)' text-anchor='middle' style='font-size: 6.00px;fill: #4D4D4D; font-family: "Arial";' textLength='54.11px' lengthAdjust='spacingAndGlyphs'>Integrated resilience</text>
+<text transform='translate(266.72,255.27) rotate(-90)' text-anchor='middle' style='font-size: 6.00px;fill: #4D4D4D; font-family: "Arial";' textLength='9.67px' lengthAdjust='spacingAndGlyphs'>ISS</text>
 </g>
 <g clip-path='url(#cpMjU5LjU5fDM4Ni4yMXwxODIuMjB8MzI2LjE3)'>
 </g>
@@ -1893,6 +1895,8 @@
 <circle cx='472.18' cy='231.44' r='2.30' style='stroke-width: 0.34; stroke: none; fill: #9E9E9E;' />
 <circle cx='487.63' cy='251.59' r='2.30' style='stroke-width: 0.34; stroke: none; fill: #9E9E9E;' />
 <circle cx='503.09' cy='259.93' r='2.30' style='stroke-width: 0.34; stroke: none; fill: #9E9E9E;' />
+<text x='508.11' y='203.96' text-anchor='end' style='font-size: 5.20px;fill: #3A3A3A; font-family: "Arial";' textLength='28.56px' lengthAdjust='spacingAndGlyphs'>Within batch</text>
+<text x='508.11' y='214.14' text-anchor='end' style='font-size: 5.20px;fill: #9E9E9E; font-family: "Arial";' textLength='29.72px' lengthAdjust='spacingAndGlyphs'>Within cages</text>
 </g>
 <g clip-path='url(#cpMC4wMHw1MTguNzR8MC4wMHw0ODEuODk=)'>
 </g>
@@ -2281,7 +2285,7 @@
 </g>
 <g clip-path='url(#cpMC4wMHw1MTguNzR8MC4wMHw0ODEuODk=)'>
 <polyline points='328.58,350.47 328.58,338.71 ' style='stroke-width: 0.48; stroke-linecap: butt;' />
-<text x='325.85' y='346.45' text-anchor='end' style='font-size: 5.20px; font-family: "Arial";' textLength='46.78px' lengthAdjust='spacingAndGlyphs'>Integrated resilience</text>
+<text x='325.85' y='346.45' text-anchor='end' style='font-size: 5.20px; font-family: "Arial";' textLength='8.34px' lengthAdjust='spacingAndGlyphs'>ISS</text>
 <polyline points='326.88,344.59 328.58,344.59 ' style='stroke-width: 0.48; stroke-linecap: butt;' />
 </g>
 <g clip-path='url(#cpMjU5LjU5fDUxMy4yNnwzMjYuMTd8NDc2LjQx)'>

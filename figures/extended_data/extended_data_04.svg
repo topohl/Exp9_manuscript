@@ -242,11 +242,10 @@
 <polyline points='21.97,98.01 23.47,98.01 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
 <polyline points='21.97,67.78 23.47,67.78 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
 <polyline points='21.97,37.55 23.47,37.55 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
-<text transform='translate(13.02,96.59) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Integrated</text>
-<text transform='translate(13.02,70.26) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Resilience</text>
-<text transform='translate(13.02,43.35) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>(</text>
-<text transform='translate(13.02,41.52) rotate(-90)' style='font-size: 5.50px; font-style: italic;fill: #2B2B2B; font-family: "Arial";'>z</text>
-<text transform='translate(13.02,38.77) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>)</text>
+<text transform='translate(13.02,75.17) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>ISS</text>
+<text transform='translate(13.02,64.77) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>(</text>
+<text transform='translate(13.02,62.94) rotate(-90)' style='font-size: 5.50px; font-style: italic;fill: #2B2B2B; font-family: "Arial";'>z</text>
+<text transform='translate(13.02,60.19) rotate(-90)' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>)</text>
 <polyline points='23.47,126.92 143.78,126.92 ' style='stroke-width: 0.47; stroke-linecap: square;' />
 <polyline points='51.11,128.42 51.11,126.92 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
 <polyline points='82.90,128.42 82.90,126.92 ' style='stroke-width: 0.47; stroke-linecap: butt;' />
@@ -254,7 +253,7 @@
 <text x='51.11' y='133.09' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>3</text>
 <text x='82.90' y='133.09' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>5</text>
 <text x='114.69' y='133.09' text-anchor='middle' style='font-size: 5.00px;fill: #2B2B2B; font-family: "Arial";'>7</text>
-<text x='83.63' y='139.58' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Movement RMSSD</text>
+<text x='83.63' y='139.58' text-anchor='middle' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Movement RMSSD (position changes per 10 min)</text>
 </g>
 <defs>
   <clipPath id='p1_10'>
@@ -845,11 +844,11 @@
 <line x1='171.37' y1='66.00' x2='203.58' y2='66.00' style='stroke-width: 3.20; stroke: #9E9E9E; stroke-linecap: butt;' />
 <line x1='172.57' y1='79.03' x2='201.69' y2='79.03' style='stroke-width: 3.20; stroke: #9E9E9E; stroke-linecap: butt;' />
 <line x1='166.04' y1='92.06' x2='204.42' y2='92.06' style='stroke-width: 3.20; stroke: #9E9E9E; stroke-linecap: butt;' />
-<text x='98.86' y='41.16' text-anchor='middle' style='font-size: 4.74px;fill: #FFFFFF; font-family: "Arial";'>|</text>
-<text x='191.70' y='54.20' text-anchor='middle' style='font-size: 4.74px;fill: #FFFFFF; font-family: "Arial";'>|</text>
-<text x='189.31' y='67.23' text-anchor='middle' style='font-size: 4.74px;fill: #FFFFFF; font-family: "Arial";'>|</text>
-<text x='188.78' y='80.26' text-anchor='middle' style='font-size: 4.74px;fill: #FFFFFF; font-family: "Arial";'>|</text>
-<text x='185.73' y='93.29' text-anchor='middle' style='font-size: 4.74px;fill: #FFFFFF; font-family: "Arial";'>|</text>
+<line x1='98.86' y1='41.63' x2='98.86' y2='38.24' style='stroke-width: 0.75; stroke: #FFFFFF; stroke-linecap: butt;' />
+<line x1='191.70' y1='54.66' x2='191.70' y2='51.27' style='stroke-width: 0.75; stroke: #FFFFFF; stroke-linecap: butt;' />
+<line x1='189.31' y1='67.69' x2='189.31' y2='64.31' style='stroke-width: 0.75; stroke: #FFFFFF; stroke-linecap: butt;' />
+<line x1='188.78' y1='80.72' x2='188.78' y2='77.34' style='stroke-width: 0.75; stroke: #FFFFFF; stroke-linecap: butt;' />
+<line x1='185.73' y1='93.76' x2='185.73' y2='90.37' style='stroke-width: 0.75; stroke: #FFFFFF; stroke-linecap: butt;' />
 <circle cx='99.83' cy='39.94' r='2.20' style='stroke-width: 0.35; stroke: none; fill: #B9B9B4;' />
 <circle cx='193.19' cy='52.97' r='2.20' style='stroke-width: 0.35; stroke: none; fill: #1F3D52;' />
 <circle cx='191.27' cy='66.00' r='2.20' style='stroke-width: 0.35; stroke: none; fill: #1F3D52;' />
@@ -953,11 +952,11 @@
 <line x1='60.12' y1='51.60' x2='76.72' y2='51.60' style='stroke-width: 3.20; stroke: #9E9E9E; stroke-linecap: butt;' />
 <line x1='78.50' y1='65.02' x2='95.94' y2='65.02' style='stroke-width: 3.20; stroke: #9E9E9E; stroke-linecap: butt;' />
 <line x1='110.15' y1='78.45' x2='124.30' y2='78.45' style='stroke-width: 3.20; stroke: #9E9E9E; stroke-linecap: butt;' />
-<text x='68.64' y='25.99' text-anchor='middle' style='font-size: 4.74px;fill: #FFFFFF; font-family: "Arial";'>|</text>
-<text x='78.93' y='39.41' text-anchor='middle' style='font-size: 4.74px;fill: #FFFFFF; font-family: "Arial";'>|</text>
-<text x='71.53' y='52.83' text-anchor='middle' style='font-size: 4.74px;fill: #FFFFFF; font-family: "Arial";'>|</text>
-<text x='90.42' y='66.25' text-anchor='middle' style='font-size: 4.74px;fill: #FFFFFF; font-family: "Arial";'>|</text>
-<text x='118.70' y='79.67' text-anchor='middle' style='font-size: 4.74px;fill: #FFFFFF; font-family: "Arial";'>|</text>
+<line x1='68.64' y1='26.50' x2='68.64' y2='23.01' style='stroke-width: 0.75; stroke: #FFFFFF; stroke-linecap: butt;' />
+<line x1='78.93' y1='39.93' x2='78.93' y2='36.44' style='stroke-width: 0.75; stroke: #FFFFFF; stroke-linecap: butt;' />
+<line x1='71.53' y1='53.35' x2='71.53' y2='49.86' style='stroke-width: 0.75; stroke: #FFFFFF; stroke-linecap: butt;' />
+<line x1='90.42' y1='66.77' x2='90.42' y2='63.28' style='stroke-width: 0.75; stroke: #FFFFFF; stroke-linecap: butt;' />
+<line x1='118.70' y1='80.19' x2='118.70' y2='76.70' style='stroke-width: 0.75; stroke: #FFFFFF; stroke-linecap: butt;' />
 <circle cx='69.26' cy='24.76' r='2.20' style='stroke-width: 0.35; stroke: none; fill: #B9B9B4;' />
 <circle cx='80.12' cy='38.18' r='2.20' style='stroke-width: 0.35; stroke: none; fill: #1F3D52;' />
 <circle cx='72.33' cy='51.60' r='2.20' style='stroke-width: 0.35; stroke: none; fill: #B9B9B4;' />
@@ -1001,12 +1000,12 @@
 <line x1='189.76' y1='65.02' x2='207.38' y2='65.02' style='stroke-width: 3.20; stroke: #9E9E9E; stroke-linecap: butt;' />
 <line x1='189.56' y1='78.45' x2='208.21' y2='78.45' style='stroke-width: 3.20; stroke: #9E9E9E; stroke-linecap: butt;' />
 <line x1='154.54' y1='91.87' x2='193.50' y2='91.87' style='stroke-width: 3.20; stroke: #9E9E9E; stroke-linecap: butt;' />
-<text x='201.42' y='25.99' text-anchor='middle' style='font-size: 4.74px;fill: #FFFFFF; font-family: "Arial";'>|</text>
-<text x='201.22' y='39.41' text-anchor='middle' style='font-size: 4.74px;fill: #FFFFFF; font-family: "Arial";'>|</text>
-<text x='203.36' y='52.83' text-anchor='middle' style='font-size: 4.74px;fill: #FFFFFF; font-family: "Arial";'>|</text>
-<text x='200.77' y='66.25' text-anchor='middle' style='font-size: 4.74px;fill: #FFFFFF; font-family: "Arial";'>|</text>
-<text x='201.41' y='79.67' text-anchor='middle' style='font-size: 4.74px;fill: #FFFFFF; font-family: "Arial";'>|</text>
-<text x='174.68' y='93.09' text-anchor='middle' style='font-size: 4.74px;fill: #FFFFFF; font-family: "Arial";'>|</text>
+<line x1='201.42' y1='26.50' x2='201.42' y2='23.01' style='stroke-width: 0.75; stroke: #FFFFFF; stroke-linecap: butt;' />
+<line x1='201.22' y1='39.93' x2='201.22' y2='36.44' style='stroke-width: 0.75; stroke: #FFFFFF; stroke-linecap: butt;' />
+<line x1='203.36' y1='53.35' x2='203.36' y2='49.86' style='stroke-width: 0.75; stroke: #FFFFFF; stroke-linecap: butt;' />
+<line x1='200.77' y1='66.77' x2='200.77' y2='63.28' style='stroke-width: 0.75; stroke: #FFFFFF; stroke-linecap: butt;' />
+<line x1='201.41' y1='80.19' x2='201.41' y2='76.70' style='stroke-width: 0.75; stroke: #FFFFFF; stroke-linecap: butt;' />
+<line x1='174.68' y1='93.61' x2='174.68' y2='90.12' style='stroke-width: 0.75; stroke: #FFFFFF; stroke-linecap: butt;' />
 <circle cx='202.32' cy='24.76' r='2.20' style='stroke-width: 0.35; stroke: none; fill: #B9B9B4;' />
 <circle cx='202.50' cy='38.18' r='2.20' style='stroke-width: 0.35; stroke: none; fill: #B9B9B4;' />
 <circle cx='203.74' cy='51.60' r='2.20' style='stroke-width: 0.35; stroke: none; fill: #B9B9B4;' />
@@ -1134,12 +1133,11 @@
 <text x='48.07' y='28.45' text-anchor='end' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Mean movement</text>
 <text x='48.07' y='46.03' text-anchor='end' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Movement RMSSD</text>
 <text x='48.07' y='63.61' text-anchor='end' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Entropy ACF1</text>
-<text x='122.12' y='85.72' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Spearman</text>
-<text x='149.04' y='85.72' style='font-size: 5.50px; font-style: italic;fill: #2B2B2B; font-family: "Arial";'>ρ</text>
-<text x='153.73' y='85.72' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>with</text>
-<text x='165.04' y='85.72' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>later</text>
-<text x='177.28' y='85.72' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>integrated</text>
-<text x='203.29' y='85.72' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>resilience</text>
+<text x='142.31' y='85.72' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>Spearman</text>
+<text x='169.23' y='85.72' style='font-size: 5.50px; font-style: italic;fill: #2B2B2B; font-family: "Arial";'>ρ</text>
+<text x='173.92' y='85.72' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>with</text>
+<text x='185.23' y='85.72' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>later</text>
+<text x='197.46' y='85.72' style='font-size: 5.50px;fill: #2B2B2B; font-family: "Arial";'>ISS</text>
 </g>
 </g>
 </g>

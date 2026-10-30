@@ -489,18 +489,6 @@
 <line x1='31.14' y1='34.24' x2='96.78' y2='34.24' style='stroke-width: 0.53; stroke: #BFBFBF; stroke-linecap: butt;' />
 <line x1='63.96' y1='67.06' x2='63.96' y2='1.42' style='stroke-width: 0.53; stroke: #BFBFBF; stroke-linecap: butt;' />
 <rect x='60.43' y='30.70' width='7.07' height='7.07' style='stroke-width: 0.50; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #F2F2F2;' />
-<text x='31.14' y='5.01' style='font-size: 5.02px;fill: #6B6B6B; font-family: "Arial";' textLength='23.45px' lengthAdjust='spacingAndGlyphs'>divergent /</text>
-<text x='31.14' y='10.31' style='font-size: 5.02px;fill: #6B6B6B; font-family: "Arial";' textLength='20.41px' lengthAdjust='spacingAndGlyphs'>opposing</text>
-<text x='96.78' y='5.01' text-anchor='end' style='font-size: 5.02px;fill: #6B6B6B; font-family: "Arial";' textLength='18.16px' lengthAdjust='spacingAndGlyphs'>shared /</text>
-<text x='96.78' y='10.31' text-anchor='end' style='font-size: 5.02px;fill: #6B6B6B; font-family: "Arial";' textLength='16.19px' lengthAdjust='spacingAndGlyphs'>parallel</text>
-<text x='31.14' y='49.79' style='font-size: 5.02px;fill: #6B6B6B; font-family: "Arial";' textLength='18.16px' lengthAdjust='spacingAndGlyphs'>shared /</text>
-<text x='31.14' y='55.09' style='font-size: 5.02px;fill: #6B6B6B; font-family: "Arial";' textLength='16.19px' lengthAdjust='spacingAndGlyphs'>parallel</text>
-<text x='96.78' y='61.76' text-anchor='end' style='font-size: 5.02px;fill: #6B6B6B; font-family: "Arial";' textLength='23.45px' lengthAdjust='spacingAndGlyphs'>divergent /</text>
-<text x='96.78' y='67.06' text-anchor='end' style='font-size: 5.02px;fill: #6B6B6B; font-family: "Arial";' textLength='20.41px' lengthAdjust='spacingAndGlyphs'>opposing</text>
-<text x='63.96' y='5.01' text-anchor='middle' style='font-size: 5.02px;fill: #6B6B6B; font-family: "Arial";' textLength='11.98px' lengthAdjust='spacingAndGlyphs'>SUS-</text>
-<text x='63.96' y='10.31' text-anchor='middle' style='font-size: 5.02px;fill: #6B6B6B; font-family: "Arial";' textLength='24.03px' lengthAdjust='spacingAndGlyphs'>associated</text>
-<text transform='translate(96.78,34.24) rotate(-90)' text-anchor='middle' style='font-size: 5.02px;fill: #6B6B6B; font-family: "Arial";' textLength='36.02px' lengthAdjust='spacingAndGlyphs'>RES-associated</text>
-<text x='63.96' y='31.94' text-anchor='middle' style='font-size: 5.02px;fill: #6B6B6B; font-family: "Arial";' textLength='33.48px' lengthAdjust='spacingAndGlyphs'>little detectable</text>
 <polygon points='76.20,24.22 80.22,24.22 80.22,20.20 76.20,20.20 ' style='stroke-width: 0.50; stroke: none; fill: #7B6A91; fill-opacity: 0.88;' />
 <polygon points='74.33,27.78 78.34,27.78 78.34,23.76 74.33,23.76 ' style='stroke-width: 0.50; stroke: none; fill: #7B6A91; fill-opacity: 0.88;' />
 <polygon points='71.82,43.66 75.83,43.66 75.83,39.64 71.82,39.64 ' style='stroke-width: 0.50; stroke: none; fill: #7B6A91; fill-opacity: 0.28;' />
