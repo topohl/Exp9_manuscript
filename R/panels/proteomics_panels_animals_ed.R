@@ -35,8 +35,10 @@ hf_ed_missing_all <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::geom_text(data = brk, ggplot2::aes(x = x, y = -Inf, label = label), inherit.aes = FALSE, vjust = 1.4,
                        family = fam, size = hf_sz(HF_MIN_PT), colour = "black") +
     ggplot2::facet_grid(~ compartment, scales = "free_x", space = "free_x") +
-    ggplot2::scale_colour_manual(values = hv_group_colours(), name = NULL) +
-    ggplot2::scale_shape_manual(values = c(Left = 21, Right = 16), name = NULL, labels = c(Left = "left", Right = "right")) +
+    # fixed key order (groups, then hemispheres): two untitled legends are otherwise ordered by ggplot
+    ggplot2::scale_colour_manual(values = hv_group_colours(), name = NULL, guide = ggplot2::guide_legend(order = 1)) +
+    ggplot2::scale_shape_manual(values = c(Left = 21, Right = 16), name = NULL, labels = c(Left = "left", Right = "right"),
+                                guide = ggplot2::guide_legend(order = 2)) +
     ggplot2::scale_x_continuous(breaks = NULL, expand = ggplot2::expansion(add = 0.5)) +
     ggplot2::scale_y_continuous(labels = function(v) paste0(round(100 * v), "%"), breaks = scales::breaks_pretty(4),
                                 limits = c(0, NA), expand = ggplot2::expansion(mult = c(0, 0.05))) +
