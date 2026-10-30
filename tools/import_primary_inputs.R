@@ -14,16 +14,21 @@
 # (Figure 2d and the GO panels, 2f-2i since 2026-10-28, were added on 2026-10-27; the former Figure 2h GO candidate left with its panel;
 # Figure 2j-2l on 2026-10-28.) A results/spatial_validation table is imported only if it is the table its producing run wrote
 # (SHA-256 in that run's manifest, where the run records it), with committed code that is unchanged at the current revision.
+# An integration table, or a selection inventory (an exported byte copy of build_display_selection_inventories), is imported
+# only if its step's last run completed and wrote it (manifests/run_status.yml: status and SHA-256; a failed rerun leaves the
+# old tables in place). Every input is checked before anything is copied; --check stops there and copies nothing.
 # The tree must hold the approved primary centring (config/normalisation.yml). Each import is recorded in
 # provenance/source_manifests/primary_inputs.csv (declared path, source path, source commit, SHA-256, previous SHA-256),
 # which the import-boundary tests and tools/import_proteomics_statistics.R read; the bundle manifest rows of the
 # inventories are replaced by the primary tree's export rows. Re-running with unchanged inputs changes nothing.
-# Usage (repository root): Rscript tools/import_primary_inputs.R <primary tree root, short path, e.g. R:/>
+# Usage (repository root): Rscript tools/import_primary_inputs.R <primary tree root, short path, e.g. R:/> [--check]
 
 source(file.path("R", "paths.R"))
 args <- commandArgs(trailingOnly = TRUE)
+check_only <- "--check" %in% args
+args <- setdiff(args, "--check")
 if (length(args) != 1L || !file.exists(file.path(args[[1]], "pipeline.yml")))
-  stop("usage: Rscript tools/import_primary_inputs.R <pRoteomics primary tree root>", call. = FALSE)
+  stop("usage: Rscript tools/import_primary_inputs.R <pRoteomics primary tree root> [--check]", call. = FALSE)
 p_root <- normalizePath(args[[1]], winslash = "/", mustWork = TRUE)
 norm <- yaml::read_yaml(file.path(p_root, "config", "normalisation.yml"))
 if (!identical(norm$decision, "approved") || !identical(norm$sample_centring, norm$approved_sample_centring) ||
@@ -127,11 +132,57 @@ run_checked <- function(source) {
   }
   invisible(TRUE)
 }
+# An integration step writes manifests/run_status.yml: "completed" only when the run finished, with the SHA-256 of each
+# table it wrote. results/integration/<step>/<scope>/tables/ names the step; the inventories are copies of
+# build_display_selection_inventories tables (same file names). Mirrors tests/testthat/test-primary-input-run-status.R.
+integration_checked <- function(source, file_sha) {
+  if (grepl("^results/integration/[^/]+/[^/]+/tables/", source)) {
+    parts <- strsplit(source, "/", fixed = TRUE)[[1]]
+    owner <- parts[[3]]; scope <- parts[[4]]
+  } else if (startsWith(source, "exports/publication_source_data/supplementary_selection_inventories/")) {
+    owner <- "build_display_selection_inventories"; scope <- "global"
+  } else return(invisible(TRUE))
+  path <- file.path(p_root, "results", "integration", owner, scope, "manifests", "run_status.yml")
+  if (!file.exists(path)) stop(owner, " has no run status; rerun it before importing.", call. = FALSE)
+  status <- yaml::read_yaml(path)
+  if (!identical(status$status, "completed"))
+    stop(owner, "'s last run did not complete (", format(status$status), "); rerun it before importing.", call. = FALSE)
+  if (!identical(status$tables_sha256[[basename(source)]], file_sha))
+    stop(source, " is not a table of ", owner, "'s last completed run (run_status.yml).", call. = FALSE)
+  invisible(TRUE)
+}
+
+# ---------------------------------------------------------------- checks: nothing is copied unless every input passes
+src_sha <- character(nrow(WORK))
 for (i in seq_len(nrow(WORK))) {
-  src <- file.path(p_root, WORK$source[i]); dst <- repo_path(WORK$declared[i])
+  src <- file.path(p_root, WORK$source[i])
   if (!file.exists(src)) stop("Missing in the primary tree: ", WORK$source[i], call. = FALSE)
   run_checked(WORK$source[i])
-  new <- sha(src); old <- sha(dst)
+  src_sha[i] <- sha(src)
+  integration_checked(WORK$source[i], src_sha[i])
+}
+id <- "supplementary_selection_inventories"
+pm <- utils::read.csv(file.path(p_root, "exports", "publication_source_data", "manifest.csv"), stringsAsFactors = FALSE)
+pm <- pm[pm$publication_id == id, , drop = FALSE]
+if (!nrow(pm)) stop("The primary tree has not exported ", id, " (tools/export_publication_source_data.R).", call. = FALSE)
+mf <- repo_path("source_data", "pRoteomics", "manifest.csv")
+m <- utils::read.csv(mf, stringsAsFactors = FALSE)
+old_rows <- m[m$publication_id == id, , drop = FALSE]
+if (!setequal(basename(old_rows$exported_file), basename(pm$exported_file))) stop("The ", id, " file set changed; review by hand.", call. = FALSE)
+for (i in seq_len(nrow(pm))) {
+  if (!identical(sha(file.path(p_root, pm$exported_file[i])), pm$sha256[i]))
+    stop("Primary-tree export differs from its manifest: ", pm$exported_file[i], call. = FALSE)
+  integration_checked(pm$exported_file[i], pm$sha256[i])
+}
+if (check_only) {
+  cat("all", nrow(WORK) + nrow(pm), "inputs pass the import checks at", rev, "(nothing copied)\n")
+  quit(save = "no")
+}
+
+# ---------------------------------------------------------------- render-workspace copies
+for (i in seq_len(nrow(WORK))) {
+  src <- file.path(p_root, WORK$source[i]); dst <- repo_path(WORK$declared[i])
+  new <- src_sha[i]; old <- sha(dst)
   if (!identical(new, old)) {
     dir.create(dirname(dst), recursive = TRUE, showWarnings = FALSE)
     if (!file.copy(src, dst, overwrite = TRUE) || !identical(sha(dst), new)) stop("Copy failed: ", WORK$declared[i], call. = FALSE)
@@ -141,18 +192,9 @@ for (i in seq_len(nrow(WORK))) {
 }
 
 # ---------------------------------------------------------------- source-data bundle: selection inventories (tracked)
-id <- "supplementary_selection_inventories"
-pm <- utils::read.csv(file.path(p_root, "exports", "publication_source_data", "manifest.csv"), stringsAsFactors = FALSE)
-pm <- pm[pm$publication_id == id, , drop = FALSE]
-if (!nrow(pm)) stop("The primary tree has not exported ", id, " (tools/export_publication_source_data.R).", call. = FALSE)
-mf <- repo_path("source_data", "pRoteomics", "manifest.csv")
-m <- utils::read.csv(mf, stringsAsFactors = FALSE)
-old_rows <- m[m$publication_id == id, , drop = FALSE]
-if (!setequal(basename(old_rows$exported_file), basename(pm$exported_file))) stop("The ", id, " file set changed; review by hand.", call. = FALSE)
 dest_dir <- repo_path("source_data", "pRoteomics", id)
 for (i in seq_len(nrow(pm))) {
   src <- file.path(p_root, pm$exported_file[i]); dst <- file.path(dest_dir, basename(pm$exported_file[i]))
-  if (!identical(sha(src), pm$sha256[i])) stop("Primary-tree export differs from its manifest: ", pm$exported_file[i], call. = FALSE)
   old <- sha(dst)
   if (!identical(old, pm$sha256[i]) && (!file.copy(src, dst, overwrite = TRUE) || !identical(sha(dst), pm$sha256[i])))
     stop("Copy failed: ", dst, call. = FALSE)
