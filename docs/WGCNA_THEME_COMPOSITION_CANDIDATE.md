@@ -1,7 +1,7 @@
 # WGCNA module wheel and theme composition: candidate
 
 Candidate only. It does not change any panel contract, publication identity,
-source-data release or assembled figure, and it is not promoted. the withheld WGCNA Extended Data
+source-data release or assembled figure, and it is not promoted. The withheld WGCNA Extended Data
 stays withheld in `provenance/publication_registry/canonical_publication_registry.csv`
 (`WITHHELD_SCOPE_AND_UNSUPPORTED_SPATIAL_LABELS`); this candidate is a proposal
 for how a re-scoped WGCNA Extended Data could look, not a replacement of that record.
@@ -37,10 +37,10 @@ module, never whether any group differs. No group effect is drawn.
 ## What "carried" means
 
 All values come from the pRoteomics step
-`analysis/integration/test_theme_module_composition.R` (run f45209c), exported
-by `tools/export_wgcna_theme_composition_candidate.R` (363e6f5) and imported
-byte for byte by `tools/import_wgcna_theme_composition.R`. Nothing is
-recomputed here.
+`analysis/integration/test_theme_module_composition.R`, exported by
+`tools/export_wgcna_theme_composition_candidate.R` and imported byte for byte by
+`tools/import_wgcna_theme_composition.R` (versions below). Nothing is
+recomputed here. The numbers are those of v2.
 
 - Theme protein set: proteins annotated (`org.Mm.eg.db` 3.22.0, GOALL) to the
   theme's claim-eligible GO terms tested in that compartment, mapped through the
@@ -50,7 +50,7 @@ recomputed here.
 - Test: one-sided Fisher's exact test per theme x module (and per theme x
   multi-module supermodule), conditional-MLE odds ratio with exact 95% CI;
   Benjamini-Hochberg within compartment x level (105, 49 and 91 module cells;
-  28, 14 and 21 supermodule cells).
+  28, 21 and 28 supermodule cells).
 - Carried: BH-FDR <= 0.05 and odds ratio >= 2. Modules: 9 neuropil, 6 soma,
   10 microglia cells; supermodules: 2, 2 and 4.
 - Classes (share of the theme's proteins in its carrier modules): coherent >=
@@ -62,9 +62,50 @@ recomputed here.
 
 Partition agreement between the theme labels and the module labels of the
 single-theme proteins, against 1,000 label permutations (seed 20261012):
-Cramer's V 0.27-0.33 (permutation maximum <= 0.11) and NMI 0.12-0.15
-(permutation maximum <= 0.02), permutation p = 0.001 in every compartment and
+Cramer's V 0.27-0.38 (permutation maximum 0.11) and NMI 0.12-0.15
+(permutation maximum 0.02), permutation p = 0.001 in every compartment and
 at both levels. The agreement is real and partial, not a one-to-one mapping.
+
+## Versions
+
+- **v2** (current): primary pRoteomics tree (original centring,
+  `Analysis/proteomics_original`, branch `original-centring-2026-10-24`),
+  supermodule cut heights of 2026-10-26 (0.55 neuropil and soma, 0.45
+  microglia); frozen in
+  `source_data/pRoteomics/wgcna_theme_composition_candidate_v2/`, rendered to
+  `results/figures/manuscript_candidates/wgcna_theme_composition_v2/`. The
+  composition run and export commits are in the bundle's `input_manifest.csv`
+  and manifest rows.
+- **v1**: run f45209c, exported at 363e6f5, imported 2026-10-12 (b099591);
+  frozen in `source_data/pRoteomics/wgcna_theme_composition_candidate/`,
+  rendered to `.../wgcna_theme_composition_v1/`. Kept unchanged.
+
+Module-level results, the theme summary (panel c) and the carried-cell counts
+are unchanged in v2. The supermodule statistics change. Soma m01 + m03 and
+microglia m09 + m13 now form multi-module supermodules (both SM04; neither
+carries a theme), and the later microglia supermodules are renumbered down by
+one (SM05-SM09 become SM04-SM08; m07 + m11 is now SM08). The supermodule test
+families grow from 14 to 21 (soma) and from 21 to 28 (microglia) cells, so
+their BH-FDR values rise (16 of the 63 cells with the same member set change,
+6 of them carried; none crosses 0.05, and no cell changes its carried status). Supermodule
+partition agreement: soma Cramer's V 0.33359 to 0.37876, microglia 0.27197 to
+0.27050. The curated-mapping audit keeps its counts, with microglia SM09 read
+as SM08. The wheel table's module labels (column `canonical_display_label`,
+not drawn) follow the primary tree's current labels: neuropil m07 and m09
+(relabelling of 2026-10-26) and the reviewed soma m01 and m03 labels of
+2026-10-27.
+
+Provenance of v2: the composition run and the export are stamped with commit
+24c972b, but the run used label code and registries that were not yet
+committed (the Stage 07 soma overrides and `config/wgcna_labels/neuron_soma.csv`,
+reviewed 2026-10-27; committed on 2026-10-30 in b773a55). They reach only the soma m01 and m03 cells of
+`canonical_display_label`; 24c972b alone reproduces every other value. The
+composition step was rerun after the export, with byte-identical tables, so the
+run manifest that `input_manifest.csv` hashes is no longer the one in the
+pRoteomics tree. The current one differs only in its timestamp and in the md5
+of the theme mapping, whose row-44 rationale text was corrected after the
+export. The hashed copy is kept beside the export, as
+`exports/publication_source_data/wgcna_theme_composition_candidate/run_manifest_at_export.yml`.
 
 ## Reading
 
@@ -108,15 +149,18 @@ microglia-enriched ROI is not a purified cell population.
 
 ## Files and commands
 
-    # pRoteomics (statistics, export)
+    # pRoteomics primary tree (statistics, export; the export refuses an existing export)
     Rscript analysis/integration/test_theme_module_composition.R
     Rscript tools/export_wgcna_theme_composition_candidate.R
 
-    # this repository (import once, then render a new versioned directory)
-    Rscript tools/import_wgcna_theme_composition.R <pRoteomics_root>
-    Rscript figures/candidates/wgcna_theme_composition_candidate.R [new_output_directory]
+    # this repository (each version imported once, then rendered into a new directory)
+    Rscript tools/import_wgcna_theme_composition.R <pRoteomics_root> v2
+    Rscript figures/candidates/wgcna_theme_composition_candidate.R [v1|v2] [new_output_directory]
 
-Default output: `results/figures/manuscript_candidates/wgcna_theme_composition_v1/`
-with the sheet (SVG, PDF, PNG), per-panel source data, `render_inputs.csv` and
-`render_manifest.csv`. The renderer refuses an existing directory.
-Tests: `tests/testthat/test-wgcna-theme-composition-candidate.R`.
+Default output: `results/figures/manuscript_candidates/wgcna_theme_composition_<version>/`
+(current version v2) with the sheet (SVG, PDF, PNG), per-panel source data,
+`render_inputs.csv` and `render_manifest.csv`. The importer refuses an existing
+version directory or manifest entry and an export it has already imported; the
+renderer refuses an existing directory. A later version keeps the pRoteomics
+path in `source_table` and names its own bundle in `exported_file`.
+Tests: `tests/testthat/test-wgcna-theme-composition-candidate.R` (every version).

@@ -1,7 +1,7 @@
 # WGCNA module wheel and theme x module composition (manuscript candidate).
 #
-# Downstream only. Reads the frozen pRoteomics export wgcna_theme_composition_candidate
-# (imported by tools/import_wgcna_theme_composition.R) and draws it. Every value shown is a
+# Downstream only. Reads one frozen version (WTC_VERSIONS) of the pRoteomics export
+# wgcna_theme_composition_candidate (imported by tools/import_wgcna_theme_composition.R) and draws it. Every value shown is a
 # value of that export; the only things computed here are geometry (angles, radii), display
 # order and the colour each value is drawn in.
 #
@@ -12,7 +12,17 @@
 # Needs R/panels/proteomics_style.R, proteomics_panels_figure2.R, proteomics_panels_main.R
 # and figure3_adaptation_panels.R (theme labels and the Figure 3 theme colours).
 
-WTC_ID <- "wgcna_theme_composition_candidate"
+WTC_ID <- "wgcna_theme_composition_candidate"   # the pRoteomics publication id, and the v1 bundle
+# Imported versions (tools/import_wgcna_theme_composition.R), each in its own bundle directory:
+#   v1  pRoteomics run f45209c, exported at 363e6f5 (2026-10-12)
+#   v2  primary tree, supermodule cut heights of 2026-10-26 (docs/WGCNA_THEME_COMPOSITION_CANDIDATE.md)
+WTC_VERSIONS <- c(v1 = WTC_ID, v2 = paste0(WTC_ID, "_v2"))
+WTC_CURRENT <- "v2"
+wtc_bundle_id <- function(version = WTC_CURRENT) {
+  if (length(version) != 1L || !version %in% names(WTC_VERSIONS))
+    stop("Unknown candidate version: ", paste(version, collapse = ", "), call. = FALSE)
+  WTC_VERSIONS[[version]]
+}
 WTC_FILES <- c("theme_entity_composition_long.csv", "theme_composition_summary.csv",
                "theme_composition_summary_all_variants.csv", "theme_partition_agreement.csv",
                "curated_mapping_composition_audit.csv", "wgcna_module_wheel_structure.csv",
@@ -28,10 +38,11 @@ WTC_SENSITIVITIES <- c(
 
 # ------------------------------------------------------------------ inputs
 
-wtc_read <- function(src = repo_path("source_data", "pRoteomics", WTC_ID),
+wtc_read <- function(version = WTC_CURRENT,
+                     src = repo_path("source_data", "pRoteomics", wtc_bundle_id(version)),
                      manifest = repo_path("source_data", "pRoteomics", "manifest.csv")) {
   mf <- utils::read.csv(manifest, stringsAsFactors = FALSE)
-  mf <- mf[mf$publication_id == WTC_ID, , drop = FALSE]
+  mf <- mf[mf$publication_id == wtc_bundle_id(version), , drop = FALSE]
   for (f in WTC_FILES) {
     row <- mf[basename(mf$exported_file) == f, , drop = FALSE]
     p <- file.path(src, f)

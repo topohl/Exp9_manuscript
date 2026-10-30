@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 # WGCNA module wheel with the GSEA themes each module carries (manuscript candidate).
-# Reads the frozen pRoteomics export wgcna_theme_composition_candidate and draws it; no
+# Reads one frozen version (WTC_VERSIONS) of the pRoteomics export wgcna_theme_composition_candidate
+# and draws it; no
 # composition, enrichment or module statistic is recomputed. Not promoted: candidate only.
 
 source(file.path("R", "paths.R"))
@@ -14,12 +15,13 @@ source(repo_path("R", "panels", "wgcna_theme_composition_panels.R"))
 WTC_W_MM <- 183
 WTC_H_MM <- 168
 
-wtc_render <- function(out) {
+wtc_render <- function(out, version = WTC_CURRENT) {
+  id <- wtc_bundle_id(version)   # an unknown version fails before anything else
   for (pkg in c("ggplot2", "patchwork", "svglite", "ragg"))
     if (!requireNamespace(pkg, quietly = TRUE))
       stop("Required plotting package is unavailable: ", pkg, call. = FALSE)
   if (file.exists(out)) stop("Candidate output already exists: ", out, call. = FALSE)
-  x <- wtc_read()
+  x <- wtc_read(version)
   tag <- ggplot2::theme(plot.tag = ggplot2::element_text(size = hv_pt("panel_label_pt"), face = "bold",
                                                          family = hf_fam()))
   a <- wtc_wheel_plot(x) + ggplot2::labs(tag = "a") + tag
@@ -56,7 +58,7 @@ wtc_render <- function(out) {
                               paste0("top_carrier_supported_in__", names(WTC_SENSITIVITIES)))],
                    file.path(out, "source_data_c_theme_coherence.csv"), row.names = FALSE)
 
-  frozen <- repo_path("source_data", "pRoteomics", WTC_ID)   # this repository's frozen import
+  frozen <- repo_path("source_data", "pRoteomics", id)   # this repository's frozen import of that version
   inputs <- c(file.path(frozen, WTC_FILES),
               repo_path("source_data", "pRoteomics", "manifest.csv"),
               repo_path("config", "manuscript_palette.yml"),
@@ -75,8 +77,15 @@ wtc_render <- function(out) {
 
 if (sys.nframe() == 0L) {
   args <- commandArgs(trailingOnly = TRUE)
+  version <- WTC_CURRENT
+  if (length(args) && grepl("^v[0-9]+$", args[[1]])) {
+    version <- args[[1]]
+    args <- args[-1L]
+  }
   if (length(args) > 1L || (length(args) == 1L && !nzchar(args[[1]])))
-    stop("Usage: Rscript figures/candidates/wgcna_theme_composition_candidate.R [new_output_directory]", call. = FALSE)
+    stop("Usage: Rscript figures/candidates/wgcna_theme_composition_candidate.R [v1|v2] [new_output_directory]",
+         call. = FALSE)
   wtc_render(if (length(args)) args[[1]] else
-    repo_path("results", "figures", "manuscript_candidates", "wgcna_theme_composition_v1"))
+    repo_path("results", "figures", "manuscript_candidates", paste0("wgcna_theme_composition_", version)),
+    version = version)
 }

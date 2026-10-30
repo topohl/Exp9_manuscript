@@ -1,0 +1,8 @@
+"theme_id","display_label","display_order","registry_version"
+"rna_processing_splicing_rnp","RNA processing / splicing / RNP organization",1,"manuscript_go_themes_v3"
+"ribosome_translation","Translation / ribosome biogenesis",2,"manuscript_go_themes_v3"
+"chromatin_organization","Chromatin organization / epigenetic regulation",3,"manuscript_go_themes_v3"
+"mitochondrial_respiration_oxphos","Mitochondrial respiration / OXPHOS",4,"manuscript_go_themes_v3"
+"synaptic_signaling_vesicle","Synaptic signaling / vesicle-mediated transport",5,"manuscript_go_themes_v3"
+"neuron_projection_development","Neuron projection development",6,"manuscript_go_themes_v3"
+"autophagy_lysosome_endosome","Autophagy / endolysosomal trafficking",7,"manuscript_go_themes_v3"
