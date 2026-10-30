@@ -471,9 +471,9 @@ s5_ed_network_distance <- function(panel, svg_path, csv_path, w_mm, h_mm) {
   pl <- data.frame(lab = factor(hv_dataset_label(nt$dataset), levels = levels(d$lab)),
                    label = sprintf("P = %.2f", nt$exact_p), stringsAsFactors = FALSE)
   p <- ggplot2::ggplot(d, ggplot2::aes(xpos, value)) +
-    ggplot2::stat_summary(ggplot2::aes(x = as.integer(Group)), fun = mean,
-                          geom = "crossbar", width = 0.5, linewidth = 0.2,
-                          colour = "grey55") +
+    # group means as coloured bars, as Extended Data 9 (2026-10-30; was grey)
+    ggplot2::stat_summary(ggplot2::aes(x = as.integer(Group), colour = Group), fun = mean,
+                          geom = "crossbar", width = 0.5, linewidth = 0.3) +
     ggplot2::geom_point(ggplot2::aes(colour = Group), shape = 16, size = 1.4) +
     ggplot2::geom_text(data = pl, ggplot2::aes(x = 3.45, y = Inf, label = label),
                        inherit.aes = FALSE, hjust = 1, vjust = 1.3, family = fam,

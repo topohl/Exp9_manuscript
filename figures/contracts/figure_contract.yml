@@ -1033,7 +1033,7 @@ figures:
   ED_ca2_slm_qc:
     title: Extended Data Figure 6
     width_mm: 183
-    height_mm: 112
+    height_mm: 170
     layout_mode: absolute
     manuscript_role: proteomics_extended_data
     is_numbered_manuscript_figure: true
@@ -1133,6 +1133,66 @@ figures:
         w: 109
         h: 56
 
+      - id: 06e
+        reader: "Missingness before imputation of every acquisition, in every unit, by group and hemisphere"
+        v9_panel_id: v9_ed_missing_all
+        description: >-
+          every acquisition's fraction of analysed proteins missing before imputation, in all 18 units (pRoteomics describe_proteomic_animals); CA2 SLM in context.
+        producer_script: figures/scripts/extended_data_proteomics_panels.R
+        renderer: hf_ed_missing_all
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/extended_data/panels/v9_ed_missing_all.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/extended_data/v9_ed_missing_all_source_data.csv
+        input_dependencies:
+          - results/source_data/spatial_validation/describe_proteomic_animals/acquisition_missingness.csv
+        scientific_contract: acquisition_quality_all_units
+        biological_unit: acquisition
+        hemisphere_handling: acquisition_level
+        x: 4
+        "y": 112
+        w: 175
+        h: 24
+      - id: 06f
+        reader: "Share of within-compartment principal components explained by unit, animal, group, MS plate and hemisphere"
+        v9_panel_id: v9_ed_pca_terms
+        description: >-
+          eta squared of PC1-PC5 of each compartment's acquisitions on unit, animal, group, MS plate and hemisphere (pRoteomics describe_proteomic_animals); descriptive.
+        producer_script: figures/scripts/extended_data_proteomics_panels.R
+        renderer: hf_ed_pca_terms
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/extended_data/panels/v9_ed_pca_terms.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/extended_data/v9_ed_pca_terms_source_data.csv
+        input_dependencies:
+          - results/source_data/spatial_validation/describe_proteomic_animals/compartment_pca_terms.csv
+        scientific_contract: technical_structure_descriptive
+        biological_unit: acquisition
+        hemisphere_handling: acquisition_level
+        x: 4
+        "y": 140
+        w: 86
+        h: 28
+      - id: 06g
+        reader: "The nine proteomic animals: group, behaviour batch, MS plate, ISS and early movement with their ranks among the males"
+        v9_panel_id: v9_ed_animal_design
+        description: >-
+          design table of the nine animals with their behaviour outcomes (pRoteomics describe_proteomic_animals from the frozen behaviour bundles).
+        producer_script: figures/scripts/extended_data_proteomics_panels.R
+        renderer: hf_ed_animal_design
+        render_mode: copy_svg
+        source_data_mode: copy_csv
+        figure_source: results/figures/manuscript_candidates/final_truth_v9/extended_data/panels/v9_ed_animal_design.svg
+        primary_source: results/source_data/manuscript_candidates/final_truth_v9/extended_data/v9_ed_animal_design_source_data.csv
+        input_dependencies:
+          - results/source_data/spatial_validation/describe_proteomic_animals/proteomic_animal_design.csv
+        scientific_contract: design_transparency
+        biological_unit: animal
+        hemisphere_handling: canonical_animal_level_bilaterally_aggregated
+        x: 94
+        "y": 140
+        w: 85
+        h: 28
   ED_enrichment_atlas:
     title: Extended Data Figure 7
     width_mm: 183
@@ -1208,6 +1268,7 @@ figures:
           - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
           - source_data/pRoteomics/figure_03_adaptation/selection.csv
           - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
+          - results/source_data/spatial_validation/describe_proteomic_animals/exemplar_proteins_by_animal.csv
         scientific_contract: gsea_support_detailed
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
@@ -1230,6 +1291,7 @@ figures:
           - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
           - source_data/pRoteomics/figure_03_adaptation/selection.csv
           - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
+          - results/source_data/spatial_validation/describe_proteomic_animals/exemplar_proteins_by_animal.csv
         scientific_contract: gsea_support_detailed
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
@@ -1252,6 +1314,7 @@ figures:
           - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
           - source_data/pRoteomics/figure_03_adaptation/selection.csv
           - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
+          - results/source_data/spatial_validation/describe_proteomic_animals/exemplar_proteins_by_animal.csv
         scientific_contract: gsea_support_detailed
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated
@@ -1324,18 +1387,19 @@ figures:
         w: 175
         h: 44
       - id: 08c
-        reader: "Correlations of every network edge with the later outcome measures"
+        reader: "Correlations of every network edge with the current behaviour outcomes (rerun 2026-10-30)"
         v9_panel_id: v9_ed_coupling
         description: >-
           every distinct edge-behaviour correlation; an underpowered null.
         producer_script: figures/scripts/extended_data_proteomics_panels.R
-        renderer: f9_ed_coupling
+        renderer: hf_ed_coupling
         render_mode: copy_svg
         source_data_mode: copy_csv
         figure_source: results/figures/manuscript_candidates/final_truth_v9/extended_data/panels/v9_ed_coupling.svg
         primary_source: results/source_data/manuscript_candidates/final_truth_v9/extended_data/v9_ed_coupling_source_data.csv
         input_dependencies:
-          - results/tables/08_behavior_physio_coupling/network_behavior_coupling/edge_behavior_correlations_fdr_all_tests.csv
+          - results/source_data/spatial_validation/couple_network_edges_to_outcomes/edge_outcome_correlations.csv
+          - results/source_data/spatial_validation/couple_network_edges_to_outcomes/edge_outcome_values.csv
         scientific_contract: coupling_null
         biological_unit: animal
         hemisphere_handling: canonical_animal_level_bilaterally_aggregated

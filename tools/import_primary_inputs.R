@@ -8,6 +8,7 @@
 #   Figure 2f-2i     GO programmes of regions and layers (selections)  -> results/ render workspace (declared path)
 #   Figure 2j-2l     input territories, afferent sources, inhibitory share -> results/ render workspace (declared path)
 #   Ext. Data Fig. 9 stress exposure, unit specificity, published stress datasets, Npy lead -> results/ render workspace
+#   Ext. Data Fig. 6-8 acquisition missingness, compartment PCA terms, animal design, exemplar proteins, edge coupling (2026-10-30)
 #   Figure 3b-g      selection inventories                             -> source_data/pRoteomics/supplementary_selection_inventories
 #   Ext. Data Fig. 7 theme-assignment table                            -> results/ render workspace (over the size ceiling)
 # (Figure 2d and the GO panels, 2f-2i since 2026-10-28, were added on 2026-10-27; the former Figure 2h GO candidate left with its panel;
@@ -60,7 +61,13 @@ WORK <- data.frame(stringsAsFactors = FALSE,
                "results/source_data/spatial_validation/test_stress_exposure/stress_exposure_npy_by_animal.csv",
                "results/source_data/spatial_validation/test_stress_exposure/stress_exposure_npy_tests.csv",
                "results/source_data/spatial_validation/test_unit_specificity/unit_specificity_summary.csv",
-               "results/source_data/spatial_validation/test_unit_specificity/unit_specificity_ca2_slm_proteins.csv"),
+               "results/source_data/spatial_validation/test_unit_specificity/unit_specificity_ca2_slm_proteins.csv",
+               "results/source_data/spatial_validation/describe_proteomic_animals/acquisition_missingness.csv",
+               "results/source_data/spatial_validation/describe_proteomic_animals/compartment_pca_terms.csv",
+               "results/source_data/spatial_validation/describe_proteomic_animals/proteomic_animal_design.csv",
+               "results/source_data/spatial_validation/describe_proteomic_animals/exemplar_proteins_by_animal.csv",
+               "results/source_data/spatial_validation/couple_network_edges_to_outcomes/edge_outcome_correlations.csv",
+               "results/source_data/spatial_validation/couple_network_edges_to_outcomes/edge_outcome_values.csv"),
   source = c("results/spatial_validation/score_compartment_markers/global/tables/marker_class_scores_by_acquisition.csv",
              "results/spatial_validation/score_compartment_markers/global/tables/marker_class_scores_by_animal.csv",
              "results/spatial_validation/score_compartment_markers/global/tables/marker_class_compartment_contrasts.csv",
@@ -84,11 +91,18 @@ WORK <- data.frame(stringsAsFactors = FALSE,
              "results/spatial_validation/test_stress_exposure/global/tables/stress_exposure_npy_by_animal.csv",
              "results/spatial_validation/test_stress_exposure/global/tables/stress_exposure_npy_tests.csv",
              "results/spatial_validation/test_unit_specificity/global/tables/unit_specificity_summary.csv",
-             "results/spatial_validation/test_unit_specificity/global/tables/unit_specificity_ca2_slm_proteins.csv"),
+             "results/spatial_validation/test_unit_specificity/global/tables/unit_specificity_ca2_slm_proteins.csv",
+             "results/spatial_validation/describe_proteomic_animals/global/tables/acquisition_missingness.csv",
+             "results/spatial_validation/describe_proteomic_animals/global/tables/compartment_pca_terms.csv",
+             "results/spatial_validation/describe_proteomic_animals/global/tables/proteomic_animal_design.csv",
+             "results/spatial_validation/describe_proteomic_animals/global/tables/exemplar_proteins_by_animal.csv",
+             "results/spatial_validation/couple_network_edges_to_outcomes/global/tables/edge_outcome_correlations.csv",
+             "results/spatial_validation/couple_network_edges_to_outcomes/global/tables/edge_outcome_values.csv"),
   used_by = c("Figure 2d", "Figure 2d", "Figure 2d", "Figure 2f-2i", "Figure 2j", "Figure 2j", "Figure 2j", "Figure 2j", "Figure 2k",
               "Figure 2k", "Figure 2k", "Figure 2l", "Figure 2l", "Extended Data Fig. 7a-e",
               rep("Extended Data Fig. 9a,b", 3), rep("Extended Data Fig. 9c", 3), rep("Extended Data Fig. 9e", 2),
-              rep("Extended Data Fig. 9d", 2)))
+              rep("Extended Data Fig. 9d", 2),
+              rep("Extended Data Fig. 6 (all units, design)", 3), "Extended Data Fig. 7f-h", rep("Extended Data Fig. 8c", 2)))   # 2026-10-30
 # A spatial_validation table must come from a finished run of committed code that the current revision has not changed:
 # the run manifest's commit, the script and the R/spatial helpers it names unchanged since, and, where the run records its
 # provenance, committed code at run time (an unknown state is refused) and the table's SHA-256 among its outputs. Shared

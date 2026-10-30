@@ -186,8 +186,20 @@ f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
     ggplot2::theme_void(base_family = fam) +
     ggplot2::theme(plot.margin = ggplot2::margin(0.5, 1, 0, 1, "mm"))
 
-  p <- patchwork::wrap_plots(hdr, top, mid, bot, ncol = 1,
-                             heights = c(0.30, 1, 0.08, 0.22))
+  # every animal's values of the seven exemplar proteins beside the NES strip (2026-10-30), when declared
+  ex_path <- deps[basename(deps) == "exemplar_proteins_by_animal.csv"]
+  ex <- NULL
+  if (length(ex_path) == 1L) {
+    ex <- hv_read_csv(repo_path(ex_path))
+    ex <- ex[ex$dataset == prog$dataset[1], , drop = FALSE]
+    if (nrow(ex) != 63L) stop("f9_ed_gsea_curve: expected 7 proteins x 9 animals for ", prog$dataset[1], call. = FALSE)
+    # the heatmap is freed from the column alignment (its gene labels would narrow the curve and clip the header)
+    p <- patchwork::wrap_plots(hdr, top, mid, bot, patchwork::wrap_elements(full = ha_exemplar_heat(ex, fam)),
+                               ncol = 1, heights = c(0.2, 0.5, 0.04, 0.3, 0.9))
+  } else {
+    p <- patchwork::wrap_plots(hdr, top, mid, bot, ncol = 1,
+                               heights = c(0.30, 1, 0.08, 0.22))
+  }
   out <- data.frame(
     program = prog$label[1], term_id = prog$term[1], dataset = prog$dataset[1],
     NES = ev$NES, FDR = ev$FDR, set_size = ev$setSize,
@@ -201,6 +213,14 @@ f9_ed_gsea_curve <- function(panel, svg_path, csv_path, w_mm, h_mm) {
       "by every GO-term NES panel, so the same colour means the same NES in every ",
       "strip; a value beyond it takes full colour and the tile prints its NES"),
     stringsAsFactors = FALSE)
+  if (!is.null(ex)) {   # the per-animal values below the curve summary, one row each
+    out$row_type <- "curve"
+    ev_rows <- ex[, c("gene", "ProteinGroupID", "unit", "animal_id", "group", "log2_abundance", "log2_vs_con_mean")]
+    ev_rows$row_type <- "animal_value"; ev_rows$colour_limit <- HA_LFC_LIMIT
+    cols <- union(names(out), names(ev_rows))
+    out[setdiff(cols, names(out))] <- NA; ev_rows[setdiff(cols, names(ev_rows))] <- NA
+    out <- rbind(out[, cols], ev_rows[, cols])
+  }
   write_csv_safe(out, csv_path)
   hv_save_panel(p, svg_path, w_mm, h_mm)
   invisible(list(status = "ok"))

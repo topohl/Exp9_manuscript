@@ -41,6 +41,7 @@ s9f_renderer_sources <- function() {
     repo_path("R", "proteomics_panels_extended_data.R"),
     repo_path("R", "proteomics_panels_revised.R"),
     repo_path("R", "proteomics_panels_stress_ed.R"),
+    repo_path("R", "proteomics_panels_animals_ed.R"),
     repo_path("R", "proteomics_page_builder.R"),
     repo_path("R", "proteomics_page_export.R"),
     repo_path("R", "spatial_grammar_utils.R"),

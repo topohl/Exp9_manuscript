@@ -565,6 +565,7 @@ panels:
       - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
       - source_data/pRoteomics/figure_03_adaptation/selection.csv
       - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
+      - results/source_data/spatial_validation/describe_proteomic_animals/exemplar_proteins_by_animal.csv
   - id: v9_ed_gsea_curve_rna
     renderer: f9_ed_gsea_curve
     role: gsea_support_detailed
@@ -578,6 +579,7 @@ panels:
       - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
       - source_data/pRoteomics/figure_03_adaptation/selection.csv
       - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
+      - results/source_data/spatial_validation/describe_proteomic_animals/exemplar_proteins_by_animal.csv
   - id: v9_ed_gsea_curve_ox
     renderer: f9_ed_gsea_curve
     role: gsea_support_detailed
@@ -591,6 +593,7 @@ panels:
       - results/tables/10_biological_integration/gsea_wgcna_concordance/global/ontology_aware_gsea_theme_assignments_all_contrasts.csv
       - source_data/pRoteomics/figure_03_adaptation/selection.csv
       - source_data/pRoteomics/figure_03_adaptation/running_enrichment_curves.csv
+      - results/source_data/spatial_validation/describe_proteomic_animals/exemplar_proteins_by_animal.csv
   - id: v9_ed_atlas_rescon
     renderer: f9_gsea_atlas
     label_units: 4.6
@@ -658,13 +661,45 @@ panels:
     narrative: exact whole-network permutation against its attainable floor.
     primary_source: results/tables/11_spatial_systems/networks/network_global_multivariate_test.csv
   - id: v9_ed_coupling
-    renderer: f9_ed_coupling
+    renderer: hf_ed_coupling
     role: coupling_null
     spatial_axes: region+layer
     phenotype_axes: none_applicable
     main_or_ed: ed_unique
-    narrative: every distinct edge-behaviour correlation; an underpowered null.
-    primary_source: results/tables/08_behavior_physio_coupling/network_behavior_coupling/edge_behavior_correlations_fdr_all_tests.csv
+    narrative: every edge against the current group-free behaviour outcomes (rerun 2026-10-30); an underpowered null.
+    primary_source: results/source_data/spatial_validation/couple_network_edges_to_outcomes/edge_outcome_correlations.csv
+    input_dependencies:
+      - results/source_data/spatial_validation/couple_network_edges_to_outcomes/edge_outcome_values.csv
+
+  # quality control of every unit, the nine animals, exemplar proteins per animal (added 2026-10-30;
+  # pRoteomics describe_proteomic_animals); renderers in R/panels/proteomics_panels_animals_ed.R
+  - id: v9_ed_missing_all
+    renderer: hf_ed_missing_all
+    role: acquisition_qc
+    spatial_axes: compartment+region+layer
+    phenotype_axes: group
+    main_or_ed: ed_unique
+    narrative: >-
+      missingness before imputation of every acquisition in every unit; CA2 SLM in context.
+    primary_source: results/source_data/spatial_validation/describe_proteomic_animals/acquisition_missingness.csv
+  - id: v9_ed_pca_terms
+    renderer: hf_ed_pca_terms
+    role: technical_structure
+    spatial_axes: compartment
+    phenotype_axes: group
+    main_or_ed: ed_unique
+    narrative: >-
+      anatomy dominates PC1-PC3; animal, and with it MS plate, carries PC4-PC5 in soma and microglia-enriched ROIs.
+    primary_source: results/source_data/spatial_validation/describe_proteomic_animals/compartment_pca_terms.csv
+  - id: v9_ed_animal_design
+    renderer: hf_ed_animal_design
+    role: design_transparency
+    spatial_axes: none_intentional
+    phenotype_axes: group
+    main_or_ed: ed_unique
+    narrative: >-
+      where the nine proteomic animals sit in the behaviour, with batch and plate.
+    primary_source: results/source_data/spatial_validation/describe_proteomic_animals/proteomic_animal_design.csv
 
   # stress analyses added 2026-10-29 (pRoteomics test_stress_exposure, test_unit_specificity,
   # compare_external_stress_studies); renderers in R/panels/proteomics_panels_stress_ed.R
@@ -802,7 +837,7 @@ figures:
   - name: ED_CA2_SLM_QC
     figure_key: extended_data
     width_mm: 183
-    height_mm: 112
+    height_mm: 170
     question: Why the canonical DA table is unchanged while CA2-SLM interpretation is restricted.
     # the class counts are carried by the key of the sensitivity panel; the
     # three-bar count panel (v9_ed_ca2_classes) was dropped on 2026-10-20
@@ -811,6 +846,9 @@ figures:
       - {panel: v9_ed_ca2_missing,     label: b, x: 42,  "y": 4,   w: 137, h: 44}
       - {panel: v9_ed_ca2_displacement, label: c, x: 4,  "y": 52,  w: 62,  h: 56}
       - {panel: v9_ed_ca2_sensitivity, label: d, x: 70,  "y": 52,  w: 109, h: 56}
+      - {panel: v9_ed_missing_all, label: e, x: 4, "y": 112, w: 175, h: 24}
+      - {panel: v9_ed_pca_terms, label: f, x: 4, "y": 140, w: 86, h: 28}
+      - {panel: v9_ed_animal_design, label: g, x: 94, "y": 140, w: 85, h: 28}
 
   - name: ED_WGCNA
     figure_key: extended_data

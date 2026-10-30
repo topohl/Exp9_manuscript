@@ -62,15 +62,16 @@ test_that("out-of-layer v9 renderers are exactly the seven that are documented",
   # by s9f_renderer_sources(), not an older generation. The Figure 2 re-layout of
   # 2026-10-27 retired hf_bilateral_main and added the hf_ marker, GO-programme
   # and schematic-box renderers; 2026-10-28 added the input-territory row (j-l);
-  # 2026-10-29 the five panels of Extended Data 9 (R/panels/proteomics_panels_stress_ed.R).
+  # 2026-10-29 the five panels of Extended Data 9 (R/panels/proteomics_panels_stress_ed.R); 2026-10-30 Extended Data 6e-g
+  # and the rerun 8c (R/panels/proteomics_panels_animals_ed.R; 8c replaces f9_ed_coupling).
   ct <- yaml::read_yaml(repo("figures", "contracts", "proteomics_panels_contract.yml"))
   used <- unique(vapply(ct$panels, function(p)
     as.character(p$renderer %||% ""), character(1)))
   used <- used[nzchar(used)]
   out_of_layer <- sort(used[!grepl("^(f9_|s9f_|f3a_)", used)])
   expect_equal(out_of_layer,
-               c("hf_afferent_sources", "hf_ed_ca2_specificity", "hf_ed_exposure_microglia",
-                 "hf_ed_external_agreement", "hf_ed_external_concordance", "hf_ed_npy_lead",
+               c("hf_afferent_sources", "hf_ed_animal_design", "hf_ed_ca2_specificity", "hf_ed_coupling", "hf_ed_exposure_microglia",
+                 "hf_ed_external_agreement", "hf_ed_external_concordance", "hf_ed_missing_all", "hf_ed_npy_lead", "hf_ed_pca_terms",
                  "hf_inhibitory_share", "hf_input_territories", "hf_marker_classes",
                  "hf_pca_compact", "hf_programme_dots", "hf_schematic_space",
                  "hvp_ed_celltype", "s5_ed_ca2_displacement", "s5_ed_network_distance"))

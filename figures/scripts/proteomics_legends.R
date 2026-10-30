@@ -575,13 +575,13 @@ ED_DEFAULT_LEGEND <- list(
     "Worked example for one module. The active historical label is unchanged ",
     "and the proposed oligodendrocyte / myelin label is NOT activated; the ",
     "external evidence is context only. ", DESCRIPTIVE),
-  v9_ed_gsea_curve_syn = paste0("Detailed ranked enrichment. ",
+  v9_ed_gsea_curve_syn = paste0("Detailed ranked enrichment; below, every animal's values of the seven exemplar proteins (log2, centred on the three controls; descriptive). ",
                                 DRAWN_STRIP("v9_ed_gsea_curve_syn"), " ", GSEA_N,
                                 " ", ALGEBRA),
-  v9_ed_gsea_curve_rna = paste0("Detailed ranked enrichment. ",
+  v9_ed_gsea_curve_rna = paste0("Detailed ranked enrichment; below, every animal's values of the seven exemplar proteins (log2, centred on the three controls; descriptive). ",
                                 DRAWN_STRIP("v9_ed_gsea_curve_rna"), " ", GSEA_N,
                                 " ", ALGEBRA),
-  v9_ed_gsea_curve_ox = paste0("Detailed ranked enrichment. ",
+  v9_ed_gsea_curve_ox = paste0("Detailed ranked enrichment; below, every animal's values of the seven exemplar proteins (log2, centred on the three controls; descriptive). ",
                                DRAWN_STRIP("v9_ed_gsea_curve_ox"), " ", GSEA_N, " ",
                                MICROGLIA, " ", ALGEBRA),
   v9_ed_atlas_rescon = paste0(
@@ -644,10 +644,20 @@ ED_DEFAULT_LEGEND <- list(
     "statistic is a symmetric three-group centroid deviation and does not ",
     "use the CON consensus reference."),
   v9_ed_coupling = paste0(
-    "Every distinct spatial-unit-pair by behavioural-outcome correlation. No ",
+    "Every spatial-unit-pair edge against the current, group-free behaviour outcomes (ISS, corticosterone rise, ",
+    "sucrose preference, early movement and first-night movement over the four cage changes; rerun 2026-10-30). No ",
     "edge-behaviour association survived multiple-testing correction. With ",
     "n = 9 animals a single correlation has very little power, so this is a ",
-    "limited-power negative result and not evidence of absence.")
+    "limited-power negative result and not evidence of absence."),
+  v9_ed_missing_all = paste0(
+    "Every acquisition's fraction of its compartment's analysed proteins missing before imputation, in all 18 units, ",
+    "by group and hemisphere; places CA2 SLM in context. ", DESCRIPTIVE),
+  v9_ed_pca_terms = paste0(
+    "Within each compartment, the share of PC1-PC5 explained (eta squared) by the spatial unit, the animal, the group, ",
+    "the MS plate and the hemisphere; anatomy dominates the first components, animal and with it plate later ones. ", DESCRIPTIVE),
+  v9_ed_animal_design = paste0(
+    "The nine animals: group, behavioural batch, MS plate, ISS and early movement with their ranks among the males, ",
+    "and the median missing fraction of their acquisitions. ", DESCRIPTIVE)
 )
 
 # ------------------------------------------------------------------ assemble

@@ -156,7 +156,7 @@ testthat::test_that("Figure 2 and the proteomics Extended Data are registered fr
   # Extended Data numbers of 2026-10-20 (renumbered by first citation); Figure 2 a-l and ED5 a-f since 2026-10-28
   panels <- list(figure_02 = paste0("2", letters[1:12]),
                  extended_data_05 = paste0("05", letters[1:6]),
-                 extended_data_06 = paste0("06", letters[1:4]),
+                 extended_data_06 = paste0("06", letters[1:7]),   # e-g added 2026-10-30
                  extended_data_07 = paste0("07", letters[1:5]),
                  extended_data_08 = paste0("08", letters[1:3]),
                  extended_data_09 = paste0("09", letters[1:5]))   # the stress analyses, since 2026-10-29
