@@ -50,6 +50,7 @@ v9_record <- function(key) c("logs", "manuscript_candidates", "final_truth_v9", 
 PRODUCER_BY_RENDERER <- list(
   "figures/scripts/extended_data_proteomics_panels.R" = v9_record("extended_data"),
   "figures/scripts/extended_data_behaviour_panels.R" = c("logs", "manuscript_figures", "extended_data_behaviour_panels", "render_record.yml"),
+  "figures/scripts/extended_data_homecage_panels.R" = c("logs", "manuscript_figures", "extended_data_homecage_panels", "render_record.yml"),
   "figures/scripts/extended_data_conventional_tests.R" = c("logs", "manuscript_figures", "conventional_tests", "render_record.yml"))
 PRODUCER_RECORD <- c(
   list(figure_01 = c("logs", "manuscript_figures", "figure_01_panels", "render_record.yml"),
